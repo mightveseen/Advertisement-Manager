@@ -1,4 +1,4 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.models.status;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status;
 
 import java.time.LocalDateTime;
 

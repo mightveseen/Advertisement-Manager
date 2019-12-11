@@ -1,7 +1,7 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.models.order;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.order;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.models.guest.Guest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.models.room.Room;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.guest.Guest;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.room.Room;
 
 import java.time.LocalDateTime;
 
