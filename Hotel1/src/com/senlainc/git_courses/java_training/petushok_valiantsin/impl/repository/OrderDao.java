@@ -1,7 +1,7 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.repository.order;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.repository;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.order.IOrderDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.order.Order;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IOrderDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Order;
 
 public class OrderDao implements IOrderDao {
     private Order orderArray[] = new Order[256];

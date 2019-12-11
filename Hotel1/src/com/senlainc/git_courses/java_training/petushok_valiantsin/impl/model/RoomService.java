@@ -1,4 +1,4 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.roomservice;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model;
 
 public class RoomService {
     private String name;

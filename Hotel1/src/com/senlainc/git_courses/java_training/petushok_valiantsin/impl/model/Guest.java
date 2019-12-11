@@ -1,4 +1,4 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.guest;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model;
 
 import java.util.Date;
 

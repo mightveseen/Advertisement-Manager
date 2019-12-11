@@ -1,6 +1,6 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.room;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.room.Room;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Room;
 
 public interface IRoomDao {
     void create(Room room);

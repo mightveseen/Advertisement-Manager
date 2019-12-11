@@ -1,7 +1,7 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.repository.room;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.repository;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.room.IRoomDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.room.Room;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IRoomDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Room;
 
 public class RoomDao implements IRoomDao {
     private Room roomArray[] = new Room[256];

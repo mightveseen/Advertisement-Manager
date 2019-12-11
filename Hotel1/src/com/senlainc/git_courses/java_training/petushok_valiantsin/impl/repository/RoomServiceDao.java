@@ -1,7 +1,7 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.repository.roomservice;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.repository;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.roomservice.IRoomServiceDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.roomservice.RoomService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IRoomServiceDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.RoomService;
 
 public class RoomServiceDao implements IRoomServiceDao {
     private RoomService roomServiceArray[] = new RoomService[256];

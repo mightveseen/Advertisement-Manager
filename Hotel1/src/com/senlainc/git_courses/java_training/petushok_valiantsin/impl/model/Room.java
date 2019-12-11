@@ -1,4 +1,4 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.room;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Status;
 

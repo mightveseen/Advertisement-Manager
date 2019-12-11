@@ -1,6 +1,6 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.guest;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.guest.Guest;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Guest;
 
 public interface IGuestDao {
     void create(Guest guest);

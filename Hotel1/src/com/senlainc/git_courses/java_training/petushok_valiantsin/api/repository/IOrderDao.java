@@ -1,6 +1,6 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.order;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.order.Order;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Order;
 
 public interface IOrderDao {
     void create(Order order);

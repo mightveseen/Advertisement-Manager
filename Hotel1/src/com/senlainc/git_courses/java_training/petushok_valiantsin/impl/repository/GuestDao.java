@@ -1,7 +1,7 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.repository.guest;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.repository;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.guest.IGuestDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.guest.Guest;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IGuestDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Guest;
 
 public class GuestDao implements IGuestDao {
     private Guest guestArray[] = new Guest[256];
