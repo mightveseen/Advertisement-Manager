@@ -7,4 +7,5 @@ public interface IRoomServiceDao {
     void delete(int index);
     void update(int index, RoomService roomService);
     RoomService[] readAll();
+    RoomService readById(int index);
 }

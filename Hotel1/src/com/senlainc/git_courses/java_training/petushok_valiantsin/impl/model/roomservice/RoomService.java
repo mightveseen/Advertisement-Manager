@@ -10,4 +10,7 @@ public class RoomService {
         this.section = section;
         this.price = price;
     }
+    public void setPrice(int price) {
+        this.price = price;
+    }
 }

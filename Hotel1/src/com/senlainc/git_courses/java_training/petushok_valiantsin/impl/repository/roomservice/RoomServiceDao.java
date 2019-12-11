@@ -25,4 +25,8 @@ public class RoomServiceDao implements IRoomServiceDao {
     public RoomService[] readAll() {
         return roomServiceArray;
     }
+    @Override
+    public RoomService readById(int index) {
+        return roomServiceArray[index];
+    }
 }
