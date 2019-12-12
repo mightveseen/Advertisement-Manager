@@ -14,11 +14,11 @@ public class Hotel {
                 new Served("Change shower", LocalTime.of(21, 11, 3))));
         roomDao.create(new Room(203, "President", (short)5,
                 new Rented(LocalDate.of(2020, 11, 3))));
-        roomDao.create(new Room(303, "President", (short)5,
+        roomDao.update(1, new Room(303, "President", (short)5,
                 new Free()));
         roomDao.update(2, new Room(403, "President", (short)5,
                 new Rented(LocalDate.of(2020, 11, 3))));
         roomDao.delete(1);
-        System.out.println(roomDao.read(0));
+        System.out.println(roomDao.readAll());
     }
 }
