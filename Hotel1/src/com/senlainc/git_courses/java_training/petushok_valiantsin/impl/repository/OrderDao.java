@@ -2,7 +2,7 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.reposito
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IOrderDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Order;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.utility.MyList;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.MyList;
 
 public class OrderDao implements IOrderDao {
     private MyList<Order> orderMyList = new MyList<>();

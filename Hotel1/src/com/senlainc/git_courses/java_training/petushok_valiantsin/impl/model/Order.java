@@ -5,12 +5,12 @@ import java.time.LocalDateTime;
 
 public class Order {
     private LocalDateTime orderDate;
-    private Guest guest;
-    private Room room;
+    private int guest; /** Переспросить про айдишник */
+    private int room;
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public Order(Guest guest, Room room, LocalDate endDate) {
+    public Order(int guest, int room, LocalDate endDate) {
         this.orderDate = LocalDateTime.now();
         this.guest = guest;
         this.room = room;
