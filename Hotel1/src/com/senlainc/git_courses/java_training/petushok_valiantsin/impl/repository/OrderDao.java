@@ -2,13 +2,14 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.reposito
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IOrderDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Order;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.MyList;
 
 public class OrderDao implements IOrderDao {
-    private Order orderArray[] = new Order[256];
+    private MyList<Order> orderMyList = new MyList<>();
 
     @Override
     public void create(Order order) {
-
+        orderMyList.add(order);
     }
     @Override
     public void delete(int index) {
@@ -19,11 +20,11 @@ public class OrderDao implements IOrderDao {
 
     }
     @Override
-    public Order[] readAll() {
-        return orderArray;
+    public MyList readAll() {
+        return orderMyList;
     }
     @Override
     public Order readById(int index) {
-        return orderArray[index];
+        return orderMyList.get(index);
     }
 }

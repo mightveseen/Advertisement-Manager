@@ -2,13 +2,14 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.reposito
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IRoomDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Room;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.MyList;
 
 public class RoomDao implements IRoomDao {
-    private Room roomArray[] = new Room[256];
+    private MyList<Room> roomMyList = new MyList<>();
 
     @Override
     public void create(Room room) {
-
+        roomMyList.add(room);
     }
     @Override
     public void delete(int index) {
@@ -19,11 +20,11 @@ public class RoomDao implements IRoomDao {
 
     }
     @Override
-    public Room[] readAll() {
-        return roomArray;
+    public MyList readAll() {
+        return roomMyList;
     }
     @Override
     public Room readById(int index) {
-        return roomArray[index];
+        return roomMyList.get(index);
     }
 }
