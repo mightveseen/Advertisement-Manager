@@ -20,7 +20,7 @@ public class MyList <T> {
         objArray[index] = element;
     }
     public T get(int index) {
-        return (T) objArray[index];
+        return (T)objArray[index];
     }
     public void remove(int index) {
         if(index + 1 > this.index) {
@@ -47,7 +47,7 @@ public class MyList <T> {
         }
     }
     private void checkSize(String command) {
-        int CHANGE_SIZE = 2;
+        final int CHANGE_SIZE = 2;
         switch (command) {
             case "add":
                 if(this.index == objArray.length - 1) {
