@@ -13,18 +13,18 @@ public class OrderDao implements IOrderDao {
     }
     @Override
     public void delete(int index) {
-
+        orderMyList.remove(index);
     }
     @Override
     public void update(int index, Order order) {
-
+        orderMyList.add(index, order);
     }
     @Override
     public MyList readAll() {
         return orderMyList;
     }
     @Override
-    public Order readById(int index) {
+    public Order read(int index) {
         return orderMyList.get(index);
     }
 }

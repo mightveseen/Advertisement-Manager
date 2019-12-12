@@ -33,8 +33,7 @@ public class MyList <T> {
         for(int i = index; i < this.index; i++) {
             objArray[i] = objArray[i+1];
         }
-        objArray[this.index] = null;
-        this.index--;
+        objArray[this.index--] = null;
     }
     private void biasForward(int index) {
         this.index++;

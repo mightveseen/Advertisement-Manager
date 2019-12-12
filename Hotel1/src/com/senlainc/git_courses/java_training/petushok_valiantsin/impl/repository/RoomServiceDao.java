@@ -2,31 +2,29 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.reposito
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IRoomServiceDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.RoomService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.utility.MyList;
 
 public class RoomServiceDao implements IRoomServiceDao {
-    private RoomService roomServiceArray[] = new RoomService[256];
+    private MyList<RoomService> roomServiceMyList = new MyList<>();
 
     @Override
     public void create(RoomService roomService) {
-
+        roomServiceMyList.add(roomService);
     }
     @Override
     public void delete(int index) {
-
-    }
-    private void offsetArray() {
-
+        roomServiceMyList.remove(index);
     }
     @Override
     public void update(int index, RoomService roomService) {
-
+        roomServiceMyList.add(index, roomService);
     }
     @Override
-    public RoomService[] readAll() {
-        return roomServiceArray;
+    public MyList readAll() {
+        return roomServiceMyList;
     }
     @Override
-    public RoomService readById(int index) {
-        return roomServiceArray[index];
+    public RoomService read(int index) {
+        return roomServiceMyList.get(index);
     }
 }

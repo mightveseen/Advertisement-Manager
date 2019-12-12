@@ -8,5 +8,5 @@ public interface IRoomDao {
     void delete(int index);
     void update(int index, Room room);
     MyList readAll();
-    Room readById(int index);
+    Room read(int index);
 }

@@ -2,28 +2,29 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.reposito
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IGuestDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Guest;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.utility.MyList;
 
 public class GuestDao implements IGuestDao {
-    private Guest guestArray[] = new Guest[256];
+    private MyList<Guest> guestMyList = new MyList<>();
 
     @Override
     public void create(Guest guest) {
-
+        guestMyList.add(guest);
     }
     @Override
     public void delete(int index) {
-
+        guestMyList.remove(index);
     }
     @Override
     public void update(int index, Guest guest) {
-
+        guestMyList.add(index, guest);
     }
     @Override
-    public Guest[] readAll() {
-        return guestArray;
+    public MyList readAll() {
+        return guestMyList;
     }
     @Override
-    public Guest readById(int index) {
-        return guestArray[index];
+    public Guest read(int index) {
+        return guestMyList.get(index);
     }
 }

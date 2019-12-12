@@ -24,7 +24,7 @@ public class RoomDao implements IRoomDao {
         return roomMyList;
     }
     @Override
-    public Room readById(int index) {
+    public Room read(int index) {
         return roomMyList.get(index);
     }
 }
