@@ -1,4 +1,4 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.mylist;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.utility;
 
 import java.util.Arrays;
 
