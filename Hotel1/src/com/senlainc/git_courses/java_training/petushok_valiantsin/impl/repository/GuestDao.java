@@ -11,18 +11,22 @@ public class GuestDao implements IGuestDao {
     public void create(Guest guest) {
         guestMyList.add(guest);
     }
+
     @Override
     public void delete(int index) {
         guestMyList.remove(index);
     }
+
     @Override
     public void update(int index, Guest guest) {
         guestMyList.add(index, guest);
     }
+
     @Override
-    public MyList readAll() {
+    public MyList<Guest> readAll() {
         return guestMyList;
     }
+
     @Override
     public Guest read(int index) {
         return guestMyList.get(index);

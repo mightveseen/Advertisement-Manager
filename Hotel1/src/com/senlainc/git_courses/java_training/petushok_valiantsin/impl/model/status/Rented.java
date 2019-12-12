@@ -6,14 +6,16 @@ public class Rented extends Status {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public Rented (LocalDate endDate) {
+    public Rented(LocalDate endDate) {
         super();
         this.startDate = LocalDate.now();
         this.endDate = endDate;
     }
+
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
+
     @Override
     public String toString() {
         return status + " [" + startDate + ", " + endDate + "] ";

@@ -11,9 +11,11 @@ public class Served extends Status {
         this.reason = reason;
         this.endTime = endTime;
     }
+
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
+
     @Override
     public String toString() {
         return status + " [" + reason + ", " + endTime + "] ";

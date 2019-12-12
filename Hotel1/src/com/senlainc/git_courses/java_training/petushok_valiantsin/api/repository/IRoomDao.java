@@ -5,8 +5,12 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.M
 
 public interface IRoomDao {
     void create(Room room);
+
     void delete(int index);
+
     void update(int index, Room room);
-    MyList readAll();
+
+    MyList<Room> readAll();
+
     Room read(int index);
 }

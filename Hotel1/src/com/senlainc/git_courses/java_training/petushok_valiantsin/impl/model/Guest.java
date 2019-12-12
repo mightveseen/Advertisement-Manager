@@ -16,6 +16,7 @@ public class Guest {
         this.numberPerson = numberPerson;
         this.infoContact = infoContact;
     }
+
     @Override
     public String toString() {
         return firstName + ", " + secondName + ", " + birthday + ", " + numberPerson + ", " + infoContact;

@@ -5,7 +5,10 @@ import java.time.LocalDateTime;
 
 public class Order {
     private LocalDateTime orderDate;
-    private int guest; /** Переспросить про айдишник */
+    private int guest;
+    /**
+     * Переспросить про айдишник
+     */
     private int room;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -17,6 +20,7 @@ public class Order {
         this.startDate = LocalDate.now();
         this.endDate = endDate;
     }
+
     @Override
     public String toString() {
         return orderDate + ", " + guest + ", " + room + ", [" + startDate + ", " + endDate + "]";

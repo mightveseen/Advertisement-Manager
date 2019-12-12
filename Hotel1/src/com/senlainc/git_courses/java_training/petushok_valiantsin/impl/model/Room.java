@@ -14,6 +14,7 @@ public class Room {
         this.roomNumber = roomNumber;
         this.status = status;
     }
+
     @Override
     public String toString() {
         return number + ", " + classification + ", " + roomNumber + ", " + status;

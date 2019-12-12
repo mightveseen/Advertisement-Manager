@@ -5,8 +5,12 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.M
 
 public interface IOrderDao {
     void create(Order order);
+
     void delete(int index);
+
     void update(int index, Order order);
-    MyList readAll();
+
+    MyList<Order> readAll();
+
     Order read(int index);
 }
