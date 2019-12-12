@@ -6,9 +6,8 @@ public class Rented extends Status {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public Rented (String status, LocalDate startDate, LocalDate endDate) {
-        super(status);
-        this.startDate = startDate;
+    public Rented (LocalDate endDate) {
+        this.startDate = LocalDate.now();
         this.endDate = endDate;
     }
     public void setEndDate(LocalDate endDate) {

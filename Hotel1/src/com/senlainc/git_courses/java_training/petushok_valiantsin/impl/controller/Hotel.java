@@ -9,7 +9,15 @@ import java.time.LocalDateTime;
 
 public class Hotel {
     public static void main(String[] args) {
-        new RoomDao().create(new Room((short) 203, "President", 5, new Rented("Rented",
-                LocalDate.of(2019, 12, 26), LocalDate.of(2020, 11, 3))));
+        RoomDao roomDao = new RoomDao();
+        roomDao.create(new Room((short) 103, "President", 5,
+                new Rented(LocalDate.of(2020, 11, 3))));
+        roomDao.create(new Room((short) 203, "President", 5,
+                new Rented(LocalDate.of(2020, 11, 3))));
+        roomDao.create(new Room((short) 303, "President", 5,
+                new Rented(LocalDate.of(2020, 11, 3))));
+        roomDao.update(2, new Room((short) 403, "President", 5,
+                new Rented(LocalDate.of(2020, 11, 3))));
+        roomDao.delete(1);
     }
 }

@@ -6,8 +6,7 @@ public class Served extends Status {
     private String reason;
     private LocalDateTime endTime;
 
-    public Served(String status, String reason, LocalDateTime endTime) {
-        super(status);
+    public Served(String reason, LocalDateTime endTime) {
         this.reason = reason;
         this.endTime = endTime;
     }

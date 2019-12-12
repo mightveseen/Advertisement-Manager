@@ -13,11 +13,11 @@ public class RoomDao implements IRoomDao {
     }
     @Override
     public void delete(int index) {
-
+        roomMyList.remove(index);
     }
     @Override
     public void update(int index, Room room) {
-
+        roomMyList.add(index, room);
     }
     @Override
     public MyList readAll() {

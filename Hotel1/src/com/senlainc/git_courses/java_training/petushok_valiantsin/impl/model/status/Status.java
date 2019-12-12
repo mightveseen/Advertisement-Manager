@@ -3,8 +3,8 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.st
 public abstract class Status {
     protected String status;
 
-    public Status(String status) {
-        this.status = status;
+    public Status() {
+        this.status = this.getClass().getSimpleName();
     }
     public String getStatus() {
         return status;
