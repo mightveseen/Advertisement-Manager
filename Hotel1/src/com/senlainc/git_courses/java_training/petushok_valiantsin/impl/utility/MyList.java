@@ -7,6 +7,13 @@ public class MyList<T> {
     private int index = 0;
     private Object[] objArray = new Object[INIT_SIZE];
 
+    public MyList() {
+    }
+
+    public MyList(MyList<T> clazz) {
+        System.arraycopy(objArray, 0, clazz, 0, 12);
+    }
+
     public void add(T element) {
         checkSize("add");
         objArray[this.index++] = element;
@@ -34,9 +41,15 @@ public class MyList<T> {
         checkSize("remove");
     }
 
+    public int size() {
+        return (this.index);
+    }
+
     @Override
     public String toString() {
-        return Arrays.toString(objArray);
+        Object[] bufArray = new Object[this.index];
+        System.arraycopy(objArray, 0, bufArray, 0, this.index);
+        return Arrays.toString(bufArray);
     }
 
     private void biasBack(int index) {
@@ -45,14 +58,12 @@ public class MyList<T> {
         }
         this.index--;
     }
-
     private void biasForward(int index) {
         this.index++;
         if (this.index - index >= 0) {
             System.arraycopy(objArray, index, objArray, index + 1, this.index - index);
         }
     }
-
     private void checkSize(String command) {
         final int CHANGE_SIZE = 2;
         switch (command) {

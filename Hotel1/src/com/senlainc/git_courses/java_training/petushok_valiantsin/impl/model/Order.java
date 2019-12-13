@@ -1,28 +1,80 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model;
 
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.MyList;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Order {
     private LocalDateTime orderDate;
-    private int guest;
-    /**
-     * Переспросить про айдишник
-     */
-    private int room;
+    private int guestIndex;
+    private int roomIndex;
+    private MyList<Integer> attendanceIndex;
     private LocalDate startDate;
     private LocalDate endDate;
+    private double price;
 
-    public Order(int guest, int room, LocalDate endDate) {
+    public Order(Order order) {
+        this.orderDate = order.getOrderDate();
+        this.guestIndex = order.getGuestIndex();
+        this.roomIndex = order.getRoomIndex();
+        this.startDate = order.getStartDate();
+        this.endDate = order.getEndDate();
+        this.attendanceIndex = new MyList<>(order.getAttendanceIndex());
+        this.price = order.getPrice();
+    }
+
+    public Order(int guest, int room, LocalDate endDate, double price) {
         this.orderDate = LocalDateTime.now();
-        this.guest = guest;
-        this.room = room;
+        this.guestIndex = guest;
+        this.roomIndex = room;
         this.startDate = LocalDate.now();
         this.endDate = endDate;
+        this.price = price;
+    }
+
+    public int getGuestIndex() {
+        return this.guestIndex;
+    }
+
+    public int getRoomIndex() {
+        return roomIndex;
+    }
+
+    public double getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public LocalDateTime getOrderDate() {
+        return this.orderDate;
+    }
+
+    public LocalDate getStartDate() {
+        return this.startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return this.endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public MyList<Integer> getAttendanceIndex() {
+        return this.attendanceIndex;
+    }
+
+    public void setAttendanceIndex(MyList<Integer> attendanceIndex) {
+        this.attendanceIndex = attendanceIndex;
     }
 
     @Override
     public String toString() {
-        return orderDate + ", " + guest + ", " + room + ", [" + startDate + ", " + endDate + "]";
+        return "\n" + orderDate + ", " + guestIndex + ", " + roomIndex + ", [" + startDate + ", " + endDate + "]";
     }
 }

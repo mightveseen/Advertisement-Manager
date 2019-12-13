@@ -3,20 +3,38 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model;
 public class Attendance {
     private String name;
     private String section;
-    private int price;
+    private double price;
 
-    public Attendance(String name, String section, int price) {
+    public Attendance(Attendance attendance) {
+        this.name = attendance.getName();
+        this.price = attendance.getPrice();
+        this.section = attendance.getSection();
+    }
+
+    public Attendance(String name, String section, double price) {
         this.name = name;
         this.section = section;
         this.price = price;
     }
 
-    public void setPrice(int price) {
+    public String getName() {
+        return this.name;
+    }
+
+    public String getSection() {
+        return this.section;
+    }
+
+    public double getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(double price) {
         this.price = price;
     }
 
     @Override
     public String toString() {
-        return name + ", " + section + ", " + price;
+        return "\n" + name + ", " + section + ", " + price;
     }
 }
