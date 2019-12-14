@@ -11,4 +11,8 @@ public interface IRoomService {
     void changePrice(int index, double price);
 
     void changeStatus(int index, Status status);
+
+    void showRoom(String parameter);
+
+    int numFreeRoom();
 }
