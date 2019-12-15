@@ -22,14 +22,14 @@ public class OrderService implements IOrderService {
     private IGuestService guestService;
     private IAttendanceService attendanceService;
 
-    private Comparator<Order> SORT_BY_DATE = new Comparator<Order>() {
+    private Comparator<Order> SORT_BY_DATE = new Comparator<>() {
         @Override
         public int compare(Order firstOrder, Order lastOrder) {
             return firstOrder.getEndDate().compareTo(lastOrder.getEndDate());
         }
     };
 
-    private Comparator<Guest> SORT_BY_GUEST = new Comparator<Guest>() {
+    private Comparator<Guest> SORT_BY_GUEST = new Comparator<>() {
         @Override
         public int compare(Guest firstGuest, Guest lastGuest) {
             return firstGuest.getFirstName().compareTo(lastGuest.getFirstName());
@@ -75,6 +75,32 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    public void showGuestRoom(int index) {
+        int counter = 0;
+        for (int i = 0; i < orderDao.readAll().size(); i++) {
+            if (orderDao.read(i).getGuestIndex() == index) {
+                System.out.println(guestService.getGuest(orderDao.read(i).getGuestIndex()) + "\t" + roomService.getRoom(orderDao.read(i).getRoomIndex()));
+                counter++;
+            }
+            if (counter == 3) {
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void addAttendance(int orderIndex, int attendanceIndex) {
+        Order order = new Order(orderDao.read(orderIndex));
+        MyList<Integer> myList = new MyList<>();
+        System.arraycopy(myList.get(), 0, order.getAttendanceIndex().get(), 0, order.getAttendanceIndex().size());
+        myList.add(attendanceIndex);
+        order.setAttendanceIndex(myList);
+        double price = order.getPrice() + attendanceService.getPrice(attendanceIndex);
+        order.setPrice(price);
+        orderDao.update(orderIndex, order);
+    }
+
+    @Override
     public void sort(String parameter) {
         switch (parameter) {
             case "alphabet":
@@ -94,11 +120,18 @@ public class OrderService implements IOrderService {
         myList.sort(SORT_BY_DATE);
         for (int i = 0; i < myList.size(); i++) {
             System.out.println(guestService.getGuest(myList.get(i).getGuestIndex()) + "\t" + roomService.getRoom(myList.get(i).getRoomIndex())
-                    + "\nTotal amount: " + orderDao.read(i).getPrice());
+                    + "\nTotal amount: " + myList.get(i).getPrice());
         }
     }
 
     private void sortByAlphabet() {
 //        orderDao.readAll().sort(SORT_BY_GUEST);
+    }
+
+    public void showAttendance(int orderIndex) {
+        System.out.println(guestService.getGuest(orderDao.read(orderIndex).getGuestIndex()));
+//        for(Integer index : orderDao.read(orderIndex).getAttendanceIndex()) {
+//
+//        }
     }
 }

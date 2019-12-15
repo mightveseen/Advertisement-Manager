@@ -13,5 +13,11 @@ public interface IOrderService {
 
     void showOrder();
 
+    void showGuestRoom(int index);
+
     void sort(String parameter);
+
+    void addAttendance(int orderIndex, int attendanceIndex);
+
+    void showAttendance(int orderIndex);
 }

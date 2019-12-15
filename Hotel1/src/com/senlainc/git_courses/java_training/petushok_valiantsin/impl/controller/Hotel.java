@@ -40,7 +40,10 @@ public class Hotel {
         /* Guest operations */
         hotel.numGuest();
 //        hotel.showOrder();
+        /* Order operations */
+        hotel.addAttendance(1, 0);
         hotel.sortOrder("date");
+        hotel.showGuestRoom(0);
     }
 
     private void createRoom() {
@@ -66,10 +69,6 @@ public class Hotel {
     private void createOrder() {
         orderService.add(new Order(1, 3, (short) 3, LocalDate.of(2019, 3, 12), roomService.getPrice(3)));
         orderService.add(new Order(0, 0, (short) 1, LocalDate.of(2019, 1, 3), roomService.getPrice(4)));
-    }
-
-    private void showGuest() {
-        guestService.show();
     }
 
     private void numGuest() {
@@ -100,5 +99,15 @@ public class Hotel {
         roomService.showAfterDate(freeDate);
     }
 
+    private void showGuestRoom(int index) {
+        orderService.showGuestRoom(index);
+    }
 
+    private void showGuest() {
+        guestService.show();
+    }
+
+    private void addAttendance(int orderIndex, int attendanceIndex) {
+        orderService.addAttendance(orderIndex, attendanceIndex);
+    }
 }

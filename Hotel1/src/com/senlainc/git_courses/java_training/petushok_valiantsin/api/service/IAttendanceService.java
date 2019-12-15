@@ -9,5 +9,7 @@ public interface IAttendanceService {
 
     void changePrice(int index, double price);
 
-    void showList(String sortParameter);
+    double getPrice(int index);
+
+    void sort(String parameter);
 }

@@ -1,5 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status;
 
+import java.time.LocalDate;
+
 public abstract class Status {
     protected String status;
 
@@ -8,11 +10,11 @@ public abstract class Status {
     }
 
     public String getStatus() {
-        return status;
+        return this.status;
     }
 
     @Override
     public String toString() {
-        return status;
+        return this.status;
     }
 }

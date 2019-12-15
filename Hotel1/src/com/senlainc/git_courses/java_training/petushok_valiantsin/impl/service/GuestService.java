@@ -11,7 +11,7 @@ import java.util.Comparator;
 public class GuestService implements IGuestService {
     private IGuestDao guestDao = new GuestDao();
 
-    private Comparator<Guest> SORT_BY_ALPHABET = new Comparator<Guest>() {
+    private Comparator<Guest> SORT_BY_ALPHABET = new Comparator<>() {
         @Override
         public int compare(Guest firstGuest, Guest lastGuest) {
             return firstGuest.getFirstName().compareTo(lastGuest.getFirstName());

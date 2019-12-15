@@ -13,8 +13,4 @@ public interface IAttendanceDao {
     MyList<Attendance> readAll();
 
     Attendance read(int index);
-
-//    List<Attendance> sortByPrice();
-
-//    List<Attendance> sortBySection();
 }

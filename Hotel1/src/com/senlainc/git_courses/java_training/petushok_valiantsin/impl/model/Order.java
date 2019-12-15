@@ -84,6 +84,6 @@ public class Order {
 
     @Override
     public String toString() {
-        return "\n" + orderDate + ", " + guestIndex + ", " + roomIndex + ", [" + startDate + ", " + endDate + "]";
+        return "\n" + orderDate + ", " + guestIndex + ", " + roomIndex + ", [" + startDate + ", " + endDate + "], " + price;
     }
 }

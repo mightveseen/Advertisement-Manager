@@ -4,6 +4,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Free;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Rented;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Status;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.repository.RoomDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.MyList;
@@ -14,19 +15,19 @@ import java.util.Comparator;
 public class RoomService implements IRoomService {
     private IRoomDao roomDao = new RoomDao();
 
-    private Comparator<Room> SORT_BY_PRICE = new Comparator<Room>() {
+    private Comparator<Room> SORT_BY_PRICE = new Comparator<>() {
         @Override
         public int compare(Room firstRoom, Room lastRoom) {
             return String.valueOf(firstRoom.getPrice()).compareTo(String.valueOf(lastRoom.getPrice()));
         }
     };
-    private Comparator<Room> SORT_BY_CLASSIFICATION = new Comparator<Room>() {
+    private Comparator<Room> SORT_BY_CLASSIFICATION = new Comparator<>() {
         @Override
         public int compare(Room firstRoom, Room lastRoom) {
             return firstRoom.getClassification().compareTo(lastRoom.getClassification());
         }
     };
-    private Comparator<Room> SORT_BY_ROOM_NUMBER = new Comparator<Room>() {
+    private Comparator<Room> SORT_BY_ROOM_NUMBER = new Comparator<>() {
         @Override
         public int compare(Room firstRoom, Room lastRoom) {
             return String.valueOf(firstRoom.getRoomNumber()).compareTo(String.valueOf(lastRoom.getRoomNumber()));
@@ -141,6 +142,7 @@ public class RoomService implements IRoomService {
     }
 
     private void sortByPrice() {
+        System.out.print("\nSort by price:");
         MyList<Room> myList = new MyList<>();
         for (int i = 0; i < roomDao.readAll().size(); i++) {
             myList.add(roomDao.read(i));
@@ -152,6 +154,7 @@ public class RoomService implements IRoomService {
     }
 
     private void sortByClassification() {
+        System.out.print("\nSort by classification:");
         MyList<Room> myList = new MyList<>();
         for (int i = 0; i < roomDao.readAll().size(); i++) {
             myList.add(roomDao.read(i));
@@ -163,6 +166,7 @@ public class RoomService implements IRoomService {
     }
 
     private void sortByRoomNumber() {
+        System.out.print("\nSort by room number:");
         MyList<Room> myList = new MyList<>();
         for (int i = 0; i < roomDao.readAll().size(); i++) {
             myList.add(roomDao.read(i));
@@ -175,10 +179,16 @@ public class RoomService implements IRoomService {
 
     @Override
     public void showAfterDate(LocalDate freeDate) {
+        System.out.print("\nRoom will be available after [" + freeDate + "]:");
         for (int i = 0; i < roomDao.readAll().size(); i++) {
-//            if(roomDao.read(i).getStatus()){
-//
-//            }
+            if(roomDao.read(i).getStatus() instanceof Rented) {
+                if(freeDate.isAfter(((Rented)roomDao.read(i).getStatus()).getEndDate())){
+                    System.out.print(roomDao.read(i));
+                }
+            }
+            if(roomDao.read(i).getStatus() instanceof Free) {
+                System.out.print(roomDao.read(i));
+            }
         }
     }
 }

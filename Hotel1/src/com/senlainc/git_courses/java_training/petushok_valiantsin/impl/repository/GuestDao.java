@@ -31,31 +31,4 @@ public class GuestDao implements IGuestDao {
     public Guest read(int index) {
         return guestMyList.get(index);
     }
-
-//    private Comparator<Attendance> SORT_BY_PRICE = new Comparator<Attendance>() {
-//        @Override
-//        public int compare(Attendance firstAttendance, Attendance secondAttendance) {
-//            return String.valueOf(firstAttendance.getPrice()).compareTo(String.valueOf(secondAttendance.getPrice()));
-//        }
-//    };
-//    private Comparator<Attendance> SORT_BY_SECTION = new Comparator<Attendance>() {
-//        @Override
-//        public int compare(Attendance firstAttendance, Attendance secondAttendance) {
-//            return firstAttendance.getSection().compareTo(secondAttendance.getSection());
-//        }
-//    };
-
-//    @Override
-//    public List<Attendance> sortByPrice() {
-//        List<Attendance> bufList = new ArrayList<>();
-//        bufList.sort(SORT_BY_PRICE);
-//        return bufList;
-//    }
-//
-//    @Override
-//    public List<Attendance> sortBySection() {
-//        List<Attendance> bufList = new ArrayList<>();
-//        bufList.sort(SORT_BY_SECTION);
-//        return bufList;
-//    }
 }

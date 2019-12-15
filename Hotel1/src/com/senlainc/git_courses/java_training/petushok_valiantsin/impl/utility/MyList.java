@@ -12,7 +12,10 @@ public class MyList<T> {
     }
 
     public MyList(MyList<T> clazz) {
-        System.arraycopy(clazz.get(), 0, objArray, 0, clazz.size());
+        if (clazz != null) {
+            System.arraycopy(clazz.get(), 0, objArray, 0, clazz.size());
+            this.index = clazz.size();
+        }
     }
 
     public void add(T element) {
