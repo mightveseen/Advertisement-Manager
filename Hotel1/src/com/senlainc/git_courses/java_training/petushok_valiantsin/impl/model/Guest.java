@@ -6,22 +6,19 @@ public class Guest {
     private String firstName;
     private String secondName;
     private LocalDate birthday;
-    private short numberPerson;
     private String infoContact;
 
     public Guest(Guest guest) {
         this.firstName = guest.getFirstName();
         this.secondName = guest.getSecondName();
         this.birthday = guest.getBirthday();
-        this.numberPerson = guest.getNumberPerson();
         this.infoContact = guest.getInfoContact();
     }
 
-    public Guest(String firstName, String secondName, LocalDate birthday, short numberPerson, String infoContact) {
+    public Guest(String firstName, String secondName, LocalDate birthday, String infoContact) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.birthday = birthday;
-        this.numberPerson = numberPerson;
         this.infoContact = infoContact;
     }
 
@@ -37,10 +34,6 @@ public class Guest {
         return this.birthday;
     }
 
-    public short getNumberPerson() {
-        return this.numberPerson;
-    }
-
     public String getInfoContact() {
         return this.infoContact;
     }
@@ -51,6 +44,6 @@ public class Guest {
 
     @Override
     public String toString() {
-        return "\n" + firstName + ", " + secondName + ", " + birthday + ", " + numberPerson + ", " + infoContact;
+        return "\n" + firstName + ", " + secondName + ", " + birthday +  ", " + infoContact;
     }
 }

@@ -9,6 +9,7 @@ public class Order {
     private LocalDateTime orderDate;
     private int guestIndex;
     private int roomIndex;
+    private short numberPerson;
     private MyList<Integer> attendanceIndex;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -18,16 +19,18 @@ public class Order {
         this.orderDate = order.getOrderDate();
         this.guestIndex = order.getGuestIndex();
         this.roomIndex = order.getRoomIndex();
+        this.numberPerson = order.getNumberPerson();
         this.startDate = order.getStartDate();
         this.endDate = order.getEndDate();
         this.attendanceIndex = new MyList<>(order.getAttendanceIndex());
         this.price = order.getPrice();
     }
 
-    public Order(int guest, int room, LocalDate endDate, double price) {
+    public Order(int guest, int room, short numberPerson, LocalDate endDate, double price) {
         this.orderDate = LocalDateTime.now();
         this.guestIndex = guest;
         this.roomIndex = room;
+        this.numberPerson = numberPerson;
         this.startDate = LocalDate.now();
         this.endDate = endDate;
         this.price = price;
@@ -43,6 +46,10 @@ public class Order {
 
     public double getPrice() {
         return this.price;
+    }
+
+    public short getNumberPerson() {
+        return this.numberPerson;
     }
 
     public void setPrice(double price) {

@@ -16,6 +16,10 @@ public class Rented extends Status {
         this.endDate = endDate;
     }
 
+    public LocalDate getEndDate() {
+        return this.endDate;
+    }
+
     @Override
     public String toString() {
         return status + " [" + startDate + ", " + endDate + "] ";

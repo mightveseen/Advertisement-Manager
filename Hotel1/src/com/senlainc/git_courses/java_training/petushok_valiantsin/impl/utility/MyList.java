@@ -1,11 +1,12 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class MyList<T> {
     private final int INIT_SIZE = 10;
     private int index = 0;
-    private Object[] objArray = new Object[INIT_SIZE];
+    private T[] objArray = (T[]) new Object[INIT_SIZE];
 
     public MyList() {
     }
@@ -45,9 +46,16 @@ public class MyList<T> {
         return (this.index);
     }
 
+    public void sort(Comparator<T> parameter) {
+        T[] bufArray = (T[])new Object[this.index];
+        System.arraycopy(objArray, 0, bufArray, 0, this.index);
+        Arrays.sort(bufArray, parameter);
+        System.arraycopy(bufArray, 0, objArray, 0, this.index);
+    }
+
     @Override
     public String toString() {
-        Object[] bufArray = new Object[this.index];
+        T[] bufArray = (T[]) new Object[this.index];
         System.arraycopy(objArray, 0, bufArray, 0, this.index);
         return Arrays.toString(bufArray);
     }

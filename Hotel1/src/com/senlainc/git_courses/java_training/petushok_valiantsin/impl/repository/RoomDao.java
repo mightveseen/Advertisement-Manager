@@ -4,6 +4,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.MyList;
 
+import java.util.Comparator;
+
 public class RoomDao implements IRoomDao {
     private MyList<Room> roomMyList = new MyList<>();
 
@@ -30,5 +32,9 @@ public class RoomDao implements IRoomDao {
     @Override
     public Room read(int index) {
         return roomMyList.get(index);
+    }
+
+    public void sort(Comparator<Room> parameter) {
+        roomMyList.sort(parameter);
     }
 }

@@ -19,17 +19,24 @@ public class Hotel {
         hotel.createRoom();
         hotel.createGuest();
         hotel.createAttendance();
+        hotel.sortRoom("price");
         hotel.showRoom("all");
+        hotel.showAfterDate(LocalDate.of(2019, 01, 25));
         hotel.freeRoom();
     }
 
     private void createRoom() {
-        roomService.add(new Room(203, "President", (short)3, new Free(), 330.0));
-        roomService.add(new Room(105, "Lux", (short)2, new Rented(LocalDate.of(2019, 01, 22)), 230.0));
+        roomService.add(new Room(203, "President", (short)4, new Free(), 330.0));
         roomService.add(new Room(312, "Business", (short)1, new Served("Replace sofa", LocalTime.of(23, 20)), 130.0));
+        roomService.add(new Room(401, "Lux", (short)2, new Free(), 230.0));
+        roomService.add(new Room(105, "Lux", (short)2, new Free(), 230.0));
+        roomService.add(new Room(506, "President", (short)5, new Rented(LocalDate.of(2019, 01, 05)), 230.0));
     }
 
     private void createGuest() {
+        guestService.add(new Guest("Daniel", "Blake", LocalDate.of(1971, 01, 24), "+1532521678"));
+        guestService.add(new Guest("Robert", "Johnson", LocalDate.of(1967, 12, 1), "+278392386"));
+        guestService.add(new Guest("Victoria", "July", LocalDate.of(1986, 05, 12), "+1532521678"));
 
     }
 
@@ -40,8 +47,20 @@ public class Hotel {
         attendanceService.add(new Attendance("", "Food", 9));
     }
 
+    private void createOrder() {
+
+    }
+
+    private void sortRoom(String parameter) {
+        roomService.sortRoom(parameter);
+    }
+
     private void showRoom(String parameter) {
         roomService.showRoom(parameter);
+    }
+
+    private void showAfterDate(LocalDate freeDate) {
+        roomService.showAfterDate(freeDate);
     }
 
     private void freeRoom() {

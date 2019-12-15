@@ -3,8 +3,8 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.st
 import java.time.LocalTime;
 
 public class Served extends Status {
-    private String reason;
-    private LocalTime endTime;
+    protected String reason;
+    protected LocalTime endTime;
 
     public Served(String reason, LocalTime endTime) {
         super();
@@ -14,6 +14,10 @@ public class Served extends Status {
 
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
+    }
+
+    public LocalTime getEndTime() {
+        return this.endTime;
     }
 
     @Override
