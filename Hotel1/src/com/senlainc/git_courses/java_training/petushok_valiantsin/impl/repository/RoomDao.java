@@ -5,7 +5,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Roo
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.MyList;
 
 public class RoomDao implements IRoomDao {
-    private MyList<Room> roomMyList = new MyList<>();
+    private final MyList<Room> roomMyList = new MyList<>();
 
     @Override
     public void create(Room room) {

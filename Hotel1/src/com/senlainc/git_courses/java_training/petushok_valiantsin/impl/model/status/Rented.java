@@ -3,7 +3,7 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.st
 import java.time.LocalDate;
 
 public class Rented extends Status {
-    private LocalDate startDate;
+    private final LocalDate startDate;
     private LocalDate endDate;
 
     public Rented(LocalDate endDate) {

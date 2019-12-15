@@ -5,7 +5,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Att
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.MyList;
 
 public class AttendanceDao implements IAttendanceDao {
-    private MyList<Attendance> attendanceMyList = new MyList<>();
+    private final MyList<Attendance> attendanceMyList = new MyList<>();
 
     @Override
     public void create(Attendance attendance) {

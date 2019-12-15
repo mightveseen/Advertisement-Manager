@@ -3,7 +3,7 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.st
 import java.time.LocalTime;
 
 public class Served extends Status {
-    protected String reason;
+    protected final String reason;
     protected LocalTime endTime;
 
     public Served(String reason, LocalTime endTime) {

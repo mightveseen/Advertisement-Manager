@@ -17,12 +17,12 @@ import java.time.LocalDate;
 import java.util.Comparator;
 
 public class OrderService implements IOrderService {
-    private IOrderDao orderDao = new OrderDao();
-    private IRoomService roomService;
-    private IGuestService guestService;
-    private IAttendanceService attendanceService;
+    private final IOrderDao orderDao = new OrderDao();
+    private final IRoomService roomService;
+    private final IGuestService guestService;
+    private final IAttendanceService attendanceService;
 
-    private Comparator<Order> SORT_BY_DATE = new Comparator<>() {
+    private final Comparator<Order> SORT_BY_DATE = new Comparator<>() {
         @Override
         public int compare(Order firstOrder, Order lastOrder) {
             return firstOrder.getEndDate().compareTo(lastOrder.getEndDate());

@@ -3,9 +3,9 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model;
 import java.time.LocalDate;
 
 public class Guest {
-    private String firstName;
-    private String secondName;
-    private LocalDate birthday;
+    private final String firstName;
+    private final String secondName;
+    private final LocalDate birthday;
     private String infoContact;
 
     public Guest(Guest guest) {

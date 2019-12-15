@@ -3,8 +3,6 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.api.repositor
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.MyList;
 
-import java.util.Comparator;
-
 public interface IRoomDao {
     void create(Room room);
 

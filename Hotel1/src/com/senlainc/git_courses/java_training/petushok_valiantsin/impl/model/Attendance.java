@@ -1,8 +1,8 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model;
 
 public class Attendance {
-    private String name;
-    private String section;
+    private final String name;
+    private final String section;
     private double price;
 
     public Attendance(Attendance attendance) {

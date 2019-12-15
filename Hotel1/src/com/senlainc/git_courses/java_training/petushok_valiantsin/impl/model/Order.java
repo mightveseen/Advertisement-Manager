@@ -7,15 +7,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Order {
-    private String orderDate;
-    private int guestIndex;
-    private int roomIndex;
-    private short numberPerson;
+    private final String orderDate;
+    private final int guestIndex;
+    private final int roomIndex;
+    private final short numberPerson;
     private MyList<Integer> attendanceIndex;
-    private LocalDate startDate;
+    private final LocalDate startDate;
     private LocalDate endDate;
     private double price;
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm / yyyy-MM-dd");
 
     public Order(Order order) {
         this.orderDate = order.getOrderDate();
@@ -29,6 +28,7 @@ public class Order {
     }
 
     public Order(int guest, int room, short numberPerson, LocalDate endDate, double price) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm / yyyy-MM-dd");
         this.orderDate = LocalDateTime.now().format(formatter);
         this.guestIndex = guest;
         this.roomIndex = room;

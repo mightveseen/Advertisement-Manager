@@ -5,7 +5,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Gue
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.MyList;
 
 public class GuestDao implements IGuestDao {
-    private MyList<Guest> guestMyList = new MyList<>();
+    private final MyList<Guest> guestMyList = new MyList<>();
 
     @Override
     public void create(Guest guest) {

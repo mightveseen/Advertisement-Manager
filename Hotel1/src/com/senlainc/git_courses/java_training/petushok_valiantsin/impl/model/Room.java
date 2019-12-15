@@ -3,9 +3,9 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Status;
 
 public class Room {
-    private int number;
-    private String classification;
-    private short roomNumber;
+    private final int number;
+    private final String classification;
+    private final short roomNumber;
     private Status status;
     private double price;
 

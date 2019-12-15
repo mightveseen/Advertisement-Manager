@@ -20,10 +20,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Hotel {
-    private IGuestService guestService = new GuestService();
-    private IRoomService roomService = new RoomService();
-    private IAttendanceService attendanceService = new AttendanceService();
-    private IOrderService orderService = new OrderService(roomService, guestService, attendanceService);
+    private final IGuestService guestService = new GuestService();
+    private final IRoomService roomService = new RoomService();
+    private final IAttendanceService attendanceService = new AttendanceService();
+    private final IOrderService orderService = new OrderService(roomService, guestService, attendanceService);
 
     public static void main(String[] args) {
         Hotel hotel = new Hotel();

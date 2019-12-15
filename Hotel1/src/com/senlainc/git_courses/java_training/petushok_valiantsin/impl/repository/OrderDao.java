@@ -6,7 +6,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.M
 
 
 public class OrderDao implements IOrderDao {
-    private MyList<Order> orderMyList = new MyList<>();
+    private final MyList<Order> orderMyList = new MyList<>();
 
     @Override
     public void create(Order order) {

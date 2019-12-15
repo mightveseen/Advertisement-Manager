@@ -9,16 +9,16 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.M
 import java.util.Comparator;
 
 public class AttendanceService implements IAttendanceService {
-    private IAttendanceDao attendanceDao = new AttendanceDao();
+    private final IAttendanceDao attendanceDao = new AttendanceDao();
 
-    private Comparator<Attendance> SORT_BY_SECTION = new Comparator<>() {
+    private final Comparator<Attendance> SORT_BY_SECTION = new Comparator<>() {
         @Override
         public int compare(Attendance firstAttendance, Attendance lastAttendance) {
             return firstAttendance.getSection().compareTo(lastAttendance.getSection());
         }
     };
 
-    private Comparator<Attendance> SORT_BY_PRICE = new Comparator<>() {
+    private final Comparator<Attendance> SORT_BY_PRICE = new Comparator<>() {
         @Override
         public int compare(Attendance firstAttendance, Attendance lastAttendance) {
             return String.valueOf(firstAttendance.getPrice()).compareTo(String.valueOf(lastAttendance.getPrice()));
