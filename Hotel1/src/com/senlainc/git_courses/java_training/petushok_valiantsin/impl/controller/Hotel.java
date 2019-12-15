@@ -6,6 +6,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IO
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Attendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Guest;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Free;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Rented;
@@ -21,21 +22,26 @@ import java.time.LocalTime;
 public class Hotel {
     private IGuestService guestService = new GuestService();
     private IRoomService roomService = new RoomService();
-    private IOrderService orderService = new OrderService();
     private IAttendanceService attendanceService = new AttendanceService();
+    private IOrderService orderService = new OrderService(roomService, guestService, attendanceService);
 
     public static void main(String[] args) {
         Hotel hotel = new Hotel();
-        /** Create operations */
+        /* Create operations */
         hotel.createRoom();
         hotel.createGuest();
         hotel.createAttendance();
         hotel.createOrder();
-        /** Room operations */
+        /* Room operations */
         hotel.sortRoom("price");
         hotel.showRoom("all");
-        hotel.showAfterDate(LocalDate.of(2019, 01, 25));
-        hotel.freeRoom();
+        hotel.showAfterDate(LocalDate.of(2019, 1, 25));
+        hotel.numFreeRoom();
+        /* Guest operations */
+        hotel.sortGuest("alphabet");
+        hotel.showGuest();
+        hotel.numGuest();
+        hotel.showOrder();
     }
 
     private void createRoom() {
@@ -43,29 +49,35 @@ public class Hotel {
         roomService.add(new Room(312, "Business", (short) 1, new Served("Replace sofa", LocalTime.of(23, 20)), 130.0));
         roomService.add(new Room(401, "Lux", (short) 2, new Free(), 230.0));
         roomService.add(new Room(105, "Lux", (short) 2, new Free(), 230.0));
-        roomService.add(new Room(506, "President", (short) 5, new Rented(LocalDate.of(2019, 01, 05)), 230.0));
+        roomService.add(new Room(506, "President", (short) 5, new Rented(LocalDate.of(2019, 1, 5)), 230.0));
     }
 
     private void createGuest() {
-        guestService.add(new Guest("Daniel", "Blake", LocalDate.of(1971, 01, 24), "+1532521678"));
+        guestService.add(new Guest("Victoria", "July", LocalDate.of(1986, 5, 12), "+1532521678"));
         guestService.add(new Guest("Robert", "Johnson", LocalDate.of(1967, 12, 1), "+278392386"));
-        guestService.add(new Guest("Victoria", "July", LocalDate.of(1986, 05, 12), "+1532521678"));
-
+        guestService.add(new Guest("Daniel", "Blake", LocalDate.of(1971, 1, 24), "+1532521678"));
     }
 
     private void createAttendance() {
         attendanceService.add(new Attendance("Lunch", "Food", 12.3));
         attendanceService.add(new Attendance("Dinner", "Food", 9));
         attendanceService.add(new Attendance("Breakfast", "Food", 9));
-        attendanceService.add(new Attendance("", "Food", 9));
     }
 
     private void createOrder() {
-
+        orderService.add(new Order(1, 3, (short)3, LocalDate.of(2019, 3, 12), roomService.getPrice(3)));
     }
 
     private void sortRoom(String parameter) {
         roomService.sortRoom(parameter);
+    }
+
+    private void sortGuest(String parameter) {
+        guestService.sort(parameter);
+    }
+
+    private void showOrder() {
+        orderService.showOrder();
     }
 
     private void showRoom(String parameter) {
@@ -76,7 +88,14 @@ public class Hotel {
         roomService.showAfterDate(freeDate);
     }
 
-    private void freeRoom() {
-        System.out.print("\nNumber of free room: " + roomService.numFreeRoom());
+    private void numFreeRoom() {
+        roomService.numFreeRoom();
+    }
+
+    private void showGuest() {
+        guestService.showGuest();
+    }
+    private void numGuest() {
+        guestService.numGuest();
     }
 }

@@ -15,6 +15,4 @@ public interface IRoomDao {
     MyList<Room> readAll();
 
     Room read(int index);
-
-    void sort(Comparator<Room> parameter);
 }

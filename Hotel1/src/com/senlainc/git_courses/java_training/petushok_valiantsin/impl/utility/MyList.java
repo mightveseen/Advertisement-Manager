@@ -91,6 +91,6 @@ public class MyList<T> {
     }
 
     private void resize(int newSize) {
-        System.arraycopy(objArray.clone(), 0, objArray, 0, newSize);
+        objArray = Arrays.copyOf(objArray, newSize);
     }
 }

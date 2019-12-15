@@ -8,4 +8,10 @@ public interface IGuestService {
     void delete(int index);
 
     void changeInfoContact(int index, String information);
+
+    void numGuest();
+
+    void showGuest();
+
+    void sort(String parameter);
 }

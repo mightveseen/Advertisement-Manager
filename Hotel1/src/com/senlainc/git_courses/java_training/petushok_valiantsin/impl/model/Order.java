@@ -4,9 +4,10 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.M
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Order {
-    private LocalDateTime orderDate;
+    private String orderDate;
     private int guestIndex;
     private int roomIndex;
     private short numberPerson;
@@ -14,6 +15,7 @@ public class Order {
     private LocalDate startDate;
     private LocalDate endDate;
     private double price;
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm / yyyy-MM-dd");
 
     public Order(Order order) {
         this.orderDate = order.getOrderDate();
@@ -27,7 +29,7 @@ public class Order {
     }
 
     public Order(int guest, int room, short numberPerson, LocalDate endDate, double price) {
-        this.orderDate = LocalDateTime.now();
+        this.orderDate = LocalDateTime.now().format(formatter);
         this.guestIndex = guest;
         this.roomIndex = room;
         this.numberPerson = numberPerson;
@@ -56,7 +58,7 @@ public class Order {
         return this.numberPerson;
     }
 
-    public LocalDateTime getOrderDate() {
+    public String getOrderDate() {
         return this.orderDate;
     }
 

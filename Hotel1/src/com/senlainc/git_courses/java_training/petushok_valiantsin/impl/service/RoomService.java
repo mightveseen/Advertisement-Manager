@@ -12,6 +12,7 @@ import java.util.Comparator;
 
 public class RoomService implements IRoomService {
     private IRoomDao roomDao = new RoomDao();
+
     private Comparator<Room> SORT_BY_PRICE = new Comparator<Room>() {
         @Override
         public int compare(Room firstRoom, Room lastRoom) {
@@ -47,6 +48,16 @@ public class RoomService implements IRoomService {
         } catch (ArrayIndexOutOfBoundsException e) {
             System.err.println("Room with index: " + index + " dont exists.");
         }
+    }
+
+    @Override
+    public double getPrice(int index) {
+        return roomDao.read(index).getPrice();
+    }
+
+    @Override
+    public Status getStatus(int index) {
+        return roomDao.read(index).getStatus();
     }
 
     @Override
@@ -98,14 +109,14 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public int numFreeRoom() {
+    public void numFreeRoom() {
         int counter = 0;
         for (int i = 0; i < roomDao.readAll().size(); i++) {
             if (roomDao.read(i).getStatus() instanceof Free) {
                 counter++;
             }
         }
-        return counter;
+        System.out.println("\nNumber of free room: " + counter);
     }
 
     @Override
@@ -124,15 +135,15 @@ public class RoomService implements IRoomService {
     }
 
     private void sortByPrice() {
-        roomDao.sort(SORT_BY_PRICE);
+        roomDao.readAll().sort(SORT_BY_PRICE);
     }
 
     private void sortByClassification() {
-        roomDao.sort(SORT_BY_CLASSIFICATION);
+        roomDao.readAll().sort(SORT_BY_CLASSIFICATION);
     }
 
     private void sortByRoomNumber() {
-        roomDao.sort(SORT_BY_ROOM_NUMBER);
+        roomDao.readAll().sort(SORT_BY_ROOM_NUMBER);
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.api.repositor
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.MyList;
 
+import java.util.Comparator;
+
 public interface IOrderDao {
     void create(Order order);
 
@@ -13,4 +15,5 @@ public interface IOrderDao {
     MyList<Order> readAll();
 
     Order read(int index);
+
 }

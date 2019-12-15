@@ -33,8 +33,4 @@ public class RoomDao implements IRoomDao {
     public Room read(int index) {
         return roomMyList.get(index);
     }
-
-    public void sort(Comparator<Room> parameter) {
-        roomMyList.sort(parameter);
-    }
 }

@@ -10,13 +10,17 @@ public interface IRoomService {
 
     void delete(int index);
 
+    double getPrice(int index);
+
+    Status getStatus(int index);
+
     void changePrice(int index, double price);
 
     void changeStatus(int index, Status status);
 
     void showRoom(String parameter);
 
-    int numFreeRoom();
+    void numFreeRoom();
 
     void sortRoom(String parameter);
 
