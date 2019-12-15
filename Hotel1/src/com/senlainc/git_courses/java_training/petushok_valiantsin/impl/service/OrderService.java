@@ -129,9 +129,13 @@ public class OrderService implements IOrderService {
     }
 
     public void showAttendance(int orderIndex) {
-        System.out.println(guestService.getGuest(orderDao.read(orderIndex).getGuestIndex()));
-//        for(Integer index : orderDao.read(orderIndex).getAttendanceIndex()) {
-//
-//        }
+        System.out.print(guestService.getGuest(orderDao.read(orderIndex).getGuestIndex()));
+        Object[] attendanceIndex = orderDao.read(orderIndex).getAttendanceIndex().get();
+        for(Object index : attendanceIndex) {
+            if(index == null) {
+                break;
+            }
+            System.out.print(attendanceService.get((int)index));
+        }
     }
 }

@@ -43,8 +43,14 @@ public class AttendanceService implements IAttendanceService {
         }
     }
 
+    @Override
     public double getPrice(int index) {
         return attendanceDao.read(index).getPrice();
+    }
+
+    @Override
+    public Attendance get(int index) {
+        return attendanceDao.read(index);
     }
 
     @Override

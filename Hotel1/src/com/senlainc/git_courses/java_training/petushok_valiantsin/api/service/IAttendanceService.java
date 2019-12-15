@@ -11,5 +11,7 @@ public interface IAttendanceService {
 
     double getPrice(int index);
 
+    Attendance get(int index);
+
     void sort(String parameter);
 }

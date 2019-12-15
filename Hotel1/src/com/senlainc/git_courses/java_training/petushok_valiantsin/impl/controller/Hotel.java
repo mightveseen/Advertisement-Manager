@@ -44,6 +44,7 @@ public class Hotel {
         hotel.addAttendance(1, 0);
         hotel.sortOrder("date");
         hotel.showGuestRoom(0);
+        hotel.showAttendance(1);
     }
 
     private void createRoom() {
@@ -105,6 +106,10 @@ public class Hotel {
 
     private void showGuest() {
         guestService.show();
+    }
+
+    private void showAttendance(int index) {
+        orderService.showAttendance(index);
     }
 
     private void addAttendance(int orderIndex, int attendanceIndex) {
