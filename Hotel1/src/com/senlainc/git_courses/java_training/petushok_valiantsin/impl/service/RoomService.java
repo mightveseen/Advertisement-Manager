@@ -6,6 +6,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Roo
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Free;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Status;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.repository.RoomDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.MyList;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -61,6 +62,11 @@ public class RoomService implements IRoomService {
     }
 
     @Override
+    public Room getRoom(int index) {
+        return roomDao.read(index);
+    }
+
+    @Override
     public void changePrice(int index, double price) {
         Room room = new Room(roomDao.read(index));
         try {
@@ -83,7 +89,7 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void showRoom(String parameter) {
+    public void show(String parameter) {
         switch (parameter) {
             case "all":
                 showAllRoom();
@@ -120,7 +126,7 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void sortRoom(String parameter) {
+    public void sort(String parameter) {
         switch (parameter) {
             case "price":
                 sortByPrice();
@@ -135,15 +141,36 @@ public class RoomService implements IRoomService {
     }
 
     private void sortByPrice() {
-        roomDao.readAll().sort(SORT_BY_PRICE);
+        MyList<Room> myList = new MyList<>();
+        for (int i = 0; i < roomDao.readAll().size(); i++) {
+            myList.add(roomDao.read(i));
+        }
+        myList.sort(SORT_BY_PRICE);
+        for (int i = 0; i < myList.size(); i++) {
+            System.out.print(myList.get(i));
+        }
     }
 
     private void sortByClassification() {
-        roomDao.readAll().sort(SORT_BY_CLASSIFICATION);
+        MyList<Room> myList = new MyList<>();
+        for (int i = 0; i < roomDao.readAll().size(); i++) {
+            myList.add(roomDao.read(i));
+        }
+        myList.sort(SORT_BY_CLASSIFICATION);
+        for (int i = 0; i < myList.size(); i++) {
+            System.out.print(myList.get(i));
+        }
     }
 
     private void sortByRoomNumber() {
-        roomDao.readAll().sort(SORT_BY_ROOM_NUMBER);
+        MyList<Room> myList = new MyList<>();
+        for (int i = 0; i < roomDao.readAll().size(); i++) {
+            myList.add(roomDao.read(i));
+        }
+        myList.sort(SORT_BY_ROOM_NUMBER);
+        for (int i = 0; i < myList.size(); i++) {
+            System.out.print(myList.get(i));
+        }
     }
 
     @Override

@@ -9,9 +9,11 @@ public interface IGuestService {
 
     void changeInfoContact(int index, String information);
 
-    void numGuest();
+    void num();
 
-    void showGuest();
+    void show();
 
-    void sort(String parameter);
+    Guest getGuest(int index);
+
+    void sortByAlphabet();
 }

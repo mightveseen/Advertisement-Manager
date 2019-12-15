@@ -4,8 +4,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.MyList;
 
-import java.util.Comparator;
-
 public class RoomDao implements IRoomDao {
     private MyList<Room> roomMyList = new MyList<>();
 

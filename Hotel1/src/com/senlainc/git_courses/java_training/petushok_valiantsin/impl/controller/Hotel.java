@@ -34,14 +34,13 @@ public class Hotel {
         hotel.createOrder();
         /* Room operations */
         hotel.sortRoom("price");
-        hotel.showRoom("all");
+//        hotel.showRoom("all");
         hotel.showAfterDate(LocalDate.of(2019, 1, 25));
         hotel.numFreeRoom();
         /* Guest operations */
-        hotel.sortGuest("alphabet");
-        hotel.showGuest();
         hotel.numGuest();
-        hotel.showOrder();
+//        hotel.showOrder();
+        hotel.sortOrder("date");
     }
 
     private void createRoom() {
@@ -65,15 +64,28 @@ public class Hotel {
     }
 
     private void createOrder() {
-        orderService.add(new Order(1, 3, (short)3, LocalDate.of(2019, 3, 12), roomService.getPrice(3)));
+        orderService.add(new Order(1, 3, (short) 3, LocalDate.of(2019, 3, 12), roomService.getPrice(3)));
+        orderService.add(new Order(0, 0, (short) 1, LocalDate.of(2019, 1, 3), roomService.getPrice(4)));
+    }
+
+    private void showGuest() {
+        guestService.show();
+    }
+
+    private void numGuest() {
+        guestService.num();
+    }
+
+    private void numFreeRoom() {
+        roomService.numFreeRoom();
     }
 
     private void sortRoom(String parameter) {
-        roomService.sortRoom(parameter);
+        roomService.sort(parameter);
     }
 
-    private void sortGuest(String parameter) {
-        guestService.sort(parameter);
+    private void sortOrder(String parameter) {
+        orderService.sort(parameter);
     }
 
     private void showOrder() {
@@ -81,21 +93,12 @@ public class Hotel {
     }
 
     private void showRoom(String parameter) {
-        roomService.showRoom(parameter);
+        roomService.show(parameter);
     }
 
     private void showAfterDate(LocalDate freeDate) {
         roomService.showAfterDate(freeDate);
     }
 
-    private void numFreeRoom() {
-        roomService.numFreeRoom();
-    }
 
-    private void showGuest() {
-        guestService.showGuest();
-    }
-    private void numGuest() {
-        guestService.numGuest();
-    }
 }

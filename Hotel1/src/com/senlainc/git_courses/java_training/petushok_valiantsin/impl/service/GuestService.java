@@ -3,8 +3,8 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.service;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IGuestDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Guest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.repository.GuestDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.MyList;
 
 import java.util.Comparator;
 
@@ -44,27 +44,31 @@ public class GuestService implements IGuestService {
     }
 
     @Override
-    public void numGuest() {
+    public void num() {
         System.out.println("\nNumber of guest: " + guestDao.readAll().size());
     }
 
     @Override
-    public void showGuest() {
+    public void show() {
         for (int i = 0; i < guestDao.readAll().size(); i++) {
             System.out.print(guestDao.read(i));
         }
     }
 
     @Override
-    public void sort(String parameter) {
-        switch (parameter) {
-            case "alphabet":
-                sortByAlphabet();
-                break;
-        }
+    public Guest getGuest(int index) {
+        return guestDao.read(index);
     }
 
-    private void sortByAlphabet() {
-        guestDao.readAll().sort(SORT_BY_ALPHABET);
+    @Override
+    public void sortByAlphabet() {
+        MyList<Guest> myList = new MyList<>();
+        for (int i = 0; i < guestDao.readAll().size(); i++) {
+            myList.add(guestDao.read(i));
+        }
+        myList.sort(SORT_BY_ALPHABET);
+        for (int i = 0; i < myList.size(); i++) {
+            System.out.print(myList.get(i));
+        }
     }
 }

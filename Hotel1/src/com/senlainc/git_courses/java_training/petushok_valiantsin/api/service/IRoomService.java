@@ -18,11 +18,13 @@ public interface IRoomService {
 
     void changeStatus(int index, Status status);
 
-    void showRoom(String parameter);
+    void show(String parameter);
+
+    Room getRoom(int index);
 
     void numFreeRoom();
 
-    void sortRoom(String parameter);
+    void sort(String parameter);
 
     void showAfterDate(LocalDate freeDate);
 }

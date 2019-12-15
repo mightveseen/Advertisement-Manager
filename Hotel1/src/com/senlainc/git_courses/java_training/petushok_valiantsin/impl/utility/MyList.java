@@ -12,7 +12,7 @@ public class MyList<T> {
     }
 
     public MyList(MyList<T> clazz) {
-        System.arraycopy(clazz, 0, objArray, 0, clazz.size());
+        System.arraycopy(clazz.get(), 0, objArray, 0, clazz.size());
     }
 
     public void add(T element) {
@@ -32,6 +32,10 @@ public class MyList<T> {
 
     public T get(int index) {
         return (T) objArray[index];
+    }
+
+    public T[] get() {
+        return objArray;
     }
 
     public void remove(int index) {
