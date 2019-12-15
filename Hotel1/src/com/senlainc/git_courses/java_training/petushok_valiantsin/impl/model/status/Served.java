@@ -12,12 +12,12 @@ public class Served extends Status {
         this.endTime = endTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
-    }
-
     public LocalTime getEndTime() {
         return this.endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
     }
 
     @Override

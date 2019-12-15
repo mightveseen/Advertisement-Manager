@@ -48,12 +48,12 @@ public class Order {
         return this.price;
     }
 
-    public short getNumberPerson() {
-        return this.numberPerson;
-    }
-
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public short getNumberPerson() {
+        return this.numberPerson;
     }
 
     public LocalDateTime getOrderDate() {

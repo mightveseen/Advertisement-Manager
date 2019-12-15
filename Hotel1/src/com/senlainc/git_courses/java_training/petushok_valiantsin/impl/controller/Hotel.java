@@ -1,9 +1,19 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.controller;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.*;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.*;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.*;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.service.*;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IAttendanceService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Attendance;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Guest;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Room;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Free;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Rented;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Served;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.service.AttendanceService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.service.GuestService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.service.OrderService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.service.RoomService;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -26,11 +36,11 @@ public class Hotel {
     }
 
     private void createRoom() {
-        roomService.add(new Room(203, "President", (short)4, new Free(), 330.0));
-        roomService.add(new Room(312, "Business", (short)1, new Served("Replace sofa", LocalTime.of(23, 20)), 130.0));
-        roomService.add(new Room(401, "Lux", (short)2, new Free(), 230.0));
-        roomService.add(new Room(105, "Lux", (short)2, new Free(), 230.0));
-        roomService.add(new Room(506, "President", (short)5, new Rented(LocalDate.of(2019, 01, 05)), 230.0));
+        roomService.add(new Room(203, "President", (short) 4, new Free(), 330.0));
+        roomService.add(new Room(312, "Business", (short) 1, new Served("Replace sofa", LocalTime.of(23, 20)), 130.0));
+        roomService.add(new Room(401, "Lux", (short) 2, new Free(), 230.0));
+        roomService.add(new Room(105, "Lux", (short) 2, new Free(), 230.0));
+        roomService.add(new Room(506, "President", (short) 5, new Rented(LocalDate.of(2019, 01, 05)), 230.0));
     }
 
     private void createGuest() {

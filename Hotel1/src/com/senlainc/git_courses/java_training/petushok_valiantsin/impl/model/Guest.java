@@ -44,6 +44,6 @@ public class Guest {
 
     @Override
     public String toString() {
-        return "\n" + firstName + ", " + secondName + ", " + birthday +  ", " + infoContact;
+        return "\n" + firstName + ", " + secondName + ", " + birthday + ", " + infoContact;
     }
 }

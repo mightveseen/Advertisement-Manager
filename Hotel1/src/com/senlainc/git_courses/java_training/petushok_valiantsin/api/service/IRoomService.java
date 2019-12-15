@@ -4,7 +4,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Roo
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Status;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 
 public interface IRoomService {
     void add(Room room);

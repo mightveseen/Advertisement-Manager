@@ -47,7 +47,7 @@ public class MyList<T> {
     }
 
     public void sort(Comparator<T> parameter) {
-        T[] bufArray = (T[])new Object[this.index];
+        T[] bufArray = (T[]) new Object[this.index];
         System.arraycopy(objArray, 0, bufArray, 0, this.index);
         Arrays.sort(bufArray, parameter);
         System.arraycopy(bufArray, 0, objArray, 0, this.index);
@@ -66,12 +66,14 @@ public class MyList<T> {
         }
         this.index--;
     }
+
     private void biasForward(int index) {
         this.index++;
         if (this.index - index >= 0) {
             System.arraycopy(objArray, index, objArray, index + 1, this.index - index);
         }
     }
+
     private void checkSize(String command) {
         final int CHANGE_SIZE = 2;
         switch (command) {

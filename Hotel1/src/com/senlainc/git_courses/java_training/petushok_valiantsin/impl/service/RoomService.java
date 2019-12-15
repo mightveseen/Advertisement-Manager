@@ -3,7 +3,8 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.service;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IRoomDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Room;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.*;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Free;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Status;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.repository.RoomDao;
 
 import java.time.LocalDate;
@@ -11,6 +12,24 @@ import java.util.Comparator;
 
 public class RoomService implements IRoomService {
     private IRoomDao roomDao = new RoomDao();
+    private Comparator<Room> SORT_BY_PRICE = new Comparator<Room>() {
+        @Override
+        public int compare(Room firstRoom, Room lastRoom) {
+            return String.valueOf(firstRoom.getPrice()).compareTo(String.valueOf(lastRoom.getPrice()));
+        }
+    };
+    private Comparator<Room> SORT_BY_CLASSIFICATION = new Comparator<Room>() {
+        @Override
+        public int compare(Room firstRoom, Room lastRoom) {
+            return firstRoom.getClassification().compareTo(lastRoom.getClassification());
+        }
+    };
+    private Comparator<Room> SORT_BY_ROOM_NUMBER = new Comparator<Room>() {
+        @Override
+        public int compare(Room firstRoom, Room lastRoom) {
+            return String.valueOf(firstRoom.getRoomNumber()).compareTo(String.valueOf(lastRoom.getRoomNumber()));
+        }
+    };
 
     @Override
     public void add(Room room) {
@@ -36,7 +55,7 @@ public class RoomService implements IRoomService {
         try {
             room.setPrice(price);
             roomDao.update(index, room);
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.err.println("Wrong data.");
         }
     }
@@ -47,7 +66,7 @@ public class RoomService implements IRoomService {
         try {
             room.setStatus(status);
             roomDao.update(index, room);
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.err.println("Wrong data.");
         }
     }
@@ -65,14 +84,14 @@ public class RoomService implements IRoomService {
     }
 
     private void showAllRoom() {
-        for(int i = 0; i < roomDao.readAll().size(); i++) {
+        for (int i = 0; i < roomDao.readAll().size(); i++) {
             System.out.print(roomDao.read(i));
         }
     }
 
     private void showFreeRoom() {
-        for(int i = 0; i < roomDao.readAll().size(); i++) {
-            if(roomDao.read(i).getStatus() instanceof Free){
+        for (int i = 0; i < roomDao.readAll().size(); i++) {
+            if (roomDao.read(i).getStatus() instanceof Free) {
                 System.out.print(roomDao.read(i));
             }
         }
@@ -81,8 +100,8 @@ public class RoomService implements IRoomService {
     @Override
     public int numFreeRoom() {
         int counter = 0;
-        for(int i = 0; i < roomDao.readAll().size(); i++) {
-            if(roomDao.read(i).getStatus() instanceof Free){
+        for (int i = 0; i < roomDao.readAll().size(); i++) {
+            if (roomDao.read(i).getStatus() instanceof Free) {
                 counter++;
             }
         }
@@ -108,38 +127,17 @@ public class RoomService implements IRoomService {
         roomDao.sort(SORT_BY_PRICE);
     }
 
-    private Comparator<Room> SORT_BY_PRICE = new Comparator<Room>() {
-        @Override
-        public int compare(Room firstRoom, Room lastRoom) {
-            return String.valueOf(firstRoom.getPrice()).compareTo(String.valueOf(lastRoom.getPrice()));
-        }
-    };
-
     private void sortByClassification() {
         roomDao.sort(SORT_BY_CLASSIFICATION);
     }
-
-    private Comparator<Room> SORT_BY_CLASSIFICATION = new Comparator<Room>() {
-        @Override
-        public int compare(Room firstRoom, Room lastRoom) {
-            return firstRoom.getClassification().compareTo(lastRoom.getClassification());
-        }
-    };
 
     private void sortByRoomNumber() {
         roomDao.sort(SORT_BY_ROOM_NUMBER);
     }
 
-    private Comparator<Room> SORT_BY_ROOM_NUMBER = new Comparator<Room>() {
-        @Override
-        public int compare(Room firstRoom, Room lastRoom) {
-            return String.valueOf(firstRoom.getRoomNumber()).compareTo(String.valueOf(lastRoom.getRoomNumber()));
-        }
-    };
-
     @Override
     public void showAfterDate(LocalDate freeDate) {
-        for(int i = 0; i < roomDao.readAll().size(); i++) {
+        for (int i = 0; i < roomDao.readAll().size(); i++) {
 //            if(roomDao.read(i).getStatus()){
 //
 //            }

@@ -12,12 +12,12 @@ public class Rented extends Status {
         this.endDate = endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
     public LocalDate getEndDate() {
         return this.endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     @Override
