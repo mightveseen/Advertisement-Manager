@@ -26,9 +26,12 @@ public class Hotel {
 
     public static void main(String[] args) {
         Hotel hotel = new Hotel();
+        /** Create operations */
         hotel.createRoom();
         hotel.createGuest();
         hotel.createAttendance();
+        hotel.createOrder();
+        /** Room operations */
         hotel.sortRoom("price");
         hotel.showRoom("all");
         hotel.showAfterDate(LocalDate.of(2019, 01, 25));

@@ -12,7 +12,7 @@ public class MyList<T> {
     }
 
     public MyList(MyList<T> clazz) {
-        System.arraycopy(objArray, 0, clazz, 0, 12);
+        System.arraycopy(clazz, 0, objArray, 0, clazz.size());
     }
 
     public void add(T element) {
@@ -48,7 +48,7 @@ public class MyList<T> {
 
     public void sort(Comparator<T> parameter) {
         T[] bufArray = (T[]) new Object[this.index];
-        System.arraycopy(objArray, 0, bufArray, 0, this.index);
+        System.arraycopy(objArray.clone(), 0, bufArray, 0, this.index);
         Arrays.sort(bufArray, parameter);
         System.arraycopy(bufArray, 0, objArray, 0, this.index);
     }
@@ -62,7 +62,7 @@ public class MyList<T> {
 
     private void biasBack(int index) {
         if (this.index - index >= 0) {
-            System.arraycopy(objArray, index + 1, objArray, index, this.index - index);
+            System.arraycopy(objArray.clone(), index + 1, objArray, index, this.index - index);
         }
         this.index--;
     }
@@ -70,7 +70,7 @@ public class MyList<T> {
     private void biasForward(int index) {
         this.index++;
         if (this.index - index >= 0) {
-            System.arraycopy(objArray, index, objArray, index + 1, this.index - index);
+            System.arraycopy(objArray.clone(), index, objArray, index + 1, this.index - index);
         }
     }
 
@@ -91,6 +91,6 @@ public class MyList<T> {
     }
 
     private void resize(int newSize) {
-        objArray = Arrays.copyOf(objArray, newSize);
+        System.arraycopy(objArray.clone(), 0, objArray, 0, newSize);
     }
 }
