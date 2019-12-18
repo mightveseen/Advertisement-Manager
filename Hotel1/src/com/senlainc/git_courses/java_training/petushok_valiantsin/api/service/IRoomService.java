@@ -1,7 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.api.service;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Room;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Status;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Status;
 
 import java.time.LocalDate;
 

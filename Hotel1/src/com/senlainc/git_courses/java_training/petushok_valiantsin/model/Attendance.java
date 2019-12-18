@@ -1,11 +1,15 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
+
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.AttendanceIndex;
 
 public class Attendance {
+    private int id = new AttendanceIndex().getIndex();
     private final String name;
     private final String section;
     private double price;
 
     public Attendance(Attendance attendance) {
+        this.id = attendance.getId();
         this.name = attendance.getName();
         this.price = attendance.getPrice();
         this.section = attendance.getSection();
@@ -15,6 +19,10 @@ public class Attendance {
         this.name = name;
         this.section = section;
         this.price = price;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public String getName() {
@@ -35,6 +43,6 @@ public class Attendance {
 
     @Override
     public String toString() {
-        return "\n" + name + ", " + section + ", " + price;
+        return "\n" + id + ")" + name + ", " + section + ", " + price;
     }
 }

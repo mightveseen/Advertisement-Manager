@@ -1,4 +1,4 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.utility;
 
 import java.util.Arrays;
 import java.util.Comparator;

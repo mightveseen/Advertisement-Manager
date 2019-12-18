@@ -1,13 +1,13 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.service;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IRoomDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Room;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Free;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Rented;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Status;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.repository.RoomDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.MyList;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Free;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Rented;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Status;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.RoomDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
 import java.time.LocalDate;
 import java.util.Comparator;

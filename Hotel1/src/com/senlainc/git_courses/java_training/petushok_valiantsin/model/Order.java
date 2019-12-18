@@ -1,12 +1,14 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.MyList;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.OrderIndex;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Order {
+    private int id = new OrderIndex().getIndex();
     private final String orderDate;
     private final int guestIndex;
     private final int roomIndex;
@@ -17,6 +19,7 @@ public class Order {
     private double price;
 
     public Order(Order order) {
+        this.id = order.getId();
         this.orderDate = order.getOrderDate();
         this.guestIndex = order.getGuestIndex();
         this.roomIndex = order.getRoomIndex();
@@ -36,6 +39,10 @@ public class Order {
         this.startDate = LocalDate.now();
         this.endDate = endDate;
         this.price = price;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public int getGuestIndex() {
@@ -84,6 +91,8 @@ public class Order {
 
     @Override
     public String toString() {
-        return "\n" + orderDate + ", " + guestIndex + ", " + roomIndex + ", [" + startDate + ", " + endDate + "], " + price;
+        return "\n" + id + ")" + orderDate + ", "
+                + guestIndex + ", " + roomIndex + ", ["
+                + startDate + ", " + endDate + "], " + price;
     }
 }

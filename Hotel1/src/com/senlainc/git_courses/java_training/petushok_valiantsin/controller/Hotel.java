@@ -1,20 +1,20 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.controller;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.controller;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IAttendanceService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Attendance;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Guest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Order;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Room;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Free;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Rented;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Served;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.service.AttendanceService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.service.GuestService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.service.OrderService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.service.RoomService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Free;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Rented;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Served;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.service.AttendanceService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.service.GuestService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.service.OrderService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.service.RoomService;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

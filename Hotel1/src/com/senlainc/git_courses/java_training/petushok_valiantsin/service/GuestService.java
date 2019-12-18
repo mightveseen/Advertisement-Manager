@@ -1,10 +1,10 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.service;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IGuestDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Guest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.repository.GuestDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.MyList;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.GuestDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
 import java.util.Comparator;
 

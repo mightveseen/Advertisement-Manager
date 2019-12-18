@@ -1,17 +1,17 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.service;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IOrderDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IAttendanceService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Guest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.Order;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Free;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Rented;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Served;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.repository.OrderDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.utility.MyList;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Free;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Rented;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Served;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.OrderDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
 import java.time.LocalDate;
 import java.util.Comparator;

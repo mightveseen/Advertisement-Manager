@@ -1,14 +1,18 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
+
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.GuestIndex;
 
 import java.time.LocalDate;
 
 public class Guest {
+    private int id = new GuestIndex().getIndex();
     private final String firstName;
     private final String secondName;
     private final LocalDate birthday;
     private String infoContact;
 
     public Guest(Guest guest) {
+        this.id = guest.getId();
         this.firstName = guest.getFirstName();
         this.secondName = guest.getSecondName();
         this.birthday = guest.getBirthday();
@@ -20,6 +24,10 @@ public class Guest {
         this.secondName = secondName;
         this.birthday = birthday;
         this.infoContact = infoContact;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public String getFirstName() {
@@ -44,6 +52,7 @@ public class Guest {
 
     @Override
     public String toString() {
-        return "\n" + firstName + ", " + secondName + ", " + birthday + ", " + infoContact;
+        return "\n" + id + ")" + firstName + ", "
+                + secondName + ", " + birthday + ", " + infoContact;
     }
 }

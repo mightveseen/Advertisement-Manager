@@ -1,8 +1,10 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.impl.model.status.Status;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Status;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.RoomIndex;
 
 public class Room {
+    private int id = new RoomIndex().getIndex();
     private final int number;
     private final String classification;
     private final short roomNumber;
@@ -10,6 +12,7 @@ public class Room {
     private double price;
 
     public Room(Room room) {
+        this.id = room.getId();
         this.number = room.getNumber();
         this.classification = room.getClassification();
         this.roomNumber = room.getRoomNumber();
@@ -23,6 +26,10 @@ public class Room {
         this.roomNumber = roomNumber;
         this.status = status;
         this.price = price;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public int getNumber() {
@@ -55,6 +62,8 @@ public class Room {
 
     @Override
     public String toString() {
-        return "\n" + number + ", " + classification + ", " + roomNumber + ", " + status + ", " + price;
+        return "\n" + id + ")" + number + ", "
+                + classification + ", " + roomNumber + ", "
+                + status + ", " + price;
     }
 }
