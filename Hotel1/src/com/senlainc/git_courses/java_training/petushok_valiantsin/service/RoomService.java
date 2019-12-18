@@ -1,6 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IRoomDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
@@ -39,6 +40,11 @@ public class RoomService implements IRoomService {
     @Override
     public double getPrice(int index) {
         return roomDao.read(index).getPrice();
+    }
+
+    @Override
+    public int getSize() {
+        return roomDao.readAll().size();
     }
 
     @Override
@@ -151,20 +157,5 @@ public class RoomService implements IRoomService {
 
     private void sortByRoomNumber(MyList<Room> myList) {
         myList.sort(SORT_BY_ROOM_NUMBER);
-    }
-
-    @Override
-    public void showAfterDate(LocalDate freeDate) {
-        System.out.print("\n\nRoom will be available after [" + freeDate + "]:");
-        for (int i = 1; i <= roomDao.readAll().size(); i++) {
-            if(roomDao.read(i).getStatus() instanceof Rented) {
-                if(freeDate.isAfter(((Rented)roomDao.read(i).getStatus()).getEndDate())){
-                    System.out.print(roomDao.read(i));
-                }
-            }
-            if(roomDao.read(i).getStatus() instanceof Free) {
-                System.out.print(roomDao.read(i));
-            }
-        }
     }
 }

@@ -34,7 +34,7 @@ public class Hotel {
         roomService.add(new Room(312, "Business", (short) 1, (short) 2, new Free(), 170.0));
         roomService.add(new Room(401, "Lux", (short) 2, (short) 4, new Free(), 230.0));
         roomService.add(new Room(105, "Lux", (short) 2, (short) 4, new Free(), 230.0));
-        roomService.add(new Room(506, "President", (short) 5, (short) 6, new Rented(LocalDate.of(2019, 1, 5)), 230.0));
+        roomService.add(new Room(506, "President", (short) 5, (short) 6, new Free(), 230.0));
     }
 
     public void createGuest() {
@@ -83,7 +83,7 @@ public class Hotel {
     }
 
     public void showAfterDate(LocalDate freeDate) {
-        roomService.showAfterDate(freeDate);
+        orderService.showAfterDate(freeDate);
     }
 
     public void showGuestRoom(int index) {

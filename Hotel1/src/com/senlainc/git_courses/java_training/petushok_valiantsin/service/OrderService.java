@@ -11,6 +11,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.R
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Served;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 
 public class OrderService implements IOrderService {
@@ -35,7 +36,7 @@ public class OrderService implements IOrderService {
         }
         orderDao.create(order);
         orderDao.read(orderDao.readAll().size()).setPrice(roomService.getPrice(order.getRoomIndex()));
-        roomService.changeStatus(order.getRoomIndex(), new Rented(order.getEndDate()));
+        roomService.changeStatus(order.getRoomIndex(), new Rented());
     }
 
     @Override
@@ -74,6 +75,23 @@ public class OrderService implements IOrderService {
             }
             if (counter == 3) {
                 return;
+            }
+        }
+    }
+
+    @Override
+    public void showAfterDate(LocalDate freeDate) {
+        System.out.print("\n\nRoom will be available after [" + freeDate + "]:");
+        for (int i = 1; i <= roomService.getSize(); i++) {
+            if(roomService.getStatus(i) instanceof Rented && i <= orderDao.readAll().size()) {
+                if(freeDate.isAfter(orderDao.read(i).getEndDate())){
+                    System.out.print(roomService.getRoom(i) + " - End date: ["
+                            + orderDao.read(i).getEndDate() + "]");
+                    continue;
+                }
+            }
+            if(roomService.getStatus(i) instanceof Free) {
+                System.out.print(roomService.getRoom(i));
             }
         }
     }
@@ -121,6 +139,7 @@ public class OrderService implements IOrderService {
             for(int i = 1; i <= orderDao.readAll().size(); i++) {
                 if(orderDao.read(i).getGuestIndex() == index) {
                     myList.add(orderDao.read(i));
+                    break;
                 }
             }
         }

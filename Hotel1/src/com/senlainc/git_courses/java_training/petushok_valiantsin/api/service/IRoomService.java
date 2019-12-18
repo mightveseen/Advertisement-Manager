@@ -13,6 +13,8 @@ public interface IRoomService {
 
     double getPrice(int index);
 
+    int getSize();
+
     Status getStatus(int index);
 
     void changePrice(int index, double price);
@@ -28,6 +30,4 @@ public interface IRoomService {
     void numFreeRoom();
 
     MyList<Room> sort(String parameter);
-
-    void showAfterDate(LocalDate freeDate);
 }
