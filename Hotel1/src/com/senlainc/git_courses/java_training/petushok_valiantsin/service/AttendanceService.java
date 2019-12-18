@@ -3,6 +3,7 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IAttendanceDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IAttendanceService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.AttendanceDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
@@ -49,36 +50,31 @@ public class AttendanceService implements IAttendanceService {
     }
 
     @Override
-    public void sort(String parameter) {
+    public MyList<Attendance> sort(String parameter) {
+        MyList<Attendance> myList = new MyList<>();
+        createBufList(myList);
         switch (parameter) {
             case "section":
-                sortBySection();
-                break;
+                sortBySection(myList);
+                return myList;
             case "price":
-                sortByPrice();
-                break;
+                sortByPrice(myList);
+                return myList;
+        }
+        return null;
+    }
+
+    private void createBufList(MyList<Attendance> myList) {
+        for (int i = 1; i <= attendanceDao.readAll().size(); i++) {
+            myList.add(attendanceDao.read(i));
         }
     }
 
-    private void sortBySection() {
-        MyList<Attendance> myList = new MyList<>();
-        for (int i = 0; i < attendanceDao.readAll().size(); i++) {
-            myList.add(attendanceDao.read(i));
-        }
+    private void sortBySection(MyList<Attendance> myList) {
         myList.sort(SORT_BY_SECTION);
-        for (int i = 0; i < myList.size(); i++) {
-            System.out.print(myList.get(i));
-        }
     }
 
-    private void sortByPrice() {
-        MyList<Attendance> myList = new MyList<>();
-        for (int i = 0; i < attendanceDao.readAll().size(); i++) {
-            myList.add(attendanceDao.read(i));
-        }
+    private void sortByPrice(MyList<Attendance> myList) {
         myList.sort(SORT_BY_PRICE);
-        for (int i = 0; i < myList.size(); i++) {
-            System.out.print(myList.get(i));
-        }
     }
 }

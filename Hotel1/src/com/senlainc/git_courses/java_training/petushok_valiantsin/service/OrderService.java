@@ -58,9 +58,9 @@ public class OrderService implements IOrderService {
 
     @Override
     public void show(MyList<Order> myList) {
-        for (int i = 1; i <= myList.size(); i++) {
-            System.out.println(guestService.getGuest(myList.get(i - 1).getGuestIndex()) + "\t" + roomService.getRoom(myList.get(i - 1).getRoomIndex())
-                    + "\nTotal amount: " + myList.get(i - 1).getPrice());
+        for (int i = 0; i < myList.size(); i++) {
+            System.out.println(guestService.getGuest(myList.get(i).getGuestIndex()) + "\t" + roomService.getRoom(myList.get(i).getRoomIndex())
+                    + "\nTotal amount: " + myList.get(i).getPrice());
         }
     }
 
@@ -118,7 +118,11 @@ public class OrderService implements IOrderService {
     private void sortByAlphabet(MyList<Order> myList) {
         int[] guestIndex = guestService.sortByAlphabet();
         for(int index : guestIndex) {
-            myList.add(orderDao.read(index));
+            for(int i = 1; i <= orderDao.readAll().size(); i++) {
+                if(orderDao.read(i).getGuestIndex() == index) {
+                    myList.add(orderDao.read(i));
+                }
+            }
         }
     }
 

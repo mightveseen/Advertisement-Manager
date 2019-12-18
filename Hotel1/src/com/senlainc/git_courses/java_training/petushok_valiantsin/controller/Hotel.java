@@ -31,7 +31,7 @@ public class Hotel {
 
     public void createRoom() {
         roomService.add(new Room(203, "President", (short) 4, (short) 6, new Free(), 330.0));
-        roomService.add(new Room(312, "Business", (short) 1, (short) 2, new Served("Replace sofa", LocalTime.of(23, 20)), 130.0));
+        roomService.add(new Room(312, "Business", (short) 1, (short) 2, new Free(), 170.0));
         roomService.add(new Room(401, "Lux", (short) 2, (short) 4, new Free(), 230.0));
         roomService.add(new Room(105, "Lux", (short) 2, (short) 4, new Free(), 230.0));
         roomService.add(new Room(506, "President", (short) 5, (short) 6, new Rented(LocalDate.of(2019, 1, 5)), 230.0));
@@ -52,6 +52,8 @@ public class Hotel {
     public void createOrder() {
         orderService.add(new Order(2, 4, LocalDate.of(2019, 3, 12), roomService.getPrice(3)));
         orderService.add(new Order(1, 1, LocalDate.of(2019, 1, 3), roomService.getPrice(4)));
+        orderService.add(new Order(3, 2, LocalDate.of(2019, 2, 23), roomService.getPrice(2)));
+
     }
 
     public void numGuest() {
@@ -63,7 +65,8 @@ public class Hotel {
     }
 
     public void sortRoom(String parameter) {
-//        roomService.sort(parameter);
+        MyList<Room> myList = roomService.sort(parameter);
+        roomService.show(myList);
     }
 
     public void sortOrder(String parameter) {

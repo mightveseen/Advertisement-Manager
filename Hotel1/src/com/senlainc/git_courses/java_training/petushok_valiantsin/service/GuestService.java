@@ -64,15 +64,15 @@ public class GuestService implements IGuestService {
 
     private int[] getGuestIndex(MyList<Guest> myList) {
         int[] guestIndex = new int[myList.size()];
-        for(int i = 1; i <= myList.size(); i++) {
-            guestIndex[i - 1] = myList.get(i).getId();
+        for(int i = 0; i < myList.size(); i++) {
+            guestIndex[i] = myList.get(i).getId();
         }
         return guestIndex;
     }
 
     private void createBufList(MyList<Guest> myList) {
-        for (int i = 1; i <= myList.size(); i++) {
-            myList.add(myList.get(i));
+        for (int i = 1; i <= guestDao.readAll().size(); i++) {
+            myList.add(guestDao.read(i));
         }
     }
 }
