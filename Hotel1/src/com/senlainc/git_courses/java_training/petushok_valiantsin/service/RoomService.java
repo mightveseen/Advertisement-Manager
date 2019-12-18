@@ -15,24 +15,9 @@ import java.util.Comparator;
 public class RoomService implements IRoomService {
     private final IRoomDao roomDao = new RoomDao();
 
-    private final Comparator<Room> SORT_BY_PRICE = new Comparator<>() {
-        @Override
-        public int compare(Room firstRoom, Room lastRoom) {
-            return String.valueOf(firstRoom.getPrice()).compareTo(String.valueOf(lastRoom.getPrice()));
-        }
-    };
-    private final Comparator<Room> SORT_BY_CLASSIFICATION = new Comparator<>() {
-        @Override
-        public int compare(Room firstRoom, Room lastRoom) {
-            return firstRoom.getClassification().compareTo(lastRoom.getClassification());
-        }
-    };
-    private final Comparator<Room> SORT_BY_ROOM_NUMBER = new Comparator<>() {
-        @Override
-        public int compare(Room firstRoom, Room lastRoom) {
-            return String.valueOf(firstRoom.getRoomNumber()).compareTo(String.valueOf(lastRoom.getRoomNumber()));
-        }
-    };
+//    private final Comparator<Room> SORT_BY_PRICE = Comparator.comparing(firstRoom -> String.valueOf(firstRoom.getPrice()));
+//    private final Comparator<Room> SORT_BY_CLASSIFICATION = Comparator.comparing(Room::getClassification);
+//    private final Comparator<Room> SORT_BY_ROOM_NUMBER = Comparator.comparing(firstRoom -> String.valueOf(firstRoom.getRoomNumber()));
 
     @Override
     public void add(Room room) {
@@ -72,7 +57,7 @@ public class RoomService implements IRoomService {
         Room room = new Room(roomDao.read(index));
         try {
             room.setPrice(price);
-            roomDao.update(index, room);
+            roomDao.update(room);
         } catch (Exception e) {
             System.err.println("Wrong data.");
         }
@@ -83,7 +68,7 @@ public class RoomService implements IRoomService {
         Room room = new Room(roomDao.read(index));
         try {
             room.setStatus(status);
-            roomDao.update(index, room);
+            roomDao.update(room);
         } catch (Exception e) {
             System.err.println("Wrong data.");
         }
@@ -118,7 +103,7 @@ public class RoomService implements IRoomService {
     @Override
     public void numFreeRoom() {
         int counter = 0;
-        for (int i = 0; i < roomDao.readAll().size(); i++) {
+        for (int i = 1; i <= roomDao.readAll().size(); i++) {
             if (roomDao.read(i).getStatus() instanceof Free) {
                 counter++;
             }
@@ -126,61 +111,61 @@ public class RoomService implements IRoomService {
         System.out.println("\nNumber of free room: " + counter);
     }
 
-    @Override
-    public void sort(String parameter) {
-        switch (parameter) {
-            case "price":
-                sortByPrice();
-                break;
-            case "classification":
-                sortByClassification();
-                break;
-            case "room number":
-                sortByRoomNumber();
-                break;
-        }
-    }
+//    @Override
+//    public void sort(String parameter) {
+//        switch (parameter) {
+//            case "price":
+//                sortByPrice();
+//                break;
+//            case "classification":
+//                sortByClassification();
+//                break;
+//            case "room number":
+//                sortByRoomNumber();
+//                break;
+//        }
+//    }
 
-    private void sortByPrice() {
-        System.out.print("\nSort by price:");
-        MyList<Room> myList = new MyList<>();
-        for (int i = 0; i < roomDao.readAll().size(); i++) {
-            myList.add(roomDao.read(i));
-        }
-        myList.sort(SORT_BY_PRICE);
-        for (int i = 0; i < myList.size(); i++) {
-            System.out.print(myList.get(i));
-        }
-    }
-
-    private void sortByClassification() {
-        System.out.print("\nSort by classification:");
-        MyList<Room> myList = new MyList<>();
-        for (int i = 0; i < roomDao.readAll().size(); i++) {
-            myList.add(roomDao.read(i));
-        }
-        myList.sort(SORT_BY_CLASSIFICATION);
-        for (int i = 0; i < myList.size(); i++) {
-            System.out.print(myList.get(i));
-        }
-    }
-
-    private void sortByRoomNumber() {
-        System.out.print("\nSort by room number:");
-        MyList<Room> myList = new MyList<>();
-        for (int i = 0; i < roomDao.readAll().size(); i++) {
-            myList.add(roomDao.read(i));
-        }
-        myList.sort(SORT_BY_ROOM_NUMBER);
-        for (int i = 0; i < myList.size(); i++) {
-            System.out.print(myList.get(i));
-        }
-    }
+//    private void sortByPrice() {
+//        System.out.print("\nSort by price:");
+//        MyList<Room> myList = new MyList<>();
+//        for (int i = 0; i < roomDao.readAll().size(); i++) {
+//            myList.add(roomDao.read(i));
+//        }
+//        myList.sort(SORT_BY_PRICE);
+//        for (int i = 0; i < myList.size(); i++) {
+//            System.out.print(myList.get(i));
+//        }
+//    }
+//
+//    private void sortByClassification() {
+//        System.out.print("\nSort by classification:");
+//        MyList<Room> myList = new MyList<>();
+//        for (int i = 0; i < roomDao.readAll().size(); i++) {
+//            myList.add(roomDao.read(i));
+//        }
+//        myList.sort(SORT_BY_CLASSIFICATION);
+//        for (int i = 0; i < myList.size(); i++) {
+//            System.out.print(myList.get(i));
+//        }
+//    }
+//
+//    private void sortByRoomNumber() {
+//        System.out.print("\nSort by room number:");
+//        MyList<Room> myList = new MyList<>();
+//        for (int i = 0; i < roomDao.readAll().size(); i++) {
+//            myList.add(roomDao.read(i));
+//        }
+//        myList.sort(SORT_BY_ROOM_NUMBER);
+//        for (int i = 0; i < myList.size(); i++) {
+//            System.out.print(myList.get(i));
+//        }
+//    }
 
     @Override
     public void showAfterDate(LocalDate freeDate) {
         System.out.print("\nRoom will be available after [" + freeDate + "]:");
-        for (int i = 0; i < roomDao.readAll().size(); i++) {
+        for (int i = 1; i <= roomDao.readAll().size(); i++) {
             if(roomDao.read(i).getStatus() instanceof Rented) {
                 if(freeDate.isAfter(((Rented)roomDao.read(i).getStatus()).getEndDate())){
                     System.out.print(roomDao.read(i));

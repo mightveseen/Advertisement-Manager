@@ -8,7 +8,7 @@ public interface IAttendanceDao {
 
     void delete(int index);
 
-    void update(int index, Attendance attendance);
+    void update(Attendance attendance);
 
     MyList<Attendance> readAll();
 

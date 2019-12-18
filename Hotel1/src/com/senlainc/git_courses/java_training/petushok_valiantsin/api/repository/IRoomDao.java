@@ -8,7 +8,7 @@ public interface IRoomDao {
 
     void delete(int index);
 
-    void update(int index, Room room);
+    void update(Room room);
 
     MyList<Room> readAll();
 

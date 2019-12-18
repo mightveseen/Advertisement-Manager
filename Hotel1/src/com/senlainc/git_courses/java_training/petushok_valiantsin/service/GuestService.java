@@ -40,7 +40,7 @@ public class GuestService implements IGuestService {
     public void changeInfoContact(int index, String information) {
         Guest guest = new Guest(guestDao.read(index));
         guest.setInfoContact(information);
-        guestDao.update(index, guest);
+        guestDao.update(guest);
     }
 
     @Override

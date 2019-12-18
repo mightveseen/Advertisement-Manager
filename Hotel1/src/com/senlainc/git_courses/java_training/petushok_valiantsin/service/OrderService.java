@@ -22,19 +22,9 @@ public class OrderService implements IOrderService {
     private final IGuestService guestService;
     private final IAttendanceService attendanceService;
 
-    private final Comparator<Order> SORT_BY_DATE = new Comparator<>() {
-        @Override
-        public int compare(Order firstOrder, Order lastOrder) {
-            return firstOrder.getEndDate().compareTo(lastOrder.getEndDate());
-        }
-    };
+    private final Comparator<Order> SORT_BY_DATE = Comparator.comparing(Order::getEndDate);
 
-    private Comparator<Guest> SORT_BY_GUEST = new Comparator<>() {
-        @Override
-        public int compare(Guest firstGuest, Guest lastGuest) {
-            return firstGuest.getFirstName().compareTo(lastGuest.getFirstName());
-        }
-    };
+    private Comparator<Guest> SORT_BY_GUEST = Comparator.comparing(Guest::getFirstName);
 
     public OrderService(IRoomService roomService, IGuestService guestService, IAttendanceService attendanceService) {
         this.guestService = guestService;
@@ -49,7 +39,7 @@ public class OrderService implements IOrderService {
             return;
         }
         orderDao.create(order);
-        orderDao.read(orderDao.readAll().size() - 1).setPrice(roomService.getPrice(order.getRoomIndex()));
+        orderDao.read(orderDao.readAll().size()).setPrice(roomService.getPrice(order.getRoomIndex()));
         roomService.changeStatus(order.getRoomIndex(), new Rented(order.getEndDate()));
     }
 
@@ -63,7 +53,7 @@ public class OrderService implements IOrderService {
     public void changeEndDate(int index, LocalDate date) {
         Order order = new Order(orderDao.read(index));
         order.setEndDate(date);
-        orderDao.update(index, order);
+        orderDao.update(order);
     }
 
     @Override
@@ -77,7 +67,7 @@ public class OrderService implements IOrderService {
     @Override
     public void showGuestRoom(int index) {
         int counter = 0;
-        for (int i = 0; i < orderDao.readAll().size(); i++) {
+        for (int i = 1; i <= orderDao.readAll().size(); i++) {
             if (orderDao.read(i).getGuestIndex() == index) {
                 System.out.println(guestService.getGuest(orderDao.read(i).getGuestIndex()) + "\t" + roomService.getRoom(orderDao.read(i).getRoomIndex()));
                 counter++;
@@ -97,7 +87,7 @@ public class OrderService implements IOrderService {
         order.setAttendanceIndex(myList);
         double price = order.getPrice() + attendanceService.getPrice(attendanceIndex);
         order.setPrice(price);
-        orderDao.update(orderIndex, order);
+        orderDao.update(order);
     }
 
     @Override
@@ -129,13 +119,18 @@ public class OrderService implements IOrderService {
     }
 
     public void showAttendance(int orderIndex) {
-        System.out.print(guestService.getGuest(orderDao.read(orderIndex).getGuestIndex()));
-        Object[] attendanceIndex = orderDao.read(orderIndex).getAttendanceIndex().get();
-        for(Object index : attendanceIndex) {
-            if(index == null) {
-                break;
+        try{
+            Object[] attendanceIndex = orderDao.read(orderIndex).getAttendanceIndex().get();
+            System.out.print(guestService.getGuest(orderDao.read(orderIndex).getGuestIndex()));
+            for(Object index : attendanceIndex) {
+                if(index == null) {
+                    break;
+                }
+                System.out.print(attendanceService.get((int)index));
             }
-            System.out.print(attendanceService.get((int)index));
+        }catch (NullPointerException e) {
+            System.out.println("This guest didn't have attendance's");
         }
+
     }
 }

@@ -8,7 +8,7 @@ public interface IOrderDao {
 
     void delete(int index);
 
-    void update(int index, Order order);
+    void update(Order order);
 
     MyList<Order> readAll();
 

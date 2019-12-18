@@ -24,7 +24,7 @@ public interface IRoomService {
 
     void numFreeRoom();
 
-    void sort(String parameter);
+//    void sort(String parameter);
 
     void showAfterDate(LocalDate freeDate);
 }

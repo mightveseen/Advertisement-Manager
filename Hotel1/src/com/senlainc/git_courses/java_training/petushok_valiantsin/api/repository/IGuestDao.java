@@ -8,7 +8,7 @@ public interface IGuestDao {
 
     void delete(int index);
 
-    void update(int index, Guest guest);
+    void update(Guest guest);
 
     MyList<Guest> readAll();
 

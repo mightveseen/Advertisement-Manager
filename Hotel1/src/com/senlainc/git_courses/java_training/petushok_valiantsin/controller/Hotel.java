@@ -41,10 +41,10 @@ public class Hotel {
         hotel.numGuest();
 //        hotel.showOrder();
         /* Order operations */
-        hotel.addAttendance(1, 0);
-        hotel.sortOrder("date");
-        hotel.showGuestRoom(0);
-        hotel.showAttendance(1);
+        hotel.addAttendance(2, 1);
+//        hotel.sortOrder("date");
+        hotel.showGuestRoom(1);
+        hotel.showAttendance(2);
     }
 
     private void createRoom() {
@@ -68,8 +68,8 @@ public class Hotel {
     }
 
     private void createOrder() {
-        orderService.add(new Order(1, 3, (short) 3, LocalDate.of(2019, 3, 12), roomService.getPrice(3)));
-        orderService.add(new Order(0, 0, (short) 1, LocalDate.of(2019, 1, 3), roomService.getPrice(4)));
+        orderService.add(new Order(2, 4, (short) 3, LocalDate.of(2019, 3, 12), roomService.getPrice(3)));
+        orderService.add(new Order(1, 1, (short) 1, LocalDate.of(2019, 1, 3), roomService.getPrice(4)));
     }
 
     private void numGuest() {
@@ -81,7 +81,7 @@ public class Hotel {
     }
 
     private void sortRoom(String parameter) {
-        roomService.sort(parameter);
+//        roomService.sort(parameter);
     }
 
     private void sortOrder(String parameter) {

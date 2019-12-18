@@ -14,12 +14,22 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public void delete(int index) {
-        guestMyList.remove(index);
+        for(int i = 0; i < guestMyList.size(); i++) {
+            if(guestMyList.get(i).getId() == index) {
+                guestMyList.remove(i);
+                return;
+            }
+        }
     }
 
     @Override
-    public void update(int index, Guest guest) {
-        guestMyList.add(index, guest);
+    public void update(Guest guest) {
+        for(int i = 0; i < guestMyList.size(); i++) {
+            if(guestMyList.get(i).getId() == guest.getId()) {
+                guestMyList.add(i, guest);
+                return;
+            }
+        }
     }
 
     @Override
@@ -29,6 +39,11 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public Guest read(int index) {
-        return guestMyList.get(index);
+        for(int i = 0; i < guestMyList.size(); i++) {
+            if(guestMyList.get(i).getId() == index) {
+                return guestMyList.get(i);
+            }
+        }
+        return null;
     }
 }

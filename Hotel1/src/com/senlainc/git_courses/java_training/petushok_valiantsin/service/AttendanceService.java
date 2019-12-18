@@ -11,19 +11,9 @@ import java.util.Comparator;
 public class AttendanceService implements IAttendanceService {
     private final IAttendanceDao attendanceDao = new AttendanceDao();
 
-    private final Comparator<Attendance> SORT_BY_SECTION = new Comparator<>() {
-        @Override
-        public int compare(Attendance firstAttendance, Attendance lastAttendance) {
-            return firstAttendance.getSection().compareTo(lastAttendance.getSection());
-        }
-    };
+    private final Comparator<Attendance> SORT_BY_SECTION = Comparator.comparing(Attendance::getSection);
 
-    private final Comparator<Attendance> SORT_BY_PRICE = new Comparator<>() {
-        @Override
-        public int compare(Attendance firstAttendance, Attendance lastAttendance) {
-            return String.valueOf(firstAttendance.getPrice()).compareTo(String.valueOf(lastAttendance.getPrice()));
-        }
-    };
+    private final Comparator<Attendance> SORT_BY_PRICE = Comparator.comparing(firstAttendance -> String.valueOf(firstAttendance.getPrice()));
 
     @Override
     public void add(Attendance attendance) {
@@ -57,7 +47,7 @@ public class AttendanceService implements IAttendanceService {
     public void changePrice(int index, double price) {
         Attendance attendance = new Attendance(attendanceDao.read(index));
         attendance.setPrice(price);
-        attendanceDao.update(index, attendance);
+        attendanceDao.update(attendance);
     }
 
     @Override
