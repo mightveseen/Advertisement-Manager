@@ -15,5 +15,5 @@ public interface IGuestService {
 
     Guest getGuest(int index);
 
-    void sortByAlphabet();
+    int[] sortByAlphabet();
 }

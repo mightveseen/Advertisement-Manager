@@ -5,15 +5,12 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IA
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Free;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Rented;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Served;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.OrderDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
-import java.time.LocalDate;
 import java.util.Comparator;
 
 public class OrderService implements IOrderService {
@@ -22,7 +19,6 @@ public class OrderService implements IOrderService {
     private final IGuestService guestService;
     private final IAttendanceService attendanceService;
     private final Comparator<Order> SORT_BY_DATE = Comparator.comparing(Order::getEndDate);
-    private final Comparator<Guest> SORT_BY_GUEST = Comparator.comparing(Guest::getFirstName);
 
     public OrderService(IOrderDao orderDao, IRoomService roomService, IGuestService guestService, IAttendanceService attendanceService) {
         this.orderDao = orderDao;
@@ -53,17 +49,18 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public void changeEndDate(int index, LocalDate date) {
-        Order order = new Order(orderDao.read(index));
-        order.setEndDate(date);
-        orderDao.update(order);
+    public void show() {
+        for (int i = 1; i <= orderDao.readAll().size(); i++) {
+            System.out.println(guestService.getGuest(orderDao.read(i).getGuestIndex()) + "\t" + roomService.getRoom(orderDao.read(i).getRoomIndex())
+                    + "\nTotal amount: " + orderDao.read(i).getPrice());
+        }
     }
 
     @Override
-    public void showOrder() {
-        for (int i = 0; i < orderDao.readAll().size(); i++) {
-            System.out.println(guestService.getGuest(orderDao.read(i).getGuestIndex()) + "\t" + roomService.getRoom(orderDao.read(i).getRoomIndex())
-                    + "\nTotal amount: " + orderDao.read(i).getPrice());
+    public void show(MyList<Order> myList) {
+        for (int i = 1; i <= myList.size(); i++) {
+            System.out.println(guestService.getGuest(myList.get(i - 1).getGuestIndex()) + "\t" + roomService.getRoom(myList.get(i - 1).getRoomIndex())
+                    + "\nTotal amount: " + myList.get(i - 1).getPrice());
         }
     }
 
@@ -94,31 +91,35 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public void sort(String parameter) {
+    public MyList<Order> sort(String parameter) {
+        MyList<Order> myList = new MyList<>();
         switch (parameter) {
-            case "alphabet":
-                sortByAlphabet();
-                break;
             case "date":
-                sortByDate();
-                break;
+                sortByDate(myList);
+                return myList;
+            case "alphabet":
+                sortByAlphabet(myList);
+                return myList;
         }
+        return null;
     }
 
-    private void sortByDate() {
-        MyList<Order> myList = new MyList<>();
-        for (int i = 0; i < orderDao.readAll().size(); i++) {
+    private void createBufList(MyList<Order> myList) {
+        for (int i = 1; i <= orderDao.readAll().size(); i++) {
             myList.add(orderDao.read(i));
         }
-        myList.sort(SORT_BY_DATE);
-        for (int i = 0; i < myList.size(); i++) {
-            System.out.println(guestService.getGuest(myList.get(i).getGuestIndex()) + "\t" + roomService.getRoom(myList.get(i).getRoomIndex())
-                    + "\nTotal amount: " + myList.get(i).getPrice());
-        }
     }
 
-    private void sortByAlphabet() {
-//        orderDao.readAll().sort(SORT_BY_GUEST);
+    private void sortByDate(MyList<Order> myList) {
+        createBufList(myList);
+        myList.sort(SORT_BY_DATE);
+    }
+
+    private void sortByAlphabet(MyList<Order> myList) {
+        int[] guestIndex = guestService.sortByAlphabet();
+        for(int index : guestIndex) {
+            myList.add(orderDao.read(index));
+        }
     }
 
     public void showAttendance(int orderIndex) {

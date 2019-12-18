@@ -3,7 +3,7 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IGuestDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.GuestDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
 import java.util.Comparator;
@@ -18,20 +18,16 @@ public class GuestService implements IGuestService {
 
     @Override
     public void add(Guest guest) {
-        try {
-            guestDao.create(guest);
-        } catch (Exception e) {
-            System.err.println("Wrong data.");
-        }
+        guestDao.create(guest);
     }
 
     @Override
     public void delete(int index) {
-        try {
-            guestDao.delete(index);
-        } catch (ArrayIndexOutOfBoundsException e) {
+        if(guestDao.readAll().size() < index) {
             System.err.println("Guest with index: " + index + " dont exists.");
+            return;
         }
+        guestDao.delete(index);
     }
 
     @Override
@@ -59,14 +55,24 @@ public class GuestService implements IGuestService {
     }
 
     @Override
-    public void sortByAlphabet() {
+    public int[] sortByAlphabet() {
         MyList<Guest> myList = new MyList<>();
-        for (int i = 0; i < guestDao.readAll().size(); i++) {
-            myList.add(guestDao.read(i));
-        }
+        createBufList(myList);
         myList.sort(SORT_BY_ALPHABET);
-        for (int i = 0; i < myList.size(); i++) {
-            System.out.print(myList.get(i));
+        return getGuestIndex(myList);
+    }
+
+    private int[] getGuestIndex(MyList<Guest> myList) {
+        int[] guestIndex = new int[myList.size()];
+        for(int i = 1; i <= myList.size(); i++) {
+            guestIndex[i - 1] = myList.get(i).getId();
+        }
+        return guestIndex;
+    }
+
+    private void createBufList(MyList<Guest> myList) {
+        for (int i = 1; i <= myList.size(); i++) {
+            myList.add(myList.get(i));
         }
     }
 }

@@ -85,13 +85,13 @@ public class RoomService implements IRoomService {
     }
 
     private void showAllRoom() {
-        for (int i = 0; i < roomDao.readAll().size(); i++) {
+        for (int i = 1; i <= roomDao.readAll().size(); i++) {
             System.out.print(roomDao.read(i));
         }
     }
 
     private void showFreeRoom() {
-        for (int i = 0; i < roomDao.readAll().size(); i++) {
+        for (int i = 1; i <= roomDao.readAll().size(); i++) {
             if (roomDao.read(i).getStatus() instanceof Free) {
                 System.out.print(roomDao.read(i));
             }
@@ -162,7 +162,7 @@ public class RoomService implements IRoomService {
 
     @Override
     public void showAfterDate(LocalDate freeDate) {
-        System.out.print("\nRoom will be available after [" + freeDate + "]:");
+        System.out.print("\n\nRoom will be available after [" + freeDate + "]:");
         for (int i = 1; i <= roomDao.readAll().size(); i++) {
             if(roomDao.read(i).getStatus() instanceof Rented) {
                 if(freeDate.isAfter(((Rented)roomDao.read(i).getStatus()).getEndDate())){

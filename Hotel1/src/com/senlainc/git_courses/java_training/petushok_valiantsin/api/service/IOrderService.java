@@ -1,21 +1,20 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.api.service;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
-
-import java.time.LocalDate;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
 public interface IOrderService {
     void add(Order order);
 
     void delete(int index);
 
-    void changeEndDate(int index, LocalDate date);
+    void show();
 
-    void showOrder();
+    void show(MyList<Order> myList);
 
     void showGuestRoom(int index);
 
-    void sort(String parameter);
+    MyList<Order> sort(String parameter);
 
     void addAttendance(int orderIndex, int attendanceIndex);
 

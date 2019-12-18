@@ -38,16 +38,16 @@ public class Starter {
         hotel.createAttendance();
         hotel.createOrder();
         /* Room operations */
-        hotel.sortRoom("price");
-//        hotel.showRoom("all");
+//        hotel.sortRoom("price");
+        hotel.showRoom("all");
         hotel.showAfterDate(LocalDate.of(2019, 1, 25));
         hotel.numFreeRoom();
         /* Guest operations */
         hotel.numGuest();
-//        hotel.showOrder();
         /* Order operations */
         hotel.addAttendance(2, 1);
-//        hotel.sortOrder("date");
+        hotel.showOrder();
+        hotel.sortOrder("alphabet");
         hotel.showGuestRoom(1);
         hotel.showAttendance(2);
     }

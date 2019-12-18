@@ -24,11 +24,11 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     public void delete(int index) {
-        try {
-            attendanceDao.delete(index);
-        } catch (ArrayIndexOutOfBoundsException e) {
+        if(attendanceDao.readAll().size() < index) {
             System.err.println("Attendance with index: " + index + " dont exists.");
+            return;
         }
+        attendanceDao.delete(index);
     }
 
     @Override
