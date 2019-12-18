@@ -4,8 +4,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Status;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
-import java.time.LocalDate;
-
 public interface IRoomService {
     void add(Room room);
 

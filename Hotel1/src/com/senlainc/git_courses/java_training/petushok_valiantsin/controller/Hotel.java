@@ -9,12 +9,9 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Free;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Rented;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Served;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 public class Hotel {
     private final IGuestService guestService;

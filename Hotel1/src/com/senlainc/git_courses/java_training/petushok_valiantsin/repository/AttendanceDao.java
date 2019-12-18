@@ -14,8 +14,8 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public void delete(int index) {
-        for(int i = 0; i < attendanceMyList.size(); i++) {
-            if(attendanceMyList.get(i).getId() == index) {
+        for (int i = 0; i < attendanceMyList.size(); i++) {
+            if (attendanceMyList.get(i).getId() == index) {
                 attendanceMyList.remove(i);
                 return;
             }
@@ -24,8 +24,8 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public void update(Attendance attendance) {
-        for(int i = 0; i < attendanceMyList.size(); i++) {
-            if(attendanceMyList.get(i).getId() == attendance.getId()) {
+        for (int i = 0; i < attendanceMyList.size(); i++) {
+            if (attendanceMyList.get(i).getId() == attendance.getId()) {
                 attendanceMyList.add(i, attendance);
                 return;
             }
@@ -39,8 +39,8 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public Attendance read(int index) {
-        for(int i = 0; i < attendanceMyList.size(); i++) {
-            if(attendanceMyList.get(i).getId() == index) {
+        for (int i = 0; i < attendanceMyList.size(); i++) {
+            if (attendanceMyList.get(i).getId() == index) {
                 return attendanceMyList.get(i);
             }
         }

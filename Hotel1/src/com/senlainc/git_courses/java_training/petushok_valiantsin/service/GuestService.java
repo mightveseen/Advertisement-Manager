@@ -3,7 +3,6 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IGuestDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
 import java.util.Comparator;
@@ -23,7 +22,7 @@ public class GuestService implements IGuestService {
 
     @Override
     public void delete(int index) {
-        if(guestDao.readAll().size() < index) {
+        if (guestDao.readAll().size() < index) {
             System.err.println("Guest with index: " + index + " dont exists.");
             return;
         }
@@ -64,7 +63,7 @@ public class GuestService implements IGuestService {
 
     private int[] getGuestIndex(MyList<Guest> myList) {
         int[] guestIndex = new int[myList.size()];
-        for(int i = 0; i < myList.size(); i++) {
+        for (int i = 0; i < myList.size(); i++) {
             guestIndex[i] = myList.get(i).getId();
         }
         return guestIndex;

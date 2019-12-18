@@ -12,8 +12,8 @@ public class Order {
     private final String orderDate;
     private final int guestIndex;
     private final int roomIndex;
-    private MyList<Integer> attendanceIndex;
     private final LocalDate startDate;
+    private MyList<Integer> attendanceIndex;
     private LocalDate endDate;
     private double price;
 

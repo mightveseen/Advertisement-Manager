@@ -41,7 +41,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public void delete(int index) {
-        if(orderDao.readAll().size() < index) {
+        if (orderDao.readAll().size() < index) {
             System.err.println("Order with index: " + index + " dont exists.");
             return;
         }
@@ -83,14 +83,14 @@ public class OrderService implements IOrderService {
     public void showAfterDate(LocalDate freeDate) {
         System.out.print("\n\nRoom will be available after [" + freeDate + "]:");
         for (int i = 1; i <= roomService.getSize(); i++) {
-            if(roomService.getStatus(i) instanceof Rented && i <= orderDao.readAll().size()) {
-                if(freeDate.isAfter(orderDao.read(i).getEndDate())){
+            if (roomService.getStatus(i) instanceof Rented && i <= orderDao.readAll().size()) {
+                if (freeDate.isAfter(orderDao.read(i).getEndDate())) {
                     System.out.print(roomService.getRoom(i) + " - End date: ["
                             + orderDao.read(i).getEndDate() + "]");
                     continue;
                 }
             }
-            if(roomService.getStatus(i) instanceof Free) {
+            if (roomService.getStatus(i) instanceof Free) {
                 System.out.print(roomService.getRoom(i));
             }
         }
@@ -135,9 +135,9 @@ public class OrderService implements IOrderService {
 
     private void sortByAlphabet(MyList<Order> myList) {
         int[] guestIndex = guestService.sortByAlphabet();
-        for(int index : guestIndex) {
-            for(int i = 1; i <= orderDao.readAll().size(); i++) {
-                if(orderDao.read(i).getGuestIndex() == index) {
+        for (int index : guestIndex) {
+            for (int i = 1; i <= orderDao.readAll().size(); i++) {
+                if (orderDao.read(i).getGuestIndex() == index) {
                     myList.add(orderDao.read(i));
                     break;
                 }
@@ -146,16 +146,16 @@ public class OrderService implements IOrderService {
     }
 
     public void showAttendance(int orderIndex) {
-        try{
+        try {
             Object[] attendanceIndex = orderDao.read(orderIndex).getAttendanceIndex().get();
             System.out.print(guestService.getGuest(orderDao.read(orderIndex).getGuestIndex()));
-            for(Object index : attendanceIndex) {
-                if(index == null) {
+            for (Object index : attendanceIndex) {
+                if (index == null) {
                     break;
                 }
-                System.out.print(attendanceService.get((int)index));
+                System.out.print(attendanceService.get((int) index));
             }
-        }catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             System.out.println("This guest didn't have attendance's");
         }
 

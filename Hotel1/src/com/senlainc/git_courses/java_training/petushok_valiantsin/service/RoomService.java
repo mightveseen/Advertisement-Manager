@@ -1,17 +1,12 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IRoomDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Free;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Rented;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Status;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.RoomDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
-import java.time.LocalDate;
 import java.util.Comparator;
 
 public class RoomService implements IRoomService {
@@ -23,6 +18,7 @@ public class RoomService implements IRoomService {
     public RoomService(IRoomDao roomDao) {
         this.roomDao = roomDao;
     }
+
     @Override
     public void add(Room room) {
         roomDao.create(room);
@@ -30,7 +26,7 @@ public class RoomService implements IRoomService {
 
     @Override
     public void delete(int index) {
-        if(roomDao.readAll().size() < index) {
+        if (roomDao.readAll().size() < index) {
             System.err.println("Room with index: " + index + " dont exists.");
             return;
         }

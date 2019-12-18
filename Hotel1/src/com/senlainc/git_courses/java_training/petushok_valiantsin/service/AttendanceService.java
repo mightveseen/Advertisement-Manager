@@ -3,8 +3,6 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IAttendanceDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IAttendanceService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.AttendanceDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
 import java.util.Comparator;
@@ -25,7 +23,7 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     public void delete(int index) {
-        if(attendanceDao.readAll().size() < index) {
+        if (attendanceDao.readAll().size() < index) {
             System.err.println("Attendance with index: " + index + " dont exists.");
             return;
         }

@@ -14,8 +14,8 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public void delete(int index) {
-        for(int i = 0; i < roomMyList.size(); i++) {
-            if(roomMyList.get(i).getId() == index) {
+        for (int i = 0; i < roomMyList.size(); i++) {
+            if (roomMyList.get(i).getId() == index) {
                 roomMyList.remove(i);
                 return;
             }
@@ -24,8 +24,8 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public void update(Room room) {
-        for(int i = 0; i < roomMyList.size(); i++) {
-            if(roomMyList.get(i).getId() == room.getId()) {
+        for (int i = 0; i < roomMyList.size(); i++) {
+            if (roomMyList.get(i).getId() == room.getId()) {
                 roomMyList.add(i, room);
                 return;
             }
@@ -39,8 +39,8 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public Room read(int index) {
-        for(int i = 0; i < roomMyList.size(); i++) {
-            if(roomMyList.get(i).getId() == index) {
+        for (int i = 0; i < roomMyList.size(); i++) {
+            if (roomMyList.get(i).getId() == index) {
                 return roomMyList.get(i);
             }
         }

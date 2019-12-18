@@ -15,8 +15,8 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public void delete(int index) {
-        for(int i = 0; i < orderMyList.size(); i++) {
-            if(orderMyList.get(i).getId() == index) {
+        for (int i = 0; i < orderMyList.size(); i++) {
+            if (orderMyList.get(i).getId() == index) {
                 orderMyList.remove(i);
                 return;
             }
@@ -25,8 +25,8 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public void update(Order order) {
-        for(int i = 0; i < orderMyList.size(); i++) {
-            if(orderMyList.get(i).getId() == order.getId()) {
+        for (int i = 0; i < orderMyList.size(); i++) {
+            if (orderMyList.get(i).getId() == order.getId()) {
                 orderMyList.add(i, order);
                 return;
             }
@@ -40,8 +40,8 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public Order read(int index) {
-        for(int i = 0; i < orderMyList.size(); i++) {
-            if(orderMyList.get(i).getId() == index) {
+        for (int i = 0; i < orderMyList.size(); i++) {
+            if (orderMyList.get(i).getId() == index) {
                 return orderMyList.get(i);
             }
         }

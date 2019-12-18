@@ -14,8 +14,8 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public void delete(int index) {
-        for(int i = 0; i < guestMyList.size(); i++) {
-            if(guestMyList.get(i).getId() == index) {
+        for (int i = 0; i < guestMyList.size(); i++) {
+            if (guestMyList.get(i).getId() == index) {
                 guestMyList.remove(i);
                 return;
             }
@@ -24,8 +24,8 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public void update(Guest guest) {
-        for(int i = 0; i < guestMyList.size(); i++) {
-            if(guestMyList.get(i).getId() == guest.getId()) {
+        for (int i = 0; i < guestMyList.size(); i++) {
+            if (guestMyList.get(i).getId() == guest.getId()) {
                 guestMyList.add(i, guest);
                 return;
             }
@@ -39,8 +39,8 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public Guest read(int index) {
-        for(int i = 0; i < guestMyList.size(); i++) {
-            if(guestMyList.get(i).getId() == index) {
+        for (int i = 0; i < guestMyList.size(); i++) {
+            if (guestMyList.get(i).getId() == index) {
                 return guestMyList.get(i);
             }
         }
