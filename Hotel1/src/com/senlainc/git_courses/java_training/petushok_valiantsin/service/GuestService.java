@@ -9,14 +9,12 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList
 import java.util.Comparator;
 
 public class GuestService implements IGuestService {
-    private final IGuestDao guestDao = new GuestDao();
+    private final IGuestDao guestDao;
+    private final Comparator<Guest> SORT_BY_ALPHABET = Comparator.comparing(Guest::getFirstName);
 
-    private final Comparator<Guest> SORT_BY_ALPHABET = new Comparator<>() {
-        @Override
-        public int compare(Guest firstGuest, Guest lastGuest) {
-            return firstGuest.getFirstName().compareTo(lastGuest.getFirstName());
-        }
-    };
+    public GuestService(IGuestDao guestDao) {
+        this.guestDao = guestDao;
+    }
 
     @Override
     public void add(Guest guest) {

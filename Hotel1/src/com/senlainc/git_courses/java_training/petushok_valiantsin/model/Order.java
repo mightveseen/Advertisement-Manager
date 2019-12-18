@@ -8,11 +8,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Order {
-    private int id = new OrderIndex().getIndex();
+    private final int id;
     private final String orderDate;
     private final int guestIndex;
     private final int roomIndex;
-    private final short numberPerson;
     private MyList<Integer> attendanceIndex;
     private final LocalDate startDate;
     private LocalDate endDate;
@@ -23,19 +22,18 @@ public class Order {
         this.orderDate = order.getOrderDate();
         this.guestIndex = order.getGuestIndex();
         this.roomIndex = order.getRoomIndex();
-        this.numberPerson = order.getNumberPerson();
         this.startDate = order.getStartDate();
         this.endDate = order.getEndDate();
         this.attendanceIndex = new MyList<>(order.getAttendanceIndex());
         this.price = order.getPrice();
     }
 
-    public Order(int guest, int room, short numberPerson, LocalDate endDate, double price) {
+    public Order(int guest, int room, LocalDate endDate, double price) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm / yyyy-MM-dd");
+        this.id = new OrderIndex().getIndex();
         this.orderDate = LocalDateTime.now().format(formatter);
         this.guestIndex = guest;
         this.roomIndex = room;
-        this.numberPerson = numberPerson;
         this.startDate = LocalDate.now();
         this.endDate = endDate;
         this.price = price;
@@ -59,10 +57,6 @@ public class Order {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public short getNumberPerson() {
-        return this.numberPerson;
     }
 
     public String getOrderDate() {

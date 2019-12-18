@@ -4,10 +4,11 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.S
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.RoomIndex;
 
 public class Room {
-    private int id = new RoomIndex().getIndex();
+    private final int id;
     private final int number;
     private final String classification;
     private final short roomNumber;
+    private final short capacity;
     private Status status;
     private double price;
 
@@ -16,20 +17,27 @@ public class Room {
         this.number = room.getNumber();
         this.classification = room.getClassification();
         this.roomNumber = room.getRoomNumber();
+        this.capacity = room.getCapacity();
         this.status = room.getStatus();
         this.price = room.getPrice();
     }
 
-    public Room(int number, String classification, short roomNumber, Status status, double price) {
+    public Room(int number, String classification, short roomNumber, short capacity, Status status, double price) {
+        this.id = new RoomIndex().getIndex();
         this.number = number;
         this.classification = classification;
         this.roomNumber = roomNumber;
+        this.capacity = capacity;
         this.status = status;
         this.price = price;
     }
 
     public int getId() {
         return this.id;
+    }
+
+    public short getCapacity() {
+        return this.capacity;
     }
 
     public int getNumber() {

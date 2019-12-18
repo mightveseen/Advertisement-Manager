@@ -5,7 +5,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classi
 import java.time.LocalDate;
 
 public class Guest {
-    private int id = new GuestIndex().getIndex();
+    private final int id;
     private final String firstName;
     private final String secondName;
     private final LocalDate birthday;
@@ -20,6 +20,7 @@ public class Guest {
     }
 
     public Guest(String firstName, String secondName, LocalDate birthday, String infoContact) {
+        this.id = new GuestIndex().getIndex();
         this.firstName = firstName;
         this.secondName = secondName;
         this.birthday = birthday;

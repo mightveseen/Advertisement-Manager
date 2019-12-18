@@ -9,19 +9,17 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList
 import java.util.Comparator;
 
 public class AttendanceService implements IAttendanceService {
-    private final IAttendanceDao attendanceDao = new AttendanceDao();
-
+    private final IAttendanceDao attendanceDao;
     private final Comparator<Attendance> SORT_BY_SECTION = Comparator.comparing(Attendance::getSection);
-
     private final Comparator<Attendance> SORT_BY_PRICE = Comparator.comparing(firstAttendance -> String.valueOf(firstAttendance.getPrice()));
+
+    public AttendanceService(IAttendanceDao attendanceDao) {
+        this.attendanceDao = attendanceDao;
+    }
 
     @Override
     public void add(Attendance attendance) {
-        try {
-            attendanceDao.create(attendance);
-        } catch (Exception e) {
-            System.err.println("Wrong data.");
-        }
+        attendanceDao.create(attendance);
     }
 
     @Override

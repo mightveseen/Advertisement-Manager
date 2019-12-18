@@ -17,16 +17,15 @@ import java.time.LocalDate;
 import java.util.Comparator;
 
 public class OrderService implements IOrderService {
-    private final IOrderDao orderDao = new OrderDao();
+    private final IOrderDao orderDao;
     private final IRoomService roomService;
     private final IGuestService guestService;
     private final IAttendanceService attendanceService;
-
     private final Comparator<Order> SORT_BY_DATE = Comparator.comparing(Order::getEndDate);
+    private final Comparator<Guest> SORT_BY_GUEST = Comparator.comparing(Guest::getFirstName);
 
-    private Comparator<Guest> SORT_BY_GUEST = Comparator.comparing(Guest::getFirstName);
-
-    public OrderService(IRoomService roomService, IGuestService guestService, IAttendanceService attendanceService) {
+    public OrderService(IOrderDao orderDao, IRoomService roomService, IGuestService guestService, IAttendanceService attendanceService) {
+        this.orderDao = orderDao;
         this.guestService = guestService;
         this.roomService = roomService;
         this.attendanceService = attendanceService;
@@ -45,6 +44,10 @@ public class OrderService implements IOrderService {
 
     @Override
     public void delete(int index) {
+        if(orderDao.readAll().size() < index) {
+            System.err.println("Order with index: " + index + " dont exists.");
+            return;
+        }
         orderDao.delete(index);
         roomService.changeStatus(index, new Free());
     }

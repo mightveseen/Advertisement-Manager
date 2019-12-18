@@ -13,19 +13,17 @@ import java.time.LocalDate;
 import java.util.Comparator;
 
 public class RoomService implements IRoomService {
-    private final IRoomDao roomDao = new RoomDao();
-
+    private final IRoomDao roomDao;
 //    private final Comparator<Room> SORT_BY_PRICE = Comparator.comparing(firstRoom -> String.valueOf(firstRoom.getPrice()));
 //    private final Comparator<Room> SORT_BY_CLASSIFICATION = Comparator.comparing(Room::getClassification);
 //    private final Comparator<Room> SORT_BY_ROOM_NUMBER = Comparator.comparing(firstRoom -> String.valueOf(firstRoom.getRoomNumber()));
 
+    public RoomService(IRoomDao roomDao) {
+        this.roomDao = roomDao;
+    }
     @Override
     public void add(Room room) {
-        try {
-            roomDao.create(room);
-        } catch (Exception e) {
-            System.err.println("Wrong data.");
-        }
+        roomDao.create(room);
     }
 
     @Override

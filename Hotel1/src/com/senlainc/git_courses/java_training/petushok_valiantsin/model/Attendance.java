@@ -3,7 +3,7 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.AttendanceIndex;
 
 public class Attendance {
-    private int id = new AttendanceIndex().getIndex();
+    private final int id;
     private final String name;
     private final String section;
     private double price;
@@ -16,6 +16,7 @@ public class Attendance {
     }
 
     public Attendance(String name, String section, double price) {
+        this.id = new AttendanceIndex().getIndex();
         this.name = name;
         this.section = section;
         this.price = price;
