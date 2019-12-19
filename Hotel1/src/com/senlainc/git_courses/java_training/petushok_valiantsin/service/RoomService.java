@@ -10,14 +10,14 @@ import java.util.Comparator;
 
 public class RoomService implements IRoomService {
     private final IRoomDao roomDao;
-    private final Status.Type[] types;
+    private final Status.StatusType[] statusType;
     private final Comparator<Room> SORT_BY_PRICE = Comparator.comparing(firstRoom -> String.valueOf(firstRoom.getPrice()));
     private final Comparator<Room> SORT_BY_CLASSIFICATION = Comparator.comparing(Room::getClassification);
     private final Comparator<Room> SORT_BY_ROOM_NUMBER = Comparator.comparing(firstRoom -> String.valueOf(firstRoom.getRoomNumber()));
 
-    public RoomService(IRoomDao roomDao, Status.Type[] types) {
+    public RoomService(IRoomDao roomDao, Status.StatusType[] statusType) {
         this.roomDao = roomDao;
-        this.types = types;
+        this.statusType = statusType;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public Status.Type getStatus(int index) {
+    public Status.StatusType getStatus(int index) {
         return roomDao.read(index).getStatus();
     }
 
@@ -66,7 +66,7 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void changeStatus(int index, Status.Type status) {
+    public void changeStatus(int index, Status.StatusType status) {
         Room room = new Room(roomDao.read(index));
         try {
             room.setStatus(status);
@@ -103,7 +103,7 @@ public class RoomService implements IRoomService {
 
     private void showFreeRoom() {
         for (int i = 1; i <= roomDao.readAll().size(); i++) {
-            if (roomDao.read(i).getStatus().equals(types[0])) {
+            if (roomDao.read(i).getStatus().equals(statusType[0])) {
                 System.out.print(roomDao.read(i));
             }
         }
@@ -113,7 +113,7 @@ public class RoomService implements IRoomService {
     public void numFreeRoom() {
         int counter = 0;
         for (int i = 1; i <= roomDao.readAll().size(); i++) {
-            if (roomDao.read(i).getStatus().equals(types[0])) {
+            if (roomDao.read(i).getStatus().equals(statusType[0])) {
                 counter++;
             }
         }

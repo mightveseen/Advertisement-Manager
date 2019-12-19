@@ -13,30 +13,30 @@ import java.time.LocalDate;
 import java.util.Comparator;
 
 public class OrderService implements IOrderService {
-    private final Status.Type[] types;
+    private final Status.StatusType[] statusType;
     private final IOrderDao orderDao;
     private final IRoomService roomService;
     private final IGuestService guestService;
     private final IAttendanceService attendanceService;
     private final Comparator<Order> SORT_BY_DATE = Comparator.comparing(Order::getEndDate);
 
-    public OrderService(IOrderDao orderDao, IRoomService roomService, IGuestService guestService, IAttendanceService attendanceService, Status.Type[] types) {
+    public OrderService(IOrderDao orderDao, IRoomService roomService, IGuestService guestService, IAttendanceService attendanceService, Status.StatusType[] statusType) {
         this.orderDao = orderDao;
         this.guestService = guestService;
         this.roomService = roomService;
         this.attendanceService = attendanceService;
-        this.types = types;
+        this.statusType = statusType;
     }
 
     @Override
     public void add(Order order) {
-        if (roomService.getStatus(order.getRoomIndex()).equals(types[1]) || roomService.getStatus(order.getRoomIndex()).equals(types[2])) {
+        if (roomService.getStatus(order.getRoomIndex()).equals(statusType[1]) || roomService.getStatus(order.getRoomIndex()).equals(statusType[2])) {
             System.err.println("Room now is not available");
             return;
         }
         orderDao.create(order);
         orderDao.read(orderDao.readAll().size()).setPrice(roomService.getPrice(order.getRoomIndex()));
-        roomService.changeStatus(order.getRoomIndex(), types[1]);
+        roomService.changeStatus(order.getRoomIndex(), statusType[1]);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class OrderService implements IOrderService {
             return;
         }
         orderDao.delete(index);
-        roomService.changeStatus(index, types[2]);
+        roomService.changeStatus(index, statusType[2]);
     }
 
     @Override
@@ -83,14 +83,14 @@ public class OrderService implements IOrderService {
     public void showAfterDate(LocalDate freeDate) {
         System.out.print("\n\nRoom will be available after [" + freeDate + "]:");
         for (int i = 1; i <= roomService.getSize(); i++) {
-            if (roomService.getStatus(i).equals(types[1]) && i <= orderDao.readAll().size()) {
+            if (roomService.getStatus(i).equals(statusType[1]) && i <= orderDao.readAll().size()) {
                 if (freeDate.isAfter(orderDao.read(i).getEndDate())) {
                     System.out.print(roomService.getRoom(i) + " - End date: ["
                             + orderDao.read(i).getEndDate() + "]");
                     continue;
                 }
             }
-            if (roomService.getStatus(i).equals(types[0])) {
+            if (roomService.getStatus(i).equals(statusType[0])) {
                 System.out.print(roomService.getRoom(i));
             }
         }

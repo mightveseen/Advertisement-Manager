@@ -8,7 +8,7 @@ public class Room {
     private final String classification;
     private final short roomNumber;
     private final short capacity;
-    private Status.Type status;
+    private Status.StatusType status;
     private double price;
 
     public Room(Room room) {
@@ -21,7 +21,7 @@ public class Room {
         this.price = room.getPrice();
     }
 
-    public Room(int number, String classification, short roomNumber, short capacity, Status.Type status, double price) {
+    public Room(int number, String classification, short roomNumber, short capacity, Status.StatusType status, double price) {
         this.id = new RoomIndex().getIndex();
         this.number = number;
         this.classification = classification;
@@ -51,11 +51,11 @@ public class Room {
         return this.roomNumber;
     }
 
-    public Status.Type getStatus() {
+    public Status.StatusType getStatus() {
         return this.status;
     }
 
-    public void setStatus(Status.Type status) {
+    public void setStatus(Status.StatusType status) {
         this.status = status;
     }
 

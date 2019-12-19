@@ -10,25 +10,25 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList
 import java.time.LocalDate;
 
 public class Hotel {
-    private final Status.Type[] types;
+    private final Status.StatusType[] statusType;
     private final IGuestService guestService;
     private final IRoomService roomService;
     private final IAttendanceService attendanceService;
     private final IOrderService orderService;
 
-    public Hotel(IGuestService guestService, IRoomService roomService, IAttendanceService attendanceService, IOrderService orderService, Status.Type[] types) {
+    public Hotel(IGuestService guestService, IRoomService roomService, IAttendanceService attendanceService, IOrderService orderService, Status.StatusType[] statusType) {
         this.guestService = guestService;
         this.roomService = roomService;
         this.attendanceService = attendanceService;
         this.orderService = orderService;
-        this.types = types;
+        this.statusType = statusType;
     }
 
     public void createRoom() {
         /**
          * Наверное это слегка колхозно сделано, но ты проверь и укажи на ошибки ))
          */
-        Status.Type free = types[0];
+        Status.StatusType free = statusType[0];
         roomService.add(new Room(203, "President", (short) 4, (short) 6, free, 330.0));
         roomService.add(new Room(312, "Business", (short) 1, (short) 2, free, 170.0));
         roomService.add(new Room(401, "Lux", (short) 2, (short) 4, free, 230.0));

@@ -13,11 +13,11 @@ public interface IRoomService {
 
     int getSize();
 
-    Status.Type getStatus(int index);
+    Status.StatusType getStatus(int index);
 
     void changePrice(int index, double price);
 
-    void changeStatus(int index, Status.Type status);
+    void changeStatus(int index, Status.StatusType status);
 
     void show(String parameter);
 
