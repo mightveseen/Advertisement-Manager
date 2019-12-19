@@ -80,11 +80,11 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public void showAfterDate(LocalDate freeDate) {
-        System.out.print("\n\nRoom will be available after [" + freeDate + "]:");
+    public void showAfterDate(LocalDate date) {
+        System.out.print("\n\nRoom will be available after [" + date + "]:");
         for (int i = 1; i <= roomService.getSize(); i++) {
             if (roomService.getStatus(i).equals(statusType[1]) && i <= orderDao.readAll().size()) {
-                if (freeDate.isAfter(orderDao.read(i).getEndDate())) {
+                if (date.isAfter(orderDao.read(i).getEndDate())) {
                     System.out.print(roomService.getRoom(i) + " - End date: ["
                             + orderDao.read(i).getEndDate() + "]");
                     continue;
