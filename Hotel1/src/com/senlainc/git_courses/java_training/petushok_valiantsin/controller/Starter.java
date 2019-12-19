@@ -40,14 +40,14 @@ public class Starter {
         hotel.createOrder();
         /* Room operations */
         hotel.sortRoom("price");
-//        hotel.showRoom("all");
+        System.out.println();
+        hotel.showRoom("all");
         hotel.showAfterDate(LocalDate.of(2019, 1, 25));
         hotel.numFreeRoom();
         /* Guest operations */
         hotel.numGuest();
         /* Order operations */
         hotel.addAttendance(2, 1);
-//        hotel.showOrder();
         hotel.sortOrder("alphabet");
         hotel.showGuestRoom(1);
         hotel.showAttendance(2);

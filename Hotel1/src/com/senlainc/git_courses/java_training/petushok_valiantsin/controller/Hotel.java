@@ -25,11 +25,15 @@ public class Hotel {
     }
 
     public void createRoom() {
-        roomService.add(new Room(203, "President", (short) 4, (short) 6, types[0], 330.0));
-        roomService.add(new Room(312, "Business", (short) 1, (short) 2, types[0], 170.0));
-        roomService.add(new Room(401, "Lux", (short) 2, (short) 4, types[0], 230.0));
-        roomService.add(new Room(105, "Lux", (short) 2, (short) 4, types[0], 230.0));
-        roomService.add(new Room(506, "President", (short) 5, (short) 6, types[0], 230.0));
+        /**
+         * Наверное это слегка колхозно сделано, но ты проверь и укажи на ошибки ))
+         */
+        Status.Type free = types[0];
+        roomService.add(new Room(203, "President", (short) 4, (short) 6, free, 330.0));
+        roomService.add(new Room(312, "Business", (short) 1, (short) 2, free, 170.0));
+        roomService.add(new Room(401, "Lux", (short) 2, (short) 4, free, 230.0));
+        roomService.add(new Room(105, "Lux", (short) 2, (short) 4, free, 230.0));
+        roomService.add(new Room(506, "President", (short) 5, (short) 6, free, 230.0));
     }
 
     public void createGuest() {

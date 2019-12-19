@@ -6,7 +6,7 @@ public class Status {
         RENTED("Rented"),
         SERVED("Served");
 
-        private String name;
+        private final String name;
 
         Type(String name) {
             this.name = name;
