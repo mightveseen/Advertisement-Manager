@@ -3,20 +3,21 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IRoomDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Free;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Status;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Status;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
 import java.util.Comparator;
 
 public class RoomService implements IRoomService {
     private final IRoomDao roomDao;
+    private final Status.Type[] types;
     private final Comparator<Room> SORT_BY_PRICE = Comparator.comparing(firstRoom -> String.valueOf(firstRoom.getPrice()));
     private final Comparator<Room> SORT_BY_CLASSIFICATION = Comparator.comparing(Room::getClassification);
     private final Comparator<Room> SORT_BY_ROOM_NUMBER = Comparator.comparing(firstRoom -> String.valueOf(firstRoom.getRoomNumber()));
 
-    public RoomService(IRoomDao roomDao) {
+    public RoomService(IRoomDao roomDao, Status.Type[] types) {
         this.roomDao = roomDao;
+        this.types = types;
     }
 
     @Override
@@ -44,7 +45,7 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public Status getStatus(int index) {
+    public Status.Type getStatus(int index) {
         return roomDao.read(index).getStatus();
     }
 
@@ -65,7 +66,7 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void changeStatus(int index, Status status) {
+    public void changeStatus(int index, Status.Type status) {
         Room room = new Room(roomDao.read(index));
         try {
             room.setStatus(status);
@@ -102,7 +103,7 @@ public class RoomService implements IRoomService {
 
     private void showFreeRoom() {
         for (int i = 1; i <= roomDao.readAll().size(); i++) {
-            if (roomDao.read(i).getStatus() instanceof Free) {
+            if (roomDao.read(i).getStatus().equals(types[0])) {
                 System.out.print(roomDao.read(i));
             }
         }
@@ -112,7 +113,7 @@ public class RoomService implements IRoomService {
     public void numFreeRoom() {
         int counter = 0;
         for (int i = 1; i <= roomDao.readAll().size(); i++) {
-            if (roomDao.read(i).getStatus() instanceof Free) {
+            if (roomDao.read(i).getStatus().equals(types[0])) {
                 counter++;
             }
         }

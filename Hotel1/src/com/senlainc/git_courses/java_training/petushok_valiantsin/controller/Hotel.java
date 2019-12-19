@@ -4,34 +4,32 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IA
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Free;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.*;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
 import java.time.LocalDate;
 
 public class Hotel {
+    private final Status.Type[] types;
     private final IGuestService guestService;
     private final IRoomService roomService;
     private final IAttendanceService attendanceService;
     private final IOrderService orderService;
 
-    public Hotel(IGuestService guestService, IRoomService roomService, IAttendanceService attendanceService, IOrderService orderService) {
+    public Hotel(IGuestService guestService, IRoomService roomService, IAttendanceService attendanceService, IOrderService orderService, Status.Type[] types) {
         this.guestService = guestService;
         this.roomService = roomService;
         this.attendanceService = attendanceService;
         this.orderService = orderService;
+        this.types = types;
     }
 
     public void createRoom() {
-        roomService.add(new Room(203, "President", (short) 4, (short) 6, new Free(), 330.0));
-        roomService.add(new Room(312, "Business", (short) 1, (short) 2, new Free(), 170.0));
-        roomService.add(new Room(401, "Lux", (short) 2, (short) 4, new Free(), 230.0));
-        roomService.add(new Room(105, "Lux", (short) 2, (short) 4, new Free(), 230.0));
-        roomService.add(new Room(506, "President", (short) 5, (short) 6, new Free(), 230.0));
+        roomService.add(new Room(203, "President", (short) 4, (short) 6, types[0], 330.0));
+        roomService.add(new Room(312, "Business", (short) 1, (short) 2, types[0], 170.0));
+        roomService.add(new Room(401, "Lux", (short) 2, (short) 4, types[0], 230.0));
+        roomService.add(new Room(105, "Lux", (short) 2, (short) 4, types[0], 230.0));
+        roomService.add(new Room(506, "President", (short) 5, (short) 6, types[0], 230.0));
     }
 
     public void createGuest() {

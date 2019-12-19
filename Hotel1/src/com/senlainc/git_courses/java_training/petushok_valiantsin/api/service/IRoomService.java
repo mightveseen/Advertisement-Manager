@@ -1,7 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.api.service;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Status;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Status;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
 public interface IRoomService {
@@ -13,11 +13,11 @@ public interface IRoomService {
 
     int getSize();
 
-    Status getStatus(int index);
+    Status.Type getStatus(int index);
 
     void changePrice(int index, double price);
 
-    void changeStatus(int index, Status status);
+    void changeStatus(int index, Status.Type status);
 
     void show(String parameter);
 

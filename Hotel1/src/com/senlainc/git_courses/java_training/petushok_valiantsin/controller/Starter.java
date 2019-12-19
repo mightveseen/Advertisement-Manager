@@ -8,6 +8,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IA
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Status;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.AttendanceDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.GuestDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.OrderDao;
@@ -20,17 +21,18 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.service.RoomSe
 import java.time.LocalDate;
 
 public class Starter {
+    private static final Status.Type[] types = Status.Type.values();
     private static final IGuestDao guestDao = new GuestDao();
     private static final IRoomDao roomDao = new RoomDao();
     private static final IAttendanceDao attendanceDao = new AttendanceDao();
     private static final IOrderDao orderDao = new OrderDao();
     private static final IGuestService guestService = new GuestService(guestDao);
-    private static final IRoomService roomService = new RoomService(roomDao);
+    private static final IRoomService roomService = new RoomService(roomDao, types);
     private static final IAttendanceService attendanceService = new AttendanceService(attendanceDao);
-    private static final IOrderService orderService = new OrderService(orderDao, roomService, guestService, attendanceService);
+    private static final IOrderService orderService = new OrderService(orderDao, roomService, guestService, attendanceService, types);
 
     public static void main(String[] args) {
-        Hotel hotel = new Hotel(guestService, roomService, attendanceService, orderService);
+        Hotel hotel = new Hotel(guestService, roomService, attendanceService, orderService, types);
         /* Create operations */
         hotel.createRoom();
         hotel.createGuest();

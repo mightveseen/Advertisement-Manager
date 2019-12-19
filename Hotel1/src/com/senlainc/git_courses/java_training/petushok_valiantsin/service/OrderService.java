@@ -6,37 +6,37 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IG
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Free;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Rented;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.Served;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Status;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
 import java.time.LocalDate;
 import java.util.Comparator;
 
 public class OrderService implements IOrderService {
+    private final Status.Type[] types;
     private final IOrderDao orderDao;
     private final IRoomService roomService;
     private final IGuestService guestService;
     private final IAttendanceService attendanceService;
     private final Comparator<Order> SORT_BY_DATE = Comparator.comparing(Order::getEndDate);
 
-    public OrderService(IOrderDao orderDao, IRoomService roomService, IGuestService guestService, IAttendanceService attendanceService) {
+    public OrderService(IOrderDao orderDao, IRoomService roomService, IGuestService guestService, IAttendanceService attendanceService, Status.Type[] types) {
         this.orderDao = orderDao;
         this.guestService = guestService;
         this.roomService = roomService;
         this.attendanceService = attendanceService;
+        this.types = types;
     }
 
     @Override
     public void add(Order order) {
-        if (roomService.getStatus(order.getRoomIndex()) instanceof Served || roomService.getStatus(order.getRoomIndex()) instanceof Rented) {
+        if (roomService.getStatus(order.getRoomIndex()).equals(types[1]) || roomService.getStatus(order.getRoomIndex()).equals(types[2])) {
             System.err.println("Room now is not available");
             return;
         }
         orderDao.create(order);
         orderDao.read(orderDao.readAll().size()).setPrice(roomService.getPrice(order.getRoomIndex()));
-        roomService.changeStatus(order.getRoomIndex(), new Rented());
+        roomService.changeStatus(order.getRoomIndex(), types[1]);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class OrderService implements IOrderService {
             return;
         }
         orderDao.delete(index);
-        roomService.changeStatus(index, new Free());
+        roomService.changeStatus(index, types[2]);
     }
 
     @Override
@@ -83,14 +83,14 @@ public class OrderService implements IOrderService {
     public void showAfterDate(LocalDate freeDate) {
         System.out.print("\n\nRoom will be available after [" + freeDate + "]:");
         for (int i = 1; i <= roomService.getSize(); i++) {
-            if (roomService.getStatus(i) instanceof Rented && i <= orderDao.readAll().size()) {
+            if (roomService.getStatus(i).equals(types[1]) && i <= orderDao.readAll().size()) {
                 if (freeDate.isAfter(orderDao.read(i).getEndDate())) {
                     System.out.print(roomService.getRoom(i) + " - End date: ["
                             + orderDao.read(i).getEndDate() + "]");
                     continue;
                 }
             }
-            if (roomService.getStatus(i) instanceof Free) {
+            if (roomService.getStatus(i).equals(types[0])) {
                 System.out.print(roomService.getRoom(i));
             }
         }
