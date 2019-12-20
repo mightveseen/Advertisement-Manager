@@ -31,7 +31,7 @@ public class GuestService implements IGuestService {
 
     @Override
     public void changeInfoContact(int index, String information) {
-        Guest guest = new Guest(guestDao.read(index));
+        Guest guest = guestDao.read(index);
         guest.setInfoContact(information);
         guestDao.update(guest);
     }
@@ -55,8 +55,7 @@ public class GuestService implements IGuestService {
 
     @Override
     public int[] sortByAlphabet() {
-        MyList<Guest> myList = new MyList<>();
-        createBufList(myList);
+        MyList<Guest> myList = new MyList<>(guestDao.readAll());
         myList.sort(SORT_BY_ALPHABET);
         return getGuestIndex(myList);
     }
@@ -67,11 +66,5 @@ public class GuestService implements IGuestService {
             guestIndex[i] = myList.get(i).getId();
         }
         return guestIndex;
-    }
-
-    private void createBufList(MyList<Guest> myList) {
-        for (int i = 1; i <= guestDao.readAll().size(); i++) {
-            myList.add(guestDao.read(i));
-        }
     }
 }

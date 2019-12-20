@@ -110,7 +110,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public MyList<Order> sort(String parameter) {
-        MyList<Order> myList = new MyList<>();
+        MyList<Order> myList = new MyList<>(orderDao.readAll());
         switch (parameter) {
             case "date":
                 sortByDate(myList);
@@ -122,14 +122,7 @@ public class OrderService implements IOrderService {
         return null;
     }
 
-    private void createBufList(MyList<Order> myList) {
-        for (int i = 1; i <= orderDao.readAll().size(); i++) {
-            myList.add(orderDao.read(i));
-        }
-    }
-
     private void sortByDate(MyList<Order> myList) {
-        createBufList(myList);
         myList.sort(SORT_BY_DATE);
     }
 

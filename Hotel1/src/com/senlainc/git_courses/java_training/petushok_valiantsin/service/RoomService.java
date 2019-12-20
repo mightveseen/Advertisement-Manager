@@ -56,24 +56,16 @@ public class RoomService implements IRoomService {
 
     @Override
     public void changePrice(int index, double price) {
-        Room room = new Room(roomDao.read(index));
-        try {
-            room.setPrice(price);
-            roomDao.update(room);
-        } catch (Exception e) {
-            System.err.println("Wrong data.");
-        }
+        Room room = roomDao.read(index);
+        room.setPrice(price);
+        roomDao.update(room);
     }
 
     @Override
     public void changeStatus(int index, Status.StatusType status) {
-        Room room = new Room(roomDao.read(index));
-        try {
-            room.setStatus(status);
-            roomDao.update(room);
-        } catch (Exception e) {
-            System.err.println("Wrong data.");
-        }
+        Room room = roomDao.read(index);
+        room.setStatus(status);
+        roomDao.update(room);
     }
 
     @Override
@@ -122,8 +114,7 @@ public class RoomService implements IRoomService {
 
     @Override
     public MyList<Room> sort(String parameter) {
-        MyList<Room> myList = new MyList<>();
-        createBufList(myList);
+        MyList<Room> myList = new MyList<>(roomDao.readAll());
         switch (parameter) {
             case "price":
                 sortByPrice(myList);
@@ -136,12 +127,6 @@ public class RoomService implements IRoomService {
                 return myList;
         }
         return null;
-    }
-
-    private void createBufList(MyList<Room> myList) {
-        for (int i = 1; i <= roomDao.readAll().size(); i++) {
-            myList.add(roomDao.read(i));
-        }
     }
 
     private void sortByPrice(MyList<Room> myList) {

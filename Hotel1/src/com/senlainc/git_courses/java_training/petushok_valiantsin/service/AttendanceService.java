@@ -42,15 +42,14 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     public void changePrice(int index, double price) {
-        Attendance attendance = new Attendance(attendanceDao.read(index));
+        Attendance attendance = attendanceDao.read(index);
         attendance.setPrice(price);
         attendanceDao.update(attendance);
     }
 
     @Override
     public MyList<Attendance> sort(String parameter) {
-        MyList<Attendance> myList = new MyList<>();
-        createBufList(myList);
+        MyList<Attendance> myList = new MyList<>(attendanceDao.readAll());
         switch (parameter) {
             case "section":
                 sortBySection(myList);
@@ -60,12 +59,6 @@ public class AttendanceService implements IAttendanceService {
                 return myList;
         }
         return null;
-    }
-
-    private void createBufList(MyList<Attendance> myList) {
-        for (int i = 1; i <= attendanceDao.readAll().size(); i++) {
-            myList.add(attendanceDao.read(i));
-        }
     }
 
     private void sortBySection(MyList<Attendance> myList) {
