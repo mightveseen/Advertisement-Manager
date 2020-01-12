@@ -1,26 +1,32 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui;
 
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.MenuIndex;
+
 public class MenuItem {
-//    private final int id;
+    private final int id = new MenuIndex().getIndex();
     private final String title;
-    private final IAction action;
+    private IAction action;
     private final Menu nextMenu;
 
-    public MenuItem(String title, IAction action, Menu nextMenu) {
-        this.action = action;
+    public MenuItem(String title, Menu nextMenu) {
         this.title = title;
         this.nextMenu = nextMenu;
     }
 
-    public String getTitle() {
-        return this.title;
+    public int getId() {
+        return this.id;
     }
 
-    public IAction getAction() {
-        return this.action;
+    public void setAction(IAction action) {
+        this.action = action;
     }
 
-    public Menu getNextMenu() {
-        return this.nextMenu;
+    public void doAction() {
+        action.execute();
+    }
+
+    @Override
+    public String toString() {
+        return id + ")" + title;
     }
 }

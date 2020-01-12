@@ -1,4 +1,4 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.controller;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.ui;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IAttendanceService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
@@ -25,9 +25,6 @@ public class Hotel {
     }
 
     public void createRoom() {
-        /**
-         * Наверное это слегка колхозно сделано, но ты проверь и укажи на ошибки ))
-         */
         Status.StatusType free = statusType[0];
         roomService.add(new Room(203, "President", (short) 4, (short) 6, free, 330.0));
         roomService.add(new Room(312, "Business", (short) 1, (short) 2, free, 170.0));
@@ -52,7 +49,6 @@ public class Hotel {
         orderService.add(new Order(2, 4, LocalDate.of(2019, 3, 12), roomService.getPrice(3)));
         orderService.add(new Order(1, 1, LocalDate.of(2019, 1, 3), roomService.getPrice(4)));
         orderService.add(new Order(3, 2, LocalDate.of(2019, 2, 23), roomService.getPrice(2)));
-
     }
 
     public void numGuest() {
