@@ -8,7 +8,7 @@ public class Room {
     private final String classification;
     private final short roomNumber;
     private final short capacity;
-    private Status.StatusType status;
+    private Status.RoomStatus status;
     private double price;
 
     public Room(Room room) {
@@ -21,7 +21,7 @@ public class Room {
         this.price = room.getPrice();
     }
 
-    public Room(int number, String classification, short roomNumber, short capacity, Status.StatusType status, double price) {
+    public Room(int number, String classification, short roomNumber, short capacity, Status.RoomStatus status, double price) {
         this.id = new RoomIndex().getIndex();
         this.number = number;
         this.classification = classification;
@@ -51,11 +51,11 @@ public class Room {
         return this.roomNumber;
     }
 
-    public Status.StatusType getStatus() {
+    public Status.RoomStatus getStatus() {
         return this.status;
     }
 
-    public void setStatus(Status.StatusType status) {
+    public void setStatus(Status.RoomStatus status) {
         this.status = status;
     }
 
@@ -69,7 +69,7 @@ public class Room {
 
     @Override
     public String toString() {
-        return "\n" + id + ")" + number + ", "
+        return id + ")" + number + ", "
                 + classification + ", " + roomNumber + ", "
                 + status.getName() + ", " + price;
     }

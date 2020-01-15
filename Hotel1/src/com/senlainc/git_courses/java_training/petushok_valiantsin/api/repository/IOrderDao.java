@@ -1,7 +1,8 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
+
+import java.util.List;
 
 public interface IOrderDao {
     void create(Order order);
@@ -10,7 +11,7 @@ public interface IOrderDao {
 
     void update(Order order);
 
-    MyList<Order> readAll();
+    List<Order> readAll();
 
     Order read(int index);
 

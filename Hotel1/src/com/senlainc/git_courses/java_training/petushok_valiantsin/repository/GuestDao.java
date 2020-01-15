@@ -2,48 +2,41 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.repository;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IGuestDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuestDao implements IGuestDao {
-    private final MyList<Guest> guestMyList = new MyList<>();
+    private final List<Guest> guestList = new ArrayList<>();
 
     @Override
     public void create(Guest guest) {
-        guestMyList.add(guest);
+        guestList.add(guest);
     }
 
     @Override
     public void delete(int index) {
-        for (int i = 0; i < guestMyList.size(); i++) {
-            if (guestMyList.get(i).getId() == index) {
-                guestMyList.remove(i);
-                return;
-            }
+        try {
+            guestList.remove(guestList.stream().filter(i -> i.getId() == index).findFirst().orElse(null));
+        } catch (NullPointerException ignored) {
         }
     }
 
     @Override
     public void update(Guest guest) {
-        for (int i = 0; i < guestMyList.size(); i++) {
-            if (guestMyList.get(i).getId() == guest.getId()) {
-                guestMyList.add(i, guest);
-                return;
-            }
+        try {
+            guestList.add(guestList.stream().filter(i -> i.getId() == guest.getId()).findFirst().orElse(null).getId(), guest);
+        } catch (NullPointerException ignored) {
         }
     }
 
     @Override
-    public MyList<Guest> readAll() {
-        return guestMyList;
+    public List<Guest> readAll() {
+        return guestList;
     }
 
     @Override
     public Guest read(int index) {
-        for (int i = 0; i < guestMyList.size(); i++) {
-            if (guestMyList.get(i).getId() == index) {
-                return guestMyList.get(i);
-            }
-        }
-        return null;
+        return guestList.stream().filter(i -> i.getId() == index).findFirst().orElse(null);
     }
 }

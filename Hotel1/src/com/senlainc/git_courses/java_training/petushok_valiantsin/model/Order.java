@@ -1,11 +1,12 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.OrderIndex;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Order {
     private final int id;
@@ -13,7 +14,7 @@ public class Order {
     private final int guestIndex;
     private final int roomIndex;
     private final LocalDate startDate;
-    private MyList<Integer> attendanceIndex;
+    private List<Integer> attendanceIndex;
     private LocalDate endDate;
     private double price;
 
@@ -24,7 +25,7 @@ public class Order {
         this.roomIndex = order.getRoomIndex();
         this.startDate = order.getStartDate();
         this.endDate = order.getEndDate();
-        this.attendanceIndex = new MyList<>(order.getAttendanceIndex());
+        this.attendanceIndex = new ArrayList<>(order.getAttendanceIndex());
         this.price = order.getPrice();
     }
 
@@ -75,17 +76,17 @@ public class Order {
         this.endDate = endDate;
     }
 
-    public MyList<Integer> getAttendanceIndex() {
+    public List<Integer> getAttendanceIndex() {
         return this.attendanceIndex;
     }
 
-    public void setAttendanceIndex(MyList<Integer> attendanceIndex) {
+    public void setAttendanceIndex(List<Integer> attendanceIndex) {
         this.attendanceIndex = attendanceIndex;
     }
 
     @Override
     public String toString() {
-        return "\n" + id + ")" + orderDate + ", "
+        return id + ")" + orderDate + ", "
                 + guestIndex + ", " + roomIndex + ", ["
                 + startDate + ", " + endDate + "], " + price;
     }

@@ -2,49 +2,41 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.repository;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IAttendanceDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AttendanceDao implements IAttendanceDao {
-    private final MyList<Attendance> attendanceMyList = new MyList<>();
+    private final List<Attendance> attendanceList = new ArrayList<>();
 
     @Override
     public void create(Attendance attendance) {
-        attendanceMyList.add(attendance);
+        attendanceList.add(attendance);
     }
 
     @Override
     public void delete(int index) {
-        for (int i = 0; i < attendanceMyList.size(); i++) {
-            if (attendanceMyList.get(i).getId() == index) {
-                attendanceMyList.remove(i);
-                return;
-            }
+        try {
+            attendanceList.remove(attendanceList.stream().filter(i -> i.getId() == index).findFirst().orElse(null));
+        } catch (NullPointerException ignored) {
         }
     }
 
     @Override
     public void update(Attendance attendance) {
-        for (int i = 0; i < attendanceMyList.size(); i++) {
-            if (attendanceMyList.get(i).getId() == attendance.getId()) {
-                attendanceMyList.add(i, attendance);
-                return;
-            }
+        try {
+            attendanceList.add(attendanceList.stream().filter(i -> i.getId() == attendance.getId()).findFirst().orElse(null).getId(), attendance);
+        } catch (NullPointerException ignored) {
         }
     }
 
     @Override
-    public MyList<Attendance> readAll() {
-        return attendanceMyList;
+    public List<Attendance> readAll() {
+        return attendanceList;
     }
 
     @Override
     public Attendance read(int index) {
-        for (int i = 0; i < attendanceMyList.size(); i++) {
-            if (attendanceMyList.get(i).getId() == index) {
-                return attendanceMyList.get(i);
-            }
-        }
-        return null;
+        return attendanceList.stream().filter(i -> i.getId() == index).findFirst().orElse(null);
     }
-
 }

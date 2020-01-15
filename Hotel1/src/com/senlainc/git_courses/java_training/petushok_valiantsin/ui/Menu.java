@@ -12,12 +12,7 @@ public class Menu {
     }
 
     public MenuItem getItem(int index) {
-        for (int i = 0; i < menuItemList.size(); i++) {
-            if (index == menuItemList.get(i).getId()) {
-                return menuItemList.get(i);
-            }
-        }
-        return null;
+        return menuItemList.stream().filter(i -> i.getId() == index).findFirst().orElse(null);
     }
 
     public void addItem(MenuItem menuItem) {
@@ -30,6 +25,6 @@ public class Menu {
         for (MenuItem item : menuItemList) {
             menu.append(item).append("\n");
         }
-        return name + "\n" + menu;
+        return menu.toString();
     }
 }

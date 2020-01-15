@@ -3,14 +3,15 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IAttendanceDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IAttendanceService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 public class AttendanceService implements IAttendanceService {
     private final IAttendanceDao attendanceDao;
     private final Comparator<Attendance> SORT_BY_SECTION = Comparator.comparing(Attendance::getSection);
-    private final Comparator<Attendance> SORT_BY_PRICE = Comparator.comparing(firstAttendance -> String.valueOf(firstAttendance.getPrice()));
+    private final Comparator<Attendance> SORT_BY_PRICE = Comparator.comparing(attendance -> String.valueOf(attendance.getPrice()));
 
     public AttendanceService(IAttendanceDao attendanceDao) {
         this.attendanceDao = attendanceDao;
@@ -48,8 +49,8 @@ public class AttendanceService implements IAttendanceService {
     }
 
     @Override
-    public MyList<Attendance> sort(String parameter) {
-        MyList<Attendance> myList = new MyList<>(attendanceDao.readAll());
+    public List<Attendance> sort(String parameter) {
+        List<Attendance> myList = new ArrayList<>(attendanceDao.readAll());
         switch (parameter) {
             case "section":
                 sortBySection(myList);
@@ -61,11 +62,11 @@ public class AttendanceService implements IAttendanceService {
         return null;
     }
 
-    private void sortBySection(MyList<Attendance> myList) {
+    private void sortBySection(List<Attendance> myList) {
         myList.sort(SORT_BY_SECTION);
     }
 
-    private void sortByPrice(MyList<Attendance> myList) {
+    private void sortByPrice(List<Attendance> myList) {
         myList.sort(SORT_BY_PRICE);
     }
 }

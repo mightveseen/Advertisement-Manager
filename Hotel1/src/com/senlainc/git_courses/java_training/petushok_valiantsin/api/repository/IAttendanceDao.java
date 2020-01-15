@@ -1,7 +1,8 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
+
+import java.util.List;
 
 public interface IAttendanceDao {
     void create(Attendance attendance);
@@ -10,7 +11,7 @@ public interface IAttendanceDao {
 
     void update(Attendance attendance);
 
-    MyList<Attendance> readAll();
+    List<Attendance> readAll();
 
     Attendance read(int index);
 }

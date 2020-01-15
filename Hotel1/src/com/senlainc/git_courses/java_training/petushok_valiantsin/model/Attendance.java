@@ -44,6 +44,6 @@ public class Attendance {
 
     @Override
     public String toString() {
-        return "\n" + id + ")" + name + ", " + section + ", " + price;
+        return id + ")" + name + ", " + section + ", " + price;
     }
 }

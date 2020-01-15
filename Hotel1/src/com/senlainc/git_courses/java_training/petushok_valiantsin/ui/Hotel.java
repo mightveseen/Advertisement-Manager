@@ -5,27 +5,25 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IG
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.*;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Hotel {
-    private final Status.StatusType[] statusType;
     private final IGuestService guestService;
     private final IRoomService roomService;
     private final IAttendanceService attendanceService;
     private final IOrderService orderService;
 
-    public Hotel(IGuestService guestService, IRoomService roomService, IAttendanceService attendanceService, IOrderService orderService, Status.StatusType[] statusType) {
+    public Hotel(IGuestService guestService, IRoomService roomService, IAttendanceService attendanceService, IOrderService orderService) {
         this.guestService = guestService;
         this.roomService = roomService;
         this.attendanceService = attendanceService;
         this.orderService = orderService;
-        this.statusType = statusType;
     }
 
     public void createRoom() {
-        Status.StatusType free = statusType[0];
+        Status.RoomStatus free = Status.RoomStatus.FREE;
         roomService.add(new Room(203, "President", (short) 4, (short) 6, free, 330.0));
         roomService.add(new Room(312, "Business", (short) 1, (short) 2, free, 170.0));
         roomService.add(new Room(401, "Lux", (short) 2, (short) 4, free, 230.0));
@@ -60,12 +58,12 @@ public class Hotel {
     }
 
     public void sortRoom(String parameter) {
-        MyList<Room> myList = roomService.sort(parameter);
+        List<Room> myList = roomService.sort(parameter);
         roomService.show(myList);
     }
 
     public void sortOrder(String parameter) {
-        MyList<Order> myList = orderService.sort(parameter);
+        List<Order> myList = orderService.sort(parameter);
         orderService.show(myList);
     }
 

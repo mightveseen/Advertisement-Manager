@@ -13,6 +13,12 @@ public class MenuItem {
         this.nextMenu = nextMenu;
     }
 
+    public MenuItem(String title, IAction action, Menu nextMenu) {
+        this.title = title;
+        this.action = action;
+        this.nextMenu = nextMenu;
+    }
+
     public int getId() {
         return this.id;
     }
@@ -23,6 +29,10 @@ public class MenuItem {
 
     public void doAction() {
         action.execute();
+    }
+
+    public Menu getNextMenu() {
+        return this.nextMenu;
     }
 
     @Override

@@ -4,20 +4,19 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Status;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 public class RoomService implements IRoomService {
     private final IRoomDao roomDao;
-    private final Status.StatusType[] statusType;
-    private final Comparator<Room> SORT_BY_PRICE = Comparator.comparing(firstRoom -> String.valueOf(firstRoom.getPrice()));
+    private final Comparator<Room> SORT_BY_PRICE = Comparator.comparing(room -> String.valueOf(room.getPrice()));
     private final Comparator<Room> SORT_BY_CLASSIFICATION = Comparator.comparing(Room::getClassification);
-    private final Comparator<Room> SORT_BY_ROOM_NUMBER = Comparator.comparing(firstRoom -> String.valueOf(firstRoom.getRoomNumber()));
+    private final Comparator<Room> SORT_BY_ROOM_NUMBER = Comparator.comparing(room -> String.valueOf(room.getRoomNumber()));
 
-    public RoomService(IRoomDao roomDao, Status.StatusType[] statusType) {
+    public RoomService(IRoomDao roomDao) {
         this.roomDao = roomDao;
-        this.statusType = statusType;
     }
 
     @Override
@@ -45,7 +44,7 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public Status.StatusType getStatus(int index) {
+    public Status.RoomStatus getStatus(int index) {
         return roomDao.read(index).getStatus();
     }
 
@@ -62,7 +61,7 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void changeStatus(int index, Status.StatusType status) {
+    public void changeStatus(int index, Status.RoomStatus status) {
         Room room = roomDao.read(index);
         room.setStatus(status);
         roomDao.update(room);
@@ -81,40 +80,35 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void show(MyList<Room> myList) {
-        for (int i = 0; i < myList.size(); i++) {
-            System.out.print(myList.get(i));
+    public void show(List<Room> myList) {
+        for (Room room : myList) {
+            System.out.println(room);
         }
     }
 
     private void showAllRoom() {
         for (int i = 1; i <= roomDao.readAll().size(); i++) {
-            System.out.print(roomDao.read(i));
+            System.out.println(roomDao.read(i));
         }
     }
 
     private void showFreeRoom() {
         for (int i = 1; i <= roomDao.readAll().size(); i++) {
-            if (roomDao.read(i).getStatus().equals(statusType[0])) {
-                System.out.print(roomDao.read(i));
+            if (roomDao.read(i).getStatus().equals(Status.RoomStatus.FREE)) {
+                System.out.println(roomDao.read(i));
             }
         }
     }
 
     @Override
     public void numFreeRoom() {
-        int counter = 0;
-        for (int i = 1; i <= roomDao.readAll().size(); i++) {
-            if (roomDao.read(i).getStatus().equals(statusType[0])) {
-                counter++;
-            }
-        }
+        final long counter = roomDao.readAll().stream().filter(i -> i.getStatus().equals(Status.RoomStatus.FREE)).count();
         System.out.println("\nNumber of free room: " + counter);
     }
 
     @Override
-    public MyList<Room> sort(String parameter) {
-        MyList<Room> myList = new MyList<>(roomDao.readAll());
+    public List<Room> sort(String parameter) {
+        List<Room> myList = new ArrayList<>(roomDao.readAll());
         switch (parameter) {
             case "price":
                 sortByPrice(myList);
@@ -129,15 +123,15 @@ public class RoomService implements IRoomService {
         return null;
     }
 
-    private void sortByPrice(MyList<Room> myList) {
+    private void sortByPrice(List<Room> myList) {
         myList.sort(SORT_BY_PRICE);
     }
 
-    private void sortByClassification(MyList<Room> myList) {
+    private void sortByClassification(List<Room> myList) {
         myList.sort(SORT_BY_CLASSIFICATION);
     }
 
-    private void sortByRoomNumber(MyList<Room> myList) {
+    private void sortByRoomNumber(List<Room> myList) {
         myList.sort(SORT_BY_ROOM_NUMBER);
     }
 }

@@ -1,7 +1,8 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
+
+import java.util.List;
 
 public interface IRoomDao {
     void create(Room room);
@@ -10,7 +11,7 @@ public interface IRoomDao {
 
     void update(Room room);
 
-    MyList<Room> readAll();
+    List<Room> readAll();
 
     Room read(int index);
 }

@@ -1,7 +1,8 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.api.service;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
+
+import java.util.List;
 
 public interface IAttendanceService {
     void add(Attendance attendance);
@@ -14,5 +15,5 @@ public interface IAttendanceService {
 
     Attendance get(int index);
 
-    MyList<Attendance> sort(String parameter);
+    List<Attendance> sort(String parameter);
 }

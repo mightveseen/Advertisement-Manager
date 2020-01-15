@@ -5,9 +5,12 @@ import java.util.Scanner;
 public class MenuController {
     private final MenuBuilder menuBuilder;
     private MenuNavigator menuNavigator;
+    private Menu menu;
 
     public MenuController(Hotel hotel) {
         this.menuBuilder = new MenuBuilder(hotel);
+        this.menu = menuBuilder.getRootMenu();
+        this.menuNavigator = new MenuNavigator(menu);
     }
 
     public void showMenu() {
@@ -16,16 +19,15 @@ public class MenuController {
         try {
             menuNavigator.navigate(new Scanner(System.in).nextInt());
         } catch (NullPointerException e) {
-            System.err.println("Wrong number of operation");
+            System.err.println("Wrong number/format of operation");
         }
     }
 
     public void run() throws InterruptedException {
-        Menu menu = menuBuilder.getRootMenu();
-        this.menuNavigator = new MenuNavigator(menu);
         do {
             showMenu();
             Thread.sleep(3000);
+            menu = menuNavigator.getCurrentMenu();
         } while (true);
     }
 }
