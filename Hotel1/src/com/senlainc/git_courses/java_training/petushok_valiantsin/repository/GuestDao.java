@@ -31,6 +31,6 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public Guest read(int index) {
-        return guestList.stream().filter(i -> i.getId() == index).findFirst().orElse(null);
+        return guestList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(NullPointerException::new);
     }
 }

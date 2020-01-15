@@ -16,6 +16,7 @@ public class Order {
     private final LocalDate startDate;
     private List<Integer> attendanceIndex;
     private LocalDate endDate;
+    private Status.OrderStatus status;
     private double price;
 
     public Order(Order order) {
@@ -26,6 +27,7 @@ public class Order {
         this.startDate = order.getStartDate();
         this.endDate = order.getEndDate();
         this.attendanceIndex = new ArrayList<>(order.getAttendanceIndex());
+        this.status = order.getStatus();
         this.price = order.getPrice();
     }
 
@@ -37,6 +39,7 @@ public class Order {
         this.roomIndex = room;
         this.startDate = LocalDate.now();
         this.endDate = endDate;
+        this.status = Status.OrderStatus.ACTIVE;
         this.price = price;
     }
 
@@ -74,6 +77,14 @@ public class Order {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public Status.OrderStatus getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(Status.OrderStatus status) {
+        this.status = status;
     }
 
     public List<Integer> getAttendanceIndex() {

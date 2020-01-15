@@ -43,9 +43,8 @@ public class RoomService implements IRoomService {
         try {
             return roomDao.read(index);
         } catch (NullPointerException e){
-            System.err.println("Room with index: " + index + " dont exists.");
+            throw new NullPointerException("Room with index: " + index + " dont exists.");
         }
-        return null;
     }
     @Override
     public void changePrice(int index, double price) {
@@ -95,9 +94,9 @@ public class RoomService implements IRoomService {
     }
 
     private void showFreeRoom() {
-        for (int i = 1; i <= roomDao.readAll().size(); i++) {
-            if (roomDao.read(i).getStatus().equals(Status.RoomStatus.FREE)) {
-                System.out.println(roomDao.read(i));
+        for(Room room : roomDao.readAll()) {
+            if (room.getStatus().equals(Status.RoomStatus.FREE)) {
+                System.out.println(room);
             }
         }
     }

@@ -36,9 +36,8 @@ public class AttendanceService implements IAttendanceService {
         try {
             return attendanceDao.read(index).getPrice();
         } catch (NullPointerException e) {
-            System.err.println("Attendance with index: " + index + " dont exists.");
+            throw new NullPointerException("Attendance with index: " + index + " dont exists.");
         }
-        return 0;
     }
 
     @Override
@@ -46,9 +45,8 @@ public class AttendanceService implements IAttendanceService {
         try {
             return attendanceDao.read(index);
         } catch (NullPointerException e) {
-            System.err.println("Attendance with index: " + index + " dont exists.");
+            throw new NullPointerException("Attendance with index: " + index + " dont exists.");
         }
-        return null;
     }
 
     @Override

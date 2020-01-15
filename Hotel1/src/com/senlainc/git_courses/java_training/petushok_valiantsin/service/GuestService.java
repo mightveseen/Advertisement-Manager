@@ -48,16 +48,15 @@ public class GuestService implements IGuestService {
 
     @Override
     public void show() {
-        for (int i = 1; i <= guestDao.readAll().size(); i++) {
-            System.out.println(guestDao.read(i));
+        for(Guest guest : guestDao.readAll()) {
+            System.out.println(guest);
         }
     }
 
     @Override
     public Guest getGuest(int index) {
         if(index > guestDao.readAll().size()) {
-            System.err.println("Guest with index: " + index + " dont exists.");
-            throw new NullPointerException();
+            throw new NullPointerException("Guest with index: " + index + " dont exists.");
         }
         return guestDao.read(index);
     }

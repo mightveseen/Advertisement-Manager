@@ -33,8 +33,7 @@ public class OrderService implements IOrderService {
     @Override
     public void add(Order order) {
         if (roomService.getRoom(order.getRoomIndex()).getStatus().equals(Status.RoomStatus.RENTED) || roomService.getRoom(order.getRoomIndex()).getStatus().equals(Status.RoomStatus.SERVED)) {
-            System.err.println("Room now is not available");
-            return;
+            throw new NullPointerException("Room now is not available");
         }
         orderDao.create(order);
         orderDao.read(orderDao.readAll().size()).setPrice(roomService.getRoom(order.getRoomIndex()).getPrice());
