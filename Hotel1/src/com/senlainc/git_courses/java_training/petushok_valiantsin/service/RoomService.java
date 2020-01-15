@@ -34,40 +34,19 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public double getPrice(int index) {
-        try {
-            return roomDao.read(index).getPrice();
-        } catch (NullPointerException e) {
-            System.err.println("Room with index: " + index + " dont exists.");
-        }
-        return 0;
-    }
-
-    @Override
-    public int getSize() {
-        return roomDao.readAll().size();
-    }
-
-    @Override
-    public Status.RoomStatus getStatus(int index) {
-        try {
-            return roomDao.read(index).getStatus();
-        } catch (NullPointerException e) {
-            System.err.println("Room with index: " + index + " dont exists.");
-        }
-        return null;
+    public List<Room> getRoomList() {
+        return roomDao.readAll();
     }
 
     @Override
     public Room getRoom(int index) {
         try {
             return roomDao.read(index);
-        } catch (NullPointerException e) {
+        } catch (NullPointerException e){
             System.err.println("Room with index: " + index + " dont exists.");
         }
         return null;
     }
-
     @Override
     public void changePrice(int index, double price) {
         try {

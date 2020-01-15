@@ -10,11 +10,9 @@ public interface IRoomService {
 
     void delete(int index);
 
-    double getPrice(int index);
+    List<Room> getRoomList();
 
-    int getSize();
-
-    Status.RoomStatus getStatus(int index);
+    Room getRoom(int index);
 
     void changePrice(int index, double price);
 
@@ -23,8 +21,6 @@ public interface IRoomService {
     void show(String parameter);
 
     void show(List<Room> myList);
-
-    Room getRoom(int index);
 
     void numFreeRoom();
 

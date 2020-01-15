@@ -44,9 +44,9 @@ public class Hotel {
     }
 
     public void createOrder() {
-        orderService.add(new Order(2, 4, LocalDate.of(2019, 3, 12), roomService.getPrice(3)));
-        orderService.add(new Order(1, 1, LocalDate.of(2019, 1, 3), roomService.getPrice(4)));
-        orderService.add(new Order(3, 2, LocalDate.of(2019, 2, 23), roomService.getPrice(2)));
+        orderService.add(new Order(2, 4, LocalDate.of(2019, 3, 12), roomService.getRoom(3).getPrice()));
+        orderService.add(new Order(1, 1, LocalDate.of(2019, 1, 3), roomService.getRoom(4).getPrice()));
+        orderService.add(new Order(3, 2, LocalDate.of(2019, 2, 23), roomService.getRoom(2).getPrice()));
     }
 
     public void numGuest() {

@@ -6,6 +6,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IG
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Status;
 
 import java.time.LocalDate;
@@ -31,12 +32,12 @@ public class OrderService implements IOrderService {
 
     @Override
     public void add(Order order) {
-        if (roomService.getStatus(order.getRoomIndex()).equals(Status.RoomStatus.RENTED) || roomService.getStatus(order.getRoomIndex()).equals(Status.RoomStatus.SERVED)) {
+        if (roomService.getRoom(order.getRoomIndex()).getStatus().equals(Status.RoomStatus.RENTED) || roomService.getRoom(order.getRoomIndex()).getStatus().equals(Status.RoomStatus.SERVED)) {
             System.err.println("Room now is not available");
             return;
         }
         orderDao.create(order);
-        orderDao.read(orderDao.readAll().size()).setPrice(roomService.getPrice(order.getRoomIndex()));
+        orderDao.read(orderDao.readAll().size()).setPrice(roomService.getRoom(order.getRoomIndex()).getPrice());
         roomService.changeStatus(order.getRoomIndex(), Status.RoomStatus.RENTED);
     }
 
@@ -52,9 +53,9 @@ public class OrderService implements IOrderService {
 
     @Override
     public void show() {
-        for (int i = 1; i <= orderDao.readAll().size(); i++) {
-            System.out.println(guestService.getGuest(orderDao.read(i).getGuestIndex()) + "\n" + roomService.getRoom(orderDao.read(i).getRoomIndex())
-                    + "\nTotal amount: " + orderDao.read(i).getPrice());
+        for(Order order : orderDao.readAll()) {
+            System.out.println(guestService.getGuest(order.getGuestIndex()) + "\n" + roomService.getRoom(order.getRoomIndex())
+                    + "\nTotal amount: " + order.getPrice());
         }
     }
 
@@ -77,32 +78,32 @@ public class OrderService implements IOrderService {
     @Override
     public void showAfterDate(LocalDate date) {
         System.out.print("\n\nRoom will be available after [" + date + "]:");
-        for (int i = 1; i <= roomService.getSize(); i++) {
-            if (roomService.getStatus(i).equals(Status.RoomStatus.RENTED) && i <= orderDao.readAll().size()) {
-                if (date.isAfter(orderDao.read(i).getEndDate())) {
-                    System.out.print(roomService.getRoom(i) + " - End date: ["
-                            + orderDao.read(i).getEndDate() + "]");
-                    continue;
-                }
-            }
-            if (roomService.getStatus(i).equals(Status.RoomStatus.FREE)) {
-                System.out.print(roomService.getRoom(i));
-            }
-        }
+//        for(Room room : roomService.getRoomList()) {
+//            if (room.getStatus().equals(Status.RoomStatus.RENTED)) {
+//                if (date.isAfter(orderDao.read(i).getEndDate())) {
+//                    System.out.print(roomService.getRoom(i) + " - End date: ["
+//                            + orderDao.read(i).getEndDate() + "]");
+//                    continue;
+//                }
+//            }
+//            if (roomService.getStatus(i).equals(Status.RoomStatus.FREE)) {
+//                System.out.print(roomService.getRoom(i));
+//            }
+//        }
     }
 
     @Override
     public void addAttendance(int orderIndex, int attendanceIndex) {
-        Order order = new Order(orderDao.read(orderIndex));
-        List<Integer> myList = new LinkedList<>(order.getAttendanceIndex());
         try {
+            Order order = new Order(orderDao.read(orderIndex));
+            List<Integer> myList = new LinkedList<>(order.getAttendanceIndex());
             myList.add(attendanceIndex);
             order.setAttendanceIndex(myList);
             double price = order.getPrice() + attendanceService.getPrice(attendanceIndex);
             order.setPrice(price);
             orderDao.update(order);
         } catch (NullPointerException e) {
-            System.err.println("Something go wrong");
+            System.err.println("Failed to add attendance");
         }
     }
 
