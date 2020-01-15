@@ -42,12 +42,12 @@ public class OrderService implements IOrderService {
 
     @Override
     public void delete(int index) {
-        if (orderDao.readAll().size() < index) {
+        try {
+            orderDao.delete(index);
+            roomService.changeStatus(index, Status.RoomStatus.FREE);
+        } catch (NullPointerException e) {
             System.err.println("Order with index: " + index + " dont exists.");
-            return;
         }
-        orderDao.delete(index);
-        roomService.changeStatus(index, Status.RoomStatus.FREE);
     }
 
     @Override
@@ -69,8 +69,8 @@ public class OrderService implements IOrderService {
     @Override
     public void showGuestRoom(int index) {
         final List<Order> myList = orderDao.readAll().stream().filter(i -> i.getGuestIndex() == index).limit(3).collect(Collectors.toList());
-        for (int i = 0; i < myList.size(); i++) {
-            System.out.println(guestService.getGuest(myList.get(i).getGuestIndex()) + "\n" + roomService.getRoom(myList.get(i).getRoomIndex()));
+        for (Order order : myList) {
+            System.out.println(guestService.getGuest(order.getGuestIndex()) + "\n" + roomService.getRoom(order.getRoomIndex()));
         }
     }
 
@@ -95,11 +95,15 @@ public class OrderService implements IOrderService {
     public void addAttendance(int orderIndex, int attendanceIndex) {
         Order order = new Order(orderDao.read(orderIndex));
         List<Integer> myList = new LinkedList<>(order.getAttendanceIndex());
-        myList.add(attendanceIndex);
-        order.setAttendanceIndex(myList);
-        double price = order.getPrice() + attendanceService.getPrice(attendanceIndex);
-        order.setPrice(price);
-        orderDao.update(order);
+        try {
+            myList.add(attendanceIndex);
+            order.setAttendanceIndex(myList);
+            double price = order.getPrice() + attendanceService.getPrice(attendanceIndex);
+            order.setPrice(price);
+            orderDao.update(order);
+        } catch (NullPointerException e) {
+            System.err.println("Something go wrong");
+        }
     }
 
     @Override
@@ -123,7 +127,10 @@ public class OrderService implements IOrderService {
     private void sortByAlphabet(List<Order> myList) {
         int[] guestIndex = guestService.sortByAlphabet();
         for (int index : guestIndex) {
-            myList.add(orderDao.readAll().stream().filter(i -> i.getGuestIndex() == index).findFirst().orElse(null));
+            try {
+                myList.add(orderDao.readAll().stream().filter(i -> i.getGuestIndex() == index).findFirst().orElseThrow(NullPointerException::new));
+            } catch (NullPointerException ignored) {
+            }
         }
     }
 

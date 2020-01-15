@@ -16,18 +16,12 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public void delete(int index) {
-        try {
-            attendanceList.remove(attendanceList.stream().filter(i -> i.getId() == index).findFirst().orElse(null));
-        } catch (NullPointerException ignored) {
-        }
+        attendanceList.remove(attendanceList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(NullPointerException::new));
     }
 
     @Override
     public void update(Attendance attendance) {
-        try {
-            attendanceList.add(attendanceList.stream().filter(i -> i.getId() == attendance.getId()).findFirst().orElse(null).getId(), attendance);
-        } catch (NullPointerException ignored) {
-        }
+        attendanceList.add(attendanceList.stream().filter(i -> i.getId() == attendance.getId()).findFirst().orElseThrow(NullPointerException::new).getId(), attendance);
     }
 
     @Override
@@ -37,6 +31,6 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public Attendance read(int index) {
-        return attendanceList.stream().filter(i -> i.getId() == index).findFirst().orElse(null);
+        return attendanceList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(NullPointerException::new);
     }
 }

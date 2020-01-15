@@ -16,18 +16,12 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public void delete(int index) {
-        try {
-            orderList.remove(orderList.stream().filter(i -> i.getId() == index).findFirst().orElse(null));
-        } catch (NullPointerException ignored) {
-        }
+        orderList.remove(orderList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(NullPointerException::new));
     }
 
     @Override
     public void update(Order order) {
-        try {
-            orderList.add(orderList.stream().filter(i -> i.getId() == order.getId()).findFirst().orElse(null).getId(), order);
-        } catch (NullPointerException ignored) {
-        }
+        orderList.add(orderList.stream().filter(i -> i.getId() == order.getId()).findFirst().orElseThrow(NullPointerException::new).getId(), order);
     }
 
     @Override
@@ -37,6 +31,6 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public Order read(int index) {
-        return orderList.stream().filter(i -> i.getId() == index).findFirst().orElse(null);
+        return orderList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(NullPointerException::new);
     }
 }

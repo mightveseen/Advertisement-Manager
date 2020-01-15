@@ -26,16 +26,21 @@ public class RoomService implements IRoomService {
 
     @Override
     public void delete(int index) {
-        if (roomDao.readAll().size() < index) {
+        try {
+            roomDao.delete(index);
+        } catch (NullPointerException e){
             System.err.println("Room with index: " + index + " dont exists.");
-            return;
         }
-        roomDao.delete(index);
     }
 
     @Override
     public double getPrice(int index) {
-        return roomDao.read(index).getPrice();
+        try {
+            return roomDao.read(index).getPrice();
+        } catch (NullPointerException e) {
+            System.err.println("Room with index: " + index + " dont exists.");
+        }
+        return 0;
     }
 
     @Override
@@ -45,26 +50,44 @@ public class RoomService implements IRoomService {
 
     @Override
     public Status.RoomStatus getStatus(int index) {
-        return roomDao.read(index).getStatus();
+        try {
+            return roomDao.read(index).getStatus();
+        } catch (NullPointerException e) {
+            System.err.println("Room with index: " + index + " dont exists.");
+        }
+        return null;
     }
 
     @Override
     public Room getRoom(int index) {
-        return roomDao.read(index);
+        try {
+            return roomDao.read(index);
+        } catch (NullPointerException e) {
+            System.err.println("Room with index: " + index + " dont exists.");
+        }
+        return null;
     }
 
     @Override
     public void changePrice(int index, double price) {
-        Room room = roomDao.read(index);
-        room.setPrice(price);
-        roomDao.update(room);
+        try {
+            Room room = roomDao.read(index);
+            room.setPrice(price);
+            roomDao.update(room);
+        } catch (NullPointerException e) {
+            System.err.println("Room with index: " + index + " dont exists.");
+        }
     }
 
     @Override
     public void changeStatus(int index, Status.RoomStatus status) {
-        Room room = roomDao.read(index);
-        room.setStatus(status);
-        roomDao.update(room);
+        try {
+            Room room = roomDao.read(index);
+            room.setStatus(status);
+            roomDao.update(room);
+        } catch (NullPointerException e) {
+            System.err.println("Room with index: " + index + " dont exists.");
+        }
     }
 
     @Override
@@ -87,8 +110,8 @@ public class RoomService implements IRoomService {
     }
 
     private void showAllRoom() {
-        for (int i = 1; i <= roomDao.readAll().size(); i++) {
-            System.out.println(roomDao.read(i));
+        for (Room room : roomDao.readAll()) {
+            System.out.println(room);
         }
     }
 

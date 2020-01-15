@@ -24,28 +24,42 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     public void delete(int index) {
-        if (attendanceDao.readAll().size() < index) {
+        try {
+            attendanceDao.delete(index);
+        } catch (NullPointerException e) {
             System.err.println("Attendance with index: " + index + " dont exists.");
-            return;
         }
-        attendanceDao.delete(index);
     }
 
     @Override
     public double getPrice(int index) {
-        return attendanceDao.read(index).getPrice();
+        try {
+            return attendanceDao.read(index).getPrice();
+        } catch (NullPointerException e) {
+            System.err.println("Attendance with index: " + index + " dont exists.");
+        }
+        return 0;
     }
 
     @Override
     public Attendance get(int index) {
-        return attendanceDao.read(index);
+        try {
+            return attendanceDao.read(index);
+        } catch (NullPointerException e) {
+            System.err.println("Attendance with index: " + index + " dont exists.");
+        }
+        return null;
     }
 
     @Override
     public void changePrice(int index, double price) {
-        Attendance attendance = attendanceDao.read(index);
-        attendance.setPrice(price);
-        attendanceDao.update(attendance);
+        try {
+            Attendance attendance = attendanceDao.read(index);
+            attendance.setPrice(price);
+            attendanceDao.update(attendance);
+        } catch (NullPointerException e) {
+            System.err.println("Attendance with index: " + index + " dont exists.");
+        }
     }
 
     @Override

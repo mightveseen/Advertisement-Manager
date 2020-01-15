@@ -23,18 +23,22 @@ public class GuestService implements IGuestService {
 
     @Override
     public void delete(int index) {
-        if (guestDao.readAll().size() < index) {
+        try {
+            guestDao.delete(index);
+        } catch (NullPointerException e) {
             System.err.println("Guest with index: " + index + " dont exists.");
-            return;
         }
-        guestDao.delete(index);
     }
 
     @Override
     public void changeInfoContact(int index, String information) {
-        Guest guest = guestDao.read(index);
-        guest.setInfoContact(information);
-        guestDao.update(guest);
+        try {
+            Guest guest = guestDao.read(index);
+            guest.setInfoContact(information);
+            guestDao.update(guest);
+        } catch (NullPointerException e) {
+            System.err.println("Guest with index: " + index + " dont exists.");
+        }
     }
 
     @Override
@@ -44,13 +48,17 @@ public class GuestService implements IGuestService {
 
     @Override
     public void show() {
-        for (int i = 0; i < guestDao.readAll().size(); i++) {
+        for (int i = 1; i <= guestDao.readAll().size(); i++) {
             System.out.println(guestDao.read(i));
         }
     }
 
     @Override
     public Guest getGuest(int index) {
+        if(index > guestDao.readAll().size()) {
+            System.err.println("Guest with index: " + index + " dont exists.");
+            throw new NullPointerException();
+        }
         return guestDao.read(index);
     }
 

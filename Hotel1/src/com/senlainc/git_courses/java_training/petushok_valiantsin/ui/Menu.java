@@ -12,7 +12,7 @@ public class Menu {
     }
 
     public MenuItem getItem(int index) {
-        return menuItemList.stream().filter(i -> i.getId() == index).findFirst().orElse(null);
+        return menuItemList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(NullPointerException::new);
     }
 
     public void addItem(MenuItem menuItem) {

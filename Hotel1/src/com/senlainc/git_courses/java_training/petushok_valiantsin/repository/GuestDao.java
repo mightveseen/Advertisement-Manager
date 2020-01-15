@@ -16,18 +16,12 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public void delete(int index) {
-        try {
-            guestList.remove(guestList.stream().filter(i -> i.getId() == index).findFirst().orElse(null));
-        } catch (NullPointerException ignored) {
-        }
+        guestList.remove(guestList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(NullPointerException::new));
     }
 
     @Override
     public void update(Guest guest) {
-        try {
-            guestList.add(guestList.stream().filter(i -> i.getId() == guest.getId()).findFirst().orElse(null).getId(), guest);
-        } catch (NullPointerException ignored) {
-        }
+        guestList.add(guestList.stream().filter(i -> i.getId() == guest.getId()).findFirst().orElseThrow(NullPointerException::new).getId(), guest);
     }
 
     @Override
