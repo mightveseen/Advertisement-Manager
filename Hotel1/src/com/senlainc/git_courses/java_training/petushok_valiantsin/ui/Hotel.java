@@ -10,16 +10,25 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Hotel {
+    private static Hotel instance;
     private final IGuestService guestService;
     private final IRoomService roomService;
     private final IAttendanceService attendanceService;
     private final IOrderService orderService;
 
-    public Hotel(IGuestService guestService, IRoomService roomService, IAttendanceService attendanceService, IOrderService orderService) {
+    private Hotel(IGuestService guestService, IRoomService roomService, IAttendanceService attendanceService, IOrderService orderService) {
         this.guestService = guestService;
         this.roomService = roomService;
         this.attendanceService = attendanceService;
         this.orderService = orderService;
+    }
+
+    public static void setInstance(IGuestService guestService, IRoomService roomService, IAttendanceService attendanceService, IOrderService orderService) {
+        instance = new Hotel(guestService, roomService, attendanceService, orderService);
+    }
+
+    public static Hotel getInstance() {
+        return instance;
     }
 
     public void createRoom() {
@@ -49,6 +58,22 @@ public class Hotel {
         orderService.add(new Order(3, 2, LocalDate.of(2019, 2, 23), roomService.getRoom(2).getPrice()));
     }
 
+    public void addAttendance(Attendance attendance) {
+        attendanceService.add(attendance);
+    }
+
+    public void addRoom(Room room) {
+        roomService.add(room);
+    }
+
+    public void addGuest(Guest guest) {
+        guestService.add(guest);
+    }
+
+    public void addOrder(Order order) {
+        orderService.add(order);
+    }
+    
     public void numGuest() {
         guestService.num();
     }
@@ -87,11 +112,23 @@ public class Hotel {
         guestService.show();
     }
 
-    public void showAttendance(int index) {
+    public void showOrderAttendance(int index) {
         orderService.showAttendance(index);
     }
 
-    public void addAttendance(int orderIndex, int attendanceIndex) {
+    public void showAttendance() {
+        attendanceService.showAttendance();
+    }
+
+    public void changeAttendancePrice(int index, double price) {
+        attendanceService.changePrice(index, price);
+    }
+
+    public void addOrderAttendance(int orderIndex, int attendanceIndex) {
         orderService.addAttendance(orderIndex, attendanceIndex);
+    }
+
+    public void setPriceAttendance(int index, double price) {
+        attendanceService.changePrice(index, price);
     }
 }

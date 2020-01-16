@@ -7,17 +7,18 @@ public class MenuController {
     private MenuNavigator menuNavigator;
     private Menu menu;
 
-    public MenuController(Hotel hotel) {
-        this.menuBuilder = new MenuBuilder(hotel);
+    public MenuController() {
+        this.menuBuilder = new MenuBuilder();
         this.menu = menuBuilder.getRootMenu();
         this.menuNavigator = new MenuNavigator(menu);
     }
 
     public void showMenu() {
-        menuNavigator.printMenu();
-        System.out.print("Choose operation: ");
         try {
-            menuNavigator.navigate(new Scanner(System.in).nextInt());
+            menuNavigator.printMenu();
+            System.out.print("Choose operation: ");
+            int index = new Scanner(System.in).nextInt();
+            menuNavigator.navigate(index);
         } catch (NullPointerException e) {
             System.err.println("Wrong number/format of operation");
         }
@@ -26,7 +27,7 @@ public class MenuController {
     public void run() throws InterruptedException {
         do {
             showMenu();
-            Thread.sleep(3000);
+//            Thread.sleep(3000);
             menu = menuNavigator.getCurrentMenu();
         } while (true);
     }

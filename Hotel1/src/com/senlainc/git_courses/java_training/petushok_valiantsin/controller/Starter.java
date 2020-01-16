@@ -30,8 +30,8 @@ public class Starter {
     private static final IOrderService orderService = new OrderService(orderDao, roomService, guestService, attendanceService);
 
     public static void main(String[] args) throws InterruptedException {
-        Hotel hotel = new Hotel(guestService, roomService, attendanceService, orderService);
-        MenuController menuController = new MenuController(hotel);
+        Hotel.setInstance(guestService, roomService, attendanceService, orderService);
+        MenuController menuController = new MenuController();
         menuController.run();
     }
 }

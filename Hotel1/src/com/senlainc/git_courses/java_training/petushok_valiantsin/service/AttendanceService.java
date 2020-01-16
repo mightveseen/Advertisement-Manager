@@ -61,6 +61,13 @@ public class AttendanceService implements IAttendanceService {
     }
 
     @Override
+    public void showAttendance() {
+        for (Attendance attendance : attendanceDao.readAll()) {
+            System.out.println(attendance);
+        }
+    }
+
+    @Override
     public List<Attendance> sort(String parameter) {
         List<Attendance> myList = new ArrayList<>(attendanceDao.readAll());
         switch (parameter) {

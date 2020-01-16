@@ -6,7 +6,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IG
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Status;
 
 import java.time.LocalDate;
@@ -43,7 +42,7 @@ public class OrderService implements IOrderService {
     @Override
     public void delete(int index) {
         try {
-            orderDao.delete(index);
+            orderDao.read(index).setStatus(Status.OrderStatus.DISABLED);
             roomService.changeStatus(index, Status.RoomStatus.FREE);
         } catch (NullPointerException e) {
             System.err.println("Order with index: " + index + " dont exists.");
