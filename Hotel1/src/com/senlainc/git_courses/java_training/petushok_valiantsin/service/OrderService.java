@@ -124,6 +124,7 @@ public class OrderService implements IOrderService {
     }
 
     private void sortByAlphabet(List<Order> myList) {
+        myList.clear();
         int[] guestIndex = guestService.sortByAlphabet();
         for (int index : guestIndex) {
             try {

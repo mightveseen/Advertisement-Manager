@@ -4,23 +4,19 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendan
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.Hotel;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.IAction;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.Scanner;
 
 public class AddAttendance implements IAction {
     @Override
     public void execute() {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-            System.out.print("Enter attendance name: ");
-            final String name = reader.readLine();
-            System.out.print("Enter attendance section: ");
-            final String section = reader.readLine();
-            System.out.print("Enter attendance price: ");
-            final double price = Double.parseDouble(reader.readLine());
-            Hotel.getInstance().addAttendance(new Attendance(name, section, price));
-        } catch (IOException e) {
-            System.err.println("Something go wrong");
-        }
+        Scanner scanner = new Scanner(System.in);
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Enter attendance name: ");
+        final String name = scanner.nextLine();
+        System.out.print("Enter attendance section: ");
+        final String section = scanner.nextLine();
+        System.out.print("Enter attendance price: ");
+        final double price = Double.parseDouble(scanner.nextLine());
+        Hotel.getInstance().addAttendance(new Attendance(name, section, price));
     }
 }

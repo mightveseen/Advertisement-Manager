@@ -27,7 +27,7 @@ public class MenuBuilder {
         orderMenuInit(order, orderSort);
         guestMenuInit(guest);
         attendanceMenuInit(attendance);
-        rootMenuInit(room, guest, attendance, room);
+        rootMenuInit(room, guest, attendance, order);
         roomSortMenuInit(roomSort);
         orderSortMenuInit(orderSort);
 

@@ -3,13 +3,11 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.ui;
 import java.util.Scanner;
 
 public class MenuController {
-    private final MenuBuilder menuBuilder;
     private MenuNavigator menuNavigator;
-    private Menu menu;
 
     public MenuController() {
-        this.menuBuilder = new MenuBuilder();
-        this.menu = menuBuilder.getRootMenu();
+        final MenuBuilder menuBuilder = new MenuBuilder();
+        final Menu menu = menuBuilder.getRootMenu();
         this.menuNavigator = new MenuNavigator(menu);
     }
 
@@ -17,18 +15,18 @@ public class MenuController {
         try {
             menuNavigator.printMenu();
             System.out.print("Choose operation: ");
-            int index = new Scanner(System.in).nextInt();
+            Integer index = Integer.parseInt(new Scanner(System.in).next());
             menuNavigator.navigate(index);
         } catch (NullPointerException e) {
             System.err.println("Wrong number/format of operation");
+        } catch (NumberFormatException e) {
+            System.err.println("You entered wrong data");
         }
     }
 
-    public void run() throws InterruptedException {
-        do {
+    public void run() {
+        while (true) {
             showMenu();
-//            Thread.sleep(3000);
-            menu = menuNavigator.getCurrentMenu();
-        } while (true);
+        }
     }
 }

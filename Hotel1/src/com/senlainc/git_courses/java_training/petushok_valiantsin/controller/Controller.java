@@ -19,7 +19,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.service.RoomSe
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.Hotel;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.MenuController;
 
-public class Starter {
+public class Controller {
     private static final IGuestDao guestDao = new GuestDao();
     private static final IRoomDao roomDao = new RoomDao();
     private static final IAttendanceDao attendanceDao = new AttendanceDao();
@@ -29,9 +29,8 @@ public class Starter {
     private static final IAttendanceService attendanceService = new AttendanceService(attendanceDao);
     private static final IOrderService orderService = new OrderService(orderDao, roomService, guestService, attendanceService);
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Hotel.setInstance(guestService, roomService, attendanceService, orderService);
-        MenuController menuController = new MenuController();
-        menuController.run();
+        new MenuController().run();
     }
 }

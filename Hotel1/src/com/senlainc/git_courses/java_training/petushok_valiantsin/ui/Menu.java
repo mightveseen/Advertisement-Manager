@@ -29,6 +29,7 @@ public class Menu {
         for (MenuItem item : menuItemList) {
             menu.append(item).append("\n");
         }
+        menu.deleteCharAt(menu.length() - 1);
         return menu.toString();
     }
 }

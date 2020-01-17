@@ -15,8 +15,4 @@ public class MenuNavigator {
         currentMenu.getItem(index).doAction();
         currentMenu = currentMenu.getItem(index).getNextMenu();
     }
-
-    public Menu getCurrentMenu() {
-        return this.currentMenu;
-    }
 }
