@@ -14,6 +14,6 @@ public class ChangePriceAttendance implements IAction {
         final int index = Integer.parseInt(scanner.nextLine());
         System.out.print("Enter price: ");
         final double price = Double.parseDouble(scanner.nextLine());
-        Hotel.getInstance().changeAttendancePrice(index, price);
+        Hotel.getInstance().changePriceAttendance(index, price);
     }
 }

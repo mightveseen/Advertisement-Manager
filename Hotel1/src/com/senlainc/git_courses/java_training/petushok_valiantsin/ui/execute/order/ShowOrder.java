@@ -1,21 +1,21 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.room;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.order;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.Hotel;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.IAction;
 
-public class ShowRoom implements IAction {
+public class ShowOrder implements IAction {
     private String parameter;
 
-    public ShowRoom(String parameter) {
+    public ShowOrder(String parameter) {
         this.parameter = parameter;
     }
 
     @Override
     public void execute() {
         if (parameter.equals("default")) {
-            Hotel.getInstance().showRoom("all");
+            Hotel.getInstance().showOrder();
             return;
         }
-        Hotel.getInstance().sortRoom(parameter);
+        Hotel.getInstance().sortOrder(parameter);
     }
 }

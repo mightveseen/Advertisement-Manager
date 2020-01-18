@@ -31,7 +31,7 @@ public class Order {
         this.price = order.getPrice();
     }
 
-    public Order(int guest, int room, LocalDate endDate, double price) {
+    public Order(int guest, int room, LocalDate endDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm / yyyy-MM-dd");
         this.id = new OrderIndex().getIndex();
         this.orderDate = LocalDateTime.now().format(formatter);
@@ -40,7 +40,6 @@ public class Order {
         this.startDate = LocalDate.now();
         this.endDate = endDate;
         this.status = Status.OrderStatus.ACTIVE;
-        this.price = price;
     }
 
     public int getId() {
@@ -95,10 +94,5 @@ public class Order {
         this.attendanceIndex = attendanceIndex;
     }
 
-    @Override
-    public String toString() {
-        return id + ")" + orderDate + ", "
-                + guestIndex + ", " + roomIndex + ", ["
-                + startDate + ", " + endDate + "], " + price;
-    }
+
 }

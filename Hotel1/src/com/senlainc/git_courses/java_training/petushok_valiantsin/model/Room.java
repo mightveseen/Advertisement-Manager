@@ -21,13 +21,13 @@ public class Room {
         this.price = room.getPrice();
     }
 
-    public Room(int number, String classification, short roomNumber, short capacity, Status.RoomStatus status, double price) {
+    public Room(int number, String classification, short roomNumber, short capacity, double price) {
         this.id = new RoomIndex().getIndex();
         this.number = number;
         this.classification = classification;
         this.roomNumber = roomNumber;
         this.capacity = capacity;
-        this.status = status;
+        this.status = Status.RoomStatus.FREE;
         this.price = price;
     }
 
@@ -71,6 +71,6 @@ public class Room {
     public String toString() {
         return id + ")" + number + ", "
                 + classification + ", " + roomNumber + ", "
-                + status.getName() + ", " + price;
+                + capacity + ", " + status.getName() + ", " + price;
     }
 }

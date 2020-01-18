@@ -1,6 +1,5 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.attendance;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.Hotel;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.IAction;
 
@@ -17,6 +16,6 @@ public class AddAttendance implements IAction {
         final String section = scanner.nextLine();
         System.out.print("Enter attendance price: ");
         final double price = Double.parseDouble(scanner.nextLine());
-        Hotel.getInstance().addAttendance(new Attendance(name, section, price));
+        Hotel.getInstance().addAttendance(name, section, price);
     }
 }

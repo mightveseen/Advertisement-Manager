@@ -4,6 +4,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -17,8 +18,8 @@ public class GuestService implements IGuestService {
     }
 
     @Override
-    public void add(Guest guest) {
-        guestDao.create(guest);
+    public void add(String firstName, String lastName, LocalDate birthday, String infoContact) {
+        guestDao.create(new Guest(firstName, lastName, birthday, infoContact));
     }
 
     @Override
@@ -43,7 +44,7 @@ public class GuestService implements IGuestService {
 
     @Override
     public void num() {
-        System.out.println("\nNumber of guest: " + guestDao.readAll().size());
+        System.out.println("Number of guest: " + guestDao.readAll().size());
     }
 
     @Override

@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface IOrderService {
-    void add(Order order);
+    void add(int guestIndex, int roomIndex, LocalDate endDate);
 
     void delete(int index);
 

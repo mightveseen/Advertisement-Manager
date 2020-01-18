@@ -8,6 +8,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Status;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RoomService implements IRoomService {
     private final IRoomDao roomDao;
@@ -21,6 +22,9 @@ public class RoomService implements IRoomService {
 
     @Override
     public void add(Room room) {
+        if (roomDao.readAll().stream().anyMatch(i -> i.getNumber() == room.getNumber())) {
+            throw new NullPointerException("Room with number: " + room.getNumber() + " already exists.");
+        }
         roomDao.create(room);
     }
 
@@ -82,29 +86,21 @@ public class RoomService implements IRoomService {
 
     @Override
     public void show(List<Room> myList) {
-        for (Room room : myList) {
-            System.out.println(room);
-        }
+        myList.forEach(System.out::println);
     }
 
     private void showAllRoom() {
-        for (Room room : roomDao.readAll()) {
-            System.out.println(room);
-        }
+        show(roomDao.readAll());
     }
 
     private void showFreeRoom() {
-        for(Room room : roomDao.readAll()) {
-            if (room.getStatus().equals(Status.RoomStatus.FREE)) {
-                System.out.println(room);
-            }
-        }
+        show(roomDao.readAll().stream().filter(i -> i.getStatus().equals(Status.RoomStatus.FREE)).collect(Collectors.toList()));
     }
 
     @Override
     public void numFreeRoom() {
         final long counter = roomDao.readAll().stream().filter(i -> i.getStatus().equals(Status.RoomStatus.FREE)).count();
-        System.out.println("\nNumber of free room: " + counter);
+        System.out.println("Number of free room: " + counter);
     }
 
     @Override

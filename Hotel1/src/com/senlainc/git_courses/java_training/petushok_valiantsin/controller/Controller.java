@@ -29,7 +29,7 @@ public class Controller {
     private static final IAttendanceService attendanceService = new AttendanceService(attendanceDao);
     private static final IOrderService orderService = new OrderService(orderDao, roomService, guestService, attendanceService);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Hotel.setInstance(guestService, roomService, attendanceService, orderService);
         new MenuController().run();
     }

@@ -2,8 +2,10 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.api.service;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 
+import java.time.LocalDate;
+
 public interface IGuestService {
-    void add(Guest guest);
+    void add(String firstName, String lastName, LocalDate birthday, String infoContact);
 
     void delete(int index);
 

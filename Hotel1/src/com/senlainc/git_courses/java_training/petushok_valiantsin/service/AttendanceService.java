@@ -18,8 +18,8 @@ public class AttendanceService implements IAttendanceService {
     }
 
     @Override
-    public void add(Attendance attendance) {
-        attendanceDao.create(attendance);
+    public void add(String name, String section, double price) {
+        attendanceDao.create(new Attendance(name, section, price));
     }
 
     @Override
