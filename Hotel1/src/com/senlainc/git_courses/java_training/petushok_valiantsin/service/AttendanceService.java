@@ -62,9 +62,7 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     public void showAttendance() {
-        for (Attendance attendance : attendanceDao.readAll()) {
-            System.out.println(attendance);
-        }
+        attendanceDao.readAll().forEach(System.out::println);
     }
 
     @Override

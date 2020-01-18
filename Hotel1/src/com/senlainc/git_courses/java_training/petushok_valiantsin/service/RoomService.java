@@ -107,10 +107,8 @@ public class RoomService implements IRoomService {
             case "room number":
                 sortByRoomNumber(myList);
                 return myList;
-            case "default":
-                return myList;
         }
-        return null;
+        return myList;
     }
 
     private void sortByPrice(List<Room> myList) {

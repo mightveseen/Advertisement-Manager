@@ -31,7 +31,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public void add(int guestIndex, int roomIndex, LocalDate endDate) {
-        if (roomService.getRoom(roomIndex).getStatus().equals(Status.RoomStatus.RENTED) || roomService.getRoom(roomIndex).getStatus().equals(Status.RoomStatus.RENTED)) {
+        if (roomService.getRoom(roomIndex).getStatus().equals(Status.RoomStatus.RENTED) || roomService.getRoom(roomIndex).getStatus().equals(Status.RoomStatus.SERVED)) {
             throw new NullPointerException("Room now is not available");
         }
         orderDao.create(new Order(guestIndex, roomIndex, endDate));
@@ -51,16 +51,12 @@ public class OrderService implements IOrderService {
 
     @Override
     public void show() {
-        for(Order order : orderDao.readAll()) {
-            show(order);
-        }
+        orderDao.readAll().forEach(this::show);
     }
 
     @Override
     public void show(List<Order> myList) {
-        for (Order order : myList) {
-            show(order);
-        }
+        myList.forEach(this::show);
     }
 
     private void show(Order order) {
@@ -75,8 +71,8 @@ public class OrderService implements IOrderService {
 
     @Override
     public void showGuestRoom(int index) {
-        final List<Order> myList = orderDao.readAll().stream().filter(i -> i.getGuestIndex() == index).limit(3).collect(Collectors.toList());
-        for (Order order : myList) {
+        final List<Order> orderList = orderDao.readAll().stream().filter(i -> i.getGuestIndex() == index).limit(3).collect(Collectors.toList());
+        for (Order order : orderList) {
             System.out.println(guestService.getGuest(order.getGuestIndex()) + "\n" + roomService.getRoom(order.getRoomIndex()));
         }
     }
@@ -84,7 +80,8 @@ public class OrderService implements IOrderService {
     @Override
     public void showAfterDate(LocalDate date) {
         System.out.println("Room will be available after [" + date + "]:");
-        for (Order order : orderDao.readAll().stream().filter(i -> i.getEndDate().isBefore(date) && i.getStatus().equals(Status.OrderStatus.ACTIVE)).collect(Collectors.toList())) {
+        final List<Order> orderList = orderDao.readAll().stream().filter(i -> i.getEndDate().isBefore(date) && i.getStatus().equals(Status.OrderStatus.ACTIVE)).collect(Collectors.toList());
+        for (Order order : orderList) {
             System.out.println(roomService.getRoom(order.getRoomIndex()) + " - End date: ["
                     + order.getEndDate() + "]");
         }
@@ -117,7 +114,7 @@ public class OrderService implements IOrderService {
                 sortByAlphabet(myList);
                 return myList;
         }
-        return null;
+        return myList;
     }
 
     private void sortByDate(List<Order> myList) {
@@ -133,9 +130,9 @@ public class OrderService implements IOrderService {
 
     public void showAttendance(int guestIndex) {
         try {
-            List<Integer> attendanceIndex = orderDao.readAll().stream().filter(i -> i.getGuestIndex() == guestIndex).findFirst().orElseThrow(NullPointerException::new).getAttendanceIndex();
+            List<Integer> attendanceIndexList = orderDao.readAll().stream().filter(i -> i.getGuestIndex() == guestIndex).findFirst().orElseThrow(NullPointerException::new).getAttendanceIndex();
             System.out.println(guestService.getGuest(guestIndex));
-            for (Object index : attendanceIndex) {
+            for (Object index : attendanceIndexList) {
                 if (index == null) {
                     break;
                 }

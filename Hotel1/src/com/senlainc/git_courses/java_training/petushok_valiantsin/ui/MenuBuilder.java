@@ -37,6 +37,7 @@ public class MenuBuilder {
         roomTypeMenuInit(roomType, roomSortAll, roomSortFree);
         orderSortMenuInit(orderSort);
 
+        /** For example */
         Hotel.getInstance().createAttendance();
         Hotel.getInstance().createGuest();
         Hotel.getInstance().createRoom();
@@ -53,8 +54,7 @@ public class MenuBuilder {
         rootMenu.addItem(new MenuItem("Guest", guest));
         rootMenu.addItem(new MenuItem("Attendance", attendance));
         rootMenu.addItem(new MenuItem("Order", order));
-        AtomicInteger index = new AtomicInteger(1);
-        rootMenu.getMenuItemList().forEach(i -> i.setId(index.getAndIncrement()));
+        menuNumeration(rootMenu);
     }
 
     private void roomMenuInit(Menu room, Menu roomType, Menu roomStatus) {
@@ -64,23 +64,20 @@ public class MenuBuilder {
         room.addItem(new MenuItem("Show after date", new ShowDateRoom(), rootMenu));
         room.addItem(new MenuItem("Show number free room's", new ShowNumberFreeRoom(), rootMenu));
         room.addItem(new MenuItem("Show room", roomType));
-        AtomicInteger index = new AtomicInteger(1);
-        room.getMenuItemList().forEach(i -> i.setId(index.getAndIncrement()));
+        menuNumeration(room);
     }
 
     private void guestMenuInit(Menu guest) {
         guest.addItem(new MenuItem("Add guest", new AddGuest(), rootMenu));
         guest.addItem(new MenuItem("Show number guest", new ShowNumberGuest(), rootMenu));
         guest.addItem(new MenuItem("Show last tree room's", new ShowThreeRoomGuest(), rootMenu));
-        AtomicInteger index = new AtomicInteger(1);
-        guest.getMenuItemList().forEach(i -> i.setId(index.getAndIncrement()));
+        menuNumeration(guest);
     }
 
     private void attendanceMenuInit(Menu attendance) {
         attendance.addItem(new MenuItem("Add attendance", new AddAttendance(), rootMenu));
         attendance.addItem(new MenuItem("Change price", new ChangePriceAttendance(), rootMenu));
-        AtomicInteger index = new AtomicInteger(1);
-        attendance.getMenuItemList().forEach(i -> i.setId(index.getAndIncrement()));
+        menuNumeration(attendance);
     }
 
     private void orderMenuInit(Menu order, Menu orderSort) {
@@ -89,16 +86,14 @@ public class MenuBuilder {
         order.addItem(new MenuItem("Add attendance", new AddAttendanceOrder(), rootMenu));
         order.addItem(new MenuItem("Show attendance order", new ShowAttendanceOrder(), rootMenu));
         order.addItem(new MenuItem("Show order's", orderSort));
-        AtomicInteger index = new AtomicInteger(1);
-        order.getMenuItemList().forEach(i -> i.setId(index.getAndIncrement()));
+        menuNumeration(order);
     }
 
     private void orderSortMenuInit(Menu orderSort) {
         orderSort.addItem(new MenuItem("Default", new ShowOrder("default"), rootMenu));
         orderSort.addItem(new MenuItem("Sort by date", new ShowOrder("date"), rootMenu));
         orderSort.addItem(new MenuItem("Sort by alphabet", new ShowOrder("alphabet"), rootMenu));
-        AtomicInteger index = new AtomicInteger(1);
-        orderSort.getMenuItemList().forEach(i -> i.setId(index.getAndIncrement()));
+        menuNumeration(orderSort);
     }
 
     private void roomSortMenuInit(Menu roomSort, String type) {
@@ -106,22 +101,24 @@ public class MenuBuilder {
         roomSort.addItem(new MenuItem("Sort by price", new ShowRoom(type, "price"), rootMenu));
         roomSort.addItem(new MenuItem("Sort by classification", new ShowRoom(type, "classification"), rootMenu));
         roomSort.addItem(new MenuItem("Sort by room number", new ShowRoom(type, "room number"), rootMenu));
-        AtomicInteger index = new AtomicInteger(1);
-        roomSort.getMenuItemList().forEach(i -> i.setId(index.getAndIncrement()));
+        menuNumeration(roomSort);
     }
 
     private void roomStatusMenuInit(Menu roomStatus) {
         roomStatus.addItem(new MenuItem("Rented", new ChangeStatusRoom(Status.RoomStatus.RENTED), rootMenu));
         roomStatus.addItem(new MenuItem("Free", new ChangeStatusRoom(Status.RoomStatus.FREE), rootMenu));
         roomStatus.addItem(new MenuItem("Served", new ChangeStatusRoom(Status.RoomStatus.SERVED), rootMenu));
-        AtomicInteger index = new AtomicInteger(1);
-        roomStatus.getMenuItemList().forEach(i -> i.setId(index.getAndIncrement()));
+        menuNumeration(roomStatus);
     }
 
     private void roomTypeMenuInit(Menu roomType, Menu roomSortAll, Menu roomSortFree) {
         roomType.addItem(new MenuItem("Free", roomSortFree));
         roomType.addItem(new MenuItem("All", roomSortAll));
+        menuNumeration(roomType);
+    }
+
+    private void menuNumeration(Menu menu) {
         AtomicInteger index = new AtomicInteger(1);
-        roomType.getMenuItemList().forEach(i -> i.setId(index.getAndIncrement()));
+        menu.getMenuItemList().forEach(i -> i.setId(index.getAndIncrement()));
     }
 }
