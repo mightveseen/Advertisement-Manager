@@ -4,7 +4,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IA
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Status;
@@ -74,13 +73,13 @@ public class Hotel {
         roomService.changeStatus(index, status);
     }
 
-    public void sortRoom(String parameter) {
+    public void sortRoom(String type, String parameter) {
         List<Room> myList = roomService.sort(parameter);
-        roomService.show(myList);
+        roomService.show(type, myList);
     }
 
     public void showRoom(String parameter) {
-        roomService.show(parameter);
+        roomService.show(parameter, roomService.getRoomList());
     }
 
     public void numFreeRoom() {

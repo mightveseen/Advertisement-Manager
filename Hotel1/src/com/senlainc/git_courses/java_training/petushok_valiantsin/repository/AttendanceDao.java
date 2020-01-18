@@ -21,7 +21,7 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public void update(Attendance attendance) {
-        attendanceList.set(attendanceList.indexOf(attendance), attendance);
+        attendanceList.set(attendanceList.indexOf(attendanceList.stream().filter(i -> i.getId() == attendance.getId()).findFirst().orElseThrow(NullPointerException::new)), attendance);
     }
 
     @Override

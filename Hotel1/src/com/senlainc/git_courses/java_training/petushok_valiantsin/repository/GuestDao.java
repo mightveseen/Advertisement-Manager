@@ -21,7 +21,7 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public void update(Guest guest) {
-        guestList.set(guestList.indexOf(guest), guest);
+        guestList.set(guestList.indexOf(guestList.stream().filter(i -> i.getId() == guest.getId()).findFirst().orElseThrow(NullPointerException::new)), guest);
     }
 
     @Override

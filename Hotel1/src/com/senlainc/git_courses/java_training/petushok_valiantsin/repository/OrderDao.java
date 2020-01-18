@@ -21,7 +21,7 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public void update(Order order) {
-        orderList.set(orderList.indexOf(order), order);
+        orderList.set(orderList.indexOf(orderList.stream().filter(i -> i.getId() == order.getId()).findFirst().orElseThrow(NullPointerException::new)), order);
     }
 
     @Override

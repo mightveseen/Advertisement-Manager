@@ -12,9 +12,10 @@ public class MenuController {
     }
 
     public void showMenu() throws InterruptedException {
-        menuNavigator.printMenu();
-        System.out.print("Choose operation: ");
         try {
+            Thread.sleep(100);
+            menuNavigator.printMenu();
+            System.out.print("Choose operation: ");
             Integer index = Integer.parseInt(new Scanner(System.in).next());
             menuNavigator.navigate(index);
         } catch (NullPointerException e) {

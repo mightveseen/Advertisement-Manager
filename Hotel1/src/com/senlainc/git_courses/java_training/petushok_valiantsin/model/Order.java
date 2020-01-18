@@ -5,7 +5,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classi
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Order {
@@ -14,7 +14,7 @@ public class Order {
     private final int guestIndex;
     private final int roomIndex;
     private final LocalDate startDate;
-    private List<Integer> attendanceIndex;
+    private List<Integer> attendanceIndex = new LinkedList<>();
     private LocalDate endDate;
     private Status.OrderStatus status;
     private double price;
@@ -26,7 +26,7 @@ public class Order {
         this.roomIndex = order.getRoomIndex();
         this.startDate = order.getStartDate();
         this.endDate = order.getEndDate();
-        this.attendanceIndex = new ArrayList<>(order.getAttendanceIndex());
+        this.attendanceIndex = new LinkedList<>(order.getAttendanceIndex());
         this.status = order.getStatus();
         this.price = order.getPrice();
     }

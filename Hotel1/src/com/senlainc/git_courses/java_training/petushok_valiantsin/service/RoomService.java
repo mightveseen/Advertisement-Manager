@@ -73,28 +73,19 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void show(String parameter) {
+    public void show(String parameter, List<Room> myList) {
         switch (parameter) {
             case "all":
-                showAllRoom();
+                myList.forEach(System.out::println);
                 break;
             case "free":
-                showFreeRoom();
+                showFreeRoom(myList).forEach(System.out::println);
                 break;
         }
     }
 
-    @Override
-    public void show(List<Room> myList) {
-        myList.forEach(System.out::println);
-    }
-
-    private void showAllRoom() {
-        show(roomDao.readAll());
-    }
-
-    private void showFreeRoom() {
-        show(roomDao.readAll().stream().filter(i -> i.getStatus().equals(Status.RoomStatus.FREE)).collect(Collectors.toList()));
+    private List<Room> showFreeRoom(List<Room> myList) {
+        return myList.stream().filter(i -> i.getStatus().equals(Status.RoomStatus.FREE)).collect(Collectors.toList());
     }
 
     @Override
@@ -115,6 +106,8 @@ public class RoomService implements IRoomService {
                 return myList;
             case "room number":
                 sortByRoomNumber(myList);
+                return myList;
+            case "default":
                 return myList;
         }
         return null;

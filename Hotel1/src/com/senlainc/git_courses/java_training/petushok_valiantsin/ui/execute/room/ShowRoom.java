@@ -4,18 +4,16 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.Hotel;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.IAction;
 
 public class ShowRoom implements IAction {
-    private String parameter;
+    private final String type;
+    private final String parameter;
 
-    public ShowRoom(String parameter) {
+    public ShowRoom(String type, String parameter) {
         this.parameter = parameter;
+        this.type = type;
     }
 
     @Override
     public void execute() {
-        if (parameter.equals("default")) {
-            Hotel.getInstance().showRoom("all");
-            return;
-        }
-        Hotel.getInstance().sortRoom(parameter);
+        Hotel.getInstance().sortRoom(type, parameter);
     }
 }

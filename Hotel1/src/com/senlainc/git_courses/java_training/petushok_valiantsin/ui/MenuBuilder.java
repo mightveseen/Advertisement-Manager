@@ -19,10 +19,11 @@ public class MenuBuilder {
         final Menu room = new Menu("Room menu");
         final Menu order = new Menu("Order menu");
         final Menu attendance = new Menu("Attendance menu");
-        final Menu roomSort = new Menu("Sort room's");
-        final Menu roomType = new Menu("Type room");
         final Menu roomStatus = new Menu("Room status");
         final Menu orderSort = new Menu("Sort order's");
+        final Menu roomSortFree = new Menu("Sort room's(Free)");
+        final Menu roomSortAll = new Menu("Sort room's(All)");
+        final Menu roomType = new Menu("Type room");
 
         rootMenuInit(room, guest, attendance, order);
         roomMenuInit(room, roomType, roomStatus);
@@ -30,9 +31,10 @@ public class MenuBuilder {
         guestMenuInit(guest);
         attendanceMenuInit(attendance);
 
-        roomSortMenuInit(roomSort);
+        roomSortMenuInit(roomSortAll, "all");
+        roomSortMenuInit(roomSortFree, "free");
         roomStatusMenuInit(roomStatus);
-        roomTypeMenuInit(roomType, roomSort);
+        roomTypeMenuInit(roomType, roomSortAll, roomSortFree);
         orderSortMenuInit(orderSort);
 
         Hotel.getInstance().createAttendance();
@@ -99,11 +101,11 @@ public class MenuBuilder {
         orderSort.getMenuItemList().forEach(i -> i.setId(index.getAndIncrement()));
     }
 
-    private void roomSortMenuInit(Menu roomSort) {
-        roomSort.addItem(new MenuItem("Default", new ShowRoom("default"), rootMenu));
-        roomSort.addItem(new MenuItem("Sort by price", new ShowRoom("price"), rootMenu));
-        roomSort.addItem(new MenuItem("Sort by classification", new ShowRoom("classification"), rootMenu));
-        roomSort.addItem(new MenuItem("Sort by room number", new ShowRoom("room number"), rootMenu));
+    private void roomSortMenuInit(Menu roomSort, String type) {
+        roomSort.addItem(new MenuItem("Default", new ShowRoom(type, "default"), rootMenu));
+        roomSort.addItem(new MenuItem("Sort by price", new ShowRoom(type, "price"), rootMenu));
+        roomSort.addItem(new MenuItem("Sort by classification", new ShowRoom(type, "classification"), rootMenu));
+        roomSort.addItem(new MenuItem("Sort by room number", new ShowRoom(type, "room number"), rootMenu));
         AtomicInteger index = new AtomicInteger(1);
         roomSort.getMenuItemList().forEach(i -> i.setId(index.getAndIncrement()));
     }
@@ -116,9 +118,9 @@ public class MenuBuilder {
         roomStatus.getMenuItemList().forEach(i -> i.setId(index.getAndIncrement()));
     }
 
-    private void roomTypeMenuInit(Menu roomType, Menu roomSort) {
-        roomType.addItem(new MenuItem("Free", roomSort));
-        roomType.addItem(new MenuItem("All", roomSort));
+    private void roomTypeMenuInit(Menu roomType, Menu roomSortAll, Menu roomSortFree) {
+        roomType.addItem(new MenuItem("Free", roomSortFree));
+        roomType.addItem(new MenuItem("All", roomSortAll));
         AtomicInteger index = new AtomicInteger(1);
         roomType.getMenuItemList().forEach(i -> i.setId(index.getAndIncrement()));
     }

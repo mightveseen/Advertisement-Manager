@@ -21,7 +21,7 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public void update(Room room) {
-        roomList.set(roomList.indexOf(room), room);
+        roomList.set(roomList.indexOf(roomList.stream().filter(i -> i.getId() == room.getId()).findFirst().orElseThrow(NullPointerException::new)), room);
     }
 
     @Override
