@@ -20,14 +20,13 @@ public class AddGuest implements IAction {
         final String lastName = scanner.nextLine();
         System.out.print("Enter info contact(Email/Phone number): ");
         final String infoContact = scanner.nextLine();
-        System.out.print("Enter birthday(Format: YYYY-MM-DD): ");
         try {
+            System.out.print("Enter birthday(Format: YYYY-MM-DD): ");
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             final LocalDate birthday = LocalDate.parse(scanner.nextLine(), formatter);
             Hotel.getInstance().addGuest(firstName, lastName, birthday, infoContact);
         } catch (DateTimeParseException e) {
-//            throw new DateTimeParseException("ddd");
-            System.err.println("Wrong date format");
+            throw new NumberFormatException("Wrong format of date");
         }
     }
 }

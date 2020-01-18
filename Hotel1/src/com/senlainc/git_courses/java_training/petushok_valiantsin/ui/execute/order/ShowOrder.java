@@ -4,7 +4,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.Hotel;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.IAction;
 
 public class ShowOrder implements IAction {
-    private String parameter;
+    private final String parameter;
 
     public ShowOrder(String parameter) {
         this.parameter = parameter;

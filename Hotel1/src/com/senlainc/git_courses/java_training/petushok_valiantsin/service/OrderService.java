@@ -45,7 +45,7 @@ public class OrderService implements IOrderService {
             orderDao.read(index).setStatus(Status.OrderStatus.DISABLED);
             roomService.changeStatus(index, Status.RoomStatus.FREE);
         } catch (NullPointerException e) {
-            System.err.println("Order with index: " + index + " dont exists.");
+            throw new NullPointerException("Order with index: " + index + " dont exists.");
         }
     }
 
@@ -94,7 +94,7 @@ public class OrderService implements IOrderService {
     @Override
     public void addAttendance(int orderIndex, int attendanceIndex) {
         try {
-            Order order = orderDao.read(orderIndex);
+            Order order = new Order(orderDao.read(orderIndex));
             final List<Integer> myList = new LinkedList<>(order.getAttendanceIndex());
             myList.add(attendanceIndex);
             order.setAttendanceIndex(myList);
@@ -102,7 +102,7 @@ public class OrderService implements IOrderService {
             order.setPrice(price);
             orderDao.update(order);
         } catch (NullPointerException e) {
-            System.err.println("Failed to add attendance");
+            throw new NullPointerException("Failed to add attendance");
         }
     }
 
@@ -127,10 +127,7 @@ public class OrderService implements IOrderService {
     private void sortByAlphabet(List<Order> myList) {
         myList.clear();
         for (int index : guestService.sortByAlphabet()) {
-            try {
-                myList.add(orderDao.readAll().stream().filter(i -> i.getGuestIndex() == index).findFirst().orElseThrow(NullPointerException::new));
-            } catch (NullPointerException ignored) {
-            }
+            myList.add(orderDao.readAll().stream().filter(i -> i.getGuestIndex() == index).findFirst().orElseThrow(NullPointerException::new));
         }
     }
 
@@ -145,7 +142,7 @@ public class OrderService implements IOrderService {
                 System.out.println(attendanceService.get((int) index));
             }
         } catch (NullPointerException e) {
-            System.out.println("This guest didn't have attendance's");
+            throw new NullPointerException("This guest didn't have attendance's");
         }
 
     }

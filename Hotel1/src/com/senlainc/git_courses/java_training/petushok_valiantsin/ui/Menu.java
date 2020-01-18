@@ -23,6 +23,10 @@ public class Menu {
         menuItemList.add(menuItem);
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     @Override
     public String toString() {
         StringBuilder menu = new StringBuilder();

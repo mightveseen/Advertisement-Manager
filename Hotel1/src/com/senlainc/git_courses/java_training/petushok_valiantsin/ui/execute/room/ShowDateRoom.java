@@ -18,7 +18,7 @@ public class ShowDateRoom implements IAction {
             final LocalDate date = LocalDate.parse(scanner.nextLine(), formatter);
             Hotel.getInstance().showAfterDate(date);
         } catch (DateTimeParseException e) {
-            System.err.println("Wrong date format");
+            throw new NumberFormatException("Wrong format of date");
         }
     }
 }

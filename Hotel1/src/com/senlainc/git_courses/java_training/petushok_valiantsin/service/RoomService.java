@@ -33,7 +33,7 @@ public class RoomService implements IRoomService {
         try {
             roomDao.delete(index);
         } catch (NullPointerException e){
-            System.err.println("Room with index: " + index + " dont exists.");
+            throw new NullPointerException("Room with index: " + index + " dont exists.");
         }
     }
 
@@ -57,7 +57,7 @@ public class RoomService implements IRoomService {
             room.setPrice(price);
             roomDao.update(room);
         } catch (NullPointerException e) {
-            System.err.println("Room with index: " + index + " dont exists.");
+            throw new NullPointerException("Room with index: " + index + " dont exists.");
         }
     }
 
@@ -68,7 +68,7 @@ public class RoomService implements IRoomService {
             room.setStatus(status);
             roomDao.update(room);
         } catch (NullPointerException e) {
-            System.err.println("Room with index: " + index + " dont exists.");
+            throw new NullPointerException("Room with index: " + index + " dont exists.");
         }
     }
 

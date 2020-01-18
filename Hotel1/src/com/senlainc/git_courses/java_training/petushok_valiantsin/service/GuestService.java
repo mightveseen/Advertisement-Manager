@@ -27,7 +27,7 @@ public class GuestService implements IGuestService {
         try {
             guestDao.delete(index);
         } catch (NullPointerException e) {
-            System.err.println("Guest with index: " + index + " dont exists.");
+            throw new NullPointerException("Guest with index: " + index + " dont exists.");
         }
     }
 
@@ -38,7 +38,7 @@ public class GuestService implements IGuestService {
             guest.setInfoContact(information);
             guestDao.update(guest);
         } catch (NullPointerException e) {
-            System.err.println("Guest with index: " + index + " dont exists.");
+            throw new NullPointerException("Guest with index: " + index + " dont exists.");
         }
     }
 
