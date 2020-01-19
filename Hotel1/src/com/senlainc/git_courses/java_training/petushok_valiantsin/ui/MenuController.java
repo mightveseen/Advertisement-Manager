@@ -23,9 +23,13 @@ public class MenuController {
         }
     }
 
-    public void run() throws InterruptedException {
-        while (true) {
-            showMenu();
+    public void run() {
+        try {
+            while (true) {
+                showMenu();
+            }
+        } catch (InterruptedException ignored) {
+
         }
     }
 }
