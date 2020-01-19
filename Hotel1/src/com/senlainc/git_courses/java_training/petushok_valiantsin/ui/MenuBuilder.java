@@ -1,6 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Status;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.attendance.AddAttendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.attendance.ChangePriceAttendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.guest.AddGuest;
@@ -15,15 +16,15 @@ public class MenuBuilder {
     private final Menu rootMenu = new Menu("Main menu");
 
     public void buildMenu() {
-        final Menu guest = new Menu("Guest menu");
-        final Menu room = new Menu("Room menu");
-        final Menu order = new Menu("Order menu");
-        final Menu attendance = new Menu("Attendance menu");
-        final Menu roomStatus = new Menu("Room status");
-        final Menu orderSort = new Menu("Sort order's");
-        final Menu roomSortFree = new Menu("Sort room's(Free)");
-        final Menu roomSortAll = new Menu("Sort room's(All)");
-        final Menu roomType = new Menu("Type room");
+        final Menu guest = new Menu("Guest Menu");
+        final Menu room = new Menu("Room Menu");
+        final Menu order = new Menu("Order Menu");
+        final Menu attendance = new Menu("Attendance Menu");
+        final Menu roomStatus = new Menu("Room Status Menu");
+        final Menu orderSort = new Menu("Sort Order Menu");
+        final Menu roomSortFree = new Menu("Sort Room Menu");
+        final Menu roomSortAll = new Menu("Sort Room Menu");
+        final Menu roomType = new Menu("Room Type Menu");
 
         rootMenuInit(room, guest, attendance, order);
         roomMenuInit(room, roomType, roomStatus);
@@ -105,9 +106,9 @@ public class MenuBuilder {
     }
 
     private void roomStatusMenuInit(Menu roomStatus) {
-        roomStatus.addItem(new MenuItem("Rented", new ChangeStatusRoom(Status.RoomStatus.RENTED), rootMenu));
-        roomStatus.addItem(new MenuItem("Free", new ChangeStatusRoom(Status.RoomStatus.FREE), rootMenu));
-        roomStatus.addItem(new MenuItem("Served", new ChangeStatusRoom(Status.RoomStatus.SERVED), rootMenu));
+        roomStatus.addItem(new MenuItem("Rented", new ChangeStatusRoom(RoomStatus.RENTED), rootMenu));
+        roomStatus.addItem(new MenuItem("Free", new ChangeStatusRoom(RoomStatus.FREE), rootMenu));
+        roomStatus.addItem(new MenuItem("Served", new ChangeStatusRoom(RoomStatus.SERVED), rootMenu));
         menuNumeration(roomStatus);
     }
 

@@ -16,7 +16,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.service.Attend
 import com.senlainc.git_courses.java_training.petushok_valiantsin.service.GuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.service.OrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.service.RoomService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.Hotel;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.MenuController;
 
 public class Controller {

@@ -6,7 +6,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IG
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Status;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -31,19 +32,19 @@ public class OrderService implements IOrderService {
 
     @Override
     public void add(int guestIndex, int roomIndex, LocalDate endDate) {
-        if (roomService.getRoom(roomIndex).getStatus().equals(Status.RoomStatus.RENTED) || roomService.getRoom(roomIndex).getStatus().equals(Status.RoomStatus.SERVED)) {
+        if (roomService.getRoom(roomIndex).getStatus().equals(RoomStatus.RENTED) || roomService.getRoom(roomIndex).getStatus().equals(RoomStatus.SERVED)) {
             throw new NullPointerException("Room now is not available");
         }
         orderDao.create(new Order(guestIndex, roomIndex, endDate));
         orderDao.read(orderDao.readAll().size()).setPrice(roomService.getRoom(roomIndex).getPrice());
-        roomService.changeStatus(roomIndex, Status.RoomStatus.RENTED);
+        roomService.changeStatus(roomIndex, RoomStatus.RENTED);
     }
 
     @Override
     public void delete(int index) {
         try {
-            orderDao.read(index).setStatus(Status.OrderStatus.DISABLED);
-            roomService.changeStatus(index, Status.RoomStatus.FREE);
+            orderDao.read(index).setStatus(OrderStatus.DISABLED);
+            roomService.changeStatus(index, RoomStatus.FREE);
         } catch (NullPointerException e) {
             throw new NullPointerException("Order with index: " + index + " dont exists.");
         }
@@ -80,12 +81,12 @@ public class OrderService implements IOrderService {
     @Override
     public void showAfterDate(LocalDate date) {
         System.out.println("Room will be available after [" + date + "]:");
-        final List<Order> orderList = orderDao.readAll().stream().filter(i -> i.getEndDate().isBefore(date) && i.getStatus().equals(Status.OrderStatus.ACTIVE)).collect(Collectors.toList());
+        final List<Order> orderList = orderDao.readAll().stream().filter(i -> i.getEndDate().isBefore(date) && i.getStatus().equals(OrderStatus.ACTIVE)).collect(Collectors.toList());
         for (Order order : orderList) {
             System.out.println(roomService.getRoom(order.getRoomIndex()) + " - End date: ["
                     + order.getEndDate() + "]");
         }
-        roomService.getRoomList().stream().filter(i -> i.getStatus().equals(Status.RoomStatus.FREE)).collect(Collectors.toList()).forEach(System.out::println);
+        roomService.getRoomList().stream().filter(i -> i.getStatus().equals(RoomStatus.FREE)).collect(Collectors.toList()).forEach(System.out::println);
     }
 
     @Override

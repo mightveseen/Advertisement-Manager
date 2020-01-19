@@ -1,5 +1,6 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.OrderIndex;
 
 import java.time.LocalDate;
@@ -16,7 +17,7 @@ public class Order {
     private final LocalDate startDate;
     private List<Integer> attendanceIndex = new LinkedList<>();
     private LocalDate endDate;
-    private Status.OrderStatus status;
+    private OrderStatus status;
     private double price;
 
     public Order(Order order) {
@@ -39,7 +40,7 @@ public class Order {
         this.roomIndex = room;
         this.startDate = LocalDate.now();
         this.endDate = endDate;
-        this.status = Status.OrderStatus.ACTIVE;
+        this.status = OrderStatus.ACTIVE;
     }
 
     public int getId() {
@@ -78,11 +79,11 @@ public class Order {
         this.endDate = endDate;
     }
 
-    public Status.OrderStatus getStatus() {
+    public OrderStatus getStatus() {
         return this.status;
     }
 
-    public void setStatus(Status.OrderStatus status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 

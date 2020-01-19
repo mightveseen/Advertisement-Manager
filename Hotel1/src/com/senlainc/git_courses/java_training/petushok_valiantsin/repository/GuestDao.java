@@ -26,7 +26,7 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public List<Guest> readAll() {
-        return guestList;
+        return new ArrayList<>(guestList);
     }
 
     @Override

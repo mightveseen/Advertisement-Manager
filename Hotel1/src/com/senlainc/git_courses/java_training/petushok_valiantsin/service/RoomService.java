@@ -3,7 +3,7 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IRoomDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Status;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -62,7 +62,7 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void changeStatus(int index, Status.RoomStatus status) {
+    public void changeStatus(int index, RoomStatus status) {
         try {
             Room room = roomDao.read(index);
             room.setStatus(status);
@@ -85,12 +85,12 @@ public class RoomService implements IRoomService {
     }
 
     private List<Room> showFreeRoom(List<Room> myList) {
-        return myList.stream().filter(i -> i.getStatus().equals(Status.RoomStatus.FREE)).collect(Collectors.toList());
+        return myList.stream().filter(i -> i.getStatus().equals(RoomStatus.FREE)).collect(Collectors.toList());
     }
 
     @Override
     public void numFreeRoom() {
-        final long counter = roomDao.readAll().stream().filter(i -> i.getStatus().equals(Status.RoomStatus.FREE)).count();
+        final long counter = roomDao.readAll().stream().filter(i -> i.getStatus().equals(RoomStatus.FREE)).count();
         System.out.println("Number of free room: " + counter);
     }
 

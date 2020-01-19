@@ -1,15 +1,15 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.room;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Status;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.Hotel;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.IAction;
 
 import java.util.Scanner;
 
 public class ChangeStatusRoom implements IAction {
-    private final Status.RoomStatus status;
+    private final RoomStatus status;
 
-    public ChangeStatusRoom(Status.RoomStatus status) {
+    public ChangeStatusRoom(RoomStatus status) {
         this.status = status;
     }
 

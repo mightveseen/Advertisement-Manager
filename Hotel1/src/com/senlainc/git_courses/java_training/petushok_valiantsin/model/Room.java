@@ -1,5 +1,6 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.RoomIndex;
 
 public class Room {
@@ -8,7 +9,7 @@ public class Room {
     private final String classification;
     private final short roomNumber;
     private final short capacity;
-    private Status.RoomStatus status;
+    private RoomStatus status;
     private double price;
 
     public Room(Room room) {
@@ -27,7 +28,7 @@ public class Room {
         this.classification = classification;
         this.roomNumber = roomNumber;
         this.capacity = capacity;
-        this.status = Status.RoomStatus.FREE;
+        this.status = RoomStatus.FREE;
         this.price = price;
     }
 
@@ -51,11 +52,11 @@ public class Room {
         return this.roomNumber;
     }
 
-    public Status.RoomStatus getStatus() {
+    public RoomStatus getStatus() {
         return this.status;
     }
 
-    public void setStatus(Status.RoomStatus status) {
+    public void setStatus(RoomStatus status) {
         this.status = status;
     }
 

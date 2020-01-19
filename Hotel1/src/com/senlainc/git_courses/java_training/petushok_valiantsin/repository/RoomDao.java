@@ -26,7 +26,7 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public List<Room> readAll() {
-        return roomList;
+        return new ArrayList<>(roomList);
     }
 
     @Override

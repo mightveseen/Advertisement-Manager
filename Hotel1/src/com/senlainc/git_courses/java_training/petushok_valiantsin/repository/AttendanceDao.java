@@ -26,7 +26,7 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public List<Attendance> readAll() {
-        return attendanceList;
+        return new ArrayList<>(attendanceList);
     }
 
     @Override

@@ -26,7 +26,7 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public List<Order> readAll() {
-        return orderList;
+        return new ArrayList<>(orderList);
     }
 
     @Override

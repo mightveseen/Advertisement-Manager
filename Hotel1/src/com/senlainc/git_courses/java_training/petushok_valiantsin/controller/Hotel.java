@@ -1,4 +1,4 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.ui;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.controller;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IAttendanceService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
@@ -6,7 +6,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IO
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Status;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -69,7 +69,7 @@ public class Hotel {
         roomService.changePrice(index, price);
     }
 
-    public void changeStatusRoom(int index, Status.RoomStatus status) {
+    public void changeStatusRoom(int index, RoomStatus status) {
         roomService.changeStatus(index, status);
     }
 
