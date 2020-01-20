@@ -3,118 +3,100 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IRoomDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Status;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class RoomService implements IRoomService {
     private final IRoomDao roomDao;
-    private final Status.StatusType[] statusType;
-    private final Comparator<Room> SORT_BY_PRICE = Comparator.comparing(firstRoom -> String.valueOf(firstRoom.getPrice()));
+    private final Comparator<Room> SORT_BY_PRICE = Comparator.comparing(room -> String.valueOf(room.getPrice()));
     private final Comparator<Room> SORT_BY_CLASSIFICATION = Comparator.comparing(Room::getClassification);
-    private final Comparator<Room> SORT_BY_ROOM_NUMBER = Comparator.comparing(firstRoom -> String.valueOf(firstRoom.getRoomNumber()));
+    private final Comparator<Room> SORT_BY_ROOM_NUMBER = Comparator.comparing(room -> String.valueOf(room.getRoomNumber()));
 
-    public RoomService(IRoomDao roomDao, Status.StatusType[] statusType) {
+    public RoomService(IRoomDao roomDao) {
         this.roomDao = roomDao;
-        this.statusType = statusType;
     }
 
     @Override
     public void add(Room room) {
+        if (roomDao.readAll().stream().anyMatch(i -> i.getNumber() == room.getNumber())) {
+            throw new NullPointerException("Room with number: " + room.getNumber() + " already exists.");
+        }
         roomDao.create(room);
     }
 
     @Override
     public void delete(int index) {
-        if (roomDao.readAll().size() < index) {
-            System.err.println("Room with index: " + index + " dont exists.");
-            return;
+        try {
+            roomDao.delete(index);
+        } catch (NullPointerException e){
+            throw new NullPointerException("Room with index: " + index + " dont exists.");
         }
-        roomDao.delete(index);
     }
 
     @Override
-    public double getPrice(int index) {
-        return roomDao.read(index).getPrice();
-    }
-
-    @Override
-    public int getSize() {
-        return roomDao.readAll().size();
-    }
-
-    @Override
-    public Status.StatusType getStatus(int index) {
-        return roomDao.read(index).getStatus();
+    public List<Room> getRoomList() {
+        return roomDao.readAll();
     }
 
     @Override
     public Room getRoom(int index) {
-        return roomDao.read(index);
+        try {
+            return roomDao.read(index);
+        } catch (NullPointerException e){
+            throw new NullPointerException("Room with index: " + index + " dont exists.");
+        }
     }
-
     @Override
     public void changePrice(int index, double price) {
-        Room room = roomDao.read(index);
-        room.setPrice(price);
-        roomDao.update(room);
+        try {
+            Room room = roomDao.read(index);
+            room.setPrice(price);
+            roomDao.update(room);
+        } catch (NullPointerException e) {
+            throw new NullPointerException("Room with index: " + index + " dont exists.");
+        }
     }
 
     @Override
-    public void changeStatus(int index, Status.StatusType status) {
-        Room room = roomDao.read(index);
-        room.setStatus(status);
-        roomDao.update(room);
+    public void changeStatus(int index, RoomStatus status) {
+        try {
+            Room room = roomDao.read(index);
+            room.setStatus(status);
+            roomDao.update(room);
+        } catch (NullPointerException e) {
+            throw new NullPointerException("Room with index: " + index + " dont exists.");
+        }
     }
 
     @Override
-    public void show(String parameter) {
+    public void show(String parameter, List<Room> myList) {
         switch (parameter) {
             case "all":
-                showAllRoom();
+                myList.forEach(System.out::println);
                 break;
             case "free":
-                showFreeRoom();
+                showFreeRoom(myList).forEach(System.out::println);
                 break;
         }
     }
 
-    @Override
-    public void show(MyList<Room> myList) {
-        for (int i = 0; i < myList.size(); i++) {
-            System.out.print(myList.get(i));
-        }
-    }
-
-    private void showAllRoom() {
-        for (int i = 1; i <= roomDao.readAll().size(); i++) {
-            System.out.print(roomDao.read(i));
-        }
-    }
-
-    private void showFreeRoom() {
-        for (int i = 1; i <= roomDao.readAll().size(); i++) {
-            if (roomDao.read(i).getStatus().equals(statusType[0])) {
-                System.out.print(roomDao.read(i));
-            }
-        }
+    private List<Room> showFreeRoom(List<Room> myList) {
+        return myList.stream().filter(i -> i.getStatus().equals(RoomStatus.FREE)).collect(Collectors.toList());
     }
 
     @Override
     public void numFreeRoom() {
-        int counter = 0;
-        for (int i = 1; i <= roomDao.readAll().size(); i++) {
-            if (roomDao.read(i).getStatus().equals(statusType[0])) {
-                counter++;
-            }
-        }
-        System.out.println("\nNumber of free room: " + counter);
+        final long counter = roomDao.readAll().stream().filter(i -> i.getStatus().equals(RoomStatus.FREE)).count();
+        System.out.println("Number of free room: " + counter);
     }
 
     @Override
-    public MyList<Room> sort(String parameter) {
-        MyList<Room> myList = new MyList<>(roomDao.readAll());
+    public List<Room> sort(String parameter) {
+        List<Room> myList = new ArrayList<>(roomDao.readAll());
         switch (parameter) {
             case "price":
                 sortByPrice(myList);
@@ -126,18 +108,18 @@ public class RoomService implements IRoomService {
                 sortByRoomNumber(myList);
                 return myList;
         }
-        return null;
+        return myList;
     }
 
-    private void sortByPrice(MyList<Room> myList) {
+    private void sortByPrice(List<Room> myList) {
         myList.sort(SORT_BY_PRICE);
     }
 
-    private void sortByClassification(MyList<Room> myList) {
+    private void sortByClassification(List<Room> myList) {
         myList.sort(SORT_BY_CLASSIFICATION);
     }
 
-    private void sortByRoomNumber(MyList<Room> myList) {
+    private void sortByRoomNumber(List<Room> myList) {
         myList.sort(SORT_BY_ROOM_NUMBER);
     }
 }

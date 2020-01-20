@@ -2,49 +2,35 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.repository;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IOrderDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderDao implements IOrderDao {
-    private final MyList<Order> orderMyList = new MyList<>();
+    private final List<Order> orderList = new ArrayList<>();
 
     @Override
     public void create(Order order) {
-        orderMyList.add(order);
+        orderList.add(order);
     }
 
     @Override
     public void delete(int index) {
-        for (int i = 0; i < orderMyList.size(); i++) {
-            if (orderMyList.get(i).getId() == index) {
-                orderMyList.remove(i);
-                return;
-            }
-        }
+        orderList.remove(orderList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(NullPointerException::new));
     }
 
     @Override
     public void update(Order order) {
-        for (int i = 0; i < orderMyList.size(); i++) {
-            if (orderMyList.get(i).getId() == order.getId()) {
-                orderMyList.add(i, order);
-                return;
-            }
-        }
+        orderList.set(orderList.indexOf(orderList.stream().filter(i -> i.getId() == order.getId()).findFirst().orElseThrow(NullPointerException::new)), order);
     }
 
     @Override
-    public MyList<Order> readAll() {
-        return orderMyList;
+    public List<Order> readAll() {
+        return new ArrayList<>(orderList);
     }
 
     @Override
     public Order read(int index) {
-        for (int i = 0; i < orderMyList.size(); i++) {
-            if (orderMyList.get(i).getId() == index) {
-                return orderMyList.get(i);
-            }
-        }
-        return null;
+        return orderList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(NullPointerException::new);
     }
 }

@@ -6,111 +6,107 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IG
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Status;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class OrderService implements IOrderService {
-    private final Status.StatusType[] statusType;
     private final IOrderDao orderDao;
     private final IRoomService roomService;
     private final IGuestService guestService;
     private final IAttendanceService attendanceService;
     private final Comparator<Order> SORT_BY_DATE = Comparator.comparing(Order::getEndDate);
 
-    public OrderService(IOrderDao orderDao, IRoomService roomService, IGuestService guestService, IAttendanceService attendanceService, Status.StatusType[] statusType) {
+    public OrderService(IOrderDao orderDao, IRoomService roomService, IGuestService guestService, IAttendanceService attendanceService) {
         this.orderDao = orderDao;
         this.guestService = guestService;
         this.roomService = roomService;
         this.attendanceService = attendanceService;
-        this.statusType = statusType;
     }
 
     @Override
-    public void add(Order order) {
-        if (roomService.getStatus(order.getRoomIndex()).equals(statusType[1]) || roomService.getStatus(order.getRoomIndex()).equals(statusType[2])) {
-            System.err.println("Room now is not available");
-            return;
+    public void add(int guestIndex, int roomIndex, LocalDate endDate) {
+        if (roomService.getRoom(roomIndex).getStatus().equals(RoomStatus.RENTED) || roomService.getRoom(roomIndex).getStatus().equals(RoomStatus.SERVED)) {
+            throw new NullPointerException("Room now is not available");
         }
-        orderDao.create(order);
-        orderDao.read(orderDao.readAll().size()).setPrice(roomService.getPrice(order.getRoomIndex()));
-        roomService.changeStatus(order.getRoomIndex(), statusType[1]);
+        orderDao.create(new Order(guestIndex, roomIndex, endDate));
+        orderDao.read(orderDao.readAll().size()).setPrice(roomService.getRoom(roomIndex).getPrice());
+        roomService.changeStatus(roomIndex, RoomStatus.RENTED);
     }
 
     @Override
     public void delete(int index) {
-        if (orderDao.readAll().size() < index) {
-            System.err.println("Order with index: " + index + " dont exists.");
-            return;
+        try {
+            orderDao.read(index).setStatus(OrderStatus.DISABLED);
+            roomService.changeStatus(index, RoomStatus.FREE);
+        } catch (NullPointerException e) {
+            throw new NullPointerException("Order with index: " + index + " dont exists.");
         }
-        orderDao.delete(index);
-        roomService.changeStatus(index, statusType[2]);
     }
 
     @Override
     public void show() {
-        for (int i = 1; i <= orderDao.readAll().size(); i++) {
-            System.out.println(guestService.getGuest(orderDao.read(i).getGuestIndex()) + "\t" + roomService.getRoom(orderDao.read(i).getRoomIndex())
-                    + "\nTotal amount: " + orderDao.read(i).getPrice());
-        }
+        orderDao.readAll().forEach(this::show);
     }
 
     @Override
-    public void show(MyList<Order> myList) {
-        for (int i = 0; i < myList.size(); i++) {
-            System.out.println(guestService.getGuest(myList.get(i).getGuestIndex()) + "\t" + roomService.getRoom(myList.get(i).getRoomIndex())
-                    + "\nTotal amount: " + myList.get(i).getPrice());
-        }
+    public void show(List<Order> myList) {
+        myList.forEach(this::show);
+    }
+
+    private void show(Order order) {
+        System.out.println("Order index: " + order.getId() + "\n" +
+                guestService.getGuest(order.getGuestIndex()) + "\n" +
+                roomService.getRoom(order.getRoomIndex()) + "\nStart date: " +
+                order.getStartDate() + "\nEnd date: " +
+                order.getEndDate() + "\nTotal amount: " +
+                order.getPrice() + "\nStatus: " +
+                order.getStatus());
     }
 
     @Override
     public void showGuestRoom(int index) {
-        int counter = 0;
-        for (int i = 1; i <= orderDao.readAll().size(); i++) {
-            if (orderDao.read(i).getGuestIndex() == index) {
-                System.out.println(guestService.getGuest(orderDao.read(i).getGuestIndex()) + "\t" + roomService.getRoom(orderDao.read(i).getRoomIndex()));
-                counter++;
-            }
-            if (counter == 3) {
-                return;
-            }
+        final List<Order> orderList = orderDao.readAll().stream().filter(i -> i.getGuestIndex() == index).limit(3).collect(Collectors.toList());
+        for (Order order : orderList) {
+            System.out.println(guestService.getGuest(order.getGuestIndex()) + "\n" + roomService.getRoom(order.getRoomIndex()));
         }
     }
 
     @Override
     public void showAfterDate(LocalDate date) {
-        System.out.print("\n\nRoom will be available after [" + date + "]:");
-        for (int i = 1; i <= roomService.getSize(); i++) {
-            if (roomService.getStatus(i).equals(statusType[1]) && i <= orderDao.readAll().size()) {
-                if (date.isAfter(orderDao.read(i).getEndDate())) {
-                    System.out.print(roomService.getRoom(i) + " - End date: ["
-                            + orderDao.read(i).getEndDate() + "]");
-                    continue;
-                }
-            }
-            if (roomService.getStatus(i).equals(statusType[0])) {
-                System.out.print(roomService.getRoom(i));
-            }
+        System.out.println("Room will be available after [" + date + "]:");
+        final List<Order> orderList = orderDao.readAll().stream().filter(i -> i.getEndDate().isBefore(date) && i.getStatus().equals(OrderStatus.ACTIVE)).collect(Collectors.toList());
+        for (Order order : orderList) {
+            System.out.println(roomService.getRoom(order.getRoomIndex()) + " - End date: ["
+                    + order.getEndDate() + "]");
         }
+        roomService.getRoomList().stream().filter(i -> i.getStatus().equals(RoomStatus.FREE)).collect(Collectors.toList()).forEach(System.out::println);
     }
 
     @Override
     public void addAttendance(int orderIndex, int attendanceIndex) {
-        Order order = new Order(orderDao.read(orderIndex));
-        MyList<Integer> myList = new MyList<>();
-        System.arraycopy(myList.get(), 0, order.getAttendanceIndex().get(), 0, order.getAttendanceIndex().size());
-        myList.add(attendanceIndex);
-        order.setAttendanceIndex(myList);
-        double price = order.getPrice() + attendanceService.getPrice(attendanceIndex);
-        order.setPrice(price);
-        orderDao.update(order);
+        try {
+            Order order = new Order(orderDao.read(orderIndex));
+            final List<Integer> myList = new LinkedList<>(order.getAttendanceIndex());
+            myList.add(attendanceIndex);
+            order.setAttendanceIndex(myList);
+            final double price = order.getPrice() + attendanceService.getPrice(attendanceIndex);
+            order.setPrice(price);
+            orderDao.update(order);
+        } catch (NullPointerException e) {
+            throw new NullPointerException("Failed to add attendance");
+        }
     }
 
     @Override
-    public MyList<Order> sort(String parameter) {
-        MyList<Order> myList = new MyList<>(orderDao.readAll());
+    public List<Order> sort(String parameter) {
+        List<Order> myList = new ArrayList<>(orderDao.readAll());
         switch (parameter) {
             case "date":
                 sortByDate(myList);
@@ -119,37 +115,32 @@ public class OrderService implements IOrderService {
                 sortByAlphabet(myList);
                 return myList;
         }
-        return null;
+        return myList;
     }
 
-    private void sortByDate(MyList<Order> myList) {
+    private void sortByDate(List<Order> myList) {
         myList.sort(SORT_BY_DATE);
     }
 
-    private void sortByAlphabet(MyList<Order> myList) {
-        int[] guestIndex = guestService.sortByAlphabet();
-        for (int index : guestIndex) {
-            for (int i = 1; i <= orderDao.readAll().size(); i++) {
-                if (orderDao.read(i).getGuestIndex() == index) {
-                    myList.add(orderDao.read(i));
-                    break;
-                }
-            }
+    private void sortByAlphabet(List<Order> myList) {
+        myList.clear();
+        for (int index : guestService.sortByAlphabet()) {
+            myList.add(orderDao.readAll().stream().filter(i -> i.getGuestIndex() == index).findFirst().orElseThrow(NullPointerException::new));
         }
     }
 
-    public void showAttendance(int orderIndex) {
+    public void showAttendance(int guestIndex) {
         try {
-            Object[] attendanceIndex = orderDao.read(orderIndex).getAttendanceIndex().get();
-            System.out.print(guestService.getGuest(orderDao.read(orderIndex).getGuestIndex()));
-            for (Object index : attendanceIndex) {
+            List<Integer> attendanceIndexList = orderDao.readAll().stream().filter(i -> i.getGuestIndex() == guestIndex).findFirst().orElseThrow(NullPointerException::new).getAttendanceIndex();
+            System.out.println(guestService.getGuest(guestIndex));
+            for (Object index : attendanceIndexList) {
                 if (index == null) {
                     break;
                 }
-                System.out.print(attendanceService.get((int) index));
+                System.out.println(attendanceService.get((int) index));
             }
         } catch (NullPointerException e) {
-            System.out.println("This guest didn't have attendance's");
+            throw new NullPointerException("This guest didn't have attendance's");
         }
 
     }

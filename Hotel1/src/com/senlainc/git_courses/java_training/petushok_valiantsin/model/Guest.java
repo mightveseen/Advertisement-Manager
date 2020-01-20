@@ -53,7 +53,7 @@ public class Guest {
 
     @Override
     public String toString() {
-        return "\n" + id + ")" + firstName + ", "
+        return id + ")" + firstName + ", "
                 + secondName + ", " + birthday + ", " + infoContact;
     }
 }

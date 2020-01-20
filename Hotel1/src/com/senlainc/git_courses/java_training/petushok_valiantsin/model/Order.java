@@ -1,11 +1,13 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.OrderIndex;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Order {
     private final int id;
@@ -13,8 +15,9 @@ public class Order {
     private final int guestIndex;
     private final int roomIndex;
     private final LocalDate startDate;
-    private MyList<Integer> attendanceIndex;
+    private List<Integer> attendanceIndex = new LinkedList<>();
     private LocalDate endDate;
+    private OrderStatus status;
     private double price;
 
     public Order(Order order) {
@@ -24,11 +27,12 @@ public class Order {
         this.roomIndex = order.getRoomIndex();
         this.startDate = order.getStartDate();
         this.endDate = order.getEndDate();
-        this.attendanceIndex = new MyList<>(order.getAttendanceIndex());
+        this.attendanceIndex = new LinkedList<>(order.getAttendanceIndex());
+        this.status = order.getStatus();
         this.price = order.getPrice();
     }
 
-    public Order(int guest, int room, LocalDate endDate, double price) {
+    public Order(int guest, int room, LocalDate endDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm / yyyy-MM-dd");
         this.id = new OrderIndex().getIndex();
         this.orderDate = LocalDateTime.now().format(formatter);
@@ -36,7 +40,7 @@ public class Order {
         this.roomIndex = room;
         this.startDate = LocalDate.now();
         this.endDate = endDate;
-        this.price = price;
+        this.status = OrderStatus.ACTIVE;
     }
 
     public int getId() {
@@ -75,18 +79,21 @@ public class Order {
         this.endDate = endDate;
     }
 
-    public MyList<Integer> getAttendanceIndex() {
+    public OrderStatus getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
+    public List<Integer> getAttendanceIndex() {
         return this.attendanceIndex;
     }
 
-    public void setAttendanceIndex(MyList<Integer> attendanceIndex) {
+    public void setAttendanceIndex(List<Integer> attendanceIndex) {
         this.attendanceIndex = attendanceIndex;
     }
 
-    @Override
-    public String toString() {
-        return "\n" + id + ")" + orderDate + ", "
-                + guestIndex + ", " + roomIndex + ", ["
-                + startDate + ", " + endDate + "], " + price;
-    }
+
 }

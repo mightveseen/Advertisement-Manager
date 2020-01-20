@@ -1,5 +1,6 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.RoomIndex;
 
 public class Room {
@@ -8,7 +9,7 @@ public class Room {
     private final String classification;
     private final short roomNumber;
     private final short capacity;
-    private Status.StatusType status;
+    private RoomStatus status;
     private double price;
 
     public Room(Room room) {
@@ -21,13 +22,13 @@ public class Room {
         this.price = room.getPrice();
     }
 
-    public Room(int number, String classification, short roomNumber, short capacity, Status.StatusType status, double price) {
+    public Room(int number, String classification, short roomNumber, short capacity, double price) {
         this.id = new RoomIndex().getIndex();
         this.number = number;
         this.classification = classification;
         this.roomNumber = roomNumber;
         this.capacity = capacity;
-        this.status = status;
+        this.status = RoomStatus.FREE;
         this.price = price;
     }
 
@@ -51,11 +52,11 @@ public class Room {
         return this.roomNumber;
     }
 
-    public Status.StatusType getStatus() {
+    public RoomStatus getStatus() {
         return this.status;
     }
 
-    public void setStatus(Status.StatusType status) {
+    public void setStatus(RoomStatus status) {
         this.status = status;
     }
 
@@ -69,8 +70,8 @@ public class Room {
 
     @Override
     public String toString() {
-        return "\n" + id + ")" + number + ", "
+        return id + ")" + number + ", "
                 + classification + ", " + roomNumber + ", "
-                + status.getName() + ", " + price;
+                + capacity + ", " + status.getName() + ", " + price;
     }
 }

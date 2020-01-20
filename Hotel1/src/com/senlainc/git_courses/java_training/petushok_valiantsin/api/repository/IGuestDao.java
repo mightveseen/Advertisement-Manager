@@ -1,7 +1,8 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.MyList;
+
+import java.util.List;
 
 public interface IGuestDao {
     void create(Guest guest);
@@ -10,7 +11,7 @@ public interface IGuestDao {
 
     void update(Guest guest);
 
-    MyList<Guest> readAll();
+    List<Guest> readAll();
 
     Guest read(int index);
 }
