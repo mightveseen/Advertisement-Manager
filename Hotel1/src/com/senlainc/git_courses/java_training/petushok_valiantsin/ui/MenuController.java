@@ -13,7 +13,7 @@ public class MenuController {
 
     public void showMenu() throws InterruptedException {
         try {
-            Thread.sleep(100);
+            Thread.sleep(10);
             menuNavigator.printMenu();
             System.out.print("Choose operation: ");
             Integer index = Integer.parseInt(new Scanner(System.in).next());

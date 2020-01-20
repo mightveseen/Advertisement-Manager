@@ -1,5 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui;
 
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.ConsoleColor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class Menu {
     }
 
     public String getName() {
-        return this.name;
+        return ConsoleColor.YELLOW.getCode() + this.name + ConsoleColor.RESET.getCode();
     }
 
     @Override

@@ -67,7 +67,7 @@ public class OrderService implements IOrderService {
                 order.getStartDate() + "\nEnd date: " +
                 order.getEndDate() + "\nTotal amount: " +
                 order.getPrice() + "\nStatus: " +
-                order.getStatus());
+                order.getStatus().toString());
     }
 
     @Override
