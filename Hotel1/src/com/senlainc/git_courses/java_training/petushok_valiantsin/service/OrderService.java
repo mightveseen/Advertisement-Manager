@@ -10,7 +10,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.O
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -106,7 +105,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Order> sort(String parameter) {
-        List<Order> myList = new ArrayList<>(orderDao.readAll());
+        List<Order> myList = orderDao.readAll();
         switch (parameter) {
             case "date":
                 sortByDate(myList);

@@ -4,7 +4,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IAttendanceService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -67,7 +66,7 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     public List<Attendance> sort(String parameter) {
-        List<Attendance> myList = new ArrayList<>(attendanceDao.readAll());
+        List<Attendance> myList = attendanceDao.readAll();
         switch (parameter) {
             case "section":
                 sortBySection(myList);

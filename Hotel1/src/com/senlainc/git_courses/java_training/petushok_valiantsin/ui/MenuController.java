@@ -1,5 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui;
 
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.logger.CustomLogger;
+
 import java.util.Scanner;
 
 public class MenuController {
@@ -14,6 +16,7 @@ public class MenuController {
     public void showMenu() throws InterruptedException {
         try {
             Thread.sleep(10);
+            CustomLogger.getInstance().setInfo(menuNavigator.getMenuName());
             menuNavigator.printMenu();
             System.out.print("Choose operation: ");
             Integer index = Integer.parseInt(new Scanner(System.in).next());

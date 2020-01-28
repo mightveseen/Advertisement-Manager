@@ -5,7 +5,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IR
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -96,7 +95,7 @@ public class RoomService implements IRoomService {
 
     @Override
     public List<Room> sort(String parameter) {
-        List<Room> myList = new ArrayList<>(roomDao.readAll());
+        List<Room> myList = roomDao.readAll();
         switch (parameter) {
             case "price":
                 sortByPrice(myList);

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2020-01-28T18:51:01.539031Z</date>
+  <millis>1580237461539</millis>
+  <nanos>31000</nanos>
+  <sequence>0</sequence>
+  <logger>com.senlainc.git_courses.java_training.petushok_valiantsin.utility.logger.CustomLogger</logger>
+  <level>INFO</level>
+  <class>com.senlainc.git_courses.java_training.petushok_valiantsin.utility.logger.CustomLogger</class>
+  <method>setInfo</method>
+  <thread>1</thread>
+  <message>ssss</message>
+</record>
+<record>
+  <date>2020-01-28T18:51:02.881908Z</date>
+  <millis>1580237462881</millis>
+  <nanos>908000</nanos>
+  <sequence>1</sequence>
+  <logger>com.senlainc.git_courses.java_training.petushok_valiantsin.utility.logger.CustomLogger</logger>
+  <level>INFO</level>
+  <class>com.senlainc.git_courses.java_training.petushok_valiantsin.utility.logger.CustomLogger</class>
+  <method>setInfo</method>
+  <thread>1</thread>
+  <message>ssss</message>
+</record>
+<record>
+  <date>2020-01-28T18:51:03.852109Z</date>
+  <millis>1580237463852</millis>
+  <nanos>109000</nanos>
+  <sequence>2</sequence>
+  <logger>com.senlainc.git_courses.java_training.petushok_valiantsin.utility.logger.CustomLogger</logger>
+  <level>INFO</level>
+  <class>com.senlainc.git_courses.java_training.petushok_valiantsin.utility.logger.CustomLogger</class>
+  <method>setInfo</method>
+  <thread>1</thread>
+  <message>ssss</message>
+</record>
+<record>
+  <date>2020-01-28T18:51:05.367247Z</date>
+  <millis>1580237465367</millis>
+  <nanos>247000</nanos>
+  <sequence>3</sequence>
+  <logger>com.senlainc.git_courses.java_training.petushok_valiantsin.utility.logger.CustomLogger</logger>
+  <level>INFO</level>
+  <class>com.senlainc.git_courses.java_training.petushok_valiantsin.utility.logger.CustomLogger</class>
+  <method>setInfo</method>
+  <thread>1</thread>
+  <message>ssss</message>
+</record>
+<record>
+  <date>2020-01-28T18:51:05.977607Z</date>
+  <millis>1580237465977</millis>
+  <nanos>607000</nanos>
+  <sequence>4</sequence>
+  <logger>com.senlainc.git_courses.java_training.petushok_valiantsin.utility.logger.CustomLogger</logger>
+  <level>INFO</level>
+  <class>com.senlainc.git_courses.java_training.petushok_valiantsin.utility.logger.CustomLogger</class>
+  <method>setInfo</method>
+  <thread>1</thread>
+  <message>ssss</message>
+</record>
+<record>
+  <date>2020-01-28T18:51:08.619435Z</date>
+  <millis>1580237468619</millis>
+  <nanos>435000</nanos>
+  <sequence>5</sequence>
+  <logger>com.senlainc.git_courses.java_training.petushok_valiantsin.utility.logger.CustomLogger</logger>
+  <level>INFO</level>
+  <class>com.senlainc.git_courses.java_training.petushok_valiantsin.utility.logger.CustomLogger</class>
+  <method>setInfo</method>
+  <thread>1</thread>
+  <message>ssss</message>
+</record>
+</log>

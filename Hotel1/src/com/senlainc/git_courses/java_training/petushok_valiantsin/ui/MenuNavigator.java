@@ -1,7 +1,5 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.ConsoleColor;
-
 public class MenuNavigator {
     private Menu currentMenu;
 
@@ -16,5 +14,9 @@ public class MenuNavigator {
     public void navigate(Integer index) {
         currentMenu.getItem(index).doAction();
         currentMenu = currentMenu.getItem(index).getNextMenu();
+    }
+
+    public String getMenuName() {
+        return currentMenu.getName();
     }
 }

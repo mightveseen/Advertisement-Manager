@@ -5,7 +5,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IG
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -63,7 +62,7 @@ public class GuestService implements IGuestService {
 
     @Override
     public int[] sortByAlphabet() {
-        List<Guest> myList = new ArrayList<>(guestDao.readAll());
+        List<Guest> myList = guestDao.readAll();
         myList.sort(SORT_BY_ALPHABET);
         return getGuestIndex(myList);
     }
