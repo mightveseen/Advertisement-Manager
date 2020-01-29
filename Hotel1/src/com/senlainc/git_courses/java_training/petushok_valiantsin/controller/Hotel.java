@@ -1,5 +1,9 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.controller;
 
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IAttendanceDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IGuestDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IOrderDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IRoomDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IAttendanceService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
@@ -7,6 +11,14 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IR
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.AttendanceDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.GuestDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.OrderDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.RoomDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.service.AttendanceService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.service.GuestService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.service.OrderService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.service.RoomService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,18 +33,21 @@ public class Hotel {
     private final IAttendanceService attendanceService;
     private final IOrderService orderService;
 
-    private Hotel(IGuestService guestService, IRoomService roomService, IAttendanceService attendanceService, IOrderService orderService) {
-        this.guestService = guestService;
-        this.roomService = roomService;
-        this.attendanceService = attendanceService;
-        this.orderService = orderService;
-    }
-
-    public static void setInstance(IGuestService guestService, IRoomService roomService, IAttendanceService attendanceService, IOrderService orderService) {
-        instance = new Hotel(guestService, roomService, attendanceService, orderService);
+    private Hotel() {
+        IGuestDao guestDao = new GuestDao();
+        IRoomDao roomDao = new RoomDao();
+        IAttendanceDao attendanceDao = new AttendanceDao();
+        IOrderDao orderDao = new OrderDao();
+        this.guestService = new GuestService(guestDao);
+        this.roomService = new RoomService(roomDao);
+        this.attendanceService = new AttendanceService(attendanceDao);
+        this.orderService = new OrderService(orderDao, roomService, guestService, attendanceService);
     }
 
     public static Hotel getInstance() {
+        if (instance == null) {
+            instance = new Hotel();
+        }
         return instance;
     }
 
