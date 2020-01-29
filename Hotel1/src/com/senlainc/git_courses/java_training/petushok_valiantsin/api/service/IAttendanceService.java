@@ -17,5 +17,5 @@ public interface IAttendanceService {
 
     Attendance get(int index);
 
-    List<String> sort(String parameter);
+    List<Attendance> sort(String parameter);
 }

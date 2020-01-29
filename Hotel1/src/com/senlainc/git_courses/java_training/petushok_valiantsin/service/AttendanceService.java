@@ -66,7 +66,7 @@ public class AttendanceService implements IAttendanceService {
     }
 
     @Override
-    public List<String> sort(String parameter) {
+    public List<Attendance> sort(String parameter) {
         List<Attendance> myList = attendanceDao.readAll();
         switch (parameter) {
             case "section":
@@ -76,7 +76,7 @@ public class AttendanceService implements IAttendanceService {
                 sortByPrice(myList);
                 break;
         }
-        return createStringList(myList);
+        return myList;
     }
 
     private void sortBySection(List<Attendance> myList) {
