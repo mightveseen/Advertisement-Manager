@@ -5,6 +5,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IR
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -73,25 +74,21 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void show(String parameter, List<Room> myList) {
-        switch (parameter) {
-            case "all":
-                myList.forEach(System.out::println);
-                break;
-            case "free":
-                showFreeRoom(myList).forEach(System.out::println);
-                break;
+    public List<String> show(String parameter, List<Room> myList) {
+        if(parameter.equals("free")) {
+            return showFreeRoom(myList);
         }
+        return createStringList(myList);
     }
 
-    private List<Room> showFreeRoom(List<Room> myList) {
-        return myList.stream().filter(i -> i.getStatus().equals(RoomStatus.FREE)).collect(Collectors.toList());
+    private List<String> showFreeRoom(List<Room> myList) {
+        return createStringList(myList.stream().filter(i -> i.getStatus().equals(RoomStatus.FREE)).collect(Collectors.toList()));
     }
 
     @Override
-    public void numFreeRoom() {
+    public String numFreeRoom() {
         final long counter = roomDao.readAll().stream().filter(i -> i.getStatus().equals(RoomStatus.FREE)).count();
-        System.out.println("Number of free room: " + counter);
+        return "Number of free room: " + counter;
     }
 
     @Override
@@ -100,13 +97,13 @@ public class RoomService implements IRoomService {
         switch (parameter) {
             case "price":
                 sortByPrice(myList);
-                return myList;
+                break;
             case "classification":
                 sortByClassification(myList);
-                return myList;
+                break;
             case "room number":
                 sortByRoomNumber(myList);
-                return myList;
+                break;
         }
         return myList;
     }
@@ -121,5 +118,13 @@ public class RoomService implements IRoomService {
 
     private void sortByRoomNumber(List<Room> myList) {
         myList.sort(SORT_BY_ROOM_NUMBER);
+    }
+
+    private List<String> createStringList(List<Room> roomList) {
+        List<String> stringList = new ArrayList<>();
+        for(Room room : roomList) {
+            stringList.add(room.toString());
+        }
+        return stringList;
     }
 }

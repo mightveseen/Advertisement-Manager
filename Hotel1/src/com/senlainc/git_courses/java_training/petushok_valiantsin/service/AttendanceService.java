@@ -4,6 +4,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IAttendanceService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -60,22 +61,22 @@ public class AttendanceService implements IAttendanceService {
     }
 
     @Override
-    public void showAttendance() {
-        attendanceDao.readAll().forEach(System.out::println);
+    public List<String> showAttendance() {
+        return createStringList(attendanceDao.readAll());
     }
 
     @Override
-    public List<Attendance> sort(String parameter) {
+    public List<String> sort(String parameter) {
         List<Attendance> myList = attendanceDao.readAll();
         switch (parameter) {
             case "section":
                 sortBySection(myList);
-                return myList;
+                break;
             case "price":
                 sortByPrice(myList);
-                return myList;
+                break;
         }
-        return null;
+        return createStringList(myList);
     }
 
     private void sortBySection(List<Attendance> myList) {
@@ -84,5 +85,13 @@ public class AttendanceService implements IAttendanceService {
 
     private void sortByPrice(List<Attendance> myList) {
         myList.sort(SORT_BY_PRICE);
+    }
+
+    private List<String> createStringList(List<Attendance> attendanceList) {
+        List<String> stringList = new ArrayList<>();
+        for(Attendance attendance : attendanceList) {
+            stringList.add(attendance.toString());
+        }
+        return stringList;
     }
 }

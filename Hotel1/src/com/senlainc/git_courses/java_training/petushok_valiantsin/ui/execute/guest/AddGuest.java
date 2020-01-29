@@ -7,13 +7,15 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AddGuest implements IAction {
+    private static final Logger LOGGER = Logger.getLogger(Hotel.class.getSimpleName());
 
     @Override
     public void execute() throws DateTimeParseException {
         Scanner scanner = new Scanner(System.in);
-//        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("Enter first name: ");
         final String firstName = scanner.nextLine();
         System.out.print("Enter last name: ");
@@ -28,5 +30,6 @@ public class AddGuest implements IAction {
         } catch (DateTimeParseException e) {
             throw new NumberFormatException("Wrong format of date");
         }
+        LOGGER.log(Level.INFO, "Add guest in list");
     }
 }

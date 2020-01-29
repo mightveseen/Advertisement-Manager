@@ -11,11 +11,11 @@ public interface IAttendanceService {
 
     void changePrice(int index, double price);
 
-    void showAttendance();
+    List<String> showAttendance();
 
     double getPrice(int index);
 
     Attendance get(int index);
 
-    List<Attendance> sort(String parameter);
+    List<String> sort(String parameter);
 }

@@ -7,16 +7,19 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AddOrder implements IAction {
+    private static final Logger LOGGER = Logger.getLogger(Hotel.class.getSimpleName());
+
     @Override
     public void execute() {
         Scanner scanner = new Scanner(System.in);
-//        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        Hotel.getInstance().showGuest();
+        Hotel.getInstance().showGuest().forEach(System.out::println);
         System.out.print("Enter guest index: ");
         final int guestIndex = Integer.parseInt(scanner.nextLine());
-        Hotel.getInstance().showRoom("all");
+        Hotel.getInstance().showRoom("all").forEach(System.out::println);
         System.out.print("Enter room index: ");
         final int roomIndex = Integer.parseInt(scanner.nextLine());
         System.out.print("Enter end date(Format: YYYY-MM-DD): ");
@@ -27,5 +30,6 @@ public class AddOrder implements IAction {
         } catch (DateTimeParseException e) {
             System.err.println("Wrong date format");
         }
+        LOGGER.log(Level.INFO, "Add order in list");
     }
 }

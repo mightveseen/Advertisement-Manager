@@ -3,6 +3,7 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.api.service;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface IGuestService {
     void add(String firstName, String lastName, LocalDate birthday, String infoContact);
@@ -11,9 +12,9 @@ public interface IGuestService {
 
     void changeInfoContact(int index, String information);
 
-    void num();
+    String num();
 
-    void show();
+    List<String> show();
 
     Guest getGuest(int index);
 

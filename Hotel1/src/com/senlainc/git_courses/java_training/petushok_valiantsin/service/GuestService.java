@@ -5,6 +5,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IG
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -42,13 +43,13 @@ public class GuestService implements IGuestService {
     }
 
     @Override
-    public void num() {
-        System.out.println("Number of guest: " + guestDao.readAll().size());
+    public String num() {
+        return "Number of guest: " + guestDao.readAll().size();
     }
 
     @Override
-    public void show() {
-        guestDao.readAll().forEach(System.out::println);
+    public List<String> show() {
+        return createStringList(guestDao.readAll());
     }
 
     @Override
@@ -73,5 +74,13 @@ public class GuestService implements IGuestService {
             guestIndex[i] = myList.get(i).getId();
         }
         return guestIndex;
+    }
+
+    private List<String> createStringList(List<Guest> guestList) {
+        List<String> stringList = new ArrayList<>();
+        for(Guest guest : guestList) {
+            stringList.add(guest.toString());
+        }
+        return stringList;
     }
 }

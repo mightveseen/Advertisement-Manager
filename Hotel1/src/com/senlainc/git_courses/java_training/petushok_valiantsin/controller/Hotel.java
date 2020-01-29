@@ -26,7 +26,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Hotel {
-    private static final Logger LOGGER = Logger.getLogger(Hotel.class.getSimpleName());
     private static Hotel instance;
     private final IGuestService guestService;
     private final IRoomService roomService;
@@ -58,21 +57,18 @@ public class Hotel {
         attendanceService.add("Lunch", "Food", 12.3);
         attendanceService.add("Dinner", "Food", 9);
         attendanceService.add("Breakfast", "Food", 9);
-        LOGGER.log(Level.INFO, "Create attendance (For example)");
     }
 
     public void addAttendance(String name, String section, double price) {
         attendanceService.add(name, section, price);
-        LOGGER.log(Level.INFO, "Add attendance in list");
     }
 
-    public void showAttendance() {
-        attendanceService.showAttendance();
+    public List<String> showAttendance() {
+        return attendanceService.showAttendance();
     }
 
     public void changePriceAttendance(int index, double price) {
         attendanceService.changePrice(index, price);
-        LOGGER.log(Level.INFO, "Change attendance price");
     }
 
     /**
@@ -84,37 +80,30 @@ public class Hotel {
         roomService.add(new Room(401, "Lux", (short) 2, (short) 4, 230.0));
         roomService.add(new Room(105, "Lux", (short) 2, (short) 4, 30.0));
         roomService.add(new Room(506, "President", (short) 5, (short) 10, 230.0));
-        LOGGER.log(Level.INFO, "Create room (For example)");
     }
 
     public void addRoom(Room room) {
         roomService.add(room);
-        LOGGER.log(Level.INFO, "Add room in list");
     }
 
     public void changePriceRoom(int index, double price) {
         roomService.changePrice(index, price);
-        LOGGER.log(Level.INFO, "Change room price");
     }
 
     public void changeStatusRoom(int index, RoomStatus status) {
         roomService.changeStatus(index, status);
-        LOGGER.log(Level.INFO, "Change room status");
     }
 
-    public void sortRoom(String type, String parameter) {
-        List<Room> myList = roomService.sort(parameter);
-        roomService.show(type, myList);
-        LOGGER.log(Level.INFO, "Show room list sorted by: " + parameter);
+    public List<String> sortRoom(String type, String parameter) {
+        return roomService.show(type, roomService.sort(parameter));
     }
 
-    public void showRoom(String parameter) {
-        roomService.show(parameter, roomService.getRoomList());
+    public List<String> showRoom(String parameter) {
+        return roomService.show(parameter, roomService.getRoomList());
     }
 
-    public void numFreeRoom() {
-        roomService.numFreeRoom();
-        LOGGER.log(Level.INFO, "Show umber of free room");
+    public String numFreeRoom() {
+        return roomService.numFreeRoom();
     }
 
     /**
@@ -124,21 +113,18 @@ public class Hotel {
         guestService.add("Victoria", "July", LocalDate.of(1986, 5, 12), "+1532521678");
         guestService.add("Robert", "Johnson", LocalDate.of(1967, 12, 1), "+278392386");
         guestService.add("Daniel", "Blake", LocalDate.of(1971, 1, 24), "+1532521678");
-        LOGGER.log(Level.INFO, "Create guest (For Example)");
     }
 
     public void addGuest(String firstName, String lastName, LocalDate birthday, String infoContact) {
         guestService.add(firstName, lastName, birthday, infoContact);
-        LOGGER.log(Level.INFO, "Add guest in list");
     }
 
-    public void numGuest() {
-        guestService.num();
-        LOGGER.log(Level.INFO, "Show number of guest");
+    public String numGuest() {
+        return guestService.num();
     }
 
-    public void showGuest() {
-        guestService.show();
+    public List<String> showGuest() {
+        return guestService.show();
     }
 
     /**
@@ -148,46 +134,38 @@ public class Hotel {
         orderService.add(2, 4, LocalDate.of(2019, 3, 12));
         orderService.add(1, 1, LocalDate.of(2019, 1, 3));
         orderService.add(3, 2, LocalDate.of(2019, 2, 23));
-        LOGGER.log(Level.INFO, "Create order (For example)");
     }
 
     public void addOrder(int guestIndex, int roomIndex, LocalDate endDate) {
         orderService.add(guestIndex, roomIndex, endDate);
-        LOGGER.log(Level.INFO, "Add order in list");
     }
 
     public void deleteOrder(int orderIndex) {
         orderService.delete(orderIndex);
-        LOGGER.log(Level.INFO, "Delete order from list");
     }
 
-    public void sortOrder(String parameter) {
+    public List<String> sortOrder(String parameter) {
         List<Order> myList = orderService.sort(parameter);
-        orderService.show(myList);
-        LOGGER.log(Level.INFO, "Show order list sorted by: " + parameter);
+        return orderService.show(myList);
     }
 
-    public void showOrder() {
-        orderService.show();
+    public List<String> showOrder() {
+        return orderService.show();
     }
 
-    public void showAfterDate(LocalDate freeDate) {
-        orderService.showAfterDate(freeDate);
-        LOGGER.log(Level.INFO, "Show room will free after chosen date");
+    public List<String> showAfterDate(LocalDate freeDate) {
+        return orderService.showAfterDate(freeDate);
     }
 
-    public void showGuestRoom(int index) {
-        orderService.showGuestRoom(index);
-        LOGGER.log(Level.INFO, "Show last 3 room of guest");
+    public List<String> showGuestRoom(int index) {
+        return orderService.showGuestRoom(index);
     }
 
-    public void showOrderAttendance(int index) {
-        orderService.showAttendance(index);
-        LOGGER.log(Level.INFO, "Show guest attendance");
+    public List<String> showOrderAttendance(int index) {
+        return orderService.showAttendance(index);
     }
 
     public void addOrderAttendance(int orderIndex, int attendanceIndex) {
         orderService.addAttendance(orderIndex, attendanceIndex);
-        LOGGER.log(Level.INFO, "Add attendance to order");
     }
 }

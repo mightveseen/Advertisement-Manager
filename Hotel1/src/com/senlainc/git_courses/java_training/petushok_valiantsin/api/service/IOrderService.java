@@ -10,17 +10,17 @@ public interface IOrderService {
 
     void delete(int index);
 
-    void show();
+    List<String> show();
 
-    void show(List<Order> myList);
+    List<String> show(List<Order> myList);
 
-    void showGuestRoom(int index);
+    List<String> showGuestRoom(int index);
 
     List<Order> sort(String parameter);
 
     void addAttendance(int orderIndex, int attendanceIndex);
 
-    void showAttendance(int orderIndex);
+    List<String> showAttendance(int orderIndex);
 
-    void showAfterDate(LocalDate date);
+    List<String> showAfterDate(LocalDate date);
 }
