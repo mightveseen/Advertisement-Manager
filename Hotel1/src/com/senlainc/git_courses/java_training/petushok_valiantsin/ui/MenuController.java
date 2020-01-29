@@ -34,8 +34,8 @@ public class MenuController {
             while (true) {
                 showMenu();
             }
-        } catch (InterruptedException ignored) {
-
+        } catch (InterruptedException e) {
+            System.err.println(e.getMessage());
         }
     }
 }
