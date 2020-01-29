@@ -1,10 +1,10 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui;
 
 public class MenuItem {
-    private int id;
     private final String title;
-    private IAction action;
     private final Menu nextMenu;
+    private int id;
+    private IAction action;
 
     public MenuItem(String title, Menu nextMenu) {
         this.title = title;

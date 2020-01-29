@@ -7,7 +7,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IR
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.logger.CustomLogger;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,12 +14,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Hotel {
+    private static final Logger LOGGER = Logger.getLogger(Hotel.class.getSimpleName());
     private static Hotel instance;
     private final IGuestService guestService;
     private final IRoomService roomService;
     private final IAttendanceService attendanceService;
     private final IOrderService orderService;
-    private static final Logger LOGGER = Logger.getLogger(Hotel.class.getSimpleName());
 
     private Hotel(IGuestService guestService, IRoomService roomService, IAttendanceService attendanceService, IOrderService orderService) {
         this.guestService = guestService;
@@ -37,7 +36,9 @@ public class Hotel {
         return instance;
     }
 
-    /** Attendance */
+    /**
+     * Attendance
+     */
     public void createAttendance() {
         attendanceService.add("Lunch", "Food", 12.3);
         attendanceService.add("Dinner", "Food", 9);
@@ -59,7 +60,9 @@ public class Hotel {
         LOGGER.log(Level.INFO, "Change attendance price");
     }
 
-    /** Room */
+    /**
+     * Room
+     */
     public void createRoom() {
         roomService.add(new Room(203, "President", (short) 4, (short) 6, 330.0));
         roomService.add(new Room(312, "Business", (short) 1, (short) 2, 170.0));
@@ -99,7 +102,9 @@ public class Hotel {
         LOGGER.log(Level.INFO, "Show umber of free room");
     }
 
-    /** Guest */
+    /**
+     * Guest
+     */
     public void createGuest() {
         guestService.add("Victoria", "July", LocalDate.of(1986, 5, 12), "+1532521678");
         guestService.add("Robert", "Johnson", LocalDate.of(1967, 12, 1), "+278392386");
@@ -121,7 +126,9 @@ public class Hotel {
         guestService.show();
     }
 
-    /** Order */
+    /**
+     * Order
+     */
     public void createOrder() {
         orderService.add(2, 4, LocalDate.of(2019, 3, 12));
         orderService.add(1, 1, LocalDate.of(2019, 1, 3));

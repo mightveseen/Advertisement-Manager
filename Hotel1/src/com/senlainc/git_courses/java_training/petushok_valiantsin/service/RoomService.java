@@ -49,6 +49,7 @@ public class RoomService implements IRoomService {
             throw new NullPointerException("Room with index: " + index + " dont exists.");
         }
     }
+
     @Override
     public void changePrice(int index, double price) {
         try {

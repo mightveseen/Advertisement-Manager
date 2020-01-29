@@ -7,7 +7,7 @@ import java.util.logging.LogManager;
 public class CustomLogger {
 
     static {
-        try(InputStream configReader = new FileInputStream("src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/logger/log.properties")) {
+        try (InputStream configReader = new FileInputStream("src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/logger/log.properties")) {
 //            FileHandler fileHandler = new FileHandler("log.txt");
 //            fileHandler.setFormatter(new FileFormatter());
 //            ConsoleHandler consoleHandler = new ConsoleHandler();
