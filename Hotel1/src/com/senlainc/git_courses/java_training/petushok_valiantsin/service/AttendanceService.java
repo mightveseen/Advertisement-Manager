@@ -27,7 +27,7 @@ public class AttendanceService implements IAttendanceService {
         try {
             attendanceDao.delete(index);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new NullPointerException("Attendance with index: " + index + " dont exists.");
+            throw new RuntimeException("Attendance with index: " + index + " dont exists.", e);
         }
     }
 
@@ -36,7 +36,7 @@ public class AttendanceService implements IAttendanceService {
         try {
             return attendanceDao.read(index).getPrice();
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new NullPointerException("Attendance with index: " + index + " dont exists.");
+            throw new RuntimeException("Attendance with index: " + index + " dont exists.", e);
         }
     }
 
@@ -45,7 +45,7 @@ public class AttendanceService implements IAttendanceService {
         try {
             return attendanceDao.read(index);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new NullPointerException("Attendance with index: " + index + " dont exists.");
+            throw new RuntimeException("Attendance with index: " + index + " dont exists.", e);
         }
     }
 
@@ -56,7 +56,7 @@ public class AttendanceService implements IAttendanceService {
             attendance.setPrice(price);
             attendanceDao.update(attendance);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new NullPointerException("Attendance with index: " + index + " dont exists.");
+            throw new RuntimeException("Attendance with index: " + index + " dont exists.", e);
         }
     }
 

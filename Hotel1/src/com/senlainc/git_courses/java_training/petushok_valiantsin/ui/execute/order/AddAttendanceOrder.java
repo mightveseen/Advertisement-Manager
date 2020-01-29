@@ -12,14 +12,18 @@ public class AddAttendanceOrder implements IAction {
 
     @Override
     public void execute() {
-        Scanner scanner = new Scanner(System.in);
-        Hotel.getInstance().showOrder().forEach(System.out::println);
-        System.out.print("Enter order index: ");
-        final int orderIndex = Integer.parseInt(scanner.nextLine());
-        Hotel.getInstance().showAttendance();
-        System.out.print("Enter attendance index: ");
-        final int attendanceIndex = Integer.parseInt(scanner.nextLine());
-        Hotel.getInstance().addOrderAttendance(orderIndex, attendanceIndex);
-        LOGGER.log(Level.INFO, "Add attendance to order");
+        try{
+            Scanner scanner = new Scanner(System.in);
+            Hotel.getInstance().showOrder().forEach(System.out::println);
+            System.out.print("Enter order index: ");
+            final int orderIndex = Integer.parseInt(scanner.nextLine());
+            Hotel.getInstance().showAttendance();
+            System.out.print("Enter attendance index: ");
+            final int attendanceIndex = Integer.parseInt(scanner.nextLine());
+            Hotel.getInstance().addOrderAttendance(orderIndex, attendanceIndex);
+            LOGGER.log(Level.INFO, "Add attendance to order");
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("Wrong data: " + e.getMessage(), e);
+        }
     }
 }

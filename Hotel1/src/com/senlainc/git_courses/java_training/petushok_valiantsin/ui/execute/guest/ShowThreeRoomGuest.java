@@ -12,11 +12,15 @@ public class ShowThreeRoomGuest implements IAction {
 
     @Override
     public void execute() {
-        Scanner scanner = new Scanner(System.in);
-        Hotel.getInstance().showGuest().forEach(System.out::println);
-        System.out.print("Enter guest index: ");
-        final int index = Integer.parseInt(scanner.nextLine());
-        Hotel.getInstance().showGuestRoom(index).forEach(System.out::println);
-        LOGGER.log(Level.INFO, "Show last 3 room of guest");
+        try {
+            Scanner scanner = new Scanner(System.in);
+            Hotel.getInstance().showGuest().forEach(System.out::println);
+            System.out.print("Enter guest index: ");
+            final int index = Integer.parseInt(scanner.nextLine());
+            Hotel.getInstance().showGuestRoom(index).forEach(System.out::println);
+            LOGGER.log(Level.INFO, "Show last 3 room of guest");
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("Wrong data: " + e.getMessage(), e);
+        }
     }
 }

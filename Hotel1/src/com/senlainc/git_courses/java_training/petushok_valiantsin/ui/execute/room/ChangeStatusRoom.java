@@ -18,11 +18,15 @@ public class ChangeStatusRoom implements IAction {
 
     @Override
     public void execute() {
-        Scanner scanner = new Scanner(System.in);
-        Hotel.getInstance().showRoom("all").forEach(System.out::println);
-        System.out.print("Enter room index: ");
-        final int index = Integer.parseInt(scanner.nextLine());
-        Hotel.getInstance().changeStatusRoom(index, status);
-        LOGGER.log(Level.INFO, "Change room status");
+        try {
+            Scanner scanner = new Scanner(System.in);
+            Hotel.getInstance().showRoom("all").forEach(System.out::println);
+            System.out.print("Enter room index: ");
+            final int index = Integer.parseInt(scanner.nextLine());
+            Hotel.getInstance().changeStatusRoom(index, status);
+            LOGGER.log(Level.INFO, "Change room status");
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("Wrong data: " + e.getMessage(), e);
+        }
     }
 }

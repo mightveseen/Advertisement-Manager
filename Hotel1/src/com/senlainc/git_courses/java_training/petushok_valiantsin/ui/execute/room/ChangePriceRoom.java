@@ -12,13 +12,17 @@ public class ChangePriceRoom implements IAction {
 
     @Override
     public void execute() {
-        Scanner scanner = new Scanner(System.in);
-        Hotel.getInstance().showRoom("all").forEach(System.out::println);
-        System.out.print("Enter room index: ");
-        final int index = Integer.parseInt(scanner.nextLine());
-        System.out.print("Enter price(split cost - '.'): ");
-        final double price = Double.parseDouble(scanner.nextLine());
-        Hotel.getInstance().changePriceRoom(index, price);
-        LOGGER.log(Level.INFO, "Change room price");
+        try {
+            Scanner scanner = new Scanner(System.in);
+            Hotel.getInstance().showRoom("all").forEach(System.out::println);
+            System.out.print("Enter room index: ");
+            final int index = Integer.parseInt(scanner.nextLine());
+            System.out.print("Enter price(split cost - '.'): ");
+            final double price = Double.parseDouble(scanner.nextLine());
+            Hotel.getInstance().changePriceRoom(index, price);
+            LOGGER.log(Level.INFO, "Change room price");
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("Wrong data: " + e.getMessage(), e);
+        }
     }
 }

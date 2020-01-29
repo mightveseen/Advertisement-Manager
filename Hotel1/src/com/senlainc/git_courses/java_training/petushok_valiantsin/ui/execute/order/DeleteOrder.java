@@ -3,6 +3,7 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.or
 import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.IAction;
 
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,10 +13,14 @@ public class DeleteOrder implements IAction {
 
     @Override
     public void execute() {
-        Scanner scanner = new Scanner(System.in);
-        Hotel.getInstance().showOrder().forEach(System.out::println);
-        System.out.print("Enter order index: ");
-        Hotel.getInstance().deleteOrder(scanner.nextInt());
-        LOGGER.log(Level.INFO, "Delete order from list");
+        try {
+            Scanner scanner = new Scanner(System.in);
+            Hotel.getInstance().showOrder().forEach(System.out::println);
+            System.out.print("Enter order index: ");
+            Hotel.getInstance().deleteOrder(scanner.nextInt());
+            LOGGER.log(Level.INFO, "Delete order from list");
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("Wrong data: " + e.getMessage(), e);
+        }
     }
 }

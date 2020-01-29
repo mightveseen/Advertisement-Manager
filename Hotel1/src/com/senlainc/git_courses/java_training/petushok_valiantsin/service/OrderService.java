@@ -31,7 +31,7 @@ public class OrderService implements IOrderService {
     @Override
     public void add(int guestIndex, int roomIndex, LocalDate endDate) {
         if (roomService.getRoom(roomIndex).getStatus().equals(RoomStatus.RENTED) || roomService.getRoom(roomIndex).getStatus().equals(RoomStatus.SERVED)) {
-            throw new NullPointerException("Room now is not available");
+            throw new ArrayIndexOutOfBoundsException("Room now is not available");
         }
         orderDao.create(new Order(guestIndex, roomIndex, endDate));
         orderDao.read(orderDao.readAll().size()).setPrice(roomService.getRoom(roomIndex).getPrice());
@@ -44,7 +44,7 @@ public class OrderService implements IOrderService {
             orderDao.read(index).setStatus(OrderStatus.DISABLED);
             roomService.changeStatus(index, RoomStatus.FREE);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new NullPointerException("Order with index: " + index + " dont exists.");
+            throw new RuntimeException("Order with index: " + index + " dont exists.", e);
         }
     }
 
@@ -103,7 +103,7 @@ public class OrderService implements IOrderService {
             order.setPrice(price);
             orderDao.update(order);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new NullPointerException("Failed to add attendance");
+            throw new RuntimeException("Failed to add attendance", e);
         }
     }
 
@@ -127,19 +127,25 @@ public class OrderService implements IOrderService {
 
     private void sortByAlphabet(List<Order> myList) {
         myList.clear();
-        for (int index : guestService.sortByAlphabet()) {
-            myList.add(orderDao.readAll().stream().filter(i -> i.getGuestIndex() == index).findFirst().orElseThrow(NullPointerException::new));
+        try {
+            for (int index : guestService.sortByAlphabet()) {
+                myList.add(orderDao.readAll().stream().filter(i -> i.getGuestIndex() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("List is empty", e);
         }
     }
 
     @Override
     public List<String> showAttendance(int guestIndex) {
         List<String> finalList = new ArrayList<>();
-        List<Integer> attendanceIndexList = orderDao.readAll().stream().filter(i -> i.getGuestIndex() == guestIndex).findFirst().orElseThrow(NullPointerException::new).getAttendanceIndex();
+        List<Integer> attendanceIndexList;
+        try {
+             attendanceIndexList = orderDao.readAll().stream().filter(i -> i.getGuestIndex() == guestIndex).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new).getAttendanceIndex();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("This guest didn't have attendance's", e);
+        }
         for (Object index : attendanceIndexList) {
-            if (attendanceIndexList.size() == 0) {
-                throw new NullPointerException("This guest didn't have attendance's");
-            }
             finalList.add(attendanceService.get((int) index).toString());
         }
         return finalList;

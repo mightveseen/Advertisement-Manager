@@ -15,21 +15,22 @@ public class AddOrder implements IAction {
 
     @Override
     public void execute() {
-        Scanner scanner = new Scanner(System.in);
-        Hotel.getInstance().showGuest().forEach(System.out::println);
-        System.out.print("Enter guest index: ");
-        final int guestIndex = Integer.parseInt(scanner.nextLine());
-        Hotel.getInstance().showRoom("all").forEach(System.out::println);
-        System.out.print("Enter room index: ");
-        final int roomIndex = Integer.parseInt(scanner.nextLine());
-        System.out.print("Enter end date(Format: YYYY-MM-DD): ");
         try {
+            Scanner scanner = new Scanner(System.in);
+            Hotel.getInstance().showGuest().forEach(System.out::println);
+            System.out.print("Enter guest index: ");
+            final int guestIndex = Integer.parseInt(scanner.nextLine());
+            Hotel.getInstance().showRoom("all").forEach(System.out::println);
+            System.out.print("Enter room index: ");
+            final int roomIndex = Integer.parseInt(scanner.nextLine());
+            System.out.print("Enter end date(Format: YYYY-MM-DD): ");
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             final LocalDate endDate = LocalDate.parse(scanner.nextLine(), formatter);
             Hotel.getInstance().addOrder(guestIndex, roomIndex, endDate);
-        } catch (DateTimeParseException e) {
-            System.err.println("Wrong date format");
+            LOGGER.log(Level.INFO, "Add order in list");
+        } catch (DateTimeParseException | NumberFormatException e) {
+            throw new RuntimeException("Wrong data: " + e.getMessage(), e);
         }
-        LOGGER.log(Level.INFO, "Add order in list");
+
     }
 }

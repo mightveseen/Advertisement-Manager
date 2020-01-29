@@ -24,7 +24,7 @@ public class ShowDateRoom implements IAction {
             Hotel.getInstance().showAfterDate(date).forEach(System.out::println);
             LOGGER.log(Level.INFO, "Show room will free after: " + date);
         } catch (DateTimeParseException e) {
-            throw new NumberFormatException("Wrong format of date");
+            throw new RuntimeException("Wrong data: " + e.getMessage(), e);
         }
     }
 }
