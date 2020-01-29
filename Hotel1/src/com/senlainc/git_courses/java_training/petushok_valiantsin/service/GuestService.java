@@ -25,7 +25,7 @@ public class GuestService implements IGuestService {
     public void delete(int index) {
         try {
             guestDao.delete(index);
-        } catch (NullPointerException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             throw new NullPointerException("Guest with index: " + index + " dont exists.");
         }
     }
@@ -36,7 +36,7 @@ public class GuestService implements IGuestService {
             Guest guest = guestDao.read(index);
             guest.setInfoContact(information);
             guestDao.update(guest);
-        } catch (NullPointerException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             throw new NullPointerException("Guest with index: " + index + " dont exists.");
         }
     }
@@ -55,7 +55,7 @@ public class GuestService implements IGuestService {
     public Guest getGuest(int index) {
         try {
             return guestDao.read(index);
-        } catch (NullPointerException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             throw new NullPointerException("Guest with index: " + index + " dont exists.");
         }
     }

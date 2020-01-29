@@ -44,7 +44,7 @@ public class OrderService implements IOrderService {
         try {
             orderDao.read(index).setStatus(OrderStatus.DISABLED);
             roomService.changeStatus(index, RoomStatus.FREE);
-        } catch (NullPointerException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             throw new NullPointerException("Order with index: " + index + " dont exists.");
         }
     }
@@ -91,14 +91,14 @@ public class OrderService implements IOrderService {
     @Override
     public void addAttendance(int orderIndex, int attendanceIndex) {
         try {
-            Order order = new Order(orderDao.read(orderIndex));
+            Order order = orderDao.read(orderIndex);
             final List<Integer> myList = new LinkedList<>(order.getAttendanceIndex());
             myList.add(attendanceIndex);
             order.setAttendanceIndex(myList);
             final double price = order.getPrice() + attendanceService.getPrice(attendanceIndex);
             order.setPrice(price);
             orderDao.update(order);
-        } catch (NullPointerException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             throw new NullPointerException("Failed to add attendance");
         }
     }
@@ -130,7 +130,7 @@ public class OrderService implements IOrderService {
 
     public void showAttendance(int guestIndex) {
         try {
-            List<Integer> attendanceIndexList = orderDao.readAll().stream().filter(i -> i.getGuestIndex() == guestIndex).findFirst().orElseThrow(NullPointerException::new).getAttendanceIndex();
+            List<Integer> attendanceIndexList = orderDao.readAll().stream().filter(i -> i.getGuestIndex() == guestIndex).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new).getAttendanceIndex();
             System.out.println(guestService.getGuest(guestIndex));
             for (Object index : attendanceIndexList) {
                 if (index == null) {
@@ -138,7 +138,7 @@ public class OrderService implements IOrderService {
                 }
                 System.out.println(attendanceService.get((int) index));
             }
-        } catch (NullPointerException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             throw new NullPointerException("This guest didn't have attendance's");
         }
 

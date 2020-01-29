@@ -31,7 +31,7 @@ public class RoomService implements IRoomService {
     public void delete(int index) {
         try {
             roomDao.delete(index);
-        } catch (NullPointerException e){
+        } catch (ArrayIndexOutOfBoundsException e) {
             throw new NullPointerException("Room with index: " + index + " dont exists.");
         }
     }
@@ -45,7 +45,7 @@ public class RoomService implements IRoomService {
     public Room getRoom(int index) {
         try {
             return roomDao.read(index);
-        } catch (NullPointerException e){
+        } catch (ArrayIndexOutOfBoundsException e) {
             throw new NullPointerException("Room with index: " + index + " dont exists.");
         }
     }
@@ -55,7 +55,7 @@ public class RoomService implements IRoomService {
             Room room = roomDao.read(index);
             room.setPrice(price);
             roomDao.update(room);
-        } catch (NullPointerException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             throw new NullPointerException("Room with index: " + index + " dont exists.");
         }
     }
@@ -66,7 +66,7 @@ public class RoomService implements IRoomService {
             Room room = roomDao.read(index);
             room.setStatus(status);
             roomDao.update(room);
-        } catch (NullPointerException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             throw new NullPointerException("Room with index: " + index + " dont exists.");
         }
     }

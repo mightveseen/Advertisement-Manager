@@ -1,5 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui;
 
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.ConsoleColor;
+
 public class MenuNavigator {
     private Menu currentMenu;
 
@@ -8,7 +10,7 @@ public class MenuNavigator {
     }
 
     public void printMenu() {
-        System.out.println(currentMenu.getName() + "\n" + currentMenu.toString());
+        System.out.println(ConsoleColor.YELLOW.getCode() + currentMenu.getName() + ConsoleColor.RESET.getCode() + "\n" + currentMenu.toString());
     }
 
     public void navigate(Integer index) {

@@ -2,7 +2,9 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.ui;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.logger.CustomLogger;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.logging.Level;
 
 public class MenuController {
     private final MenuNavigator menuNavigator;
@@ -16,13 +18,13 @@ public class MenuController {
     public void showMenu() throws InterruptedException {
         try {
             Thread.sleep(10);
-            CustomLogger.getInstance().setInfo(menuNavigator.getMenuName());
             menuNavigator.printMenu();
             System.out.print("Choose operation: ");
             Integer index = Integer.parseInt(new Scanner(System.in).next());
             menuNavigator.navigate(index);
-        } catch (NullPointerException | NumberFormatException e) {
+        } catch (NullPointerException | NumberFormatException | InputMismatchException e) {
             System.err.println(e.getMessage());
+            CustomLogger.getLogger().log(Level.WARNING, e.getMessage());
         }
     }
 

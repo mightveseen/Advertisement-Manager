@@ -16,12 +16,12 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public void delete(int index) {
-        guestList.remove(guestList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(NullPointerException::new));
+        guestList.remove(guestList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
     }
 
     @Override
     public void update(Guest guest) {
-        guestList.set(guestList.indexOf(guestList.stream().filter(i -> i.getId() == guest.getId()).findFirst().orElseThrow(NullPointerException::new)), guest);
+        guestList.set(guestList.indexOf(guestList.stream().filter(i -> i.getId() == guest.getId()).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), guest);
     }
 
     @Override
@@ -31,6 +31,6 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public Guest read(int index) {
-        return guestList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(NullPointerException::new);
+        return guestList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
     }
 }
