@@ -22,9 +22,9 @@ public class ShowDateRoom implements IAction {
             final LocalDate date = LocalDate.parse(scanner.nextLine(), formatter);
             System.out.println("Room will be available after [" + date + "]:");
             Hotel.getInstance().showAfterDate(date).forEach(System.out::println);
+            LOGGER.log(Level.INFO, "Show room will free after: " + date);
         } catch (DateTimeParseException e) {
             throw new NumberFormatException("Wrong format of date");
         }
-        LOGGER.log(Level.INFO, "Show room will free after chosen date");
     }
 }

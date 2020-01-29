@@ -8,7 +8,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IA
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.AttendanceDao;
@@ -22,8 +21,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.service.RoomSe
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Hotel {
     private static Hotel instance;
@@ -145,8 +142,7 @@ public class Hotel {
     }
 
     public List<String> sortOrder(String parameter) {
-        List<Order> myList = orderService.sort(parameter);
-        return orderService.show(myList);
+        return orderService.show(orderService.sort(parameter));
     }
 
     public List<String> showOrder() {

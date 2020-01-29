@@ -65,6 +65,7 @@ public class MenuBuilder {
         room.addItem(new MenuItem("Show after date", new ShowDateRoom(), rootMenu));
         room.addItem(new MenuItem("Show number free room's", new ShowNumberFreeRoom(), rootMenu));
         room.addItem(new MenuItem("Show room", roomType));
+        room.addItem(new MenuItem("Exit", rootMenu));
         menuNumeration(room);
     }
 
@@ -72,12 +73,14 @@ public class MenuBuilder {
         guest.addItem(new MenuItem("Add guest", new AddGuest(), rootMenu));
         guest.addItem(new MenuItem("Show number guest", new ShowNumberGuest(), rootMenu));
         guest.addItem(new MenuItem("Show last tree room's", new ShowThreeRoomGuest(), rootMenu));
+        guest.addItem(new MenuItem("Exit", rootMenu));
         menuNumeration(guest);
     }
 
     private void attendanceMenuInit(Menu attendance) {
         attendance.addItem(new MenuItem("Add attendance", new AddAttendance(), rootMenu));
         attendance.addItem(new MenuItem("Change price", new ChangePriceAttendance(), rootMenu));
+        attendance.addItem(new MenuItem("Exit", rootMenu));
         menuNumeration(attendance);
     }
 
@@ -87,6 +90,7 @@ public class MenuBuilder {
         order.addItem(new MenuItem("Add attendance", new AddAttendanceOrder(), rootMenu));
         order.addItem(new MenuItem("Show attendance order", new ShowAttendanceOrder(), rootMenu));
         order.addItem(new MenuItem("Show order's", orderSort));
+        order.addItem(new MenuItem("Exit", rootMenu));
         menuNumeration(order);
     }
 
