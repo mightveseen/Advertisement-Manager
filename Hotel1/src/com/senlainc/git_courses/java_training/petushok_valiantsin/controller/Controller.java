@@ -17,6 +17,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.service.GuestS
 import com.senlainc.git_courses.java_training.petushok_valiantsin.service.OrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.service.RoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.MenuController;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.logger.CustomLogger;
 
 public class Controller {
     private static final IGuestDao guestDao = new GuestDao();
@@ -29,6 +30,7 @@ public class Controller {
     private static final IOrderService orderService = new OrderService(orderDao, roomService, guestService, attendanceService);
 
     public static void main(String[] args) {
+        new CustomLogger();
         Hotel.setInstance(guestService, roomService, attendanceService, orderService);
         new MenuController().run();
     }

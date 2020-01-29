@@ -5,9 +5,11 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.logger
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MenuController {
     private final MenuNavigator menuNavigator;
+    private static final Logger LOGGER = Logger.getLogger(MenuController.class.getSimpleName());
 
     public MenuController() {
         final MenuBuilder menuBuilder = new MenuBuilder();
@@ -24,7 +26,7 @@ public class MenuController {
             menuNavigator.navigate(index);
         } catch (NullPointerException | NumberFormatException | InputMismatchException e) {
             System.err.println(e.getMessage());
-            CustomLogger.getLogger().log(Level.WARNING, e.getMessage());
+            LOGGER.log(Level.WARNING, e.getMessage());
         }
     }
 
