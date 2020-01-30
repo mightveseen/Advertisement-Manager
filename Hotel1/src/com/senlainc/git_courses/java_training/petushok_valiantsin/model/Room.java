@@ -72,6 +72,6 @@ public class Room {
     public String toString() {
         return id + ")" + number + ", "
                 + classification + ", " + roomNumber + ", "
-                + capacity + ", " + status.getName() + ", " + price;
+                + capacity + ", " + status.toString() + ", " + price;
     }
 }

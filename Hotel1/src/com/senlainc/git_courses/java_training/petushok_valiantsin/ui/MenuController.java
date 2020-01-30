@@ -1,8 +1,11 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui;
 
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MenuController {
+    private static final Logger LOGGER = Logger.getLogger(MenuController.class.getSimpleName());
     private final MenuNavigator menuNavigator;
 
     public MenuController() {
@@ -13,13 +16,13 @@ public class MenuController {
 
     public void showMenu() throws InterruptedException {
         try {
-            Thread.sleep(100);
+            Thread.sleep(10);
             menuNavigator.printMenu();
             System.out.print("Choose operation: ");
-            Integer index = Integer.parseInt(new Scanner(System.in).next());
+            final Integer index = Integer.parseInt(new Scanner(System.in).next());
             menuNavigator.navigate(index);
-        } catch (NullPointerException | NumberFormatException e) {
-            System.err.println(e.getMessage());
+        } catch (RuntimeException e) {
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
     }
 
@@ -28,8 +31,8 @@ public class MenuController {
             while (true) {
                 showMenu();
             }
-        } catch (InterruptedException ignored) {
-
+        } catch (InterruptedException e) {
+            LOGGER.log(Level.WARNING, e.getMessage());
         }
     }
 }

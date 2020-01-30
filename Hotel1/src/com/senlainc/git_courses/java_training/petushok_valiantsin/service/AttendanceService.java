@@ -4,7 +4,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IAttendanceService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -26,8 +25,8 @@ public class AttendanceService implements IAttendanceService {
     public void delete(int index) {
         try {
             attendanceDao.delete(index);
-        } catch (NullPointerException e) {
-            throw new NullPointerException("Attendance with index: " + index + " dont exists.");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("Attendance with index: " + index + " dont exists.", e);
         }
     }
 
@@ -35,8 +34,8 @@ public class AttendanceService implements IAttendanceService {
     public double getPrice(int index) {
         try {
             return attendanceDao.read(index).getPrice();
-        } catch (NullPointerException e) {
-            throw new NullPointerException("Attendance with index: " + index + " dont exists.");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("Attendance with index: " + index + " dont exists.", e);
         }
     }
 
@@ -44,39 +43,39 @@ public class AttendanceService implements IAttendanceService {
     public Attendance get(int index) {
         try {
             return attendanceDao.read(index);
-        } catch (NullPointerException e) {
-            throw new NullPointerException("Attendance with index: " + index + " dont exists.");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("Attendance with index: " + index + " dont exists.", e);
         }
     }
 
     @Override
     public void changePrice(int index, double price) {
         try {
-            Attendance attendance = attendanceDao.read(index);
+            final Attendance attendance = attendanceDao.read(index);
             attendance.setPrice(price);
             attendanceDao.update(attendance);
-        } catch (NullPointerException e) {
-            throw new NullPointerException("Attendance with index: " + index + " dont exists.");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("Attendance with index: " + index + " dont exists.", e);
         }
     }
 
     @Override
-    public void showAttendance() {
-        attendanceDao.readAll().forEach(System.out::println);
+    public List<Attendance> showAttendance() {
+        return attendanceDao.readAll();
     }
 
     @Override
     public List<Attendance> sort(String parameter) {
-        List<Attendance> myList = new ArrayList<>(attendanceDao.readAll());
+        final List<Attendance> myList = attendanceDao.readAll();
         switch (parameter) {
             case "section":
                 sortBySection(myList);
-                return myList;
+                break;
             case "price":
                 sortByPrice(myList);
-                return myList;
+                break;
         }
-        return null;
+        return myList;
     }
 
     private void sortBySection(List<Attendance> myList) {

@@ -94,6 +94,4 @@ public class Order {
     public void setAttendanceIndex(List<Integer> attendanceIndex) {
         this.attendanceIndex = attendanceIndex;
     }
-
-
 }

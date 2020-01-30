@@ -3,8 +3,12 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.or
 import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.IAction;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class ShowOrder implements IAction {
     private final String parameter;
+    private static final Logger LOGGER = Logger.getLogger(Hotel.class.getSimpleName());
 
     public ShowOrder(String parameter) {
         this.parameter = parameter;
@@ -12,10 +16,7 @@ public class ShowOrder implements IAction {
 
     @Override
     public void execute() {
-        if (parameter.equals("default")) {
-            Hotel.getInstance().showOrder();
-            return;
-        }
-        Hotel.getInstance().sortOrder(parameter);
+        Hotel.getInstance().sortOrder(parameter).forEach(System.out::println);
+        LOGGER.log(Level.INFO, "Show order list sorted by: " + parameter);
     }
 }

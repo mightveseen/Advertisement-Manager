@@ -11,7 +11,7 @@ public interface IAttendanceService {
 
     void changePrice(int index, double price);
 
-    void showAttendance();
+    List<Attendance> showAttendance();
 
     double getPrice(int index);
 

@@ -5,7 +5,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IG
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -26,50 +25,50 @@ public class GuestService implements IGuestService {
     public void delete(int index) {
         try {
             guestDao.delete(index);
-        } catch (NullPointerException e) {
-            throw new NullPointerException("Guest with index: " + index + " dont exists.");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("Guest with index: " + index + " dont exists.", e);
         }
     }
 
     @Override
     public void changeInfoContact(int index, String information) {
         try {
-            Guest guest = guestDao.read(index);
+            final Guest guest = guestDao.read(index);
             guest.setInfoContact(information);
             guestDao.update(guest);
-        } catch (NullPointerException e) {
-            throw new NullPointerException("Guest with index: " + index + " dont exists.");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("Guest with index: " + index + " dont exists.", e);
         }
     }
 
     @Override
-    public void num() {
-        System.out.println("Number of guest: " + guestDao.readAll().size());
+    public int num() {
+        return guestDao.readAll().size();
     }
 
     @Override
-    public void show() {
-        guestDao.readAll().forEach(System.out::println);
+    public List<Guest> show() {
+        return guestDao.readAll();
     }
 
     @Override
     public Guest getGuest(int index) {
         try {
             return guestDao.read(index);
-        } catch (NullPointerException e) {
-            throw new NullPointerException("Guest with index: " + index + " dont exists.");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("Guest with index: " + index + " dont exists.", e);
         }
     }
 
     @Override
     public int[] sortByAlphabet() {
-        List<Guest> myList = new ArrayList<>(guestDao.readAll());
+        final List<Guest> myList = guestDao.readAll();
         myList.sort(SORT_BY_ALPHABET);
         return getGuestIndex(myList);
     }
 
     private int[] getGuestIndex(List<Guest> myList) {
-        int[] guestIndex = new int[myList.size()];
+        final int[] guestIndex = new int[myList.size()];
         for (int i = 0; i < myList.size(); i++) {
             guestIndex[i] = myList.get(i).getId();
         }

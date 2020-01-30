@@ -7,8 +7,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ShowDateRoom implements IAction {
+    private static final Logger LOGGER = Logger.getLogger(Hotel.class.getSimpleName());
+
     @Override
     public void execute() {
         Scanner scanner = new Scanner(System.in);
@@ -16,9 +20,11 @@ public class ShowDateRoom implements IAction {
             System.out.print("Enter date(Format: YYYY-MM-DD): ");
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             final LocalDate date = LocalDate.parse(scanner.nextLine(), formatter);
-            Hotel.getInstance().showAfterDate(date);
+            System.out.println("Room will be available after [" + date + "]:");
+            Hotel.getInstance().showAfterDate(date).forEach(System.out::println);
+            LOGGER.log(Level.INFO, "Show room will free after: " + date);
         } catch (DateTimeParseException e) {
-            throw new NumberFormatException("Wrong format of date");
+            throw new RuntimeException("Wrong data: " + e.getMessage(), e);
         }
     }
 }

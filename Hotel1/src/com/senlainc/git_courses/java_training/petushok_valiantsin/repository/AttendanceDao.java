@@ -16,12 +16,12 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public void delete(int index) {
-        attendanceList.remove(attendanceList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(NullPointerException::new));
+        attendanceList.remove(attendanceList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
     }
 
     @Override
     public void update(Attendance attendance) {
-        attendanceList.set(attendanceList.indexOf(attendanceList.stream().filter(i -> i.getId() == attendance.getId()).findFirst().orElseThrow(NullPointerException::new)), attendance);
+        attendanceList.set(attendanceList.indexOf(attendanceList.stream().filter(i -> i.getId() == attendance.getId()).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), attendance);
     }
 
     @Override
@@ -31,6 +31,6 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public Attendance read(int index) {
-        return attendanceList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(NullPointerException::new);
+        return attendanceList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
     }
 }

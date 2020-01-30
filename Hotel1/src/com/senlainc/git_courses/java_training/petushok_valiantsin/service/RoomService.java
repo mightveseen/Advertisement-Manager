@@ -5,7 +5,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IR
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,7 +22,7 @@ public class RoomService implements IRoomService {
     @Override
     public void add(Room room) {
         if (roomDao.readAll().stream().anyMatch(i -> i.getNumber() == room.getNumber())) {
-            throw new NullPointerException("Room with number: " + room.getNumber() + " already exists.");
+            throw new RuntimeException("Room with number: " + room.getNumber() + " already exists.");
         }
         roomDao.create(room);
     }
@@ -32,8 +31,8 @@ public class RoomService implements IRoomService {
     public void delete(int index) {
         try {
             roomDao.delete(index);
-        } catch (NullPointerException e){
-            throw new NullPointerException("Room with index: " + index + " dont exists.");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("Room with index: " + index + " dont exists.");
         }
     }
 
@@ -46,42 +45,39 @@ public class RoomService implements IRoomService {
     public Room getRoom(int index) {
         try {
             return roomDao.read(index);
-        } catch (NullPointerException e){
-            throw new NullPointerException("Room with index: " + index + " dont exists.");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("Room with index: " + index + " dont exists.", e);
         }
     }
+
     @Override
     public void changePrice(int index, double price) {
         try {
-            Room room = roomDao.read(index);
+            final Room room = roomDao.read(index);
             room.setPrice(price);
             roomDao.update(room);
-        } catch (NullPointerException e) {
-            throw new NullPointerException("Room with index: " + index + " dont exists.");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("Room with index: " + index + " dont exists.", e);
         }
     }
 
     @Override
     public void changeStatus(int index, RoomStatus status) {
         try {
-            Room room = roomDao.read(index);
+            final Room room = roomDao.read(index);
             room.setStatus(status);
             roomDao.update(room);
-        } catch (NullPointerException e) {
-            throw new NullPointerException("Room with index: " + index + " dont exists.");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("Room with index: " + index + " dont exists.", e);
         }
     }
 
     @Override
-    public void show(String parameter, List<Room> myList) {
-        switch (parameter) {
-            case "all":
-                myList.forEach(System.out::println);
-                break;
-            case "free":
-                showFreeRoom(myList).forEach(System.out::println);
-                break;
+    public List<Room> show(String parameter, List<Room> myList) {
+        if (parameter.equals("free")) {
+            return showFreeRoom(myList);
         }
+        return myList;
     }
 
     private List<Room> showFreeRoom(List<Room> myList) {
@@ -89,24 +85,23 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void numFreeRoom() {
-        final long counter = roomDao.readAll().stream().filter(i -> i.getStatus().equals(RoomStatus.FREE)).count();
-        System.out.println("Number of free room: " + counter);
+    public long numFreeRoom() {
+        return roomDao.readAll().stream().filter(i -> i.getStatus().equals(RoomStatus.FREE)).count();
     }
 
     @Override
     public List<Room> sort(String parameter) {
-        List<Room> myList = new ArrayList<>(roomDao.readAll());
+        final List<Room> myList = roomDao.readAll();
         switch (parameter) {
             case "price":
                 sortByPrice(myList);
-                return myList;
+                break;
             case "classification":
                 sortByClassification(myList);
-                return myList;
+                break;
             case "room number":
                 sortByRoomNumber(myList);
-                return myList;
+                break;
         }
         return myList;
     }
