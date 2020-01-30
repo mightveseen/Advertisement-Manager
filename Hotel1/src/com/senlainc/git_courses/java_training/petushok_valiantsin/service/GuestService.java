@@ -43,13 +43,13 @@ public class GuestService implements IGuestService {
     }
 
     @Override
-    public String num() {
-        return "Number of guest: " + guestDao.readAll().size();
+    public int num() {
+        return guestDao.readAll().size();
     }
 
     @Override
-    public List<String> show() {
-        return createStringList(guestDao.readAll());
+    public List<Guest> show() {
+        return guestDao.readAll();
     }
 
     @Override
@@ -74,13 +74,5 @@ public class GuestService implements IGuestService {
             guestIndex[i] = myList.get(i).getId();
         }
         return guestIndex;
-    }
-
-    private List<String> createStringList(List<Guest> guestList) {
-        List<String> stringList = new ArrayList<>();
-        for(Guest guest : guestList) {
-            stringList.add(guest.toString());
-        }
-        return stringList;
     }
 }

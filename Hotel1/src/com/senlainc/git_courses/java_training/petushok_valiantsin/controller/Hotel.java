@@ -8,6 +8,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IA
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.AttendanceDao;
@@ -20,6 +21,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.service.OrderS
 import com.senlainc.git_courses.java_training.petushok_valiantsin.service.RoomService;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Hotel {
@@ -61,7 +63,7 @@ public class Hotel {
     }
 
     public List<String> showAttendance() {
-        return attendanceService.showAttendance();
+        return createStringList(attendanceService.showAttendance());
     }
 
     public void changePriceAttendance(int index, double price) {
@@ -92,15 +94,15 @@ public class Hotel {
     }
 
     public List<String> sortRoom(String type, String parameter) {
-        return roomService.show(type, roomService.sort(parameter));
+        return createStringList(roomService.show(type, roomService.sort(parameter)));
     }
 
     public List<String> showRoom(String parameter) {
-        return roomService.show(parameter, roomService.getRoomList());
+        return createStringList(roomService.show(parameter, roomService.getRoomList()));
     }
 
     public String numFreeRoom() {
-        return roomService.numFreeRoom();
+        return "Number of free room: " + roomService.numFreeRoom();
     }
 
     /**
@@ -117,11 +119,11 @@ public class Hotel {
     }
 
     public String numGuest() {
-        return guestService.num();
+        return "Number of guest: " + guestService.num();
     }
 
     public List<String> showGuest() {
-        return guestService.show();
+        return createStringList(guestService.show());
     }
 
     /**
@@ -142,26 +144,40 @@ public class Hotel {
     }
 
     public List<String> sortOrder(String parameter) {
-        return orderService.show(orderService.sort(parameter));
+        return createStringList(orderService.show(orderService.sort(parameter)));
     }
 
     public List<String> showOrder() {
-        return orderService.show();
+        return createStringList(orderService.show());
     }
 
     public List<String> showAfterDate(LocalDate freeDate) {
-        return orderService.showAfterDate(freeDate);
+        return createStringList(orderService.showAfterDate(freeDate));
     }
 
     public List<String> showGuestRoom(int index) {
-        return orderService.showGuestRoom(index);
+        return createStringList(orderService.showGuestRoom(index));
     }
 
     public List<String> showOrderAttendance(int index) {
-        return orderService.showAttendance(index);
+        return createStringList(orderService.showAttendance(index));
     }
 
     public void addOrderAttendance(int orderIndex, int attendanceIndex) {
         orderService.addAttendance(orderIndex, attendanceIndex);
+    }
+
+    private <T> List<String> createStringList(List<T> list) {
+        List<String> stringList = new ArrayList<>();
+        if(list.stream().anyMatch(i -> i instanceof Order)){
+            for (T element : list) {
+                stringList.add(orderService.show((Order) element));
+            }
+            return stringList;
+        }
+        for (T element : list) {
+            stringList.add(element.toString());
+        }
+        return stringList;
     }
 }

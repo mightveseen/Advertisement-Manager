@@ -5,13 +5,17 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IA
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class OrderService implements IOrderService {
@@ -31,7 +35,7 @@ public class OrderService implements IOrderService {
     @Override
     public void add(int guestIndex, int roomIndex, LocalDate endDate) {
         if (roomService.getRoom(roomIndex).getStatus().equals(RoomStatus.RENTED) || roomService.getRoom(roomIndex).getStatus().equals(RoomStatus.SERVED)) {
-            throw new ArrayIndexOutOfBoundsException("Room now is not available");
+            throw new RuntimeException("Room now is not available");
         }
         orderDao.create(new Order(guestIndex, roomIndex, endDate));
         orderDao.read(orderDao.readAll().size()).setPrice(roomService.getRoom(roomIndex).getPrice());
@@ -49,16 +53,17 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<String> show() {
-        return createStringList(orderDao.readAll());
+    public List<Order> show() {
+        return orderDao.readAll();
     }
 
     @Override
-    public List<String> show(List<Order> myList) {
-        return createStringList(myList);
+    public List<Order> show(List<Order> myList) {
+        return myList;
     }
 
-    private String show(Order order) {
+    @Override
+    public String show(Order order) {
         return "Order index: " + order.getId() + "\n" +
                 guestService.getGuest(order.getGuestIndex()) + "\n" +
                 roomService.getRoom(order.getRoomIndex()) + "\nStart date: " +
@@ -69,27 +74,23 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<String> showGuestRoom(int index) {
-        final List<String> guestRoomList = new ArrayList<>();
+    public List<Room> showGuestRoom(int index) {
+        final List<Room> guestRoomList = new ArrayList<>();
         final List<Order> orderList = orderDao.readAll().stream().filter(i -> i.getGuestIndex() == index).limit(3).collect(Collectors.toList());
         for (Order order : orderList) {
-            guestRoomList.add(guestService.getGuest(order.getGuestIndex()) + "\n" + roomService.getRoom(order.getRoomIndex()));
+            guestRoomList.add(roomService.getRoom(order.getRoomIndex()));
         }
         return guestRoomList;
     }
 
     @Override
-    public List<String> showAfterDate(LocalDate date) {
+    public List<Room> showAfterDate(LocalDate date) {
         final List<Order> orderList = orderDao.readAll().stream().filter(i -> i.getEndDate().isBefore(date) && i.getStatus().equals(OrderStatus.ACTIVE)).collect(Collectors.toList());
         final List<Room> roomList = roomService.getRoomList().stream().filter(i -> i.getStatus().equals(RoomStatus.FREE)).collect(Collectors.toList());
-        final List<String> finalList = new ArrayList<>();
         for (Order order : orderList) {
-            finalList.add(roomService.getRoom(order.getRoomIndex()).toString());
+            roomList.add(roomService.getRoom(order.getRoomIndex()));
         }
-        for(Room room : roomList) {
-            finalList.add(room.toString());
-        }
-        return finalList;
+        return roomList;
     }
 
     @Override
@@ -137,25 +138,17 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<String> showAttendance(int guestIndex) {
-        List<String> finalList = new ArrayList<>();
+    public List<Attendance> showAttendance(int guestIndex) {
+        List<Attendance> finalList = new ArrayList<>();
         List<Integer> attendanceIndexList;
         try {
-             attendanceIndexList = orderDao.readAll().stream().filter(i -> i.getGuestIndex() == guestIndex).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new).getAttendanceIndex();
+            attendanceIndexList = orderDao.readAll().stream().filter(i -> i.getGuestIndex() == guestIndex).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new).getAttendanceIndex();
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new RuntimeException("This guest didn't have attendance's", e);
         }
         for (Object index : attendanceIndexList) {
-            finalList.add(attendanceService.get((int) index).toString());
+            finalList.add(attendanceService.get((int) index));
         }
         return finalList;
-    }
-
-    private List<String> createStringList(List<Order> orderList) {
-        List<String> stringList = new ArrayList<>();
-        for(Order order : orderList) {
-            stringList.add(show(order));
-        }
-        return stringList;
     }
 }

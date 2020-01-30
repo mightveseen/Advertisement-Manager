@@ -3,7 +3,6 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.or
 import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.IAction;
 
-import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;

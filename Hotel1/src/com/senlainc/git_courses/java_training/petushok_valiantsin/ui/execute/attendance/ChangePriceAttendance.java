@@ -2,7 +2,6 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.at
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.IAction;
-import org.w3c.dom.ls.LSOutput;
 
 import java.util.Scanner;
 import java.util.logging.Level;

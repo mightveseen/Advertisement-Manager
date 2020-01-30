@@ -12,9 +12,9 @@ public interface IGuestService {
 
     void changeInfoContact(int index, String information);
 
-    String num();
+    int num();
 
-    List<String> show();
+    List<Guest> show();
 
     Guest getGuest(int index);
 

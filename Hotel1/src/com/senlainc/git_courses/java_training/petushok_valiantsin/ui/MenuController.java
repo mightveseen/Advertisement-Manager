@@ -1,7 +1,5 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui;
 
-import java.util.Arrays;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +22,6 @@ public class MenuController {
             Integer index = Integer.parseInt(new Scanner(System.in).next());
             menuNavigator.navigate(index);
         } catch (RuntimeException e) {
-            System.err.println(e.getMessage());
             LOGGER.log(Level.WARNING, e.getMessage());
         }
     }

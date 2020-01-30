@@ -4,6 +4,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hot
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.attendance.AddAttendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.attendance.ChangePriceAttendance;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.exit.MenuExit;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.guest.AddGuest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.guest.ShowNumberGuest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.guest.ShowThreeRoomGuest;
@@ -55,6 +56,7 @@ public class MenuBuilder {
         rootMenu.addItem(new MenuItem("Guest", guest));
         rootMenu.addItem(new MenuItem("Attendance", attendance));
         rootMenu.addItem(new MenuItem("Order", order));
+        rootMenu.addItem(new MenuItem("Exit", new MenuExit()));
         menuNumeration(rootMenu);
     }
 

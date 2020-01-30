@@ -17,8 +17,4 @@ public class MenuNavigator {
         currentMenu.getItem(index).doAction();
         currentMenu = currentMenu.getItem(index).getNextMenu();
     }
-
-    public String getMenuName() {
-        return currentMenu.getName();
-    }
 }
