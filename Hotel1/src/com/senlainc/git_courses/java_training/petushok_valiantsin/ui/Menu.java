@@ -16,7 +16,7 @@ public class Menu {
     }
 
     public List<MenuItem> getMenuItemList() {
-        return new ArrayList<>(this.menuItemList);
+        return this.menuItemList;
     }
 
     public void addItem(MenuItem menuItem) {

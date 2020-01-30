@@ -22,7 +22,7 @@ public class MenuController {
             final Integer index = Integer.parseInt(new Scanner(System.in).next());
             menuNavigator.navigate(index);
         } catch (RuntimeException e) {
-            LOGGER.log(Level.WARNING, e.getMessage());
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
     }
 

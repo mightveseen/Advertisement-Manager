@@ -14,7 +14,12 @@ public class MenuNavigator {
     }
 
     public void navigate(Integer index) {
-        currentMenu.getItem(index).doAction();
-        currentMenu = currentMenu.getItem(index).getNextMenu();
+        try {
+            currentMenu.getItem(index).doAction();
+            currentMenu = currentMenu.getItem(index).getNextMenu();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("Menu with index: " + index + " didn't exists", e);
+        }
+
     }
 }
