@@ -12,11 +12,11 @@ public class Menu {
     }
 
     public MenuItem getItem(int index) {
-        return menuItemList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(NullPointerException::new);
+        return menuItemList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
     }
 
     public List<MenuItem> getMenuItemList() {
-        return this.menuItemList;
+        return new ArrayList<>(this.menuItemList);
     }
 
     public void addItem(MenuItem menuItem) {

@@ -19,7 +19,7 @@ public class MenuController {
             Thread.sleep(10);
             menuNavigator.printMenu();
             System.out.print("Choose operation: ");
-            Integer index = Integer.parseInt(new Scanner(System.in).next());
+            final Integer index = Integer.parseInt(new Scanner(System.in).next());
             menuNavigator.navigate(index);
         } catch (RuntimeException e) {
             LOGGER.log(Level.WARNING, e.getMessage());
@@ -32,7 +32,7 @@ public class MenuController {
                 showMenu();
             }
         } catch (InterruptedException e) {
-            System.err.println(e.getMessage());
+            LOGGER.log(Level.WARNING, e.getMessage());
         }
     }
 }
