@@ -32,10 +32,10 @@ public class Hotel {
     private final IOrderService orderService;
 
     private Hotel() {
-        IGuestDao guestDao = new GuestDao();
-        IRoomDao roomDao = new RoomDao();
-        IAttendanceDao attendanceDao = new AttendanceDao();
-        IOrderDao orderDao = new OrderDao();
+        final IGuestDao guestDao = new GuestDao();
+        final IRoomDao roomDao = new RoomDao();
+        final IAttendanceDao attendanceDao = new AttendanceDao();
+        final IOrderDao orderDao = new OrderDao();
         this.guestService = new GuestService(guestDao);
         this.roomService = new RoomService(roomDao);
         this.attendanceService = new AttendanceService(attendanceDao);
@@ -168,7 +168,7 @@ public class Hotel {
     }
 
     private <T> List<String> createStringList(List<T> list) {
-        List<String> stringList = new ArrayList<>();
+        final List<String> stringList = new ArrayList<>();
         if(list.stream().anyMatch(i -> i instanceof Order)){
             for (T element : list) {
                 stringList.add(orderService.show((Order) element));

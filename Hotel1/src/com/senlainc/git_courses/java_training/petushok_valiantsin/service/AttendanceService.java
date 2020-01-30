@@ -51,7 +51,7 @@ public class AttendanceService implements IAttendanceService {
     @Override
     public void changePrice(int index, double price) {
         try {
-            Attendance attendance = attendanceDao.read(index);
+            final Attendance attendance = attendanceDao.read(index);
             attendance.setPrice(price);
             attendanceDao.update(attendance);
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -66,7 +66,7 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     public List<Attendance> sort(String parameter) {
-        List<Attendance> myList = attendanceDao.readAll();
+        final List<Attendance> myList = attendanceDao.readAll();
         switch (parameter) {
             case "section":
                 sortBySection(myList);

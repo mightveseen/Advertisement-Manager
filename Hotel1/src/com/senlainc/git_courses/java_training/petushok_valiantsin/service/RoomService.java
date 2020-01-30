@@ -53,7 +53,7 @@ public class RoomService implements IRoomService {
     @Override
     public void changePrice(int index, double price) {
         try {
-            Room room = roomDao.read(index);
+            final Room room = roomDao.read(index);
             room.setPrice(price);
             roomDao.update(room);
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -64,7 +64,7 @@ public class RoomService implements IRoomService {
     @Override
     public void changeStatus(int index, RoomStatus status) {
         try {
-            Room room = roomDao.read(index);
+            final Room room = roomDao.read(index);
             room.setStatus(status);
             roomDao.update(room);
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -91,7 +91,7 @@ public class RoomService implements IRoomService {
 
     @Override
     public List<Room> sort(String parameter) {
-        List<Room> myList = roomDao.readAll();
+        final List<Room> myList = roomDao.readAll();
         switch (parameter) {
             case "price":
                 sortByPrice(myList);

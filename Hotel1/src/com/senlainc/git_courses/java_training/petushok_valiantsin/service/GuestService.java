@@ -34,7 +34,7 @@ public class GuestService implements IGuestService {
     @Override
     public void changeInfoContact(int index, String information) {
         try {
-            Guest guest = guestDao.read(index);
+            final Guest guest = guestDao.read(index);
             guest.setInfoContact(information);
             guestDao.update(guest);
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -63,13 +63,13 @@ public class GuestService implements IGuestService {
 
     @Override
     public int[] sortByAlphabet() {
-        List<Guest> myList = guestDao.readAll();
+        final List<Guest> myList = guestDao.readAll();
         myList.sort(SORT_BY_ALPHABET);
         return getGuestIndex(myList);
     }
 
     private int[] getGuestIndex(List<Guest> myList) {
-        int[] guestIndex = new int[myList.size()];
+        final int[] guestIndex = new int[myList.size()];
         for (int i = 0; i < myList.size(); i++) {
             guestIndex[i] = myList.get(i).getId();
         }

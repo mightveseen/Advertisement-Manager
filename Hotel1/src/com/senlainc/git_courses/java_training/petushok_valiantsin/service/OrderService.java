@@ -96,7 +96,7 @@ public class OrderService implements IOrderService {
     @Override
     public void addAttendance(int orderIndex, int attendanceIndex) {
         try {
-            Order order = orderDao.read(orderIndex);
+            final Order order = orderDao.read(orderIndex);
             final List<Integer> myList = new LinkedList<>(order.getAttendanceIndex());
             myList.add(attendanceIndex);
             order.setAttendanceIndex(myList);
@@ -110,7 +110,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Order> sort(String parameter) {
-        List<Order> myList = orderDao.readAll();
+        final List<Order> myList = orderDao.readAll();
         switch (parameter) {
             case "date":
                 sortByDate(myList);
@@ -130,25 +130,25 @@ public class OrderService implements IOrderService {
         myList.clear();
         try {
             for (int index : guestService.sortByAlphabet()) {
-                myList.add(orderDao.readAll().stream().filter(i -> i.getGuestIndex() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
+                myList.add(orderDao.readAll().stream().filter(i -> i.getGuestIndex() == index).findFirst().orElseThrow(ClassNotFoundException::new));
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException("List is empty", e);
         }
     }
 
     @Override
     public List<Attendance> showAttendance(int guestIndex) {
-        List<Attendance> finalList = new ArrayList<>();
-        List<Integer> attendanceIndexList;
+        final List<Attendance> list = new ArrayList<>();
+        final List<Integer> attendanceIndexList;
         try {
-            attendanceIndexList = orderDao.readAll().stream().filter(i -> i.getGuestIndex() == guestIndex).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new).getAttendanceIndex();
-        } catch (ArrayIndexOutOfBoundsException e) {
+            attendanceIndexList = orderDao.readAll().stream().filter(i -> i.getGuestIndex() == guestIndex).findFirst().orElseThrow(ClassNotFoundException::new).getAttendanceIndex();
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException("This guest didn't have attendance's", e);
         }
         for (Object index : attendanceIndexList) {
-            finalList.add(attendanceService.get((int) index));
+            list.add(attendanceService.get((int) index));
         }
-        return finalList;
+        return list;
     }
 }
