@@ -22,7 +22,7 @@ public class RoomService implements IRoomService {
     @Override
     public void add(Room room) {
         if (roomDao.readAll().stream().anyMatch(i -> i.getNumber() == room.getNumber())) {
-            throw new NullPointerException("Room with number: " + room.getNumber() + " already exists.");
+            throw new RuntimeException("Room with number: " + room.getNumber() + " already exists.");
         }
         roomDao.create(room);
     }
@@ -32,7 +32,7 @@ public class RoomService implements IRoomService {
         try {
             roomDao.delete(index);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new NullPointerException("Room with index: " + index + " dont exists.");
+            throw new RuntimeException("Room with index: " + index + " dont exists.");
         }
     }
 
