@@ -1,10 +1,10 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration;
 
 public class GuestConfig extends Configuration {
-    private static GuestConfig instance;
     private static final String PATH = "src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/configuration/res/guest.properties";
     private static final String GUEST_LIMIT_KEY = "guest_story_limit";
     private static final int GUEST_LIMIT_BASIC_VALUE = 50;
+    private static GuestConfig instance;
 
     private GuestConfig() {
         super(PATH);

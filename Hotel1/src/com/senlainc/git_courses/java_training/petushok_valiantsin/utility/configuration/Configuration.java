@@ -8,8 +8,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class Configuration {
-    private final Properties properties = new Properties();
     private static final Logger LOGGER = Logger.getLogger(RoomConfig.class.getSimpleName());
+    private final Properties properties = new Properties();
 
     public Configuration(String path) {
         try (InputStream fileReader = new FileInputStream(path)) {

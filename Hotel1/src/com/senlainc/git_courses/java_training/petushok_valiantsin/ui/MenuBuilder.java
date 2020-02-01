@@ -45,7 +45,7 @@ public class MenuBuilder {
             Hotel.getInstance().createGuest();
             Hotel.getInstance().createRoom();
             Hotel.getInstance().createOrder();
-        }catch (RuntimeException ignored) {
+        } catch (RuntimeException ignored) {
 
         }
     }

@@ -9,8 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ChangeStatusRoom implements IAction {
-    private final RoomStatus status;
     private static final Logger LOGGER = Logger.getLogger(Hotel.class.getSimpleName());
+    private final RoomStatus status;
 
     public ChangeStatusRoom(RoomStatus status) {
         this.status = status;

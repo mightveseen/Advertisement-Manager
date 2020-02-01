@@ -64,7 +64,7 @@ public class RoomService implements IRoomService {
 
     @Override
     public void changeStatus(int index, RoomStatus status) {
-        if(!RoomConfig.getInstance().getChangeStatus()) {
+        if (!RoomConfig.getInstance().getChangeStatus()) {
             throw new RuntimeException("Property for change status is false");
         }
         try {
