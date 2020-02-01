@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<orderDao>
+    <orderList>
+        <order>
+            <id>1</id>
+            <orderDate>22:04 / 2020-02-01</orderDate>
+            <guestIndex>2</guestIndex>
+            <roomIndex>4</roomIndex>
+            <startDate/>
+            <attendanceList/>
+            <endDate/>
+            <status>ACTIVE</status>
+            <price>30.0</price>
+        </order>
+        <order>
+            <id>2</id>
+            <orderDate>22:04 / 2020-02-01</orderDate>
+            <guestIndex>1</guestIndex>
+            <roomIndex>1</roomIndex>
+            <startDate/>
+            <attendanceList/>
+            <endDate/>
+            <status>ACTIVE</status>
+            <price>330.0</price>
+        </order>
+        <order>
+            <id>3</id>
+            <orderDate>22:04 / 2020-02-01</orderDate>
+            <guestIndex>3</guestIndex>
+            <roomIndex>2</roomIndex>
+            <startDate/>
+            <attendanceList/>
+            <endDate/>
+            <status>ACTIVE</status>
+            <price>170.0</price>
+        </order>
+    </orderList>
+</orderDao>
