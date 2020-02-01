@@ -6,19 +6,15 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.RoomConfig;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class RoomService implements IRoomService {
     private final IRoomDao roomDao;
-    private final Comparator<Room> SORT_BY_PRICE = Comparator.comparing(room -> String.valueOf(room.getPrice()));
+    private final Comparator<Room> SORT_BY_PRICE = Comparator.comparing(Room::getPrice);
     private final Comparator<Room> SORT_BY_CLASSIFICATION = Comparator.comparing(Room::getClassification);
-    private final Comparator<Room> SORT_BY_ROOM_NUMBER = Comparator.comparing(room -> String.valueOf(room.getRoomNumber()));
-    private static final Logger LOGGER = Logger.getLogger(RoomService.class.getSimpleName());
+    private final Comparator<Room> SORT_BY_ROOM_NUMBER = Comparator.comparing(Room::getRoomNumber);
 
     public RoomService(IRoomDao roomDao) {
         this.roomDao = roomDao;
