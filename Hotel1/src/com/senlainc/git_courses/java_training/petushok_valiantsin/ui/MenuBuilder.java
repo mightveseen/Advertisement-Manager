@@ -40,10 +40,14 @@ public class MenuBuilder {
         orderSortMenuInit(orderSort);
 
         /** For example */
-        Hotel.getInstance().createAttendance();
-        Hotel.getInstance().createGuest();
-        Hotel.getInstance().createRoom();
-        Hotel.getInstance().createOrder();
+        try {
+            Hotel.getInstance().createAttendance();
+            Hotel.getInstance().createGuest();
+            Hotel.getInstance().createRoom();
+            Hotel.getInstance().createOrder();
+        }catch (RuntimeException ignored) {
+
+        }
     }
 
     public Menu getRootMenu() {
@@ -100,6 +104,7 @@ public class MenuBuilder {
         orderSort.addItem(new MenuItem("Default", new ShowOrder("default"), rootMenu));
         orderSort.addItem(new MenuItem("Sort by date", new ShowOrder("date"), rootMenu));
         orderSort.addItem(new MenuItem("Sort by alphabet", new ShowOrder("alphabet"), rootMenu));
+        orderSort.addItem(new MenuItem("Exit", rootMenu));
         menuNumeration(orderSort);
     }
 
@@ -108,6 +113,7 @@ public class MenuBuilder {
         roomSort.addItem(new MenuItem("Sort by price", new ShowRoom(type, "price"), rootMenu));
         roomSort.addItem(new MenuItem("Sort by classification", new ShowRoom(type, "classification"), rootMenu));
         roomSort.addItem(new MenuItem("Sort by room number", new ShowRoom(type, "room number"), rootMenu));
+        roomSort.addItem(new MenuItem("Exit", rootMenu));
         menuNumeration(roomSort);
     }
 
@@ -115,12 +121,14 @@ public class MenuBuilder {
         roomStatus.addItem(new MenuItem("Rented", new ChangeStatusRoom(RoomStatus.RENTED), rootMenu));
         roomStatus.addItem(new MenuItem("Free", new ChangeStatusRoom(RoomStatus.FREE), rootMenu));
         roomStatus.addItem(new MenuItem("Served", new ChangeStatusRoom(RoomStatus.SERVED), rootMenu));
+        roomStatus.addItem(new MenuItem("Exit", rootMenu));
         menuNumeration(roomStatus);
     }
 
     private void roomTypeMenuInit(Menu roomType, Menu roomSortAll, Menu roomSortFree) {
         roomType.addItem(new MenuItem("Free", roomSortFree));
         roomType.addItem(new MenuItem("All", roomSortAll));
+        roomType.addItem(new MenuItem("Exit", rootMenu));
         menuNumeration(roomType);
     }
 
