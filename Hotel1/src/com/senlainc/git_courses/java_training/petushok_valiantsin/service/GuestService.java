@@ -19,7 +19,7 @@ public class GuestService implements IGuestService {
 
     @Override
     public void add(String firstName, String lastName, LocalDate birthday, String infoContact) {
-        Integer guestLimit = GuestConfig.getInstance().getGuestLimit();
+        int guestLimit = GuestConfig.getInstance().getGuestLimit();
         if(guestLimit < guestDao.readAll().size()) {
             throw new RuntimeException("The number of guests exceeds the specified limit: " + guestLimit + " guests");
         }

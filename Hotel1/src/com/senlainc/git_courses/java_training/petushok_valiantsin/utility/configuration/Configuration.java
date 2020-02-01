@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class Configuration {
-    private Properties properties = new Properties();
+    private final Properties properties = new Properties();
     private static final Logger LOGGER = Logger.getLogger(RoomConfig.class.getSimpleName());
 
     public Configuration(String path) {
