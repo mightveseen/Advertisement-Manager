@@ -2,8 +2,11 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.OrderIndex;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.adapter.LocalDateAdapter;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.adapter.LocalDateTimeAdapter;
 
 import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -16,22 +19,26 @@ public class Order {
     @XmlElement(name = "id")
     private final int id;
     @XmlElement(name = "orderDate")
-    private final String orderDate;
+    @XmlJavaTypeAdapter(value = LocalDateTimeAdapter.class)
+    private final LocalDateTime orderDate;
     @XmlElement(name = "guestIndex")
     private final int guestIndex;
     @XmlElement(name = "roomIndex")
     private final int roomIndex;
     @XmlElement(name = "startDate")
+    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
     private final LocalDate startDate;
     @XmlElementWrapper(name = "attendanceList")
     @XmlElement(name = "attendanceIndex")
     private List<Integer> attendanceIndex = new LinkedList<>();
     @XmlElement(name = "endDate")
+    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
     private LocalDate endDate;
     @XmlElement(name = "status")
     private OrderStatus status;
     @XmlElement(name = "price")
     private double price;
+
 
     public Order(Order order) {
         this.id = order.getId();
@@ -46,9 +53,8 @@ public class Order {
     }
 
     public Order(int guest, int room, LocalDate endDate, double price) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm / yyyy-MM-dd");
         this.id = new OrderIndex().getIndex();
-        this.orderDate = LocalDateTime.now().format(formatter);
+        this.orderDate = LocalDateTime.now();
         this.guestIndex = guest;
         this.roomIndex = room;
         this.startDate = LocalDate.now();
@@ -77,7 +83,7 @@ public class Order {
         this.price = price;
     }
 
-    public String getOrderDate() {
+    public LocalDateTime getOrderDate() {
         return this.orderDate;
     }
 

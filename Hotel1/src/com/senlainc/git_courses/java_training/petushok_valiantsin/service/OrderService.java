@@ -10,8 +10,10 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.ConsoleColor;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -64,6 +66,7 @@ public class OrderService implements IOrderService {
     @Override
     public String show(Order order) {
         return "Order index: " + order.getId() + "\n" +
+                "Order date: " + order.getOrderDate().format(DateTimeFormatter.ofPattern("HH:mm/yyyy-MM-dd")) + "\n" +
                 guestService.getGuest(order.getGuestIndex()) + "\n" +
                 roomService.getRoom(order.getRoomIndex()) + "\nStart date: " +
                 order.getStartDate() + "\nEnd date: " +

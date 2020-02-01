@@ -7,5 +7,17 @@
             <section>Food</section>
             <price>12.3</price>
         </attendance>
+        <attendance>
+            <id>2</id>
+            <name>Dinner</name>
+            <section>Food</section>
+            <price>9.0</price>
+        </attendance>
+        <attendance>
+            <id>3</id>
+            <name>Breakfast</name>
+            <section>Food</section>
+            <price>9.0</price>
+        </attendance>
     </attendanceList>
 </attendanceDao>

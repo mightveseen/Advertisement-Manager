@@ -19,7 +19,7 @@ public class AttendanceDao implements IAttendanceDao {
     public void create(Attendance attendance) {
         attendanceList.add(attendance);
         Serialization.getInstance().customMarshaller(this);
-        Serialization.getInstance().customUnmarshaller(this);
+//        Serialization.getInstance().customUnmarshaller(this);
     }
 
     @Override

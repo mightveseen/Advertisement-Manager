@@ -3,34 +3,34 @@
     <orderList>
         <order>
             <id>1</id>
-            <orderDate>22:04 / 2020-02-01</orderDate>
+            <orderDate>2020-02-01T22:47:10.657</orderDate>
             <guestIndex>2</guestIndex>
             <roomIndex>4</roomIndex>
-            <startDate/>
+            <startDate>2020-02-01</startDate>
             <attendanceList/>
-            <endDate/>
+            <endDate>2019-03-12</endDate>
             <status>ACTIVE</status>
             <price>30.0</price>
         </order>
         <order>
             <id>2</id>
-            <orderDate>22:04 / 2020-02-01</orderDate>
+            <orderDate>2020-02-01T22:47:10.664</orderDate>
             <guestIndex>1</guestIndex>
             <roomIndex>1</roomIndex>
-            <startDate/>
+            <startDate>2020-02-01</startDate>
             <attendanceList/>
-            <endDate/>
+            <endDate>2019-01-03</endDate>
             <status>ACTIVE</status>
             <price>330.0</price>
         </order>
         <order>
             <id>3</id>
-            <orderDate>22:04 / 2020-02-01</orderDate>
+            <orderDate>2020-02-01T22:47:10.667</orderDate>
             <guestIndex>3</guestIndex>
             <roomIndex>2</roomIndex>
-            <startDate/>
+            <startDate>2020-02-01</startDate>
             <attendanceList/>
-            <endDate/>
+            <endDate>2019-02-23</endDate>
             <status>ACTIVE</status>
             <price>170.0</price>
         </order>

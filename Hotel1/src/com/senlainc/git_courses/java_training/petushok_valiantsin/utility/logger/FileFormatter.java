@@ -6,7 +6,7 @@ import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
 public class FileFormatter extends Formatter {
-    public static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss / yyyy-MM-dd");
+    public static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss/yyyy-MM-dd");
 
     @Override
     public String format(LogRecord record) {
