@@ -17,7 +17,7 @@ public class RoomConfig extends Configuration {
 
     public boolean getChangeStatus() {
         if(checkProperty(CHANGE_STATUS_PROPERTY)) {
-            return getValue(CHANGE_STATUS_PROPERTY).equals("true");
+            return !getValue(CHANGE_STATUS_PROPERTY).equals("false");
         }
         return true;
     }

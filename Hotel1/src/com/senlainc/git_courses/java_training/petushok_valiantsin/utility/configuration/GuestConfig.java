@@ -1,7 +1,5 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration;
 
-import java.lang.constant.Constable;
-
 public class GuestConfig extends Configuration{
     private static GuestConfig instance;
     private static final String PATH = "src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/configuration/res/guest.properties";
@@ -21,6 +19,6 @@ public class GuestConfig extends Configuration{
         if(checkProperty(GUEST_STORY_LIMIT_PROPERTY)) {
             return Integer.parseInt(getValue(GUEST_STORY_LIMIT_PROPERTY));
         }
-        return -1;
+        return 50;
     }
 }
