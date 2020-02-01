@@ -12,11 +12,10 @@ import java.util.logging.Logger;
 
 public abstract class Configuration {
     private Properties properties = new Properties();
-    private static final String PROPERTIES_PATH = "src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/configuration/program.properties";
     private static final Logger LOGGER = Logger.getLogger(RoomConfig.class.getSimpleName());
 
     public Configuration(String... propertyName) {
-        readProperties(PROPERTIES_PATH);
+        readProperties(setPath());
         try {
             if (!checkProperty(propertyName)) {
                 throw new RuntimeException("Property didn't exists");
@@ -26,7 +25,7 @@ public abstract class Configuration {
         }
     }
 
-    public void readProperties(String path) {
+    private void readProperties(String path) {
         try (InputStream fileReader = new FileInputStream(path)) {
             properties.load(fileReader);
         } catch (IOException e) {
@@ -45,5 +44,9 @@ public abstract class Configuration {
 
     public String getProperty(String propertyName) {
         return properties.getProperty(propertyName);
+    }
+
+    private String setPath() {
+        return "src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/configuration/program.properties";
     }
 }
