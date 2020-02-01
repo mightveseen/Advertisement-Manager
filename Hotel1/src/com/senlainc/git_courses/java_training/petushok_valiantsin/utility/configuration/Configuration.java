@@ -4,9 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Properties;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,18 +12,7 @@ public abstract class Configuration {
     private Properties properties = new Properties();
     private static final Logger LOGGER = Logger.getLogger(RoomConfig.class.getSimpleName());
 
-    public Configuration(String... propertyName) {
-        readProperties(setPath());
-        try {
-            if (!checkProperty(propertyName)) {
-                throw new RuntimeException("Property didn't exists");
-            }
-        } catch (RuntimeException e) {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
-        }
-    }
-
-    private void readProperties(String path) {
+    public Configuration(String path) {
         try (InputStream fileReader = new FileInputStream(path)) {
             properties.load(fileReader);
         } catch (IOException e) {
@@ -33,20 +20,14 @@ public abstract class Configuration {
         }
     }
 
-    public boolean checkProperty(String... propertyName) {
+    public boolean checkProperty(String key) {
         if (properties.size() == 0) {
             return false;
         }
-        Set<String> readProperties = properties.stringPropertyNames();
-        Set<String> gottenProperties = new HashSet<>(Arrays.asList(propertyName));
-        return readProperties.containsAll(gottenProperties);
+        return properties.stringPropertyNames().contains(key);
     }
 
-    public String getProperty(String propertyName) {
-        return properties.getProperty(propertyName);
-    }
-
-    private String setPath() {
-        return "src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/configuration/program.properties";
+    public String getValue(String key) {
+        return properties.getProperty(key);
     }
 }

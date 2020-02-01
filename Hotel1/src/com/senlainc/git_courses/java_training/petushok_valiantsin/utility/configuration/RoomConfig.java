@@ -1,11 +1,12 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration;
 
 public class RoomConfig extends Configuration {
-    private static final String CHANGE_STATUS_PROPERTY = "change_status_property";
     private static RoomConfig instance;
+    private static final String PATH = "src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/configuration/res/room.properties";
+    private static final String CHANGE_STATUS_PROPERTY = "change_status_property";
 
     private RoomConfig() {
-        super(CHANGE_STATUS_PROPERTY);
+        super(PATH);
     }
     public static RoomConfig getInstance() {
         if(instance == null) {
@@ -14,7 +15,10 @@ public class RoomConfig extends Configuration {
         return instance;
     }
 
-    public boolean getChangeStatusProperty() {
-        return getProperty(CHANGE_STATUS_PROPERTY).equals("true");
+    public boolean getChangeStatus() {
+        if(checkProperty(CHANGE_STATUS_PROPERTY)) {
+            return getValue(CHANGE_STATUS_PROPERTY).equals("true");
+        }
+        return true;
     }
 }
