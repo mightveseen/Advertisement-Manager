@@ -3,21 +3,34 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.OrderIndex;
 
+import javax.xml.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "order")
 public class Order {
+    @XmlElement(name = "id")
     private final int id;
+    @XmlElement(name = "orderDate")
     private final String orderDate;
+    @XmlElement(name = "guestIndex")
     private final int guestIndex;
+    @XmlElement(name = "roomIndex")
     private final int roomIndex;
+    @XmlElement(name = "startDate")
     private final LocalDate startDate;
+    @XmlElementWrapper(name = "attendanceList")
+    @XmlElement(name = "attendanceIndex")
     private List<Integer> attendanceIndex = new LinkedList<>();
+    @XmlElement(name = "endDate")
     private LocalDate endDate;
+    @XmlElement(name = "status")
     private OrderStatus status;
+    @XmlElement(name = "price")
     private double price;
 
     public Order(Order order) {
@@ -32,7 +45,7 @@ public class Order {
         this.price = order.getPrice();
     }
 
-    public Order(int guest, int room, LocalDate endDate) {
+    public Order(int guest, int room, LocalDate endDate, double price) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm / yyyy-MM-dd");
         this.id = new OrderIndex().getIndex();
         this.orderDate = LocalDateTime.now().format(formatter);
@@ -41,6 +54,7 @@ public class Order {
         this.startDate = LocalDate.now();
         this.endDate = endDate;
         this.status = OrderStatus.ACTIVE;
+        this.price = price;
     }
 
     public int getId() {

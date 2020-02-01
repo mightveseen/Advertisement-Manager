@@ -3,13 +3,27 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.RoomIndex;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "room")
 public class Room {
+    @XmlElement(name = "id")
     private final int id;
+    @XmlElement(name = "number")
     private final int number;
+    @XmlElement(name = "classification")
     private final String classification;
+    @XmlElement(name = "roomNumber")
     private final short roomNumber;
+    @XmlElement(name = "capacity")
     private final short capacity;
+    @XmlElement(name = "status")
     private RoomStatus status;
+    @XmlElement(name = "price")
     private double price;
 
     public Room(Room room) {

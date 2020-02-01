@@ -37,8 +37,7 @@ public class OrderService implements IOrderService {
         if (roomService.getRoom(roomIndex).getStatus().equals(RoomStatus.RENTED) || roomService.getRoom(roomIndex).getStatus().equals(RoomStatus.SERVED)) {
             throw new RuntimeException("Room now is not available");
         }
-        orderDao.create(new Order(guestIndex, roomIndex, endDate));
-        orderDao.read(orderDao.readAll().size()).setPrice(roomService.getRoom(roomIndex).getPrice());
+        orderDao.create(new Order(guestIndex, roomIndex, endDate, roomService.getRoom(roomIndex).getPrice()));
         roomService.changeStatus(roomIndex, RoomStatus.RENTED);
     }
 

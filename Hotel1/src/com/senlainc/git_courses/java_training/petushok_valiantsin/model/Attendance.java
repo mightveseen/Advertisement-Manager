@@ -2,10 +2,21 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.AttendanceIndex;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "attendance")
 public class Attendance {
+    @XmlElement(name = "id")
     private final int id;
+    @XmlElement(name = "name")
     private final String name;
+    @XmlElement(name = "section")
     private final String section;
+    @XmlElement(name = "price")
     private double price;
 
     public Attendance(Attendance attendance) {

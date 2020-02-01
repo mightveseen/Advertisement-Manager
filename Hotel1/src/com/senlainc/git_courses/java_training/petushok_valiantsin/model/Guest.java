@@ -2,13 +2,24 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.GuestIndex;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.time.LocalDate;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "guest")
 public class Guest {
+    @XmlElement(name = "id")
     private final int id;
+    @XmlElement(name = "firstName")
     private final String firstName;
+    @XmlElement(name = "secondName")
     private final String secondName;
+    @XmlElement(name = "birthday")
     private final LocalDate birthday;
+    @XmlElement(name = "infoContact")
     private String infoContact;
 
     public Guest(Guest guest) {
