@@ -1,6 +1,8 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Properties;
@@ -13,28 +15,27 @@ public abstract class Configuration {
     private static final String PROPERTIES_PATH = "src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/configuration/program.properties";
     private static final Logger LOGGER = Logger.getLogger(RoomConfig.class.getSimpleName());
 
-    public Configuration(String...propertyName) {
+    public Configuration(String... propertyName) {
+        readProperties(PROPERTIES_PATH);
         try {
-            readProperties(PROPERTIES_PATH);
             if (!checkProperty(propertyName)) {
-                throw new NullPointerException("Property didn't exists");
+                throw new RuntimeException("Property didn't exists");
             }
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Could load program properties from file: " + e.toString(), e);
-        } catch (NullPointerException e) {
+        } catch (RuntimeException e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
     }
-    public void readProperties(String path) throws IOException{
-        final InputStream fileReader = new FileInputStream(path);
-//        final ObjectInputStream propertiesReader = new ObjectInputStream(fileReader);
-        properties.load(fileReader);
-//        propertiesReader.close();
-        fileReader.close();
+
+    public void readProperties(String path) {
+        try (InputStream fileReader = new FileInputStream(path)) {
+            properties.load(fileReader);
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, "Could load program properties from file: " + e.toString(), e);
+        }
     }
 
-    public boolean checkProperty(String...propertyName) {
-        if(properties.size() == 0) {
+    public boolean checkProperty(String... propertyName) {
+        if (properties.size() == 0) {
             return false;
         }
         Set<String> readProperties = properties.stringPropertyNames();
