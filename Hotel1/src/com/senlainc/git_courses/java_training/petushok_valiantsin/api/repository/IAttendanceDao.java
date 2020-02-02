@@ -14,4 +14,6 @@ public interface IAttendanceDao {
     List<Attendance> readAll();
 
     Attendance read(int index);
+
+    void setAll();
 }

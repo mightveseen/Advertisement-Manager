@@ -34,6 +34,11 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    public void load() {
+        orderDao.setAll();
+    }
+
+    @Override
     public void add(int guestIndex, int roomIndex, LocalDate endDate) {
         if (roomService.getRoom(roomIndex).getStatus().equals(RoomStatus.RENTED) || roomService.getRoom(roomIndex).getStatus().equals(RoomStatus.SERVED)) {
             throw new RuntimeException("Room now is not available");

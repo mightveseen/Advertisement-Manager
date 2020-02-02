@@ -1,7 +1,6 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IAttendanceDao;
-import com.sun.tools.hat.internal.model.JavaObject;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.LoadConfig;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -12,12 +11,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Serialization {
-    private static final Logger LOGGER = Logger.getLogger(Serialization.class.getSimpleName());
-    private static final String ATTENDANCE_DAO_PATH = "src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/serialization/xml/AttendanceDao.xml";
-    private static final String GUEST_DAO_PATH = "src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/serialization/xml/GuestDao.xml";
-    private static final String ROOM_DAO_PATH = "src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/serialization/xml/RoomDao.xml";
-    private static final String ORDER_DAO_PATH = "src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/serialization/xml/OrderDao.xml";
     public static Serialization instance;
+    private static final Logger LOGGER = Logger.getLogger(Serialization.class.getSimpleName());
 
     public static Serialization getInstance() {
         if (instance == null) {
@@ -29,19 +24,19 @@ public class Serialization {
     private String getPath(Object clazz) {
         switch (clazz.getClass().getSimpleName()) {
             case "AttendanceDao":
-                return ATTENDANCE_DAO_PATH;
+                return LoadConfig.getInstance().getAttendanceDaoPathProperty();
             case "GuestDao":
-                return GUEST_DAO_PATH;
+                return LoadConfig.getInstance().getGuestDaoPathProperty();
             case "OrderDao":
-                return ORDER_DAO_PATH;
+                return LoadConfig.getInstance().getOrderDaoPathProperty();
             case "RoomDao":
-                return ROOM_DAO_PATH;
+                return LoadConfig.getInstance().getRoomDaoPathProperty();
             default:
                 throw new RuntimeException("Inappropriate class");
         }
     }
 
-    public void customMarshaller(Object clazz) {
+    public <T> void customMarshaller(T clazz) {
         try (OutputStream fileWriter = new FileOutputStream(getPath(clazz))) {
             final JAXBContext context = JAXBContext.newInstance(clazz.getClass());
             final Marshaller marshaller = context.createMarshaller();
@@ -52,14 +47,14 @@ public class Serialization {
         }
     }
 
-    public Object customUnmarshaller(Object clazz) {
+    public <T> T customUnmarshaller(T clazz) {
         try (InputStream fileReader = new FileInputStream(getPath(clazz))) {
             final JAXBContext context = JAXBContext.newInstance(clazz.getClass());
             final Unmarshaller unmarshaller = context.createUnmarshaller();
-            return unmarshaller.unmarshal(fileReader);
+            return (T) unmarshaller.unmarshal(fileReader);
         } catch (JAXBException | IOException e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
-        return null;
+        throw new RuntimeException("Could load data file");
     }
 }

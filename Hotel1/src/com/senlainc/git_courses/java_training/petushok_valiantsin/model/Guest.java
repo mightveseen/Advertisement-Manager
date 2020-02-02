@@ -15,16 +15,19 @@ import java.time.format.DateTimeFormatter;
 @XmlType(name = "guest")
 public class Guest {
     @XmlElement(name = "id")
-    private final int id;
+    private int id;
     @XmlElement(name = "firstName")
-    private final String firstName;
+    private String firstName;
     @XmlElement(name = "secondName")
-    private final String secondName;
+    private String secondName;
     @XmlElement(name = "birthday")
     @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
-    private final LocalDate birthday;
+    private LocalDate birthday;
     @XmlElement(name = "infoContact")
     private String infoContact;
+
+    public Guest() {
+    }
 
     public Guest(Guest guest) {
         this.id = guest.getId();

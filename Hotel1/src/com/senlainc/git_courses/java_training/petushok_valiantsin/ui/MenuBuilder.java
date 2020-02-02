@@ -1,6 +1,5 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.attendance.AddAttendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.attendance.ChangePriceAttendance;
@@ -12,9 +11,11 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.ord
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.room.*;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 
 public class MenuBuilder {
     private final Menu rootMenu = new Menu("Main menu");
+    private static final Logger LOGGER = Logger.getLogger(MenuBuilder.class.getSimpleName());
 
     public void buildMenu() {
         final Menu guest = new Menu("Guest Menu");
@@ -38,16 +39,6 @@ public class MenuBuilder {
         roomStatusMenuInit(roomStatus);
         roomTypeMenuInit(roomType, roomSortAll, roomSortFree);
         orderSortMenuInit(orderSort);
-
-        /** For example */
-        try {
-//            Hotel.getInstance().createAttendance();
-            Hotel.getInstance().createGuest();
-            Hotel.getInstance().createRoom();
-            Hotel.getInstance().createOrder();
-        } catch (RuntimeException ignored) {
-
-        }
     }
 
     public Menu getRootMenu() {

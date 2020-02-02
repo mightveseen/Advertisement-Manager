@@ -13,7 +13,7 @@ import java.util.List;
 public class OrderDao implements IOrderDao {
     @XmlElementWrapper(name = "orderList")
     @XmlElement(name = "order")
-    private final List<Order> orderList = new ArrayList<>();
+    private List<Order> orderList;
 
     @Override
     public void create(Order order) {
@@ -39,5 +39,10 @@ public class OrderDao implements IOrderDao {
     @Override
     public Order read(int index) {
         return orderList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
+    }
+
+    @Override
+    public void setAll() {
+        orderList = Serialization.getInstance().customUnmarshaller(this).readAll();
     }
 }

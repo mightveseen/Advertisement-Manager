@@ -13,7 +13,7 @@ import java.util.List;
 public class RoomDao implements IRoomDao {
     @XmlElementWrapper(name = "roomList")
     @XmlElement(name = "room")
-    private final List<Room> roomList = new ArrayList<>();
+    private List<Room> roomList;
 
     @Override
     public void create(Room room) {
@@ -39,5 +39,10 @@ public class RoomDao implements IRoomDao {
     @Override
     public Room read(int index) {
         return roomList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
+    }
+
+    @Override
+    public void setAll() {
+        roomList = Serialization.getInstance().customUnmarshaller(this).readAll();
     }
 }

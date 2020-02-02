@@ -17,6 +17,11 @@ public class AttendanceService implements IAttendanceService {
     }
 
     @Override
+    public void load() {
+        attendanceDao.setAll();
+    }
+
+    @Override
     public void add(String name, String section, double price) {
         attendanceDao.create(new Attendance(name, section, price));
     }

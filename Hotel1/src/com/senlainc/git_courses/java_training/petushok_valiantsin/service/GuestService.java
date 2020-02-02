@@ -18,6 +18,11 @@ public class GuestService implements IGuestService {
     }
 
     @Override
+    public void load() {
+        guestDao.setAll();
+    }
+
+    @Override
     public void add(String firstName, String lastName, LocalDate birthday, String infoContact) {
         int guestLimit = GuestConfig.getInstance().getGuestLimit();
         if (guestLimit < guestDao.readAll().size()) {

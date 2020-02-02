@@ -21,6 +21,11 @@ public class RoomService implements IRoomService {
     }
 
     @Override
+    public void load() {
+        roomDao.setAll();
+    }
+
+    @Override
     public void add(Room room) {
         if (roomDao.readAll().stream().anyMatch(i -> i.getNumber() == room.getNumber())) {
             throw new RuntimeException("Room with number: " + room.getNumber() + " already exists.");

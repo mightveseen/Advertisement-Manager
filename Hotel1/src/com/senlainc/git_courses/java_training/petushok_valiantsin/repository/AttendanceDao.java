@@ -11,18 +11,14 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "attendanceDao")
 public class AttendanceDao implements IAttendanceDao {
-//    List<Attendance> fff = (List<Attendance>) Serialization.getInstance().customUnmarshaller(this);
     @XmlElementWrapper(name = "attendanceList")
     @XmlElement(name = "attendance")
-    private final List<Attendance> attendanceList = new ArrayList<>();
-
+    private List<Attendance> attendanceList;
 
     @Override
     public void create(Attendance attendance) {
         attendanceList.add(attendance);
         Serialization.getInstance().customMarshaller(this);
-
-        System.out.println();
     }
 
     @Override
@@ -43,5 +39,9 @@ public class AttendanceDao implements IAttendanceDao {
     @Override
     public Attendance read(int index) {
         return attendanceList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
+    }
+
+    public void setAll() {
+        attendanceList = Serialization.getInstance().customUnmarshaller(this).readAll();
     }
 }

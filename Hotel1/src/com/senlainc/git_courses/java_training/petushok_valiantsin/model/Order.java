@@ -16,17 +16,17 @@ import java.util.List;
 @XmlType(name = "order")
 public class Order {
     @XmlElement(name = "id")
-    private final int id;
+    private int id;
     @XmlElement(name = "orderDate")
     @XmlJavaTypeAdapter(value = LocalDateTimeAdapter.class)
-    private final LocalDateTime orderDate;
+    private LocalDateTime orderDate;
     @XmlElement(name = "guestIndex")
-    private final int guestIndex;
+    private int guestIndex;
     @XmlElement(name = "roomIndex")
-    private final int roomIndex;
+    private int roomIndex;
     @XmlElement(name = "startDate")
     @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
-    private final LocalDate startDate;
+    private LocalDate startDate;
     @XmlElementWrapper(name = "attendanceList")
     @XmlElement(name = "attendanceIndex")
     private List<Integer> attendanceIndex = new LinkedList<>();
@@ -38,6 +38,8 @@ public class Order {
     @XmlElement(name = "price")
     private double price;
 
+    public Order() {
+    }
 
     public Order(Order order) {
         this.id = order.getId();

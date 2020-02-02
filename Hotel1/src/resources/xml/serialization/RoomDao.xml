@@ -7,7 +7,7 @@
             <classification>President</classification>
             <roomNumber>4</roomNumber>
             <capacity>6</capacity>
-            <status>FREE</status>
+            <status>RENTED</status>
             <price>330.0</price>
         </room>
         <room>
@@ -16,7 +16,7 @@
             <classification>Business</classification>
             <roomNumber>1</roomNumber>
             <capacity>2</capacity>
-            <status>FREE</status>
+            <status>RENTED</status>
             <price>170.0</price>
         </room>
         <room>
@@ -34,7 +34,7 @@
             <classification>Lux</classification>
             <roomNumber>2</roomNumber>
             <capacity>4</capacity>
-            <status>FREE</status>
+            <status>RENTED</status>
             <price>30.0</price>
         </room>
         <room>

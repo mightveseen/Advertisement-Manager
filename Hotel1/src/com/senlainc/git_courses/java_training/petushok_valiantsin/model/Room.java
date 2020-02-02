@@ -12,19 +12,22 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "room")
 public class Room {
     @XmlElement(name = "id")
-    private final int id;
+    private int id;
     @XmlElement(name = "number")
-    private final int number;
+    private int number;
     @XmlElement(name = "classification")
-    private final String classification;
+    private String classification;
     @XmlElement(name = "roomNumber")
-    private final short roomNumber;
+    private short roomNumber;
     @XmlElement(name = "capacity")
-    private final short capacity;
+    private short capacity;
     @XmlElement(name = "status")
     private RoomStatus status;
     @XmlElement(name = "price")
     private double price;
+
+    public Room() {
+    }
 
     public Room(Room room) {
         this.id = room.getId();

@@ -52,10 +52,8 @@ public class Hotel {
     /**
      * Attendance
      */
-    public void createAttendance() {
-        attendanceService.add("Lunch", "Food", 12.3);
-        attendanceService.add("Dinner", "Food", 9);
-        attendanceService.add("Breakfast", "Food", 9);
+    public void loadAttendance() {
+        attendanceService.load();
     }
 
     public void addAttendance(String name, String section, double price) {
@@ -73,12 +71,8 @@ public class Hotel {
     /**
      * Room
      */
-    public void createRoom() {
-        roomService.add(new Room(203, "President", (short) 4, (short) 6, 330.0));
-        roomService.add(new Room(312, "Business", (short) 1, (short) 2, 170.0));
-        roomService.add(new Room(401, "Lux", (short) 2, (short) 4, 230.0));
-        roomService.add(new Room(105, "Lux", (short) 2, (short) 4, 30.0));
-        roomService.add(new Room(506, "President", (short) 5, (short) 10, 230.0));
+    public void loadRoom() {
+        roomService.load();
     }
 
     public void addRoom(Room room) {
@@ -108,10 +102,8 @@ public class Hotel {
     /**
      * Guest
      */
-    public void createGuest() {
-        guestService.add("Victoria", "July", LocalDate.of(1986, 5, 12), "+1532521678");
-        guestService.add("Robert", "Johnson", LocalDate.of(1967, 12, 1), "+278392386");
-        guestService.add("Daniel", "Blake", LocalDate.of(1971, 1, 24), "+1532521678");
+    public void loadGuest() {
+        guestService.load();
     }
 
     public void addGuest(String firstName, String lastName, LocalDate birthday, String infoContact) {
@@ -129,10 +121,8 @@ public class Hotel {
     /**
      * Order
      */
-    public void createOrder() {
-        orderService.add(2, 4, LocalDate.of(2019, 3, 12));
-        orderService.add(1, 1, LocalDate.of(2019, 1, 3));
-        orderService.add(3, 2, LocalDate.of(2019, 2, 23));
+    public void loadOrder() {
+        orderService.load();
     }
 
     public void addOrder(int guestIndex, int roomIndex, LocalDate endDate) {

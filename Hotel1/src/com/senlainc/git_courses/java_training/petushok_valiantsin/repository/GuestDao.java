@@ -13,7 +13,7 @@ import java.util.List;
 public class GuestDao implements IGuestDao {
     @XmlElementWrapper(name = "guestList")
     @XmlElement(name = "guest")
-    private final List<Guest> guestList = new ArrayList<>();
+    private List<Guest> guestList;
 
     @Override
     public void create(Guest guest) {
@@ -39,5 +39,10 @@ public class GuestDao implements IGuestDao {
     @Override
     public Guest read(int index) {
         return guestList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
+    }
+
+    @Override
+    public void setAll() {
+        guestList = Serialization.getInstance().customUnmarshaller(this).readAll();
     }
 }

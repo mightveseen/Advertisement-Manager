@@ -11,7 +11,7 @@ public abstract class Configuration {
     private static final Logger LOGGER = Logger.getLogger(RoomConfig.class.getSimpleName());
     private final Properties properties = new Properties();
 
-    public Configuration(String path) {
+    protected Configuration(String path) {
         try (InputStream fileReader = new FileInputStream(path)) {
             properties.load(fileReader);
         } catch (IOException e) {
@@ -19,14 +19,14 @@ public abstract class Configuration {
         }
     }
 
-    public boolean checkProperty(String key) {
+    protected boolean checkProperty(String key) {
         if (properties.size() == 0) {
             return false;
         }
         return properties.stringPropertyNames().contains(key);
     }
 
-    public String getValue(String key) {
+    protected String getValue(String key) {
         return properties.getProperty(key);
     }
 }
