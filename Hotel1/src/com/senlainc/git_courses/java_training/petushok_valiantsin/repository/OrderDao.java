@@ -7,6 +7,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serial
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "orderDao")
@@ -14,6 +16,7 @@ public class OrderDao implements IOrderDao {
     @XmlElementWrapper(name = "orderList")
     @XmlElement(name = "order")
     private List<Order> orderList;
+    private static final Logger LOGGER = Logger.getLogger(OrderDao.class.getSimpleName());
 
     @Override
     public void create(Order order) {
@@ -24,11 +27,13 @@ public class OrderDao implements IOrderDao {
     @Override
     public void delete(int index) {
         orderList.remove(orderList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
+        Serialization.getInstance().customMarshaller(this);
     }
 
     @Override
     public void update(Order order) {
         orderList.set(orderList.indexOf(orderList.stream().filter(i -> i.getId() == order.getId()).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), order);
+        Serialization.getInstance().customMarshaller(this);
     }
 
     @Override
@@ -43,6 +48,11 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public void setAll() {
-        orderList = Serialization.getInstance().customUnmarshaller(this).readAll();
+        try {
+            orderList = Serialization.getInstance().customUnmarshaller(this).readAll();
+        } catch (RuntimeException e) {
+            orderList = new ArrayList<>();
+            LOGGER.log(Level.WARNING, e.getMessage() + ", create empty list", e);
+        }
     }
 }

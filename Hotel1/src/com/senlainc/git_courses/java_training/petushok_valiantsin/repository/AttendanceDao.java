@@ -7,6 +7,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serial
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "attendanceDao")
@@ -14,6 +16,7 @@ public class AttendanceDao implements IAttendanceDao {
     @XmlElementWrapper(name = "attendanceList")
     @XmlElement(name = "attendance")
     private List<Attendance> attendanceList;
+    private static final Logger LOGGER = Logger.getLogger(AttendanceDao.class.getSimpleName());
 
     @Override
     public void create(Attendance attendance) {
@@ -24,11 +27,13 @@ public class AttendanceDao implements IAttendanceDao {
     @Override
     public void delete(int index) {
         attendanceList.remove(attendanceList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
+        Serialization.getInstance().customMarshaller(this);
     }
 
     @Override
     public void update(Attendance attendance) {
         attendanceList.set(attendanceList.indexOf(attendanceList.stream().filter(i -> i.getId() == attendance.getId()).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), attendance);
+        Serialization.getInstance().customMarshaller(this);
     }
 
     @Override
@@ -42,6 +47,11 @@ public class AttendanceDao implements IAttendanceDao {
     }
 
     public void setAll() {
-        attendanceList = Serialization.getInstance().customUnmarshaller(this).readAll();
+        try {
+            attendanceList = Serialization.getInstance().customUnmarshaller(this).readAll();
+        } catch (RuntimeException e) {
+            attendanceList = new ArrayList<>();
+            LOGGER.log(Level.WARNING, e.getMessage() + ", create empty list", e);
+        }
     }
 }

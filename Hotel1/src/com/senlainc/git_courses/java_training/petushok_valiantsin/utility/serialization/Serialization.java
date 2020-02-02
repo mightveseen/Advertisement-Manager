@@ -1,18 +1,16 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.LoadConfig;
+import sun.dc.path.PathError;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Serialization {
     public static Serialization instance;
-    private static final Logger LOGGER = Logger.getLogger(Serialization.class.getSimpleName());
 
     public static Serialization getInstance() {
         if (instance == null) {
@@ -32,7 +30,7 @@ public class Serialization {
             case "RoomDao":
                 return LoadConfig.getInstance().getRoomDaoPathProperty();
             default:
-                throw new RuntimeException("Inappropriate class");
+                throw new PathError("Inappropriate class");
         }
     }
 
@@ -42,8 +40,7 @@ public class Serialization {
             final Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             marshaller.marshal(clazz, fileWriter);
-        } catch (JAXBException | IOException e) {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
+        } catch (JAXBException | IOException | PathError e) {
             throw new RuntimeException("Couldn't upload data file", e);
         }
     }
@@ -53,8 +50,7 @@ public class Serialization {
             final JAXBContext context = JAXBContext.newInstance(clazz.getClass());
             final Unmarshaller unmarshaller = context.createUnmarshaller();
             return (T) unmarshaller.unmarshal(fileReader);
-        } catch (JAXBException | IOException e) {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
+        } catch (JAXBException | IOException | PathError e) {
             throw new RuntimeException("Couldn't load data file", e);
         }
     }

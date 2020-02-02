@@ -7,6 +7,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serial
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "roomDao")
@@ -14,6 +16,7 @@ public class RoomDao implements IRoomDao {
     @XmlElementWrapper(name = "roomList")
     @XmlElement(name = "room")
     private List<Room> roomList;
+    private static final Logger LOGGER = Logger.getLogger(RoomDao.class.getSimpleName());
 
     @Override
     public void create(Room room) {
@@ -24,11 +27,13 @@ public class RoomDao implements IRoomDao {
     @Override
     public void delete(int index) {
         roomList.remove(roomList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
+        Serialization.getInstance().customMarshaller(this);
     }
 
     @Override
     public void update(Room room) {
         roomList.set(roomList.indexOf(roomList.stream().filter(i -> i.getId() == room.getId()).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), room);
+        Serialization.getInstance().customMarshaller(this);
     }
 
     @Override
@@ -43,6 +48,11 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public void setAll() {
-        roomList = Serialization.getInstance().customUnmarshaller(this).readAll();
+        try {
+            roomList = Serialization.getInstance().customUnmarshaller(this).readAll();
+        } catch (RuntimeException e) {
+            roomList = new ArrayList<>();
+            LOGGER.log(Level.WARNING, e.getMessage() + ", create empty list", e);
+        }
     }
 }
