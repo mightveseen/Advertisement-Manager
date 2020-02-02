@@ -41,7 +41,7 @@ public class MenuBuilder {
 
         /** For example */
         try {
-            Hotel.getInstance().createAttendance();
+//            Hotel.getInstance().createAttendance();
             Hotel.getInstance().createGuest();
             Hotel.getInstance().createRoom();
             Hotel.getInstance().createOrder();

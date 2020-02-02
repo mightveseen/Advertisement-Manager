@@ -11,15 +11,18 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "attendanceDao")
 public class AttendanceDao implements IAttendanceDao {
+//    List<Attendance> fff = (List<Attendance>) Serialization.getInstance().customUnmarshaller(this);
     @XmlElementWrapper(name = "attendanceList")
     @XmlElement(name = "attendance")
     private final List<Attendance> attendanceList = new ArrayList<>();
+
 
     @Override
     public void create(Attendance attendance) {
         attendanceList.add(attendance);
         Serialization.getInstance().customMarshaller(this);
-//        Serialization.getInstance().customUnmarshaller(this);
+
+        System.out.println();
     }
 
     @Override

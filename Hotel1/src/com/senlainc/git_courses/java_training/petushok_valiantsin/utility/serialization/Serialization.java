@@ -1,5 +1,8 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization;
 
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IAttendanceDao;
+import com.sun.tools.hat.internal.model.JavaObject;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -40,8 +43,8 @@ public class Serialization {
 
     public void customMarshaller(Object clazz) {
         try (OutputStream fileWriter = new FileOutputStream(getPath(clazz))) {
-            JAXBContext context = JAXBContext.newInstance(clazz.getClass());
-            Marshaller marshaller = context.createMarshaller();
+            final JAXBContext context = JAXBContext.newInstance(clazz.getClass());
+            final Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             marshaller.marshal(clazz, fileWriter);
         } catch (JAXBException | IOException | RuntimeException e) {
@@ -49,13 +52,14 @@ public class Serialization {
         }
     }
 
-    public void customUnmarshaller(Object clazz) {
+    public Object customUnmarshaller(Object clazz) {
         try (InputStream fileReader = new FileInputStream(getPath(clazz))) {
-            JAXBContext context = JAXBContext.newInstance(clazz.getClass());
-            Unmarshaller unmarshaller = context.createUnmarshaller();
-            Object obj = unmarshaller.unmarshal(fileReader);
+            final JAXBContext context = JAXBContext.newInstance(clazz.getClass());
+            final Unmarshaller unmarshaller = context.createUnmarshaller();
+            return unmarshaller.unmarshal(fileReader);
         } catch (JAXBException | IOException e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
+        return null;
     }
 }
