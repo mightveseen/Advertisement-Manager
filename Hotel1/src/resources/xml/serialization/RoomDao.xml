@@ -43,7 +43,7 @@
             <classification>President</classification>
             <roomNumber>5</roomNumber>
             <capacity>10</capacity>
-            <status>FREE</status>
+            <status>SERVED</status>
             <price>230.0</price>
         </room>
     </roomList>

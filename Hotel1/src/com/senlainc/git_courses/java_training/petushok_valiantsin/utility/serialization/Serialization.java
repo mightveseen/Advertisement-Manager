@@ -42,7 +42,7 @@ public class Serialization {
             final Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             marshaller.marshal(clazz, fileWriter);
-        } catch (JAXBException | IOException | RuntimeException e) {
+        } catch (JAXBException | IOException e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
     }
