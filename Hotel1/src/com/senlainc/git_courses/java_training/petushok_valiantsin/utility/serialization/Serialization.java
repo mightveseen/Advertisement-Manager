@@ -44,6 +44,7 @@ public class Serialization {
             marshaller.marshal(clazz, fileWriter);
         } catch (JAXBException | IOException e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
+            throw new RuntimeException("Couldn't upload data file", e);
         }
     }
 
@@ -54,7 +55,7 @@ public class Serialization {
             return (T) unmarshaller.unmarshal(fileReader);
         } catch (JAXBException | IOException e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
+            throw new RuntimeException("Couldn't load data file", e);
         }
-        throw new RuntimeException("Could load data file");
     }
 }
