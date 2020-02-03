@@ -14,4 +14,6 @@ public interface IGuestDao {
     List<Guest> readAll();
 
     Guest read(int index);
+
+    void setAll();
 }

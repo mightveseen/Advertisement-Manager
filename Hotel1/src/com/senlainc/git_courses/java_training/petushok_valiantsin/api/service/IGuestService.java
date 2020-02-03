@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface IGuestService {
+    void load();
+
     void add(String firstName, String lastName, LocalDate birthday, String infoContact);
 
     void delete(int index);

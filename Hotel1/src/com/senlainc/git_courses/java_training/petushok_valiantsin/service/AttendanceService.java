@@ -10,10 +10,15 @@ import java.util.List;
 public class AttendanceService implements IAttendanceService {
     private final IAttendanceDao attendanceDao;
     private final Comparator<Attendance> SORT_BY_SECTION = Comparator.comparing(Attendance::getSection);
-    private final Comparator<Attendance> SORT_BY_PRICE = Comparator.comparing(attendance -> String.valueOf(attendance.getPrice()));
+    private final Comparator<Attendance> SORT_BY_PRICE = Comparator.comparing(Attendance::getPrice);
 
     public AttendanceService(IAttendanceDao attendanceDao) {
         this.attendanceDao = attendanceDao;
+    }
+
+    @Override
+    public void load() {
+        attendanceDao.setAll();
     }
 
     @Override

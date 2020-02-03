@@ -12,7 +12,7 @@ public class AddAttendanceOrder implements IAction {
 
     @Override
     public void execute() {
-        try{
+        try {
             Scanner scanner = new Scanner(System.in);
             Hotel.getInstance().showOrder().forEach(System.out::println);
             System.out.print("Enter order index: ");

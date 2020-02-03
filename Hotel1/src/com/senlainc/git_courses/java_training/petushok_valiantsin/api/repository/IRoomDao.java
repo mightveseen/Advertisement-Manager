@@ -14,4 +14,6 @@ public interface IRoomDao {
     List<Room> readAll();
 
     Room read(int index);
+
+    void setAll();
 }

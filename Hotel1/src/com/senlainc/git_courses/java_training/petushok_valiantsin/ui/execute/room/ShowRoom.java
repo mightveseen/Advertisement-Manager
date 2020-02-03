@@ -7,9 +7,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ShowRoom implements IAction {
+    private static final Logger LOGGER = Logger.getLogger(Hotel.class.getSimpleName());
     private final String type;
     private final String parameter;
-    private static final Logger LOGGER = Logger.getLogger(Hotel.class.getSimpleName());
 
     public ShowRoom(String type, String parameter) {
         this.parameter = parameter;

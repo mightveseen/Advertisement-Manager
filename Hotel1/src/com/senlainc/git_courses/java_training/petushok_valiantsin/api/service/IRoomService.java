@@ -6,6 +6,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.R
 import java.util.List;
 
 public interface IRoomService {
+    void load();
+
     void add(Room room);
 
     void delete(int index);

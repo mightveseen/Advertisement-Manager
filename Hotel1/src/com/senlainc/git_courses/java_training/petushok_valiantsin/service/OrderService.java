@@ -12,6 +12,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.O
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -33,12 +34,16 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    public void load() {
+        orderDao.setAll();
+    }
+
+    @Override
     public void add(int guestIndex, int roomIndex, LocalDate endDate) {
         if (roomService.getRoom(roomIndex).getStatus().equals(RoomStatus.RENTED) || roomService.getRoom(roomIndex).getStatus().equals(RoomStatus.SERVED)) {
             throw new RuntimeException("Room now is not available");
         }
-        orderDao.create(new Order(guestIndex, roomIndex, endDate));
-        orderDao.read(orderDao.readAll().size()).setPrice(roomService.getRoom(roomIndex).getPrice());
+        orderDao.create(new Order(guestIndex, roomIndex, endDate, roomService.getRoom(roomIndex).getPrice()));
         roomService.changeStatus(roomIndex, RoomStatus.RENTED);
     }
 
@@ -65,6 +70,7 @@ public class OrderService implements IOrderService {
     @Override
     public String show(Order order) {
         return "Order index: " + order.getId() + "\n" +
+                "Order date: " + order.getOrderDate().format(DateTimeFormatter.ofPattern("HH:mm/yyyy-MM-dd")) + "\n" +
                 guestService.getGuest(order.getGuestIndex()) + "\n" +
                 roomService.getRoom(order.getRoomIndex()) + "\nStart date: " +
                 order.getStartDate() + "\nEnd date: " +

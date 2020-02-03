@@ -1,6 +1,5 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.attendance.AddAttendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.attendance.ChangePriceAttendance;
@@ -12,6 +11,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.ord
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.room.*;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 
 public class MenuBuilder {
     private final Menu rootMenu = new Menu("Main menu");
@@ -38,12 +38,6 @@ public class MenuBuilder {
         roomStatusMenuInit(roomStatus);
         roomTypeMenuInit(roomType, roomSortAll, roomSortFree);
         orderSortMenuInit(orderSort);
-
-        /** For example */
-        Hotel.getInstance().createAttendance();
-        Hotel.getInstance().createGuest();
-        Hotel.getInstance().createRoom();
-        Hotel.getInstance().createOrder();
     }
 
     public Menu getRootMenu() {
@@ -100,6 +94,7 @@ public class MenuBuilder {
         orderSort.addItem(new MenuItem("Default", new ShowOrder("default"), rootMenu));
         orderSort.addItem(new MenuItem("Sort by date", new ShowOrder("date"), rootMenu));
         orderSort.addItem(new MenuItem("Sort by alphabet", new ShowOrder("alphabet"), rootMenu));
+        orderSort.addItem(new MenuItem("Exit", rootMenu));
         menuNumeration(orderSort);
     }
 
@@ -108,6 +103,7 @@ public class MenuBuilder {
         roomSort.addItem(new MenuItem("Sort by price", new ShowRoom(type, "price"), rootMenu));
         roomSort.addItem(new MenuItem("Sort by classification", new ShowRoom(type, "classification"), rootMenu));
         roomSort.addItem(new MenuItem("Sort by room number", new ShowRoom(type, "room number"), rootMenu));
+        roomSort.addItem(new MenuItem("Exit", rootMenu));
         menuNumeration(roomSort);
     }
 
@@ -115,12 +111,14 @@ public class MenuBuilder {
         roomStatus.addItem(new MenuItem("Rented", new ChangeStatusRoom(RoomStatus.RENTED), rootMenu));
         roomStatus.addItem(new MenuItem("Free", new ChangeStatusRoom(RoomStatus.FREE), rootMenu));
         roomStatus.addItem(new MenuItem("Served", new ChangeStatusRoom(RoomStatus.SERVED), rootMenu));
+        roomStatus.addItem(new MenuItem("Exit", rootMenu));
         menuNumeration(roomStatus);
     }
 
     private void roomTypeMenuInit(Menu roomType, Menu roomSortAll, Menu roomSortFree) {
         roomType.addItem(new MenuItem("Free", roomSortFree));
         roomType.addItem(new MenuItem("All", roomSortAll));
+        roomType.addItem(new MenuItem("Exit", rootMenu));
         menuNumeration(roomType);
     }
 
