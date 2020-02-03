@@ -1,6 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.AttendanceIndex;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -8,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "attendance")
-public class Attendance implements Cloneable{
+public class Attendance implements Cloneable {
     @XmlElement(name = "id")
     private int id;
     @XmlElement(name = "name")
@@ -30,7 +31,7 @@ public class Attendance implements Cloneable{
     }
 
     @Override
-    public Attendance clone() throws CloneNotSupportedException{
+    public Attendance clone() throws CloneNotSupportedException {
         return (Attendance) super.clone();
     }
 

@@ -7,11 +7,19 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.exi
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.guest.AddGuest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.guest.ShowNumberGuest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.guest.ShowThreeRoomGuest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.order.*;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.room.*;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.order.AddAttendanceOrder;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.order.AddOrder;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.order.DeleteOrder;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.order.ShowAttendanceOrder;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.order.ShowOrder;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.room.AddRoom;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.room.ChangePriceRoom;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.room.ChangeStatusRoom;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.room.ShowDateRoom;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.room.ShowNumberFreeRoom;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.execute.room.ShowRoom;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Logger;
 
 public class MenuBuilder {
     private final Menu rootMenu = new Menu("Main menu");

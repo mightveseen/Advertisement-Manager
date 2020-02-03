@@ -10,9 +10,7 @@ public class ConsoleFormatter extends Formatter {
 
     @Override
     public String format(LogRecord record) {
-        StringBuilder mainBuilder = new StringBuilder();
-        mainBuilder.append(LocalDateTime.now().format(timeFormatter)).append(" - ");
-        mainBuilder.append(record.getLevel()).append(" - ").append(record.getMessage()).append("\n");
-        return mainBuilder.toString();
+        return LocalDateTime.now().format(timeFormatter) + " - " +
+                record.getLevel() + " - " + record.getMessage() + "\n";
     }
 }

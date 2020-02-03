@@ -6,9 +6,9 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serial
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlElement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -17,10 +17,10 @@ import java.util.logging.Logger;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "orderDao")
 public class OrderDao implements IOrderDao {
+    private static final Logger LOGGER = Logger.getLogger(OrderDao.class.getName());
     @XmlElementWrapper(name = "orderList")
     @XmlElement(name = "order")
     private List<Order> orderList;
-    private static final Logger LOGGER = Logger.getLogger(OrderDao.class.getName());
 
     @Override
     public void create(Order order) {

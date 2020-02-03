@@ -5,8 +5,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MenuController {
-    private final MenuNavigator menuNavigator;
     private static final Logger LOGGER = Logger.getLogger(MenuController.class.getName());
+    private final MenuNavigator menuNavigator;
 
     public MenuController() {
         final MenuBuilder menuBuilder = new MenuBuilder();

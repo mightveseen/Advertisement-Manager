@@ -4,11 +4,12 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.O
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.OrderIndex;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.adapter.LocalDateAdapter;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.adapter.LocalDateTimeAdapter;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "order")
-public class Order implements Cloneable{
+public class Order implements Cloneable {
     @XmlElement(name = "id")
     private int id;
     @XmlElement(name = "orderDate")
@@ -56,7 +57,7 @@ public class Order implements Cloneable{
     }
 
     @Override
-    public Order clone() throws CloneNotSupportedException{
+    public Order clone() throws CloneNotSupportedException {
         return (Order) super.clone();
     }
 
