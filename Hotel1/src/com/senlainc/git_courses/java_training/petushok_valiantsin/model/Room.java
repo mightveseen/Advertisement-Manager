@@ -2,7 +2,6 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.RoomIndex;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -10,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "room")
-public class Room {
+public class Room implements Cloneable{
     @XmlElement(name = "id")
     private int id;
     @XmlElement(name = "number")
@@ -29,16 +28,6 @@ public class Room {
     public Room() {
     }
 
-    public Room(Room room) {
-        this.id = room.getId();
-        this.number = room.getNumber();
-        this.classification = room.getClassification();
-        this.roomNumber = room.getRoomNumber();
-        this.capacity = room.getCapacity();
-        this.status = room.getStatus();
-        this.price = room.getPrice();
-    }
-
     public Room(int number, String classification, short roomNumber, short capacity, double price) {
         this.id = new RoomIndex().getIndex();
         this.number = number;
@@ -47,6 +36,11 @@ public class Room {
         this.capacity = capacity;
         this.status = RoomStatus.FREE;
         this.price = price;
+    }
+
+    @Override
+    public Room clone() throws CloneNotSupportedException{
+        return (Room) super.clone();
     }
 
     public int getId() {

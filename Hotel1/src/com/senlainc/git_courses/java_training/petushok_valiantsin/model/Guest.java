@@ -2,7 +2,6 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.GuestIndex;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.adapter.LocalDateAdapter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -12,7 +11,7 @@ import java.time.LocalDate;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "guest")
-public class Guest {
+public class Guest implements Cloneable{
     @XmlElement(name = "id")
     private int id;
     @XmlElement(name = "firstName")
@@ -28,20 +27,17 @@ public class Guest {
     public Guest() {
     }
 
-    public Guest(Guest guest) {
-        this.id = guest.getId();
-        this.firstName = guest.getFirstName();
-        this.secondName = guest.getSecondName();
-        this.birthday = guest.getBirthday();
-        this.infoContact = guest.getInfoContact();
-    }
-
     public Guest(String firstName, String secondName, LocalDate birthday, String infoContact) {
         this.id = new GuestIndex().getIndex();
         this.firstName = firstName;
         this.secondName = secondName;
         this.birthday = birthday;
         this.infoContact = infoContact;
+    }
+
+    @Override
+    public Guest clone() throws CloneNotSupportedException{
+        return (Guest) super.clone();
     }
 
     public int getId() {

@@ -4,7 +4,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.O
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.OrderIndex;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.adapter.LocalDateAdapter;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.adapter.LocalDateTimeAdapter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -18,7 +17,7 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "order")
-public class Order {
+public class Order implements Cloneable{
     @XmlElement(name = "id")
     private int id;
     @XmlElement(name = "orderDate")
@@ -45,18 +44,6 @@ public class Order {
     public Order() {
     }
 
-    public Order(Order order) {
-        this.id = order.getId();
-        this.orderDate = order.getOrderDate();
-        this.guestIndex = order.getGuestIndex();
-        this.roomIndex = order.getRoomIndex();
-        this.startDate = order.getStartDate();
-        this.endDate = order.getEndDate();
-        this.attendanceIndex = new LinkedList<>(order.getAttendanceIndex());
-        this.status = order.getStatus();
-        this.price = order.getPrice();
-    }
-
     public Order(int guest, int room, LocalDate endDate, double price) {
         this.id = new OrderIndex().getIndex();
         this.orderDate = LocalDateTime.now();
@@ -66,6 +53,11 @@ public class Order {
         this.endDate = endDate;
         this.status = OrderStatus.ACTIVE;
         this.price = price;
+    }
+
+    @Override
+    public Order clone() throws CloneNotSupportedException{
+        return (Order) super.clone();
     }
 
     public int getId() {
