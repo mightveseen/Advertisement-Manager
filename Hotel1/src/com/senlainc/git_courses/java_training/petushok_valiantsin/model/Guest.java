@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "guest")
@@ -38,7 +37,6 @@ public class Guest {
     }
 
     public Guest(String firstName, String secondName, LocalDate birthday, String infoContact) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         this.id = new GuestIndex().getIndex();
         this.firstName = firstName;
         this.secondName = secondName;

@@ -4,7 +4,11 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlElement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -16,7 +20,7 @@ public class GuestDao implements IGuestDao {
     @XmlElementWrapper(name = "guestList")
     @XmlElement(name = "guest")
     private List<Guest> guestList;
-    private static final Logger LOGGER = Logger.getLogger(GuestDao.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(GuestDao.class.getName());
 
     @Override
     public void create(Guest guest) {

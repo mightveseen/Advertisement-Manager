@@ -15,7 +15,6 @@ import java.util.logging.Logger;
 
 public class MenuBuilder {
     private final Menu rootMenu = new Menu("Main menu");
-    private static final Logger LOGGER = Logger.getLogger(MenuBuilder.class.getSimpleName());
 
     public void buildMenu() {
         final Menu guest = new Menu("Guest Menu");

@@ -2,12 +2,15 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.seria
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.LoadConfig;
 import sun.dc.path.PathError;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.IOException;
 
 public class Serialization {
     public static Serialization instance;

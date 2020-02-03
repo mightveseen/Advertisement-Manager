@@ -11,7 +11,7 @@
             <id>2</id>
             <name>Dinner</name>
             <section>Food</section>
-            <price>9.0</price>
+            <price>21.0</price>
         </attendance>
         <attendance>
             <id>3</id>
@@ -23,7 +23,7 @@
             <id>4</id>
             <name>Playstation 4</name>
             <section>Entertainment</section>
-            <price>20.50</price>
+            <price>20.5</price>
         </attendance>
     </attendanceList>
 </attendanceDao>
