@@ -6,7 +6,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serial
 
 public class Main {
     public static void main(String[] args) {
-//        Conrtoller conrtoller = new Conrtoller();
         new CustomLogger();
         new LoadData();
         new MenuController().run();

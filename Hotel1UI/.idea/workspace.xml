@@ -42,6 +42,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
   </component>
   <component name="RecentsManager">
@@ -96,10 +97,14 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="184" y="112" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1580824570698" />
-    <state x="230" y="51" key="CommitChangelistDialog2" timestamp="1580837722280">
+    <state x="414" y="313" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1580840200272">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="230" y="51" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1580837722280" />
+    <state x="414" y="313" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1440.900@0.0.1440.900" timestamp="1580840200272" />
+    <state x="230" y="51" key="CommitChangelistDialog2" timestamp="1580840190474">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="230" y="51" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1580840190474" />
     <state x="482" y="172" key="DetectedRootsChooserDialog" timestamp="1580824499393">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
