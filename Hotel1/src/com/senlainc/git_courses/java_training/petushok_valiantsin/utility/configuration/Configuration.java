@@ -15,7 +15,7 @@ public abstract class Configuration {
         try (InputStream fileReader = new FileInputStream(path)) {
             properties.load(fileReader);
         } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Could load program properties from file: " + e.toString(), e);
+            LOGGER.log(Level.WARNING, "Could load program resources.properties from file: " + e.toString(), e);
         }
     }
 
