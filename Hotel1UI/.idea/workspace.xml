@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a5d069b6-ce31-4433-a865-83f0d6ace7bf" name="Default Changelist" comment="">
+    <list default="true" id="a5d069b6-ce31-4433-a865-83f0d6ace7bf" name="Default Changelist" comment="HotelUI">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
@@ -59,37 +59,41 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="184" y="112" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1580824570698" />
-    <state x="230" y="51" key="CommitChangelistDialog2" timestamp="1580824694904">
+    <state x="230" y="51" key="CommitChangelistDialog2" timestamp="1580824821908">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="230" y="51" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1580824694904" />
+    <state x="230" y="51" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1580824821908" />
     <state x="482" y="172" key="DetectedRootsChooserDialog" timestamp="1580824499393">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="482" y="172" key="DetectedRootsChooserDialog/0.0.1440.900@0.0.1440.900" timestamp="1580824499393" />
-    <state width="1398" height="245" key="GridCell.Tab.0.bottom" timestamp="1580824604532">
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom" timestamp="1580824902042">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1580824604532" />
-    <state width="1398" height="245" key="GridCell.Tab.0.center" timestamp="1580824604529">
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1580824902042" />
+    <state width="1398" height="245" key="GridCell.Tab.0.center" timestamp="1580824902040">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1580824604529" />
-    <state width="1398" height="245" key="GridCell.Tab.0.left" timestamp="1580824604528">
+    <state width="1398" height="245" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1580824902040" />
+    <state width="1398" height="245" key="GridCell.Tab.0.left" timestamp="1580824902037">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1580824604528" />
-    <state width="1398" height="245" key="GridCell.Tab.0.right" timestamp="1580824604531">
+    <state width="1398" height="245" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1580824902037" />
+    <state width="1398" height="245" key="GridCell.Tab.0.right" timestamp="1580824902041">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1580824604531" />
+    <state width="1398" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1580824902041" />
     <state x="208" y="31" key="SettingsEditor" timestamp="1580824514122">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="208" y="31" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1580824514122" />
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1580824701634">
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1580824746648">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1580824701634" />
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1580824746648" />
+    <state x="447" y="357" key="git4idea.ui.GitStashDialog" timestamp="1580824834980">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="447" y="357" key="git4idea.ui.GitStashDialog/0.0.1440.900@0.0.1440.900" timestamp="1580824834980" />
   </component>
 </project>

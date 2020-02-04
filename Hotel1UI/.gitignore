@@ -11,10 +11,10 @@ hs_err_pid*
 ##############################
 ## IntelliJ
 ##############################
+/.idea/
+/out/
 .idea_modules/
 *.iml
 *.ipr
 *.iws
 *.log
-out/
-.idea/
