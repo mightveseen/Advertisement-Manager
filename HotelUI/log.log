@@ -1,0 +1,66 @@
+15:06:32/2020-02-04 - [com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.Configuration] - WARNING - Could load program properties from file: java.io.FileNotFoundException: src/resources/properties/configuration/load.properties (No such file or directory)
+{
+	java.io.FileNotFoundException: src/resources/properties/configuration/load.properties (No such file or directory)
+	java.io.FileInputStream.open0(Native Method)
+	java.io.FileInputStream.open(FileInputStream.java:195)
+	java.io.FileInputStream.<init>(FileInputStream.java:138)
+	java.io.FileInputStream.<init>(FileInputStream.java:93)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.Configuration.<init>(Configuration.java:15)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.LoadConfig.<init>(LoadConfig.java:12)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.LoadConfig.getInstance(LoadConfig.java:17)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization.getPath(Serialization.java:29)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization.customUnmarshaller(Serialization.java:53)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.repository.AttendanceDao.setAll(AttendanceDao.java:55)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.service.AttendanceService.load(AttendanceService.java:21)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel.loadAttendance(Hotel.java:56)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.LoadData.<clinit>(LoadData.java:7)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Launch.main(Launch.java:10)
+}
+15:06:32/2020-02-04 - [com.senlainc.git_courses.java_training.petushok_valiantsin.repository.AttendanceDao] - WARNING - null, create empty list
+{
+	java.lang.NullPointerException
+	java.io.FileInputStream.<init>(FileInputStream.java:130)
+	java.io.FileInputStream.<init>(FileInputStream.java:93)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization.customUnmarshaller(Serialization.java:53)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.repository.AttendanceDao.setAll(AttendanceDao.java:55)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.service.AttendanceService.load(AttendanceService.java:21)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel.loadAttendance(Hotel.java:56)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.LoadData.<clinit>(LoadData.java:7)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Launch.main(Launch.java:10)
+}
+15:06:32/2020-02-04 - [com.senlainc.git_courses.java_training.petushok_valiantsin.repository.RoomDao] - WARNING - null, create empty list
+{
+	java.lang.NullPointerException
+	java.io.FileInputStream.<init>(FileInputStream.java:130)
+	java.io.FileInputStream.<init>(FileInputStream.java:93)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization.customUnmarshaller(Serialization.java:53)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.repository.RoomDao.setAll(RoomDao.java:56)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.service.RoomService.load(RoomService.java:25)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel.loadRoom(Hotel.java:75)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.LoadData.<clinit>(LoadData.java:8)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Launch.main(Launch.java:10)
+}
+15:06:32/2020-02-04 - [com.senlainc.git_courses.java_training.petushok_valiantsin.repository.GuestDao] - WARNING - null, create empty list
+{
+	java.lang.NullPointerException
+	java.io.FileInputStream.<init>(FileInputStream.java:130)
+	java.io.FileInputStream.<init>(FileInputStream.java:93)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization.customUnmarshaller(Serialization.java:53)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.repository.GuestDao.setAll(GuestDao.java:56)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.service.GuestService.load(GuestService.java:22)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel.loadGuest(Hotel.java:106)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.LoadData.<clinit>(LoadData.java:9)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Launch.main(Launch.java:10)
+}
+15:06:32/2020-02-04 - [com.senlainc.git_courses.java_training.petushok_valiantsin.repository.OrderDao] - WARNING - null, create empty list
+{
+	java.lang.NullPointerException
+	java.io.FileInputStream.<init>(FileInputStream.java:130)
+	java.io.FileInputStream.<init>(FileInputStream.java:93)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization.customUnmarshaller(Serialization.java:53)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.repository.OrderDao.setAll(OrderDao.java:56)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.service.OrderService.load(OrderService.java:38)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel.loadOrder(Hotel.java:125)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.LoadData.<clinit>(LoadData.java:10)
+	com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Launch.main(Launch.java:10)
+}
