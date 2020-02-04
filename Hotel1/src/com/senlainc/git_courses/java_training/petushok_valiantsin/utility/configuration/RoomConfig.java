@@ -1,7 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration;
 
 public class RoomConfig extends Configuration {
-    private static final String PATH = "src/resources/properties/configuration/room.properties";
+    private static final String PATH = "resources/properties/configuration/room.properties";
     private static final String CHANGE_STATUS_KEY = "CHANGE_STATUS_PROPERTY";
     private static final boolean CHANGE_STATUS_BASIC_VALUE = true;
     private static RoomConfig instance;

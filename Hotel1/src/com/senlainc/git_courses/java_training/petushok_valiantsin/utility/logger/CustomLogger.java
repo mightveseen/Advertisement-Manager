@@ -6,8 +6,8 @@ import java.io.InputStream;
 import java.util.logging.LogManager;
 
 public class CustomLogger {
-    static {
-        try (InputStream configReader = new FileInputStream("properties/logger/log.properties")) {
+    static  {
+        try (InputStream configReader = new FileInputStream("resources/properties/logger/log.properties")) {
             LogManager.getLogManager().readConfiguration(configReader);
         } catch (IOException e) {
             System.err.println("Could not setup logger res.configuration: " + e.toString());

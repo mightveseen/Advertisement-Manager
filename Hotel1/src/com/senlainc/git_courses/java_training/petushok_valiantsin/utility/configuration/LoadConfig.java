@@ -5,7 +5,7 @@ public class LoadConfig extends Configuration {
     private static final String GUEST_DAO_PATH_PROPERTY = "GUEST_DAO_PATH";
     private static final String ROOM_DAO_PATH_PROPERTY = "ROOM_DAO_PATH";
     private static final String ORDER_DAO_PATH_PROPERTY = "ORDER_DAO_PATH";
-    private static final String PATH = "src/resources/properties/configuration/load.properties";
+    private static final String PATH = "resources/properties/configuration/load.properties";
     private static LoadConfig instance;
 
     private LoadConfig() {
