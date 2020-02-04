@@ -2,23 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a5d069b6-ce31-4433-a865-83f0d6ace7bf" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../Hotel1/src/META-INF/MANIFEST.MF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Hotel1/src/com/senlainc/git_courses/java_training/petushok_valiantsin/controller/Conrtoller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Hotel1/src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/configuration/GuestConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Hotel1/src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/configuration/GuestConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Hotel1/src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/configuration/LoadConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Hotel1/src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/configuration/LoadConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Hotel1/src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/configuration/RoomConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Hotel1/src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/configuration/RoomConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Hotel1/src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/logger/CustomLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Hotel1/src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/logger/CustomLogger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Hotel1/src/resources/properties/configuration/guest.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../Hotel1/resources/properties/configuration/guest.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Hotel1/src/resources/properties/configuration/load.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../Hotel1/resources/properties/configuration/load.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Hotel1/src/resources/properties/configuration/room.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../Hotel1/resources/properties/configuration/room.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Hotel1/src/resources/properties/logger/log.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../Hotel1/resources/properties/logger/log.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Hotel1/src/resources/xml/AttendanceDao.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Hotel1/resources/xml/AttendanceDao.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Hotel1/src/resources/xml/GuestDao.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Hotel1/resources/xml/GuestDao.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Hotel1/src/resources/xml/OrderDao.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Hotel1/resources/xml/OrderDao.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Hotel1/src/resources/xml/RoomDao.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Hotel1/resources/xml/RoomDao.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/properties/configuration/guest.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/properties/configuration/load.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/properties/configuration/room.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/properties/logger/log.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/xml/AttendanceDao.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/xml/GuestDao.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/xml/OrderDao.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/xml/RoomDao.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Hotel1UI/com/senlainc/git_courses/java_training/petushok_valiantsin/artifact/Hotel1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/senlainc/git_courses/java_training/petushok_valiantsin/artifact/Hotel1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/resources/artifact/Hotel1.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/artifact/Hotel1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/resources/artifact/Hotel1.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/senlainc/git_courses/java_training/petushok_valiantsin/controller/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/senlainc/git_courses/java_training/petushok_valiantsin/controller/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -45,7 +38,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -56,6 +49,7 @@
       <recent name="$PROJECT_DIR$/resources" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/resources" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src" />
     </key>
@@ -102,30 +96,30 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="184" y="112" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1580824570698" />
-    <state x="230" y="51" key="CommitChangelistDialog2" timestamp="1580824937719">
+    <state x="230" y="51" key="CommitChangelistDialog2" timestamp="1580837722280">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="230" y="51" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1580824937719" />
+    <state x="230" y="51" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1580837722280" />
     <state x="482" y="172" key="DetectedRootsChooserDialog" timestamp="1580824499393">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="482" y="172" key="DetectedRootsChooserDialog/0.0.1440.900@0.0.1440.900" timestamp="1580824499393" />
-    <state width="1398" height="245" key="GridCell.Tab.0.bottom" timestamp="1580834771530">
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom" timestamp="1580839740584">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1580834771530" />
-    <state width="1398" height="245" key="GridCell.Tab.0.center" timestamp="1580834771528">
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1580839740584" />
+    <state width="1398" height="245" key="GridCell.Tab.0.center" timestamp="1580839740581">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1580834771528" />
-    <state width="1398" height="245" key="GridCell.Tab.0.left" timestamp="1580834771528">
+    <state width="1398" height="245" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1580839740581" />
+    <state width="1398" height="245" key="GridCell.Tab.0.left" timestamp="1580839740579">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1580834771528" />
-    <state width="1398" height="245" key="GridCell.Tab.0.right" timestamp="1580834771529">
+    <state width="1398" height="245" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1580839740579" />
+    <state width="1398" height="245" key="GridCell.Tab.0.right" timestamp="1580839740582">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1580834771529" />
+    <state width="1398" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1580839740582" />
     <state width="1398" height="302" key="GridCell.Tab.1.bottom" timestamp="1580830974232">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -146,10 +140,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="208" y="31" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1580831657598" />
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1580824949616">
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1580837726334">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1580824949616" />
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1580837726334" />
     <state x="509" y="374" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1580825155652">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
