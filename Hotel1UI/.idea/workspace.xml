@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="a5d069b6-ce31-4433-a865-83f0d6ace7bf" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../HotelUI/src/com/senlainc/git_courses/java_training/petushok_valiantsin/artifact/Hotel1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../HotelUI/src/com/senlainc/git_courses/java_training/petushok_valiantsin/controller/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Hotel1/src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/logger/CustomLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Hotel1/src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/logger/CustomLogger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../HotelUI/src/com/senlainc/git_courses/java_training/petushok_valiantsin/controller/Launch.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../HotelUI/src/resources/artifacts/Hotel1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Hotel1UI/com/senlainc/git_courses/java_training/petushok_valiantsin/artifact/Hotel1.jar" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1XLTCeKWYmIxioomlHi2GoZtWJA" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Main" />
+      <module name="Hotel1UI" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="320" y="95" key="#Project_Structure" timestamp="1580824258599">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="320" y="95" key="#Project_Structure/0.0.1440.900@0.0.1440.900" timestamp="1580824258599" />
+    <state x="184" y="112" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1580824570698">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="184" y="112" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1580824570698" />
+    <state x="482" y="172" key="DetectedRootsChooserDialog" timestamp="1580824499393">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="482" y="172" key="DetectedRootsChooserDialog/0.0.1440.900@0.0.1440.900" timestamp="1580824499393" />
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom" timestamp="1580824604532">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1580824604532" />
+    <state width="1398" height="245" key="GridCell.Tab.0.center" timestamp="1580824604529">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1398" height="245" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1580824604529" />
+    <state width="1398" height="245" key="GridCell.Tab.0.left" timestamp="1580824604528">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1398" height="245" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1580824604528" />
+    <state width="1398" height="245" key="GridCell.Tab.0.right" timestamp="1580824604531">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1398" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1580824604531" />
+    <state x="208" y="31" key="SettingsEditor" timestamp="1580824514122">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="208" y="31" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1580824514122" />
+  </component>
+</project>
