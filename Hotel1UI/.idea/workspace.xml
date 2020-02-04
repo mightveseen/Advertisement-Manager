@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a5d069b6-ce31-4433-a865-83f0d6ace7bf" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../HotelUI/src/com/senlainc/git_courses/java_training/petushok_valiantsin/artifact/Hotel1.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../HotelUI/src/com/senlainc/git_courses/java_training/petushok_valiantsin/controller/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Hotel1/src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/logger/CustomLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Hotel1/src/com/senlainc/git_courses/java_training/petushok_valiantsin/utility/logger/CustomLogger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../HotelUI/src/com/senlainc/git_courses/java_training/petushok_valiantsin/controller/Launch.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../HotelUI/src/resources/artifacts/Hotel1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Hotel1UI/com/senlainc/git_courses/java_training/petushok_valiantsin/artifact/Hotel1.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +46,10 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="HotelUI" />
+    <option name="LAST_COMMIT_MESSAGE" value="HotelUI" />
+  </component>
   <component name="WindowStateProjectService">
     <state x="320" y="95" key="#Project_Structure" timestamp="1580824258599">
       <screen x="0" y="0" width="1440" height="900" />
@@ -62,6 +59,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="184" y="112" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1580824570698" />
+    <state x="230" y="51" key="CommitChangelistDialog2" timestamp="1580824694904">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="230" y="51" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1580824694904" />
     <state x="482" y="172" key="DetectedRootsChooserDialog" timestamp="1580824499393">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -86,5 +87,9 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="208" y="31" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1580824514122" />
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1580824701634">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1580824701634" />
   </component>
 </project>
