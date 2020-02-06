@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a5d069b6-ce31-4433-a865-83f0d6ace7bf" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../DependencyInjection/src/com/senlainc/git_courses/java_training/petushok_valiantsin/ConfigClass.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../DependencyInjection/src/com/senlainc/git_courses/java_training/petushok_valiantsin/annotation/ConfigProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Hotel Diagramm.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
