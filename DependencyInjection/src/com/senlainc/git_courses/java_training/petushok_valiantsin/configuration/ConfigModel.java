@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 public class ConfigModel {
     private final Field field;
     private final String configName;
-    private String propertyName;
+    private final String propertyName;
 
     public ConfigModel(Field field) {
         this.field = field;
