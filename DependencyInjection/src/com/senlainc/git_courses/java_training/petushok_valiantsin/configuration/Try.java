@@ -7,15 +7,15 @@ import java.lang.reflect.InvocationTargetException;
 
 @ConfigClass
 public class Try {
-    @ConfigProperty(configName = "try", propertyName = "FIRST_VARIABLE")
-    private final String firstVariable = null;
-    @ConfigProperty(configName = "try", propertyName = "SECOND_VARIABLE")
+    @ConfigProperty(configName = "try", propertyName = "TRY.FIRST_VARIABLE")
+    private final Short firstVariable = null;
+    @ConfigProperty(configName = "try")
     private String secondVariable;
 
-    public void write () {
+    public void configTry () {
         try {
-            ConfigModule.getInstance().letsRock(Try.class.getName(), this);
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
+            ConfigModule.getInstance().letsRock(this);
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             System.err.println(e);
         }
         System.out.println(firstVariable + "\n" + secondVariable);

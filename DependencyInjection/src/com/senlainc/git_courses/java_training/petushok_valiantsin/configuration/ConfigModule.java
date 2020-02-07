@@ -12,8 +12,8 @@ public class ConfigModule {
         return instance;
     }
 
-    public<T> void letsRock(String className, T object) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchFieldException {
-        final Class clazz = Class.forName(className);
+    public<T> void letsRock(T object) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+        final Class<?> clazz = Class.forName(object.getClass().getName());
         new ConfigInjection(clazz).AddDeclaredFiled(object);
     }
 }

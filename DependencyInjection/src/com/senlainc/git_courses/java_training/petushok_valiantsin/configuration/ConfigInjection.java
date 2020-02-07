@@ -8,10 +8,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
 public class ConfigInjection {
-    private final Class configClass;
+    private final Class<?> configClass;
     private String configPath;
 
-    public ConfigInjection(Class configClass) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    public ConfigInjection(Class<?> configClass) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         this.configClass = configClass;
         final Annotation annotation = this.configClass.getAnnotation(ConfigClass.class);
         if (annotation == null) {
@@ -20,13 +20,42 @@ public class ConfigInjection {
         this.configPath = ConfigClass.class.getDeclaredMethod("configPath").invoke(annotation).toString();
     }
 
-    public<T> void AddDeclaredFiled(T clazz) throws IllegalAccessException, NoSuchFieldException {
+    public<T> void AddDeclaredFiled(T object) throws IllegalAccessException {
         for (Field field : configClass.getDeclaredFields()) {
             final ConfigModel configModel = new ConfigModel(field);
             final Properties properties = ConfigReader.getInstance().readConfig(configPath + configModel.getConfigName());
-            configModel.getFiled().setAccessible(true);
-            configModel.getFiled().set(clazz, properties.getProperty(configModel.getPropertyName()));
-            configModel.getFiled().setAccessible(false);
+            final Object value = customConverter(configModel, properties.getProperty(configModel.getPropertyName()));
+            configModel.getField().setAccessible(true);
+            configModel.getField().set(object, value);
+            configModel.getField().setAccessible(false);
         }
+    }
+
+    private Object customConverter(ConfigModel configModel, String variable) {
+        if (Byte.class.equals(configModel.getField().getType())) {
+            return Byte.parseByte(variable);
+        }
+        if (Short.class.equals(configModel.getField().getType())) {
+            return Short.parseShort(variable);
+        }
+        if (Integer.class.equals(configModel.getField().getType())) {
+            return Integer.parseInt(variable);
+        }
+        if (Long.class.equals(configModel.getField().getType())) {
+            return Long.parseLong(variable);
+        }
+        if (Float.class.equals(configModel.getField().getType())) {
+            return Float.parseFloat(variable);
+        }
+        if (Double.class.equals(configModel.getField().getType())) {
+            return Double.parseDouble(variable);
+        }
+        if (Boolean.class.equals(configModel.getField().getType())) {
+            return Boolean.parseBoolean(variable);
+        }
+        if (Character.class.equals(configModel.getField().getType())) {
+            return variable.charAt(0);
+        }
+        return variable;
     }
 }
