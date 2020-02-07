@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class ConfigInjection {
-    private Class configClass;
+    private final Class configClass;
     private String configPath;
 
     public ConfigInjection(Class configClass) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException{

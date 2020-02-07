@@ -5,9 +5,9 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.
 import java.lang.reflect.Field;
 
 public class ConfigModel {
-    private Field filed;
-    private String configName;
-    private String propertyName;
+    private final Field filed;
+    private final String configName;
+    private final String propertyName;
     private String type;
 
     public ConfigModel(Field field) {
