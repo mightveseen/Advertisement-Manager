@@ -8,13 +8,11 @@ public class ConfigModel {
     private final Field filed;
     private final String configName;
     private final String propertyName;
-    private String type;
 
     public ConfigModel(Field field) {
         this.filed = field;
         this.configName = field.getAnnotation(ConfigProperty.class).configName();
         this.propertyName = field.getAnnotation(ConfigProperty.class).propertyName();
-//        this.type = field.getAnnotation(ConfigProperty.class).type();
     }
 
     public Field getFiled() {
@@ -28,9 +26,4 @@ public class ConfigModel {
     public String getPropertyName() {
         return this.propertyName;
     }
-
-    public String getType() {
-        return this.type;
-    }
-
 }
