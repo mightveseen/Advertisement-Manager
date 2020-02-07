@@ -9,18 +9,18 @@ import java.util.Properties;
 
 public class ConfigInjection {
     private final Class<?> configClass;
-    private String configPath;
+    private final String configPath;
 
-    public ConfigInjection(Class<?> configClass) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        this.configClass = configClass;
-        final Annotation annotation = this.configClass.getAnnotation(ConfigClass.class);
+    public ConfigInjection(Class<?> clazz) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+        this.configClass = clazz;
+        final Annotation annotation = configClass.getAnnotation(ConfigClass.class);
         if (annotation == null) {
             throw new IllegalArgumentException("Class didn't have annotation");
         }
         this.configPath = ConfigClass.class.getDeclaredMethod("configPath").invoke(annotation).toString();
     }
 
-    public<T> void AddDeclaredFiled(T object) throws IllegalAccessException {
+    public <T> void AddDeclaredFiled(T object) throws IllegalAccessException {
         for (Field field : configClass.getDeclaredFields()) {
             final ConfigModel configModel = new ConfigModel(field);
             final Properties properties = ConfigReader.getInstance().readConfig(configPath + configModel.getConfigName());

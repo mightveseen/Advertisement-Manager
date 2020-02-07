@@ -32,7 +32,7 @@ public class ConfigModel {
     }
 
     private String setPropertyName() {
-        if(field.getAnnotation(ConfigProperty.class).propertyName().equals("")) {
+        if (field.getAnnotation(ConfigProperty.class).propertyName().equals("")) {
             return splitCamelCase(field.getDeclaringClass().getSimpleName()).toUpperCase() + "." + splitCamelCase(field.getName()).toUpperCase();
         }
         return field.getAnnotation(ConfigProperty.class).propertyName();
