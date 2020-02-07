@@ -17,17 +17,15 @@ public class ConfigReader {
         return instance;
     }
 
-    public void readConfig(String path, ConfigModel configModel) throws IllegalAccessException {
+    public Properties readConfig(String path) {
         if (!path.equals(mainPath)) {
             mainPath = path;
-            try (InputStream fileReader = new FileInputStream(mainPath + configModel.getConfigName() + ".properties")) {
+            try (InputStream fileReader = new FileInputStream(mainPath + ".properties")) {
                 properties.load(fileReader);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-        configModel.getFiled().setAccessible(true);
-        configModel.getFiled().set(configModel.getPropertyName(), properties.getProperty(configModel.getPropertyName()));
-        configModel.getFiled().setAccessible(false);
+        return properties;
     }
 }

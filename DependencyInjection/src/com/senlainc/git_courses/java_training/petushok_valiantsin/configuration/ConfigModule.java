@@ -12,7 +12,8 @@ public class ConfigModule {
         return instance;
     }
 
-    public void letsRock(Class clazz) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        new ConfigInjection(clazz).AddDeclaredFiled();
+    public<T> void letsRock(String className, T object) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchFieldException {
+        final Class clazz = Class.forName(className);
+        new ConfigInjection(clazz).AddDeclaredFiled(object);
     }
 }
