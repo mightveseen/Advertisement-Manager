@@ -24,6 +24,7 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public void create(Room room) {
+        room.setId(roomList.size() + 1);
         roomList.add(room);
         saveAll();
     }

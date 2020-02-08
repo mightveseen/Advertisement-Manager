@@ -1,7 +1,5 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.AttendanceIndex;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -24,7 +22,6 @@ public class Attendance implements Cloneable {
     }
 
     public Attendance(String name, String section, double price) {
-        this.id = new AttendanceIndex().getIndex();
         this.name = name;
         this.section = section;
         this.price = price;
@@ -37,6 +34,10 @@ public class Attendance implements Cloneable {
 
     public int getId() {
         return this.id;
+    }
+
+    public void setId(int index) {
+        this.id = index;
     }
 
     public String getName() {

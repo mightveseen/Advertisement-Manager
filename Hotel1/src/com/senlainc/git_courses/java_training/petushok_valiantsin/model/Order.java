@@ -1,7 +1,6 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.OrderIndex;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.adapter.LocalDateAdapter;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.adapter.LocalDateTimeAdapter;
 
@@ -46,7 +45,6 @@ public class Order implements Cloneable {
     }
 
     public Order(int guest, int room, LocalDate endDate, double price) {
-        this.id = new OrderIndex().getIndex();
         this.orderDate = LocalDateTime.now();
         this.guestIndex = guest;
         this.roomIndex = room;
@@ -63,6 +61,10 @@ public class Order implements Cloneable {
 
     public int getId() {
         return this.id;
+    }
+
+    public void setId(int index) {
+        this.id = index;
     }
 
     public int getGuestIndex() {

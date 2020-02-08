@@ -1,6 +1,5 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.GuestIndex;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.adapter.LocalDateAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -29,7 +28,6 @@ public class Guest implements Cloneable {
     }
 
     public Guest(String firstName, String secondName, LocalDate birthday, String infoContact) {
-        this.id = new GuestIndex().getIndex();
         this.firstName = firstName;
         this.secondName = secondName;
         this.birthday = birthday;
@@ -43,6 +41,10 @@ public class Guest implements Cloneable {
 
     public int getId() {
         return this.id;
+    }
+
+    public void setId(int index) {
+        this.id = index;
     }
 
     public String getFirstName() {

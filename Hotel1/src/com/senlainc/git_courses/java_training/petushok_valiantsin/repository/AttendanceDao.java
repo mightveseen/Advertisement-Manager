@@ -24,6 +24,7 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public void create(Attendance attendance) {
+        attendance.setId(attendanceList.size() + 1);
         attendanceList.add(attendance);
         saveAll();
     }

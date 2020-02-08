@@ -24,6 +24,7 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public void create(Guest guest) {
+        guest.setId(guestList.size() + 1);
         guestList.add(guest);
         saveAll();
     }

@@ -24,6 +24,7 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public void create(Order order) {
+        order.setId(orderList.size() + 1);
         orderList.add(order);
         saveAll();
     }

@@ -1,7 +1,6 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.RoomIndex;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -30,7 +29,6 @@ public class Room implements Cloneable {
     }
 
     public Room(int number, String classification, short roomNumber, short capacity, double price) {
-        this.id = new RoomIndex().getIndex();
         this.number = number;
         this.classification = classification;
         this.roomNumber = roomNumber;
@@ -46,6 +44,10 @@ public class Room implements Cloneable {
 
     public int getId() {
         return this.id;
+    }
+
+    public void setId(int index) {
+        this.id = index;
     }
 
     public short getCapacity() {
