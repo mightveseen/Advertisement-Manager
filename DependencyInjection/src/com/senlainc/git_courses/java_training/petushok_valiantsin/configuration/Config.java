@@ -28,17 +28,15 @@ public class Config {
     }
 
     private static String splitCamelCase(String name) {
-        return name.replaceAll(String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z])", "(?<=[^A-Z])(?=[A-Z])", "(?<=[A-Za-z])(?=[^A-Za-z])"), "_");
+        if (!name.contains("_")) {
+            return name.replaceAll(String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z])", "(?<=[^A-Z])(?=[A-Z])", "(?<=[A-Za-z])(?=[^A-Za-z])"), "_");
+        }
+        return name;
     }
 
     private String setPropertyName() {
         if (field.getAnnotation(ConfigProperty.class).propertyName().equals("")) {
-            final StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(splitCamelCase(field.getDeclaringClass().getSimpleName()).toUpperCase()).append(".");
-            if(!field.getName().contains("_")) {
-                return stringBuilder.append(splitCamelCase(field.getName()).toUpperCase()).toString();
-            }
-            return stringBuilder.append(field.getName().toUpperCase()).toString();
+            return splitCamelCase(field.getDeclaringClass().getSimpleName()).toUpperCase() + "." + splitCamelCase(field.getName()).toUpperCase();
         }
         return field.getAnnotation(ConfigProperty.class).propertyName();
     }

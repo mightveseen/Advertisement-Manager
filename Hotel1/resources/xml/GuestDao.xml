@@ -127,5 +127,12 @@
             <birthday>2020-02-08</birthday>
             <infoContact>ddd</infoContact>
         </guest>
+        <guest>
+            <id>1</id>
+            <firstName>fff</firstName>
+            <secondName>ffff</secondName>
+            <birthday>2020-02-08</birthday>
+            <infoContact>ddd</infoContact>
+        </guest>
     </guestList>
 </guestDao>
