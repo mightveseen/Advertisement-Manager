@@ -1,6 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.configuration;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.annotation.ConfigClass;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.annotation.ConfigProperty;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -22,38 +23,41 @@ public class ConfigService {
 
     public <T> void addFieldValue(T object) throws IllegalAccessException {
         for (Field field : configClass.getDeclaredFields()) {
-            final Config config = new Config(field);
-            final Properties properties = ConfigReader.getInstance().readConfig(configPath + config.getConfigName());
-            final Object value = customConverter(config, properties.getProperty(config.getPropertyName()));
-            config.getField().setAccessible(true);
-            config.getField().set(object, value);
-            config.getField().setAccessible(false);
+            if(field.getAnnotation(ConfigProperty.class) != null) {
+                final Config config = new Config(field);
+                final Properties properties = ConfigReader.getInstance().readConfig(configPath + config.getConfigName());
+                final Object value = customConverter(field, properties.getProperty(config.getPropertyName()));
+                config.getField().setAccessible(true);
+                config.getField().set(object, value);
+                config.getField().setAccessible(false);
+            }
         }
     }
 
-    private Object customConverter(Config config, String variable) {
-        if (Byte.class.equals(config.getField().getType())) {
+    private Object customConverter(Field field, String variable) {
+        String variableType = field.getType().toString();
+        if (variableType.matches(Byte.class.toString()) || variableType.matches("byte")) {
             return Byte.parseByte(variable);
         }
-        if (Short.class.equals(config.getField().getType())) {
+        if (variableType.matches(Short.class.toString()) || variableType.matches("short")) {
             return Short.parseShort(variable);
         }
-        if (Integer.class.equals(config.getField().getType())) {
+        if (variableType.matches(Integer.class.toString()) || variableType.matches("int")) {
             return Integer.parseInt(variable);
         }
-        if (Long.class.equals(config.getField().getType())) {
+        if (variableType.matches(Long.class.toString()) || variableType.matches("long")) {
             return Long.parseLong(variable);
         }
-        if (Float.class.equals(config.getField().getType())) {
+        if (variableType.matches(Float.class.toString()) || variableType.matches("float")) {
             return Float.parseFloat(variable);
         }
-        if (Double.class.equals(config.getField().getType())) {
+        if (variableType.matches(Double.class.toString()) || variableType.matches("double")) {
             return Double.parseDouble(variable);
         }
-        if (Boolean.class.equals(config.getField().getType())) {
+        if (variableType.matches(Boolean.class.toString()) || variableType.matches("boolean")) {
             return Boolean.parseBoolean(variable);
         }
-        if (Character.class.equals(config.getField().getType())) {
+        if (variableType.matches(Character.class.toString()) || variableType.matches("char")) {
             return variable.charAt(0);
         }
         return variable;

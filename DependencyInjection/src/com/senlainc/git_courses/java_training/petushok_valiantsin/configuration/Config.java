@@ -33,7 +33,12 @@ public class Config {
 
     private String setPropertyName() {
         if (field.getAnnotation(ConfigProperty.class).propertyName().equals("")) {
-            return splitCamelCase(field.getDeclaringClass().getSimpleName()).toUpperCase() + "." + splitCamelCase(field.getName()).toUpperCase();
+            final StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(splitCamelCase(field.getDeclaringClass().getSimpleName()).toUpperCase()).append(".");
+            if(!field.getName().contains("_")) {
+                return stringBuilder.append(splitCamelCase(field.getName()).toUpperCase()).toString();
+            }
+            return stringBuilder.append(field.getName().toUpperCase()).toString();
         }
         return field.getAnnotation(ConfigProperty.class).propertyName();
     }

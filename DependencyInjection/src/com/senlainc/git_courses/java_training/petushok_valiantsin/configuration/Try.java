@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 @ConfigClass
 public class Try {
     @ConfigProperty(configName = "try", propertyName = "TRY.FIRST_VARIABLE")
-    private final Short firstVariable = null;
+    private final Integer firstVariable = 0;
     @ConfigProperty(configName = "TRY")
     private String secondVariable;
 
