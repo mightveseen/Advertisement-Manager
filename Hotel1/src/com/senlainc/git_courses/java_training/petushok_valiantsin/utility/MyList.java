@@ -8,9 +8,6 @@ public class MyList<T> {
     private int index = 0;
     private T[] objArray = (T[]) new Object[INIT_SIZE];
 
-    public MyList() {
-    }
-
     public MyList(MyList<T> clazz) {
         if (clazz != null) {
             System.arraycopy(clazz.get(), 0, objArray, 0, clazz.size());

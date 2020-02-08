@@ -6,6 +6,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serial
 public class Conrtoller {
     public static void main(String[] args) {
         new CustomLogger();
-//        new LoadData();
+        new LoadData();
     }
 }
