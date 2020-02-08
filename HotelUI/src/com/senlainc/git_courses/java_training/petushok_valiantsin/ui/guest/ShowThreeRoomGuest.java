@@ -13,7 +13,7 @@ public class ShowThreeRoomGuest implements IAction {
     @Override
     public void execute() {
         try {
-            Scanner scanner = new Scanner(System.in);
+            final Scanner scanner = new Scanner(System.in);
             Hotel.getInstance().showGuest().forEach(System.out::println);
             System.out.print("Enter guest index: ");
             final int index = Integer.parseInt(scanner.nextLine());

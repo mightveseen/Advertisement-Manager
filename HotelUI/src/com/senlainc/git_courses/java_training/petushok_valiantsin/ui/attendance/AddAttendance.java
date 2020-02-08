@@ -12,7 +12,7 @@ public class AddAttendance implements IAction {
 
     @Override
     public void execute() {
-        Scanner scanner = new Scanner(System.in);
+        final Scanner scanner = new Scanner(System.in);
         System.out.print("Enter attendance name: ");
         final String name = scanner.nextLine();
         System.out.print("Enter attendance section: ");

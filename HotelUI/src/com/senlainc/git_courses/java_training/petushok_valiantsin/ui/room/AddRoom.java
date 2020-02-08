@@ -14,7 +14,7 @@ public class AddRoom implements IAction {
     @Override
     public void execute() {
         try {
-            Scanner scanner = new Scanner(System.in);
+            final Scanner scanner = new Scanner(System.in);
             System.out.print("Enter number: ");
             final int number = Integer.parseInt(scanner.nextLine());
             System.out.print("Enter classification: ");

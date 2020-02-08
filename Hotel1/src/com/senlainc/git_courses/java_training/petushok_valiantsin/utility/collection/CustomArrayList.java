@@ -1,43 +1,54 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.utility;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.collection;
 
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class MyList<T> {
+public class CustomArrayList<T> implements ICustomList<T> {
     private final int INIT_SIZE = 10;
     private int index = 0;
     private T[] objArray = (T[]) new Object[INIT_SIZE];
 
-    public MyList(MyList<T> clazz) {
-        if (clazz != null) {
-            System.arraycopy(clazz.get(), 0, objArray, 0, clazz.size());
-            this.index = clazz.size();
-        }
+    public CustomArrayList(ICustomList<T> list) {
+        addAll(list);
     }
 
+    @Override
     public void add(T element) {
         checkSize("add");
         objArray[this.index++] = element;
     }
 
+    @Override
     public void add(int index, T element) {
         objArray[index] = element;
     }
 
+    @Override
+    public void addAll(ICustomList<T> list) {
+        if (list.size() > 0) {
+            System.arraycopy(list.getAll(), 0, objArray, 0, list.size());
+            this.index = list.size();
+        }
+    }
+
+    @Override
     public void push(int index, T element) {
         checkSize("add");
         biasForward(index);
         objArray[index] = element;
     }
 
+    @Override
     public T get(int index) {
-        return (T) objArray[index];
+        return objArray[index];
     }
 
-    public T[] get() {
+    @Override
+    public T[] getAll() {
         return objArray;
     }
 
+    @Override
     public void remove(int index) {
         if (index + 1 > this.index) {
             throw new ArrayIndexOutOfBoundsException("Element with this index didn't exists");
@@ -46,14 +57,16 @@ public class MyList<T> {
         checkSize("remove");
     }
 
+    @Override
     public int size() {
         return (this.index);
     }
 
-    public void sort(Comparator<T> parameter) {
+    @Override
+    public void sort(Comparator<T> comparator) {
         T[] bufArray = (T[]) new Object[this.index];
         System.arraycopy(objArray.clone(), 0, bufArray, 0, this.index);
-        Arrays.sort(bufArray, parameter);
+        Arrays.sort(bufArray, comparator);
         System.arraycopy(bufArray, 0, objArray, 0, this.index);
     }
 

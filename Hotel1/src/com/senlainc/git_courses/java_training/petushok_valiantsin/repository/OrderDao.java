@@ -25,19 +25,19 @@ public class OrderDao implements IOrderDao {
     @Override
     public void create(Order order) {
         orderList.add(order);
-        Serialization.getInstance().customMarshaller(this);
+        saveAll();
     }
 
     @Override
     public void delete(int index) {
         orderList.remove(orderList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
-        Serialization.getInstance().customMarshaller(this);
+        saveAll();
     }
 
     @Override
     public void update(Order order) {
         orderList.set(orderList.indexOf(orderList.stream().filter(i -> i.getId() == order.getId()).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), order);
-        Serialization.getInstance().customMarshaller(this);
+        saveAll();
     }
 
     @Override
@@ -58,5 +58,10 @@ public class OrderDao implements IOrderDao {
             orderList = new ArrayList<>();
             LOGGER.log(Level.WARNING, e.getMessage() + ", create empty list", e);
         }
+    }
+
+    @Override
+    public void saveAll() {
+        Serialization.getInstance().customMarshaller(this);
     }
 }

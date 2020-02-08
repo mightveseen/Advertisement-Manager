@@ -4,14 +4,14 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.
 
 import java.lang.reflect.Field;
 
-public class ConfigModel {
+public class Config {
     private final Field field;
     private final String configName;
     private final String propertyName;
 
-    public ConfigModel(Field field) {
+    public Config(Field field) {
         this.field = field;
-        this.configName = field.getAnnotation(ConfigProperty.class).configName();
+        this.configName = field.getAnnotation(ConfigProperty.class).configName().toLowerCase();
         this.propertyName = setPropertyName();
     }
 

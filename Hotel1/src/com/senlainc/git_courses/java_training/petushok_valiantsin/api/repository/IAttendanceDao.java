@@ -16,4 +16,6 @@ public interface IAttendanceDao {
     Attendance read(int index);
 
     void setAll();
+
+    void saveAll();
 }

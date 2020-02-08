@@ -9,12 +9,12 @@ import java.lang.reflect.InvocationTargetException;
 public class Try {
     @ConfigProperty(configName = "try", propertyName = "TRY.FIRST_VARIABLE")
     private final Short firstVariable = null;
-    @ConfigProperty(configName = "try")
+    @ConfigProperty(configName = "TRY")
     private String secondVariable;
 
     public void configTry () {
         try {
-            ConfigModule.getInstance().letsRock(this);
+            ConfigController.getInstance().letsRock(this);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             System.err.println(e);
         }

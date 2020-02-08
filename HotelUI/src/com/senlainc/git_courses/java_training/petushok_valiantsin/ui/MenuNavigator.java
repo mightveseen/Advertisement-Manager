@@ -1,6 +1,6 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.ConsoleColor;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.console.ConsoleColor;
 
 public class MenuNavigator {
     private Menu currentMenu;

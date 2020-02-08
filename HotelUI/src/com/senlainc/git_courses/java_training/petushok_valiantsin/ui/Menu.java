@@ -29,7 +29,7 @@ public class Menu {
 
     @Override
     public String toString() {
-        StringBuilder menu = new StringBuilder();
+        final StringBuilder menu = new StringBuilder();
         for (MenuItem item : menuItemList) {
             menu.append(item).append("\n");
         }

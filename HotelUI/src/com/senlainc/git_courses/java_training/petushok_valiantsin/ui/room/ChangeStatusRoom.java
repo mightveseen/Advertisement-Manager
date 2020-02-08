@@ -19,7 +19,7 @@ public class ChangeStatusRoom implements IAction {
     @Override
     public void execute() {
         try {
-            Scanner scanner = new Scanner(System.in);
+            final Scanner scanner = new Scanner(System.in);
             Hotel.getInstance().showRoom("all").forEach(System.out::println);
             System.out.print("Enter room index: ");
             final int index = Integer.parseInt(scanner.nextLine());

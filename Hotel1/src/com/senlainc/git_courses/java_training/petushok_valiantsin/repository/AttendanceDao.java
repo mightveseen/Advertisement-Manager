@@ -25,19 +25,19 @@ public class AttendanceDao implements IAttendanceDao {
     @Override
     public void create(Attendance attendance) {
         attendanceList.add(attendance);
-        Serialization.getInstance().customMarshaller(this);
+        saveAll();
     }
 
     @Override
     public void delete(int index) {
         attendanceList.remove(attendanceList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
-        Serialization.getInstance().customMarshaller(this);
+        saveAll();
     }
 
     @Override
     public void update(Attendance attendance) {
         attendanceList.set(attendanceList.indexOf(attendanceList.stream().filter(i -> i.getId() == attendance.getId()).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), attendance);
-        Serialization.getInstance().customMarshaller(this);
+        saveAll();
     }
 
     @Override
@@ -50,6 +50,7 @@ public class AttendanceDao implements IAttendanceDao {
         return attendanceList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
     }
 
+    @Override
     public void setAll() {
         try {
             attendanceList = Serialization.getInstance().customUnmarshaller(this).readAll();
@@ -57,5 +58,10 @@ public class AttendanceDao implements IAttendanceDao {
             attendanceList = new ArrayList<>();
             LOGGER.log(Level.WARNING, e.getMessage() + ", create empty list", e);
         }
+    }
+
+    @Override
+    public void saveAll() {
+        Serialization.getInstance().customMarshaller(this);
     }
 }

@@ -2,18 +2,18 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.configuration
 
 import java.lang.reflect.InvocationTargetException;
 
-public class ConfigModule {
-    public static ConfigModule instance;
+public class ConfigController {
+    private static ConfigController instance;
 
-    public static ConfigModule getInstance() {
+    public static ConfigController getInstance() {
         if (instance == null) {
-            instance = new ConfigModule();
+            instance = new ConfigController();
         }
         return instance;
     }
 
     public<T> void letsRock(T object) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
         final Class<?> clazz = Class.forName(object.getClass().getName());
-        new ConfigInjection(clazz).AddDeclaredFiled(object);
+        new ConfigService(clazz).addFieldValue(object);
     }
 }

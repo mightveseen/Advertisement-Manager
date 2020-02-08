@@ -16,4 +16,6 @@ public interface IRoomDao {
     Room read(int index);
 
     void setAll();
+
+    void saveAll();
 }

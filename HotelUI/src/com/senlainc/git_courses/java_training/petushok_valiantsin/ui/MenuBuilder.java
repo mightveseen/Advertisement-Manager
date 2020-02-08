@@ -131,7 +131,7 @@ public class MenuBuilder {
     }
 
     private void menuNumeration(Menu menu) {
-        AtomicInteger index = new AtomicInteger(1);
+        final AtomicInteger index = new AtomicInteger(1);
         menu.getMenuItemList().forEach(i -> i.setId(index.getAndIncrement()));
     }
 }

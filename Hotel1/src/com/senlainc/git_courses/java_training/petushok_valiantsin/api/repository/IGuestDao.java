@@ -16,4 +16,6 @@ public interface IGuestDao {
     Guest read(int index);
 
     void setAll();
+
+    void saveAll();
 }

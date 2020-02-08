@@ -16,7 +16,7 @@ public class AddGuest implements IAction {
     @Override
     public void execute() throws DateTimeParseException {
         try {
-            Scanner scanner = new Scanner(System.in);
+            final Scanner scanner = new Scanner(System.in);
             System.out.print("Enter first name: ");
             final String firstName = scanner.nextLine();
             System.out.print("Enter last name: ");

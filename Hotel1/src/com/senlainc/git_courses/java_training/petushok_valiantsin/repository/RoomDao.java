@@ -25,19 +25,19 @@ public class RoomDao implements IRoomDao {
     @Override
     public void create(Room room) {
         roomList.add(room);
-        Serialization.getInstance().customMarshaller(this);
+        saveAll();
     }
 
     @Override
     public void delete(int index) {
         roomList.remove(roomList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
-        Serialization.getInstance().customMarshaller(this);
+        saveAll();
     }
 
     @Override
     public void update(Room room) {
         roomList.set(roomList.indexOf(roomList.stream().filter(i -> i.getId() == room.getId()).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), room);
-        Serialization.getInstance().customMarshaller(this);
+        saveAll();
     }
 
     @Override
@@ -58,5 +58,10 @@ public class RoomDao implements IRoomDao {
             roomList = new ArrayList<>();
             LOGGER.log(Level.WARNING, e.getMessage() + ", create empty list", e);
         }
+    }
+
+    @Override
+    public void saveAll() {
+        Serialization.getInstance().customMarshaller(this);
     }
 }

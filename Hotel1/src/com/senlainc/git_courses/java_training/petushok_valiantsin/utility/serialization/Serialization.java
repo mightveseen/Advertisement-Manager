@@ -14,7 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class Serialization {
-    public static Serialization instance;
+    private static Serialization instance;
 
     public static Serialization getInstance() {
         if (instance == null) {

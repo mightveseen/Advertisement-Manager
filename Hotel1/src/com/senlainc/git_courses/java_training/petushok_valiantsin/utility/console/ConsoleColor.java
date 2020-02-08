@@ -1,4 +1,4 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.utility;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.console;
 
 public enum ConsoleColor {
     GREEN("\u001B[92m"),

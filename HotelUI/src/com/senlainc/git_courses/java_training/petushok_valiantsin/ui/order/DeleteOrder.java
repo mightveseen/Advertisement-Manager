@@ -13,7 +13,7 @@ public class DeleteOrder implements IAction {
     @Override
     public void execute() {
         try {
-            Scanner scanner = new Scanner(System.in);
+            final Scanner scanner = new Scanner(System.in);
             Hotel.getInstance().showOrder().forEach(System.out::println);
             System.out.print("Enter order index: ");
             Hotel.getInstance().deleteOrder(scanner.nextInt());
