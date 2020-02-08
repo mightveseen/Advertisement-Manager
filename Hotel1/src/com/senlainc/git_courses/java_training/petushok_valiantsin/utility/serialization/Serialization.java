@@ -26,13 +26,13 @@ public class Serialization {
     private String getPath(Object clazz) {
         switch (clazz.getClass().getSimpleName()) {
             case "AttendanceDao":
-                return LoadConfig.getInstance().getAttendanceDaoPathProperty();
+                return LoadConfig.getInstance().getAttendanceDaoPath();
             case "GuestDao":
-                return LoadConfig.getInstance().getGuestDaoPathProperty();
+                return LoadConfig.getInstance().getGuestDaoPath();
             case "OrderDao":
-                return LoadConfig.getInstance().getOrderDaoPathProperty();
+                return LoadConfig.getInstance().getOrderDaoPath();
             case "RoomDao":
-                return LoadConfig.getInstance().getRoomDaoPathProperty();
+                return LoadConfig.getInstance().getRoomDaoPath();
             default:
                 throw new PathError("Inappropriate class");
         }

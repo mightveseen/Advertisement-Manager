@@ -4,7 +4,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.GuestConfig;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -26,7 +25,6 @@ public class GuestService implements IGuestService {
     @Override
     public void add(String firstName, String lastName, LocalDate birthday, String infoContact) {
         int guestLimit = GuestConfig.getInstance().getGuestLimit();
-        System.out.println(guestLimit);
         if (guestLimit < guestDao.readAll().size()) {
             throw new RuntimeException("The number of guests exceeds the specified limit: " + guestLimit + " guests");
         }

@@ -1,15 +1,31 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration;
 
-public class LoadConfig extends Configuration {
-    private static final String ATTENDANCE_DAO_PATH_PROPERTY = "ATTENDANCE_DAO_PATH";
-    private static final String GUEST_DAO_PATH_PROPERTY = "GUEST_DAO_PATH";
-    private static final String ROOM_DAO_PATH_PROPERTY = "ROOM_DAO_PATH";
-    private static final String ORDER_DAO_PATH_PROPERTY = "ORDER_DAO_PATH";
-    private static final String PATH = "resources/properties/load.properties";
+import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.ConfigController;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.annotation.ConfigClass;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.annotation.ConfigProperty;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+@ConfigClass
+public class LoadConfig {
+    private static final Logger LOGGER = Logger.getLogger(LoadConfig.class.getName());
+    @ConfigProperty(configName = "Load")
+    private static String ATTENDANCE_DAO_PATH;
+    @ConfigProperty(configName = "Load")
+    private static String GUEST_DAO_PATH;
+    @ConfigProperty(configName = "Load")
+    private static String ROOM_DAO_PATH;
+    @ConfigProperty(configName = "Load")
+    private static String ORDER_DAO_PATH;
     private static LoadConfig instance;
 
     private LoadConfig() {
-        super(PATH);
+        try {
+            ConfigController.getInstance().letsRock(this);
+        } catch (RuntimeException e) {
+            LOGGER.log(Level.WARNING, "Could load program resources.properties from file: " + e.toString(), e);
+        }
     }
 
     public static LoadConfig getInstance() {
@@ -19,19 +35,19 @@ public class LoadConfig extends Configuration {
         return instance;
     }
 
-    public String getAttendanceDaoPathProperty() {
-        return getValue(ATTENDANCE_DAO_PATH_PROPERTY);
+    public String getAttendanceDaoPath() {
+        return ATTENDANCE_DAO_PATH;
     }
 
-    public String getGuestDaoPathProperty() {
-        return getValue(GUEST_DAO_PATH_PROPERTY);
+    public String getGuestDaoPath() {
+        return GUEST_DAO_PATH;
     }
 
-    public String getRoomDaoPathProperty() {
-        return getValue(ROOM_DAO_PATH_PROPERTY);
+    public String getRoomDaoPath() {
+        return ROOM_DAO_PATH;
     }
 
-    public String getOrderDaoPathProperty() {
-        return getValue(ORDER_DAO_PATH_PROPERTY);
+    public String getOrderDaoPath() {
+        return ORDER_DAO_PATH;
     }
 }

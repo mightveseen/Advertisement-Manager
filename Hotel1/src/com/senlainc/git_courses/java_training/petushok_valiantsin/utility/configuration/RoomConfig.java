@@ -1,13 +1,26 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration;
 
-public class RoomConfig extends Configuration {
-    private static final String PATH = "resources/properties/room.properties";
-    private static final String CHANGE_STATUS_KEY = "CHANGE_STATUS_PROPERTY";
+import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.ConfigController;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.annotation.ConfigClass;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.annotation.ConfigProperty;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+@ConfigClass
+public class RoomConfig {
+    private static final Logger LOGGER = Logger.getLogger(RoomConfig.class.getName());
     private static final boolean CHANGE_STATUS_BASIC_VALUE = true;
+    @ConfigProperty(configName = "Room")
+    private static boolean CHANGE_STATUS_VALUE;
     private static RoomConfig instance;
 
     private RoomConfig() {
-        super(PATH);
+        try {
+            ConfigController.getInstance().letsRock(this);
+        } catch (RuntimeException e) {
+            LOGGER.log(Level.WARNING, "Could load program resources.properties from file: " + e.toString(), e);
+        }
     }
 
     public static RoomConfig getInstance() {
@@ -18,8 +31,8 @@ public class RoomConfig extends Configuration {
     }
 
     public boolean getChangeStatus() {
-        if (checkProperty(CHANGE_STATUS_KEY) && getValue(CHANGE_STATUS_KEY).equals("false")) {
-            return false;
+        if (String.valueOf(CHANGE_STATUS_VALUE).equals("true") || String.valueOf(CHANGE_STATUS_VALUE).equals("false")) {
+            return CHANGE_STATUS_VALUE;
         }
         return CHANGE_STATUS_BASIC_VALUE;
     }
