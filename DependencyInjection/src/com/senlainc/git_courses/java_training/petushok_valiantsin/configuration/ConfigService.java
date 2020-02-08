@@ -23,7 +23,7 @@ public class ConfigService {
 
     public <T> void addFieldValue(T object) throws IllegalAccessException {
         for (Field field : configClass.getDeclaredFields()) {
-            if(field.getAnnotation(ConfigProperty.class) != null) {
+            if (field.getAnnotation(ConfigProperty.class) != null) {
                 final Config config = new Config(field);
                 final Properties properties = ConfigReader.getInstance().readConfig(configPath + config.getConfigName());
                 final Object value = customConverter(field, properties.getProperty(config.getPropertyName()));

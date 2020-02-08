@@ -10,10 +10,10 @@ import java.util.logging.Logger;
 
 @ConfigClass
 public class GuestConfig {
-    @ConfigProperty(configName = "Guest")
-    private static int GUEST_LIMIT_VALUE;
     private static final int GUEST_LIMIT_BASIC_VALUE = 50;
     private static final Logger LOGGER = Logger.getLogger(GuestConfig.class.getName());
+    @ConfigProperty(configName = "Guest")
+    private static int GUEST_LIMIT_VALUE;
     private static GuestConfig instance;
 
     private GuestConfig() {

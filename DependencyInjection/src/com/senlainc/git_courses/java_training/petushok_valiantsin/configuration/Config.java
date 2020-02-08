@@ -15,6 +15,13 @@ public class Config {
         this.propertyName = setPropertyName();
     }
 
+    private static String splitCamelCase(String name) {
+        if (!name.contains("_")) {
+            return name.replaceAll(String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z])", "(?<=[^A-Z])(?=[A-Z])", "(?<=[A-Za-z])(?=[^A-Za-z])"), "_");
+        }
+        return name;
+    }
+
     public Field getField() {
         return this.field;
     }
@@ -25,13 +32,6 @@ public class Config {
 
     public String getPropertyName() {
         return this.propertyName;
-    }
-
-    private static String splitCamelCase(String name) {
-        if (!name.contains("_")) {
-            return name.replaceAll(String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z])", "(?<=[^A-Z])(?=[A-Z])", "(?<=[A-Za-z])(?=[^A-Za-z])"), "_");
-        }
-        return name;
     }
 
     private String setPropertyName() {

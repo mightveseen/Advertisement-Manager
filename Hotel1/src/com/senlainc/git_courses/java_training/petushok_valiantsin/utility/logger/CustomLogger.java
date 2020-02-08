@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.util.logging.LogManager;
 
 public class CustomLogger {
-    static  {
+    static {
         try (InputStream configReader = new FileInputStream("resources/properties/log.properties")) {
             LogManager.getLogManager().readConfiguration(configReader);
         } catch (IOException e) {
