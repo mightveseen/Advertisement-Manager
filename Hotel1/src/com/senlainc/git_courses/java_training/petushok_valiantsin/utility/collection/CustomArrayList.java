@@ -8,6 +8,10 @@ public class CustomArrayList<T> implements ICustomList<T> {
     private int index = 0;
     private T[] objArray = (T[]) new Object[INIT_SIZE];
 
+    public CustomArrayList() {
+
+    }
+
     public CustomArrayList(ICustomList<T> list) {
         addAll(list);
     }
