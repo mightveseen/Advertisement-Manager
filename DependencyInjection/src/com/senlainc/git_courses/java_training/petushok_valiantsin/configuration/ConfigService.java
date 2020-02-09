@@ -12,7 +12,7 @@ public class ConfigService {
     private final Class<?> configClass;
     private final String configPath;
 
-    public ConfigService(Class<?> clazz) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    public ConfigService(Class<?> clazz) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, ClassNotFoundException {
         this.configClass = clazz;
         final Annotation annotation = configClass.getAnnotation(ConfigClass.class);
         if (annotation == null) {
@@ -23,7 +23,7 @@ public class ConfigService {
 
     public <T> void addFieldValue(T object) throws IllegalAccessException {
         for (Field field : configClass.getDeclaredFields()) {
-            if (field.getAnnotation(ConfigProperty.class) != null) {
+            if (field.isAnnotationPresent(ConfigProperty.class)) {
                 final Config config = new Config(field);
                 final Properties properties = ConfigReader.getInstance().readConfig(configPath + config.getConfigName());
                 final Object value = customConverter(field, properties.getProperty(config.getPropertyName()));

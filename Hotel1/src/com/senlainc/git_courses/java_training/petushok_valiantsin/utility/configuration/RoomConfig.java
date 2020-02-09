@@ -17,7 +17,7 @@ public class RoomConfig {
 
     private RoomConfig() {
         try {
-            ConfigController.getInstance().letsRock(this);
+            ConfigController.getInstance().letsRock(RoomConfig.class);
         } catch (RuntimeException e) {
             LOGGER.log(Level.WARNING, "Could load program resources.properties from file: " + e.toString(), e);
         }

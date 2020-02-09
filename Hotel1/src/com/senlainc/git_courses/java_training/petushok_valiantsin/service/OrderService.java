@@ -10,6 +10,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.OrderDao;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -20,17 +21,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class OrderService implements IOrderService {
+    private static IOrderService instance;
     private final IOrderDao orderDao;
     private final IRoomService roomService;
     private final IGuestService guestService;
     private final IAttendanceService attendanceService;
     private final Comparator<Order> SORT_BY_DATE = Comparator.comparing(Order::getEndDate);
 
-    public OrderService(IOrderDao orderDao, IRoomService roomService, IGuestService guestService, IAttendanceService attendanceService) {
-        this.orderDao = orderDao;
-        this.guestService = guestService;
-        this.roomService = roomService;
-        this.attendanceService = attendanceService;
+    public OrderService() {
+        this.orderDao = new OrderDao();
+        this.guestService = GuestService.getInstance();
+        this.roomService = RoomService.getInstance();
+        this.attendanceService = AttendanceService.getInstance();
+    }
+
+    public static IOrderService getInstance() {
+        if (instance == null) {
+            instance = new OrderService();
+        }
+        return instance;
     }
 
     @Override

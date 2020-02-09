@@ -3,6 +3,7 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IGuestDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.GuestDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.GuestConfig;
 
 import java.time.LocalDate;
@@ -10,11 +11,19 @@ import java.util.Comparator;
 import java.util.List;
 
 public class GuestService implements IGuestService {
+    private static GuestService instance;
     private final IGuestDao guestDao;
     private final Comparator<Guest> SORT_BY_ALPHABET = Comparator.comparing(Guest::getFirstName);
 
-    public GuestService(IGuestDao guestDao) {
-        this.guestDao = guestDao;
+    public GuestService() {
+        this.guestDao = new GuestDao();
+    }
+
+    public static GuestService getInstance() {
+        if (instance == null) {
+            instance = new GuestService();
+        }
+        return instance;
     }
 
     @Override

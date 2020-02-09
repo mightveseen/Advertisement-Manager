@@ -12,11 +12,10 @@ public class ConfigController {
         return instance;
     }
 
-    public <T> void letsRock(T object) throws RuntimeException {
+    public void letsRock(Class<?> object) {
         try {
-            final Class<?> clazz = Class.forName(object.getClass().getName());
-            new ConfigService(clazz).addFieldValue(object);
-        } catch (InvocationTargetException | NoSuchMethodException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException e) {
+            new ConfigService(object).addFieldValue(object);
+        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

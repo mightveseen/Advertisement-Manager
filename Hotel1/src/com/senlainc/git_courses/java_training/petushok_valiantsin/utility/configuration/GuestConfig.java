@@ -18,7 +18,7 @@ public class GuestConfig {
 
     private GuestConfig() {
         try {
-            ConfigController.getInstance().letsRock(this);
+            ConfigController.getInstance().letsRock(GuestConfig.class);
         } catch (RuntimeException e) {
             LOGGER.log(Level.WARNING, "Could load program resources.properties from file: " + e.toString(), e);
         }
