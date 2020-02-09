@@ -5,7 +5,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IG
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.GuestDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.GuestConfig;
 
 import java.time.LocalDate;
