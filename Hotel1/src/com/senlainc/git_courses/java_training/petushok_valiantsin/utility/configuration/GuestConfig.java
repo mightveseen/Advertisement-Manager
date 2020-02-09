@@ -4,19 +4,23 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.confi
 import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.ConfigController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.annotation.ConfigClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.annotation.ConfigProperty;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @ConfigClass
+@DependencyClass
 public class GuestConfig {
     private static final int GUEST_LIMIT_BASIC_VALUE = 50;
     private static final Logger LOGGER = Logger.getLogger(GuestConfig.class.getName());
     @ConfigProperty(configName = "Guest")
     private static int GUEST_LIMIT_VALUE;
+    @DependencyComponent
     private static GuestConfig instance;
 
-    private GuestConfig() {
+    public GuestConfig() {
         try {
             ConfigController.getInstance().letsRock(GuestConfig.class);
         } catch (RuntimeException e) {
@@ -25,9 +29,6 @@ public class GuestConfig {
     }
 
     public static GuestConfig getInstance() {
-        if (instance == null) {
-            instance = new GuestConfig();
-        }
         return instance;
     }
 

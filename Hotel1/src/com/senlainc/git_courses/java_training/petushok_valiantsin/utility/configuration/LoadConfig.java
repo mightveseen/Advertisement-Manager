@@ -24,7 +24,7 @@ public class LoadConfig {
     @DependencyComponent
     private static LoadConfig instance;
 
-    private LoadConfig() {
+    public LoadConfig() {
         try {
             ConfigController.getInstance().letsRock(LoadConfig.class);
         } catch (RuntimeException e) {
@@ -33,9 +33,6 @@ public class LoadConfig {
     }
 
     public static LoadConfig getInstance() {
-        if (instance == null) {
-            instance = new LoadConfig();
-        }
         return instance;
     }
 

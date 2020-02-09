@@ -1,5 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization;
 
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.LoadConfig;
 import sun.dc.path.PathError;
 
@@ -13,13 +15,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+@DependencyClass
 public class Serialization {
+    @DependencyComponent
     private static Serialization instance;
 
     public static Serialization getInstance() {
-        if (instance == null) {
-            instance = new Serialization();
-        }
         return instance;
     }
 

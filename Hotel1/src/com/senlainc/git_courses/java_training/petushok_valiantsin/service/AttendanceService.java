@@ -13,14 +13,14 @@ import java.util.List;
 @DependencyClass
 public class AttendanceService implements IAttendanceService {
     @DependencyComponent
-    private static AttendanceService instance;
+    private static IAttendanceService instance;
     @DependencyComponent
     private static IAttendanceDao attendanceDao;
 
     private final Comparator<Attendance> SORT_BY_SECTION = Comparator.comparing(Attendance::getSection);
     private final Comparator<Attendance> SORT_BY_PRICE = Comparator.comparing(Attendance::getPrice);
 
-    public static AttendanceService getInstance() {
+    public static IAttendanceService getInstance() {
         return instance;
     }
 

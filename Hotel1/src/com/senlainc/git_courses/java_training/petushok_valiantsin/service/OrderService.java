@@ -5,6 +5,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IA
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
@@ -20,25 +22,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@DependencyClass
 public class OrderService implements IOrderService {
+    @DependencyComponent
     private static IOrderService instance;
-    private final IOrderDao orderDao;
+    @DependencyComponent
+    private static IOrderDao orderDao;
     private final IRoomService roomService;
     private final IGuestService guestService;
     private final IAttendanceService attendanceService;
     private final Comparator<Order> SORT_BY_DATE = Comparator.comparing(Order::getEndDate);
 
     public OrderService() {
-        this.orderDao = new OrderDao();
         this.guestService = GuestService.getInstance();
         this.roomService = RoomService.getInstance();
         this.attendanceService = AttendanceService.getInstance();
     }
 
     public static IOrderService getInstance() {
-        if (instance == null) {
-            instance = new OrderService();
-        }
         return instance;
     }
 

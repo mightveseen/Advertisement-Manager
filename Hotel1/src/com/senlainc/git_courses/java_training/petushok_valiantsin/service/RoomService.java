@@ -2,30 +2,27 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IRoomDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.RoomDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.RoomConfig;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@DependencyClass
 public class RoomService implements IRoomService {
-    private static RoomService instance;
-    private final IRoomDao roomDao;
+    @DependencyComponent
+    private static IRoomService instance;
+    @DependencyComponent
+    private static IRoomDao roomDao;
     private final Comparator<Room> SORT_BY_PRICE = Comparator.comparing(Room::getPrice);
     private final Comparator<Room> SORT_BY_CLASSIFICATION = Comparator.comparing(Room::getClassification);
     private final Comparator<Room> SORT_BY_ROOM_NUMBER = Comparator.comparing(Room::getRoomNumber);
 
-    public RoomService() {
-        this.roomDao = new RoomDao();
-    }
-
-    public static RoomService getInstance() {
-        if (instance == null) {
-            instance = new RoomService();
-        }
+    public static IRoomService getInstance() {
         return instance;
     }
 

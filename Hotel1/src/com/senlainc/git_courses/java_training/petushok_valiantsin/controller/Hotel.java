@@ -4,6 +4,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IA
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
@@ -16,24 +18,23 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@DependencyClass
 public class Hotel {
+    @DependencyComponent
     private static Hotel instance;
     private final IGuestService guestService;
     private final IRoomService roomService;
     private final IAttendanceService attendanceService;
     private final IOrderService orderService;
 
-    private Hotel() {
+    public Hotel() {
+        this.attendanceService = AttendanceService.getInstance();
         this.guestService = GuestService.getInstance();
         this.roomService = RoomService.getInstance();
-        this.attendanceService = AttendanceService.getInstance();
         this.orderService = OrderService.getInstance();
     }
 
     public static Hotel getInstance() {
-        if (instance == null) {
-            instance = new Hotel();
-        }
         return instance;
     }
 
