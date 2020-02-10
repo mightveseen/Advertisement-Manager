@@ -1,6 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui.guest;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.IAction;
 
 import java.util.logging.Level;
@@ -11,7 +12,8 @@ public class ShowNumberGuest implements IAction {
 
     @Override
     public void execute() {
-        System.out.println(Hotel.getInstance().numGuest());
+        final Hotel hotel = DependencyController.getInstance().getClazz(Hotel.class);
+        System.out.println(hotel.numGuest());
         LOGGER.log(Level.INFO, "Show number of guest");
     }
 }

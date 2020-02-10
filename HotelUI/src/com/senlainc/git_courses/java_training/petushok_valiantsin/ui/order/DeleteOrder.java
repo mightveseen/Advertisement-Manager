@@ -1,6 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui.order;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.IAction;
 
 import java.util.Scanner;
@@ -13,10 +14,11 @@ public class DeleteOrder implements IAction {
     @Override
     public void execute() {
         try {
+            final Hotel hotel = DependencyController.getInstance().getClazz(Hotel.class);
             final Scanner scanner = new Scanner(System.in);
-            Hotel.getInstance().showOrder().forEach(System.out::println);
+            hotel.showOrder().forEach(System.out::println);
             System.out.print("Enter order index: ");
-            Hotel.getInstance().deleteOrder(scanner.nextInt());
+            hotel.deleteOrder(scanner.nextInt());
             LOGGER.log(Level.INFO, "Delete order from list");
         } catch (NumberFormatException e) {
             throw new RuntimeException("Wrong data: " + e.getMessage(), e);

@@ -9,10 +9,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.service.AttendanceService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.service.GuestService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.service.OrderService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.service.RoomService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,22 +17,13 @@ import java.util.List;
 @DependencyClass
 public class Hotel {
     @DependencyComponent
-    private static Hotel instance;
-    private final IGuestService guestService;
-    private final IRoomService roomService;
-    private final IAttendanceService attendanceService;
-    private final IOrderService orderService;
-
-    private Hotel() {
-        this.attendanceService = AttendanceService.getInstance();
-        this.guestService = GuestService.getInstance();
-        this.roomService = RoomService.getInstance();
-        this.orderService = OrderService.getInstance();
-    }
-
-    public static Hotel getInstance() {
-        return instance;
-    }
+    private IGuestService guestService;
+    @DependencyComponent
+    private IRoomService roomService;
+    @DependencyComponent
+    private IAttendanceService attendanceService;
+    @DependencyComponent
+    private IOrderService orderService;
 
     /**
      * Attendance

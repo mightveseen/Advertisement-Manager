@@ -12,13 +12,7 @@ import java.util.List;
 @DependencyClass
 public class AttendanceService implements IAttendanceService {
     @DependencyComponent
-    private static IAttendanceService instance;
-    @DependencyComponent
-    private static IAttendanceDao attendanceDao;
-
-    public static IAttendanceService getInstance() {
-        return instance;
-    }
+    private IAttendanceDao attendanceDao;
 
     @Override
     public void load() {

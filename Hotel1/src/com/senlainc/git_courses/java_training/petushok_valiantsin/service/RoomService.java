@@ -15,13 +15,7 @@ import java.util.stream.Collectors;
 @DependencyClass
 public class RoomService implements IRoomService {
     @DependencyComponent
-    private static IRoomService instance;
-    @DependencyComponent
-    private static IRoomDao roomDao;
-
-    public static IRoomService getInstance() {
-        return instance;
-    }
+    private IRoomDao roomDao;
 
     @Override
     public void load() {

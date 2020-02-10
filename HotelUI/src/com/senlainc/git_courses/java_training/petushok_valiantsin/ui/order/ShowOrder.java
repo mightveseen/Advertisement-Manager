@@ -1,6 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui.order;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.IAction;
 
 import java.util.logging.Level;
@@ -16,7 +17,8 @@ public class ShowOrder implements IAction {
 
     @Override
     public void execute() {
-        Hotel.getInstance().sortOrder(parameter).forEach(System.out::println);
+        final Hotel hotel = DependencyController.getInstance().getClazz(Hotel.class);
+        hotel.sortOrder(parameter).forEach(System.out::println);
         LOGGER.log(Level.INFO, "Show order list sorted by: " + parameter);
     }
 }

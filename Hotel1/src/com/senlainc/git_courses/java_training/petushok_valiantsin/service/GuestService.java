@@ -14,13 +14,7 @@ import java.util.List;
 @DependencyClass
 public class GuestService implements IGuestService {
     @DependencyComponent
-    private static IGuestService instance;
-    @DependencyComponent
-    private static IGuestDao guestDao;
-
-    public static IGuestService getInstance() {
-        return instance;
-    }
+    private IGuestDao guestDao;
 
     @Override
     public void load() {

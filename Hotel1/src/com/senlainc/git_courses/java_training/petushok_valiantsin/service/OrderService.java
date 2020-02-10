@@ -24,22 +24,13 @@ import java.util.stream.Collectors;
 @DependencyClass
 public class OrderService implements IOrderService {
     @DependencyComponent
-    private static IOrderService instance;
+    private IOrderDao orderDao;
     @DependencyComponent
-    private static IOrderDao orderDao;
-    private final IRoomService roomService;
-    private final IGuestService guestService;
-    private final IAttendanceService attendanceService;
-
-    public OrderService() {
-        this.guestService = GuestService.getInstance();
-        this.roomService = RoomService.getInstance();
-        this.attendanceService = AttendanceService.getInstance();
-    }
-
-    public static IOrderService getInstance() {
-        return instance;
-    }
+    private IRoomService roomService;
+    @DependencyComponent
+    private IGuestService guestService;
+    @DependencyComponent
+    private IAttendanceService attendanceService;
 
     @Override
     public void load() {

@@ -25,9 +25,10 @@ public class LoadData {
         /** Controller initialization */
         DependencyController.getInstance().lestRock(Hotel.class);
         /** Load data from XML files */
-        Hotel.getInstance().loadAttendance();
-        Hotel.getInstance().loadRoom();
-        Hotel.getInstance().loadGuest();
-        Hotel.getInstance().loadOrder();
+        final Hotel hotel = DependencyController.getInstance().getClazz(Hotel.class);
+        hotel.loadAttendance();
+        hotel.loadRoom();
+        hotel.loadGuest();
+        hotel.loadOrder();
     }
 }

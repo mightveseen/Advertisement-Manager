@@ -1,6 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui.room;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.IAction;
 
@@ -19,11 +20,12 @@ public class ChangeStatusRoom implements IAction {
     @Override
     public void execute() {
         try {
+            final Hotel hotel = DependencyController.getInstance().getClazz(Hotel.class);
             final Scanner scanner = new Scanner(System.in);
-            Hotel.getInstance().showRoom("all").forEach(System.out::println);
+            hotel.showRoom("all").forEach(System.out::println);
             System.out.print("Enter room index: ");
             final int index = Integer.parseInt(scanner.nextLine());
-            Hotel.getInstance().changeStatusRoom(index, status);
+            hotel.changeStatusRoom(index, status);
             LOGGER.log(Level.INFO, "Change room status");
         } catch (NumberFormatException e) {
             throw new RuntimeException("Wrong data: " + e.getMessage(), e);

@@ -1,6 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui.order;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.IAction;
 
 import java.util.Scanner;
@@ -13,14 +14,15 @@ public class AddAttendanceOrder implements IAction {
     @Override
     public void execute() {
         try {
+            final Hotel hotel = DependencyController.getInstance().getClazz(Hotel.class);
             final Scanner scanner = new Scanner(System.in);
-            Hotel.getInstance().showOrder().forEach(System.out::println);
+            hotel.showOrder().forEach(System.out::println);
             System.out.print("Enter order index: ");
             final int orderIndex = Integer.parseInt(scanner.nextLine());
-            Hotel.getInstance().showAttendance();
+            hotel.showAttendance();
             System.out.print("Enter attendance index: ");
             final int attendanceIndex = Integer.parseInt(scanner.nextLine());
-            Hotel.getInstance().addOrderAttendance(orderIndex, attendanceIndex);
+            hotel.addOrderAttendance(orderIndex, attendanceIndex);
             LOGGER.log(Level.INFO, "Add attendance to order");
         } catch (NumberFormatException e) {
             throw new RuntimeException("Wrong data: " + e.getMessage(), e);
