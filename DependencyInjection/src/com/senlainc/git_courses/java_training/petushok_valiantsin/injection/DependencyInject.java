@@ -37,7 +37,7 @@ public class DependencyInject {
 
     private Constructor<?> interfaceInjection(Field field) throws NoSuchMethodException {
         for (Class<?> clazz : projectClasses) {
-            Class<?> clazzInterface = Arrays.stream(clazz.getInterfaces()).filter(i -> field.getType().equals(i)).findFirst().orElse(null);
+            final Class<?> clazzInterface = Arrays.stream(clazz.getInterfaces()).filter(i -> field.getType().equals(i)).findFirst().orElse(null);
             if (clazzInterface != null) {
                 return clazz.getDeclaredConstructor();
             }

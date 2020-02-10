@@ -11,7 +11,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.config
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.RoomConfig;
 
 public class LoadData {
-    static {
+    public void load() {
         /** Config initialization */
         DependencyController.getInstance().lestRock(LoadConfig.class);
         DependencyController.getInstance().lestRock(RoomConfig.class);
@@ -24,7 +24,7 @@ public class LoadData {
         DependencyController.getInstance().lestRock(OrderService.class);
         /** Controller initialization */
         DependencyController.getInstance().lestRock(Hotel.class);
-        /** Load date from XML files */
+        /** Load data from XML files */
         Hotel.getInstance().loadAttendance();
         Hotel.getInstance().loadRoom();
         Hotel.getInstance().loadGuest();

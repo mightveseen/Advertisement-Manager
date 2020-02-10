@@ -1,12 +1,9 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.injection;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class DependencyController {
     private static DependencyController instance;
-    private static Map<String, Object> instanceMap = new HashMap<>();
 
     public static DependencyController getInstance() {
         if (instance == null) {
@@ -18,8 +15,7 @@ public class DependencyController {
     public void lestRock(Class<?> object) {
         try {
             DependencyService.getInstance().setVariable(object);
-            Object instanceClass = DependencyService.getInstance().initializeConstructor();
-            instanceMap.put(object.getSimpleName(), instanceClass);
+            DependencyService.getInstance().initializeConstructor();
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
             throw new RuntimeException(e);
         }

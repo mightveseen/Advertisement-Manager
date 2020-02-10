@@ -29,18 +29,17 @@ public class DependencyService {
         constructor.setAccessible(false);
     }
 
-    public Object initializeConstructor() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public void initializeConstructor() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         final List<Field> declaredFields = Arrays.stream(dependencyClass.getDeclaredFields()).filter(i -> !i.getType().isPrimitive() && i.isAnnotationPresent(DependencyComponent.class)).collect(Collectors.toList());
         for (Field field : declaredFields) {
             final Constructor<?> constructor = DependencyInject.getInstance().injection(field);
             if (constructor != null) {
                 field.setAccessible(true);
                 constructor.setAccessible(true);
-                field.set(dependencyClass, constructor.newInstance());
+                field.set(instanceClass, constructor.newInstance());
                 constructor.setAccessible(false);
                 field.setAccessible(false);
             }
         }
-        return instanceClass;
     }
 }

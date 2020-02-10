@@ -7,7 +7,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serial
 public class Controller {
     public static void main(String[] args) {
         new CustomLogger();
-        new LoadData();
+        new LoadData().load();
         new MenuController().run();
     }
 }
