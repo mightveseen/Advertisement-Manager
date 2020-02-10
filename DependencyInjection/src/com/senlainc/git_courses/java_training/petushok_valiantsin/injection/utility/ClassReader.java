@@ -8,7 +8,16 @@ import java.util.Enumeration;
 import java.util.List;
 
 public class ClassReader {
-    public static List<Class<?>> find(String packageName) throws ClassNotFoundException, IOException {
+
+    public static List<Class<?>> getClasses() throws IOException, ClassNotFoundException {
+        return find("");
+    }
+
+    public static List<Class<?>> getClasses(String packageName) throws IOException, ClassNotFoundException {
+        return find(packageName);
+    }
+
+    private static List<Class<?>> find(String packageName) throws ClassNotFoundException, IOException {
         final ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         final String path = packageName.replace('.', '/');
         final Enumeration<URL> resources = classLoader.getResources(path);

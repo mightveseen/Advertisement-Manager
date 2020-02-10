@@ -17,7 +17,8 @@ public class DependencyController {
 
     public void lestRock(Class<?> object) {
         try {
-            Object instanceClass = new DependencyService(object).initializeConstructor();
+            DependencyService.getInstance().setVariable(object);
+            Object instanceClass = DependencyService.getInstance().initializeConstructor();
             instanceMap.put(object.getSimpleName(), instanceClass);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
             throw new RuntimeException(e);

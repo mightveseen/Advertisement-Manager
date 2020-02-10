@@ -20,7 +20,7 @@ public class GuestConfig {
     @DependencyComponent
     private static GuestConfig instance;
 
-    public GuestConfig() {
+    private GuestConfig() {
         try {
             ConfigController.getInstance().letsRock(GuestConfig.class);
         } catch (RuntimeException e) {

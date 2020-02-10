@@ -5,6 +5,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.util
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,7 +15,7 @@ public class DependencyInject {
 
     static {
         try {
-            projectClasses = ClassReader.find("").stream().filter(i -> i.getInterfaces().length > 0).collect(Collectors.toList());
+            projectClasses = ClassReader.getClasses().stream().filter(i -> i.getInterfaces().length > 0).collect(Collectors.toList());
         } catch (ClassNotFoundException | IOException e) {
             throw new RuntimeException(e);
         }
@@ -31,15 +32,14 @@ public class DependencyInject {
         if (field.getType().isInterface()) {
             return interfaceInjection(field);
         }
-        return field.getType().getConstructor();
+        return field.getType().getDeclaredConstructor();
     }
 
     private Constructor<?> interfaceInjection(Field field) throws NoSuchMethodException {
         for (Class<?> clazz : projectClasses) {
-            for (Class<?> interfaces : clazz.getInterfaces()) {
-                if (field.getType().equals(interfaces)) {
-                    return clazz.getConstructor();
-                }
+            Class<?> clazzInterface = Arrays.stream(clazz.getInterfaces()).filter(i -> field.getType().equals(i)).findFirst().orElse(null);
+            if (clazzInterface != null) {
+                return clazz.getDeclaredConstructor();
             }
         }
         return null;

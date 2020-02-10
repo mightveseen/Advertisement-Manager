@@ -19,7 +19,7 @@ public class RoomConfig {
     @DependencyComponent
     private static RoomConfig instance;
 
-    public RoomConfig() {
+    private RoomConfig() {
         try {
             ConfigController.getInstance().letsRock(RoomConfig.class);
         } catch (RuntimeException e) {

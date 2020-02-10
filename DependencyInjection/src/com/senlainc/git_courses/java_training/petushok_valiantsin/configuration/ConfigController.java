@@ -14,7 +14,8 @@ public class ConfigController {
 
     public void letsRock(Class<?> object) {
         try {
-            new ConfigService(object).addFieldValue(object);
+            ConfigService.getInstance().setValue(object);
+            ConfigService.getInstance().addFieldValue();
         } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }

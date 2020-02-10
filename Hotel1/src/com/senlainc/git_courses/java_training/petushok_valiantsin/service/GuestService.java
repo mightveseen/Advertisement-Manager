@@ -6,9 +6,9 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.GuestConfig;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.Sort;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 
 @DependencyClass
@@ -17,7 +17,6 @@ public class GuestService implements IGuestService {
     private static IGuestService instance;
     @DependencyComponent
     private static IGuestDao guestDao;
-    private final Comparator<Guest> SORT_BY_ALPHABET = Comparator.comparing(Guest::getFirstName);
 
     public static IGuestService getInstance() {
         return instance;
@@ -79,7 +78,7 @@ public class GuestService implements IGuestService {
     @Override
     public int[] sortByAlphabet() {
         final List<Guest> myList = guestDao.readAll();
-        myList.sort(SORT_BY_ALPHABET);
+        myList.sort(Sort.GUEST.getComparator("ALPHABET"));
         return getGuestIndex(myList);
     }
 

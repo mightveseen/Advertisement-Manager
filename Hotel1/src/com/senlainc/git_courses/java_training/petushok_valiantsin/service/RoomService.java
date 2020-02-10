@@ -7,8 +7,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.RoomConfig;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.Sort;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,9 +18,6 @@ public class RoomService implements IRoomService {
     private static IRoomService instance;
     @DependencyComponent
     private static IRoomDao roomDao;
-    private final Comparator<Room> SORT_BY_PRICE = Comparator.comparing(Room::getPrice);
-    private final Comparator<Room> SORT_BY_CLASSIFICATION = Comparator.comparing(Room::getClassification);
-    private final Comparator<Room> SORT_BY_ROOM_NUMBER = Comparator.comparing(Room::getRoomNumber);
 
     public static IRoomService getInstance() {
         return instance;
@@ -122,14 +119,14 @@ public class RoomService implements IRoomService {
     }
 
     private void sortByPrice(List<Room> myList) {
-        myList.sort(SORT_BY_PRICE);
+        myList.sort(Sort.ROOM.getComparator("PRICE"));
     }
 
     private void sortByClassification(List<Room> myList) {
-        myList.sort(SORT_BY_CLASSIFICATION);
+        myList.sort(Sort.ROOM.getComparator("CLASSIFICATION"));
     }
 
     private void sortByRoomNumber(List<Room> myList) {
-        myList.sort(SORT_BY_ROOM_NUMBER);
+        myList.sort(Sort.ROOM.getComparator("ROOM_NUMBER"));
     }
 }

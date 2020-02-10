@@ -27,7 +27,7 @@ public class Hotel {
     private final IAttendanceService attendanceService;
     private final IOrderService orderService;
 
-    public Hotel() {
+    private Hotel() {
         this.attendanceService = AttendanceService.getInstance();
         this.guestService = GuestService.getInstance();
         this.roomService = RoomService.getInstance();

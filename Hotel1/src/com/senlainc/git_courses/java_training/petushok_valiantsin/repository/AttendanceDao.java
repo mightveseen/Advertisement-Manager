@@ -1,7 +1,6 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.repository;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IAttendanceDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization;
 
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@DependencyClass
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "attendanceDao")
 public class AttendanceDao implements IAttendanceDao {

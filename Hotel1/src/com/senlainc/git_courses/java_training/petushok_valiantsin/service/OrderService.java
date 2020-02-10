@@ -12,11 +12,11 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.Sort;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +30,6 @@ public class OrderService implements IOrderService {
     private final IRoomService roomService;
     private final IGuestService guestService;
     private final IAttendanceService attendanceService;
-    private final Comparator<Order> SORT_BY_DATE = Comparator.comparing(Order::getEndDate);
 
     public OrderService() {
         this.guestService = GuestService.getInstance();
@@ -138,7 +137,7 @@ public class OrderService implements IOrderService {
     }
 
     private void sortByDate(List<Order> myList) {
-        myList.sort(SORT_BY_DATE);
+        myList.sort(Sort.ORDER.getComparator("DATE"));
     }
 
     private void sortByAlphabet(List<Order> myList) {

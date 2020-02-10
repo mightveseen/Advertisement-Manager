@@ -5,8 +5,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IA
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.Sort;
 
-import java.util.Comparator;
 import java.util.List;
 
 @DependencyClass
@@ -15,9 +15,6 @@ public class AttendanceService implements IAttendanceService {
     private static IAttendanceService instance;
     @DependencyComponent
     private static IAttendanceDao attendanceDao;
-
-    private final Comparator<Attendance> SORT_BY_SECTION = Comparator.comparing(Attendance::getSection);
-    private final Comparator<Attendance> SORT_BY_PRICE = Comparator.comparing(Attendance::getPrice);
 
     public static IAttendanceService getInstance() {
         return instance;
@@ -91,10 +88,10 @@ public class AttendanceService implements IAttendanceService {
     }
 
     private void sortBySection(List<Attendance> myList) {
-        myList.sort(SORT_BY_SECTION);
+        myList.sort(Sort.ATTENDANCE.getComparator("SECTION"));
     }
 
     private void sortByPrice(List<Attendance> myList) {
-        myList.sort(SORT_BY_PRICE);
+        myList.sort(Sort.ATTENDANCE.getComparator("PRICE"));
     }
 }

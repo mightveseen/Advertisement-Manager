@@ -6,13 +6,24 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 public class ConfigService {
-    private final Class<?> configClass;
-    private final String configPath;
+    private static ConfigService instance;
+    private Class<?> configClass;
+    private String configPath;
 
-    public ConfigService(Class<?> clazz) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, ClassNotFoundException {
+    public static ConfigService getInstance() {
+        if (instance == null) {
+            instance = new ConfigService();
+        }
+        return instance;
+    }
+
+    public void setValue(Class<?> clazz) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, ClassNotFoundException {
         this.configClass = clazz;
         final Annotation annotation = configClass.getAnnotation(ConfigClass.class);
         if (annotation == null) {
@@ -21,21 +32,20 @@ public class ConfigService {
         this.configPath = ConfigClass.class.getDeclaredMethod("configPath").invoke(annotation).toString();
     }
 
-    public <T> void addFieldValue(T object) throws IllegalAccessException {
-        for (Field field : configClass.getDeclaredFields()) {
-            if (field.isAnnotationPresent(ConfigProperty.class)) {
-                final Config config = new Config(field);
-                final Properties properties = ConfigReader.getInstance().readConfig(configPath + config.getConfigName());
-                final Object value = customConverter(field, properties.getProperty(config.getPropertyName()));
-                config.getField().setAccessible(true);
-                config.getField().set(object, value);
-                config.getField().setAccessible(false);
-            }
+    public void addFieldValue() throws IllegalAccessException {
+        final List<Field> declaredFields = Arrays.stream(configClass.getDeclaredFields()).filter(i -> i.isAnnotationPresent(ConfigProperty.class)).collect(Collectors.toList());
+        for (Field field : declaredFields) {
+            final Config config = new Config(field);
+            final Properties properties = ConfigReader.getInstance().readConfig(configPath + config.getConfigName());
+            final Object value = customConverter(field, properties.getProperty(config.getPropertyName()));
+            config.getField().setAccessible(true);
+            config.getField().set(configClass, value);
+            config.getField().setAccessible(false);
         }
     }
 
     private Object customConverter(Field field, String variable) {
-        String variableType = field.getType().toString();
+        final String variableType = field.getType().toString();
         if (variableType.matches(Byte.class.toString()) || variableType.matches("byte")) {
             return Byte.parseByte(variable);
         }
