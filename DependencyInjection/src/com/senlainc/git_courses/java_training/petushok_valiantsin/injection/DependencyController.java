@@ -1,24 +1,21 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.injection;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.utility.ClassReader;
-
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DependencyController {
     private static DependencyController instance;
-    private static final List<Class<?>> projectClasses;
+    private static final Logger LOGGER = Logger.getLogger(DependencyController.class.getName());
+//    private static final List<Class<?>> projectClasses;
 
-    static {
-        try {
-            projectClasses = ClassReader.getClasses().stream().filter(i -> i.isAnnotationPresent(DependencyClass.class)).collect(Collectors.toList());
-        } catch (ClassNotFoundException | IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    static {
+//        try {
+//            projectClasses = ClassReader.getClasses().stream().filter(i -> i.isAnnotationPresent(DependencyClass.class)).collect(Collectors.toList());
+//        } catch (ClassNotFoundException | IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     public static DependencyController getInstance() {
         if (instance == null) {
@@ -29,12 +26,10 @@ public class DependencyController {
 
     public void lestRock(Class<?> object) {
         try {
-
-                DependencyService.getInstance().setVariable(object);
-                DependencyService.getInstance().initializeConstructor();
-
+            DependencyService.getInstance().setVariable(object);
+            DependencyService.getInstance().initializeConstructor();
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            throw new RuntimeException(e);
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
     }
 

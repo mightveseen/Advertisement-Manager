@@ -36,8 +36,8 @@ public class DependencyService {
     public void initializeConstructor() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         final List<Field> declaredFields = Arrays.stream(dependencyClass.getDeclaredFields()).filter(i -> !i.getType().isPrimitive() && i.isAnnotationPresent(DependencyComponent.class)).collect(Collectors.toList());
         for (Field field : declaredFields) {
-            field.setAccessible(true);
             final Constructor<?> constructor = DependencyInject.getInstance().injection(field);
+            field.setAccessible(true);
             if(!instanceClassMap.containsKey(constructor.getName())) {
                 constructor.setAccessible(true);
                 if(instanceClass.getClass().getName().equals(field.getType().getName())) {
