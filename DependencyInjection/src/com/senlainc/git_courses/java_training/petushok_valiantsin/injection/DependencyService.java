@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 public class DependencyService {
     private static DependencyService instance;
-    private Class<?> dependencyClass;
     private Object instanceClass;
     private static final Map<String, Object> instanceClassMap = new HashMap<>();
 
@@ -25,30 +24,33 @@ public class DependencyService {
     }
 
     public void setVariable(Class<?> clazz) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-        this.dependencyClass = clazz;
-        final Constructor<?> constructor = dependencyClass.getDeclaredConstructor();
+        final Constructor<?> constructor = clazz.getDeclaredConstructor();
         constructor.setAccessible(true);
         this.instanceClass = constructor.newInstance();
         constructor.setAccessible(false);
         instanceClassMap.put(clazz.getName(), instanceClass);
     }
 
-    public void initializeConstructor() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        final List<Field> declaredFields = Arrays.stream(dependencyClass.getDeclaredFields()).filter(i -> !i.getType().isPrimitive() && i.isAnnotationPresent(DependencyComponent.class)).collect(Collectors.toList());
-        for (Field field : declaredFields) {
+    public void initializeConstructor() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, ClassNotFoundException {
+        final List<Field> annotatedFields = Arrays.stream(instanceClass.getClass().getDeclaredFields()).filter(i -> !i.getType().isPrimitive() && i.isAnnotationPresent(DependencyComponent.class)).collect(Collectors.toList());
+        for (Field field : annotatedFields) {
             final Constructor<?> constructor = DependencyInject.getInstance().injection(field);
             field.setAccessible(true);
-            if(!instanceClassMap.containsKey(constructor.getName())) {
-                constructor.setAccessible(true);
-                if(instanceClass.getClass().getName().equals(field.getType().getName())) {
-                    field.set(instanceClass, instanceClass);
-                } else {
-                    field.set(instanceClass, constructor.newInstance());
-                }
-                constructor.setAccessible(false);
-            } else {
+            if (instanceClassMap.containsKey(constructor.getName())) {
                 field.set(instanceClass, instanceClassMap.get(constructor.getName()));
+                field.setAccessible(false);
+                continue;
             }
+            if (instanceClass.getClass().getName().equals(field.getType().getName())) {
+                field.set(instanceClass, instanceClass);
+                field.setAccessible(false);
+                continue;
+            }
+            constructor.setAccessible(true);
+            final Object clazz = constructor.newInstance();
+            constructor.setAccessible(false);
+            field.set(instanceClass, clazz);
+            instanceClassMap.put(clazz.getClass().getName(), clazz);
             field.setAccessible(false);
         }
     }

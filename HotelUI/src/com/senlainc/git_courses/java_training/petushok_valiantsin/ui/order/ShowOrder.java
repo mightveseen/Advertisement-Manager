@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ShowOrder implements IAction {
-    private static final Logger LOGGER = Logger.getLogger(Hotel.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(ShowOrder.class.getSimpleName());
     private final String parameter;
 
     public ShowOrder(String parameter) {

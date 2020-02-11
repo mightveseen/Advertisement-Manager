@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DeleteOrder implements IAction {
-    private static final Logger LOGGER = Logger.getLogger(Hotel.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(DeleteOrder.class.getSimpleName());
 
     @Override
     public void execute() {

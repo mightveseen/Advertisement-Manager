@@ -7,6 +7,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IO
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @DependencyClass
+@DependencyPrimary
 public class OrderService implements IOrderService {
     @DependencyComponent
     private IOrderDao orderDao;

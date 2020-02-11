@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class AddOrder implements IAction {
-    private static final Logger LOGGER = Logger.getLogger(Hotel.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(AddOrder.class.getSimpleName());
 
     @Override
     public void execute() {

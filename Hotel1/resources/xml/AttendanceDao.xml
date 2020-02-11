@@ -25,17 +25,5 @@
             <section>Entertainment</section>
             <price>20.5</price>
         </attendance>
-        <attendance>
-            <id>5</id>
-            <name>1</name>
-            <section>1</section>
-            <price>321323.0</price>
-        </attendance>
-        <attendance>
-            <id>6</id>
-            <name>32323232323</name>
-            <section>2323232323</section>
-            <price>2.323232323E9</price>
-        </attendance>
     </attendanceList>
 </attendanceDao>

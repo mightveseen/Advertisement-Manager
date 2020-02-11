@@ -4,6 +4,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.GuestConfig;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.Sort;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @DependencyClass
+@DependencyPrimary
 public class GuestService implements IGuestService {
     @DependencyComponent
     private IGuestDao guestDao;

@@ -26,15 +26,15 @@ public class ConfigService {
     public void setValue(Class<?> clazz) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         this.configClass = clazz;
         final Annotation annotation = configClass.getAnnotation(ConfigClass.class);
-        if (annotation == null) {
+        if (clazz.isAnnotation()) {
             throw new IllegalArgumentException("Class didn't have annotation");
         }
         this.configPath = ConfigClass.class.getDeclaredMethod("configPath").invoke(annotation).toString();
     }
 
-    public void addFieldValue() throws IllegalAccessException {
-        final List<Field> declaredFields = Arrays.stream(configClass.getDeclaredFields()).filter(i -> i.isAnnotationPresent(ConfigProperty.class)).collect(Collectors.toList());
-        for (Field field : declaredFields) {
+    public void addFieldValue() throws IllegalAccessException, ClassNotFoundException {
+        final List<Field> annotatedFields = Arrays.stream(configClass.getDeclaredFields()).filter(i -> i.isAnnotationPresent(ConfigProperty.class)).collect(Collectors.toList());
+        for (Field field : annotatedFields) {
             final Config config = new Config(field);
             final Properties properties = ConfigReader.getInstance().readConfig(configPath + config.getConfigName());
             final Object value = customConverter(field, properties.getProperty(config.getPropertyName()));
@@ -44,8 +44,10 @@ public class ConfigService {
         }
     }
 
-    private Object customConverter(Field field, String variable) {
+    private Object customConverter(Field field, String variable) throws ClassNotFoundException {
         final String variableType = field.getType().toString();
+//        Class<?> clazz = Class.forName(field.getType().getName());
+//        System.out.println(field.getClass().cast(clazz));
         if (variableType.matches(Byte.class.toString()) || variableType.matches("byte")) {
             return Byte.parseByte(variable);
         }

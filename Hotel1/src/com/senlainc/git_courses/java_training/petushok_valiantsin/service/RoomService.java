@@ -4,6 +4,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.RoomConfig;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @DependencyClass
+@DependencyPrimary
 public class RoomService implements IRoomService {
     @DependencyComponent
     private IRoomDao roomDao;

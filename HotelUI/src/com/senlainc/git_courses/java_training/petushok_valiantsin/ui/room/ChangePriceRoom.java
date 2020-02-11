@@ -3,13 +3,14 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.ui.room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.IAction;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.attendance.ChangePriceAttendance;
 
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ChangePriceRoom implements IAction {
-    private static final Logger LOGGER = Logger.getLogger(Hotel.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(ChangePriceRoom.class.getSimpleName());
 
     @Override
     public void execute() {

@@ -2,12 +2,14 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.ui.attendance
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.DependencyController;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.IAction;
 
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@DependencyClass
 public class AddAttendance implements IAction {
     private static final Logger LOGGER = Logger.getLogger(AddAttendance.class.getSimpleName());
 
