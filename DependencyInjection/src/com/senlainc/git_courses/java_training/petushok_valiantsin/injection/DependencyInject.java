@@ -37,10 +37,6 @@ public class DependencyInject {
         if (field.getType().isInterface()) {
             return interfaceInjection(field);
         }
-        return classInjection(field);
-    }
-
-    private Constructor<?> classInjection(Field field) throws NoSuchMethodException {
         return field.getType().getDeclaredConstructor();
     }
 
@@ -48,12 +44,12 @@ public class DependencyInject {
         if (interfaceConstructorMap.containsKey(field.getType().getName())) {
             return interfaceConstructorMap.get(field.getType().getName());
         }
-        final Class<?> clazz = (Class<?>) multiImplementation(field);
+        final Class<?> clazz = multiImplementation(field);
         interfaceConstructorMap.put(field.getType().getName(), clazz.getDeclaredConstructor());
         return clazz.getDeclaredConstructor();
     }
 
-    private Object multiImplementation(Field field) throws ClassNotFoundException {
+    private Class<?> multiImplementation(Field field) throws ClassNotFoundException {
         final List<Class<?>> interfaceClass = new ArrayList<>();
         for (Class<?> clazz : projectClasses) {
             if (Arrays.stream(clazz.getInterfaces()).anyMatch(i -> i.equals(field.getType()))) {
