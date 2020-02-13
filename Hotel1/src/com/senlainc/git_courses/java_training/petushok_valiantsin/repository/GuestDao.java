@@ -1,7 +1,11 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.repository;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IGuestDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.FileNotExistException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -14,10 +18,14 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@DependencyClass
+@DependencyPrimary
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "guestDao")
 public class GuestDao implements IGuestDao {
     private static final Logger LOGGER = Logger.getLogger(GuestDao.class.getName());
+    @DependencyComponent
+    private static Serialization serialization;
     @XmlElementWrapper(name = "guestList")
     @XmlElement(name = "guest")
     private List<Guest> guestList;
@@ -54,8 +62,8 @@ public class GuestDao implements IGuestDao {
     @Override
     public void setAll() {
         try {
-            guestList = Serialization.getInstance().customUnmarshaller(this).readAll();
-        } catch (RuntimeException e) {
+            guestList = serialization.customUnmarshaller(this).readAll();
+        } catch (FileNotExistException e) {
             guestList = new ArrayList<>();
             LOGGER.log(Level.WARNING, e.getMessage() + ", create empty list", e);
         }
@@ -63,6 +71,10 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public void saveAll() {
-        Serialization.getInstance().customMarshaller(this);
+        try {
+            serialization.customMarshaller(this);
+        } catch (FileNotExistException e) {
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
+        }
     }
 }

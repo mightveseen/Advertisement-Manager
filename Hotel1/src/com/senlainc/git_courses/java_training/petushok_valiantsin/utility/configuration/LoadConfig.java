@@ -3,14 +3,10 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.confi
 import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.ConfigController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.annotation.ConfigClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.annotation.ConfigProperty;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @ConfigClass
-@DependencyClass
 public class LoadConfig {
     private static final Logger LOGGER = Logger.getLogger(LoadConfig.class.getName());
     @ConfigProperty(configName = "Load")
@@ -21,19 +17,9 @@ public class LoadConfig {
     private static String ROOM_DAO_PATH;
     @ConfigProperty(configName = "Load")
     private static String ORDER_DAO_PATH;
-    @DependencyComponent
-    private static LoadConfig instance;
 
     private LoadConfig() {
-        try {
-            ConfigController.getInstance().letsRock(LoadConfig.class);
-        } catch (RuntimeException e) {
-            LOGGER.log(Level.WARNING, "Could load program resources.properties from file: " + e.toString(), e);
-        }
-    }
-
-    public static LoadConfig getInstance() {
-        return instance;
+        ConfigController.getInstance().letsRock(LoadConfig.class);
     }
 
     public String getAttendanceDaoPath() {

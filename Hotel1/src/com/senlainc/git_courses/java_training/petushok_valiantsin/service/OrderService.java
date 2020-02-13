@@ -13,6 +13,9 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotAvailableException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotFoundException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.Sort;
 
 import java.time.LocalDate;
@@ -42,7 +45,7 @@ public class OrderService implements IOrderService {
     @Override
     public void add(int guestIndex, int roomIndex, LocalDate endDate) {
         if (roomService.getRoom(roomIndex).getStatus().equals(RoomStatus.RENTED) || roomService.getRoom(roomIndex).getStatus().equals(RoomStatus.SERVED)) {
-            throw new RuntimeException("Room now is not available");
+            throw new EntityNotAvailableException("Room now is not available");
         }
         orderDao.create(new Order(guestIndex, roomIndex, endDate, roomService.getRoom(roomIndex).getPrice()));
         roomService.changeStatus(roomIndex, RoomStatus.RENTED);
@@ -54,7 +57,7 @@ public class OrderService implements IOrderService {
             orderDao.read(index).setStatus(OrderStatus.DISABLED);
             roomService.changeStatus(index, RoomStatus.FREE);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Order with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException("Order with index: " + index + " dont exists.", e);
         }
     }
 
@@ -111,7 +114,7 @@ public class OrderService implements IOrderService {
             order.setPrice(price);
             orderDao.update(order);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Failed to add attendance", e);
+            throw new ElementNotFoundException("Failed to add attendance", e);
         }
     }
 
@@ -137,10 +140,10 @@ public class OrderService implements IOrderService {
         myList.clear();
         try {
             for (int index : guestService.sortByAlphabet()) {
-                myList.add(orderDao.readAll().stream().filter(i -> i.getGuestIndex() == index).findFirst().orElseThrow(ClassNotFoundException::new));
+                myList.add(orderDao.readAll().stream().filter(i -> i.getGuestIndex() == index).findFirst().orElseThrow(EntityNotFoundException::new));
             }
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("List is empty", e);
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException("List is empty", e);
         }
     }
 
@@ -149,9 +152,9 @@ public class OrderService implements IOrderService {
         final List<Attendance> list = new ArrayList<>();
         final List<Integer> attendanceIndexList;
         try {
-            attendanceIndexList = orderDao.readAll().stream().filter(i -> i.getGuestIndex() == guestIndex).findFirst().orElseThrow(ClassNotFoundException::new).getAttendanceIndex();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("This guest didn't have attendance's", e);
+            attendanceIndexList = orderDao.readAll().stream().filter(i -> i.getGuestIndex() == guestIndex).findFirst().orElseThrow(EntityNotFoundException::new).getAttendanceIndex();
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException("This guest didn't have attendance's", e);
         }
         for (Object index : attendanceIndexList) {
             list.add(attendanceService.get((int) index));

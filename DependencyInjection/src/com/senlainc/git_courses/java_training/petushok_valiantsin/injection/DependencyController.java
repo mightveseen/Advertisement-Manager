@@ -25,12 +25,12 @@ public class DependencyController {
         return instance;
     }
 
-    public void lestRock(Class<?> object) {
+    public void lestRock(Class<?> clazz) {
         try {
-            DependencyService.getInstance().setVariable(object);
+            DependencyService.getInstance().setVariable(clazz);
             DependencyService.getInstance().initializeConstructor();
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException | ClassNotFoundException e) {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            LOGGER.log(Level.WARNING, "Could load class: " + clazz + " reason: " + e.toString(), e);
         }
     }
 

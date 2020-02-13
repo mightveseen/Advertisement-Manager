@@ -7,6 +7,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.GuestConfig;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.MaxElementsException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.Sort;
 
 import java.time.LocalDate;
@@ -15,6 +17,8 @@ import java.util.List;
 @DependencyClass
 @DependencyPrimary
 public class GuestService implements IGuestService {
+    @DependencyComponent
+    private static GuestConfig guestConfig;
     @DependencyComponent
     private IGuestDao guestDao;
 
@@ -25,9 +29,9 @@ public class GuestService implements IGuestService {
 
     @Override
     public void add(String firstName, String lastName, LocalDate birthday, String infoContact) {
-        int guestLimit = GuestConfig.getInstance().getGuestLimit();
+        int guestLimit = guestConfig.getGuestLimit();
         if (guestLimit < guestDao.readAll().size()) {
-            throw new RuntimeException("The number of guests exceeds the specified limit: " + guestLimit + " guests");
+            throw new MaxElementsException("The number of guests exceeds the specified limit: " + guestLimit + " guests");
         }
         guestDao.create(new Guest(firstName, lastName, birthday, infoContact));
     }
@@ -37,7 +41,7 @@ public class GuestService implements IGuestService {
         try {
             guestDao.delete(index);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Guest with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException("Guest with index: " + index + " dont exists.", e);
         }
     }
 
@@ -48,7 +52,7 @@ public class GuestService implements IGuestService {
             guest.setInfoContact(information);
             guestDao.update(guest);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Guest with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException("Guest with index: " + index + " dont exists.", e);
         }
     }
 
@@ -67,7 +71,7 @@ public class GuestService implements IGuestService {
         try {
             return guestDao.read(index);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Guest with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException("Guest with index: " + index + " dont exists.", e);
         }
     }
 

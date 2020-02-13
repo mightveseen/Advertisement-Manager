@@ -4,6 +4,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hot
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.IAction;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.WrongEnteredDataException;
 
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -30,7 +31,7 @@ public class AddRoom implements IAction {
             hotel.addRoom(new Room(number, classification, numberRoom, capacity, price));
             LOGGER.log(Level.INFO, "Add room in list");
         } catch (NumberFormatException e) {
-            throw new RuntimeException("Wrong data: " + e.getMessage(), e);
+            throw new WrongEnteredDataException("Wrong entered data in: " + e.getMessage(), e);
         }
     }
 }

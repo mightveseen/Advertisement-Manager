@@ -3,7 +3,7 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.seria
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.LoadConfig;
-import sun.dc.path.PathError;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.FileNotExistException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -18,24 +18,20 @@ import java.io.OutputStream;
 @DependencyClass
 public class Serialization {
     @DependencyComponent
-    private static Serialization instance;
+    private static LoadConfig loadConfig;
 
-    public static Serialization getInstance() {
-        return instance;
-    }
-
-    private String getPath(Object clazz) {
+    private String getPath(Object clazz) throws java.io.FileNotFoundException {
         switch (clazz.getClass().getSimpleName()) {
             case "AttendanceDao":
-                return LoadConfig.getInstance().getAttendanceDaoPath();
+                return loadConfig.getAttendanceDaoPath();
             case "GuestDao":
-                return LoadConfig.getInstance().getGuestDaoPath();
+                return loadConfig.getGuestDaoPath();
             case "OrderDao":
-                return LoadConfig.getInstance().getOrderDaoPath();
+                return loadConfig.getOrderDaoPath();
             case "RoomDao":
-                return LoadConfig.getInstance().getRoomDaoPath();
+                return loadConfig.getRoomDaoPath();
             default:
-                throw new PathError("Inappropriate class");
+                throw new java.io.FileNotFoundException("Inappropriate class");
         }
     }
 
@@ -45,8 +41,8 @@ public class Serialization {
             final Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             marshaller.marshal(clazz, fileWriter);
-        } catch (JAXBException | IOException | PathError e) {
-            throw new RuntimeException("Couldn't upload data file", e);
+        } catch (JAXBException | IOException e) {
+            throw new FileNotExistException("Couldn't upload data file", e);
         }
     }
 
@@ -55,8 +51,8 @@ public class Serialization {
             final JAXBContext context = JAXBContext.newInstance(clazz.getClass());
             final Unmarshaller unmarshaller = context.createUnmarshaller();
             return (T) unmarshaller.unmarshal(fileReader);
-        } catch (JAXBException | IOException | PathError e) {
-            throw new RuntimeException("Couldn't load data file", e);
+        } catch (JAXBException | IOException e) {
+            throw new FileNotExistException("Couldn't load data file", e);
         }
     }
 }

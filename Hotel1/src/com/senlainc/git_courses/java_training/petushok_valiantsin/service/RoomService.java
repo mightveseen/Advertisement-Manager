@@ -8,6 +8,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.RoomConfig;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotAvailableException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.Sort;
 
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.stream.Collectors;
 @DependencyClass
 @DependencyPrimary
 public class RoomService implements IRoomService {
+    @DependencyComponent
+    private static RoomConfig roomConfig;
     @DependencyComponent
     private IRoomDao roomDao;
 
@@ -27,7 +31,7 @@ public class RoomService implements IRoomService {
     @Override
     public void add(Room room) {
         if (roomDao.readAll().stream().anyMatch(i -> i.getNumber() == room.getNumber())) {
-            throw new RuntimeException("Room with number: " + room.getNumber() + " already exists.");
+            throw new EntityNotAvailableException("Room with number: " + room.getNumber() + " already exists.");
         }
         roomDao.create(room);
     }
@@ -37,7 +41,7 @@ public class RoomService implements IRoomService {
         try {
             roomDao.delete(index);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Room with index: " + index + " dont exists.");
+            throw new ElementNotFoundException("Room with index: " + index + " dont exists.");
         }
     }
 
@@ -51,7 +55,7 @@ public class RoomService implements IRoomService {
         try {
             return roomDao.read(index);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Room with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException("Room with index: " + index + " dont exists.", e);
         }
     }
 
@@ -62,21 +66,21 @@ public class RoomService implements IRoomService {
             room.setPrice(price);
             roomDao.update(room);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Room with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException("Room with index: " + index + " dont exists.", e);
         }
     }
 
     @Override
     public void changeStatus(int index, RoomStatus status) {
-        if (!RoomConfig.getInstance().getChangeStatus()) {
-            throw new RuntimeException("Property for change status is false");
+        if (!roomConfig.getChangeStatus()) {
+            throw new EntityNotAvailableException("Property for change status is false");
         }
         try {
             final Room room = roomDao.read(index);
             room.setStatus(status);
             roomDao.update(room);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Room with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException("Room with index: " + index + " dont exists.", e);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.injection;
 
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 
 import java.lang.reflect.Constructor;
@@ -24,6 +25,9 @@ public class DependencyService {
     }
 
     public void setVariable(Class<?> clazz) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+        if (clazz.getAnnotation(DependencyClass.class) == null) {
+            throw new IllegalArgumentException("Class: " + clazz + " didn't have 'DependencyClass' annotation");
+        }
         final Constructor<?> constructor = clazz.getDeclaredConstructor();
         constructor.setAccessible(true);
         this.instanceClass = constructor.newInstance();

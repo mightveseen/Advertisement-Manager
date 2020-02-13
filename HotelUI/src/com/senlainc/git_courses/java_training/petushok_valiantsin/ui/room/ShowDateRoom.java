@@ -3,6 +3,7 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.ui.room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.IAction;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.WrongEnteredDataException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -26,7 +27,7 @@ public class ShowDateRoom implements IAction {
             hotel.showAfterDate(date).forEach(System.out::println);
             LOGGER.log(Level.INFO, "Show room will free after: " + date);
         } catch (DateTimeParseException e) {
-            throw new RuntimeException("Wrong data: " + e.getMessage(), e);
+            throw new WrongEnteredDataException("Wrong entered data in: " + e.getMessage(), e);
         }
     }
 }

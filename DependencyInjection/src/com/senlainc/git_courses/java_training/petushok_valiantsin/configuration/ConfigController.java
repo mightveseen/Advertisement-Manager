@@ -15,12 +15,12 @@ public class ConfigController {
         return instance;
     }
 
-    public void letsRock(Class<?> object) {
+    public void letsRock(Class<?> clazz) {
         try {
-            ConfigService.getInstance().setValue(object);
+            ConfigService.getInstance().setValue(clazz);
             ConfigService.getInstance().addFieldValue();
-        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | ClassNotFoundException e) {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
+        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
+            LOGGER.log(Level.WARNING, "Could load program resources.properties from file: " + e.toString(), e);
         }
     }
 }

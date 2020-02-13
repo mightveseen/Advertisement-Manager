@@ -26,13 +26,13 @@ public class ConfigService {
     public void setValue(Class<?> clazz) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         this.configClass = clazz;
         final Annotation annotation = configClass.getAnnotation(ConfigClass.class);
-        if (clazz.isAnnotation()) {
-            throw new IllegalArgumentException("Class didn't have annotation");
+        if (annotation == null) {
+            throw new IllegalArgumentException("Class: " + clazz + "didn't have 'ConfigClass' annotation");
         }
         this.configPath = ConfigClass.class.getDeclaredMethod("configPath").invoke(annotation).toString();
     }
 
-    public void addFieldValue() throws IllegalAccessException, ClassNotFoundException {
+    public void addFieldValue() throws IllegalAccessException {
         final List<Field> annotatedFields = Arrays.stream(configClass.getDeclaredFields()).filter(i -> i.isAnnotationPresent(ConfigProperty.class)).collect(Collectors.toList());
         for (Field field : annotatedFields) {
             final Config config = new Config(field);
@@ -44,7 +44,7 @@ public class ConfigService {
         }
     }
 
-    private Object customConverter(Field field, String variable) throws ClassNotFoundException {
+    private Object customConverter(Field field, String variable) {
         final String variableType = field.getType().toString();
 //        Class<?> clazz = Class.forName(field.getType().getName());
 //        System.out.println(field.getClass().cast(clazz));

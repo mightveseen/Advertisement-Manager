@@ -1,5 +1,11 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui;
 
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotAvailableException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotFoundException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.MaxElementsException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.WrongEnteredDataException;
+
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,25 +20,21 @@ public class MenuController {
         this.menuNavigator = new MenuNavigator(menu);
     }
 
-    public void showMenu() throws InterruptedException {
+    public void showMenu() {
         try {
             Thread.sleep(10);
             menuNavigator.printMenu();
             System.out.print("Choose operation: ");
             final Integer index = Integer.parseInt(new Scanner(System.in).next());
             menuNavigator.navigate(index);
-        } catch (RuntimeException e) {
+        } catch (EntityNotFoundException | MaxElementsException | ElementNotFoundException | EntityNotAvailableException | WrongEnteredDataException | InterruptedException e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
     }
 
     public void run() {
-        try {
-            while (true) {
-                showMenu();
-            }
-        } catch (InterruptedException e) {
-            LOGGER.log(Level.WARNING, e.getMessage());
+        while (true) {
+            showMenu();
         }
     }
 }

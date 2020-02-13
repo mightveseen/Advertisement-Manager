@@ -4,6 +4,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hot
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.ui.IAction;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.WrongEnteredDataException;
 
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -28,7 +29,7 @@ public class ChangeStatusRoom implements IAction {
             hotel.changeStatusRoom(index, status);
             LOGGER.log(Level.INFO, "Change room status");
         } catch (NumberFormatException e) {
-            throw new RuntimeException("Wrong data: " + e.getMessage(), e);
+            throw new WrongEnteredDataException("Wrong entered data in: " + e.getMessage(), e);
         }
     }
 }

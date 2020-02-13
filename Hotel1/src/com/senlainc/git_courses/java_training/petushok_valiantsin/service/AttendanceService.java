@@ -6,6 +6,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.Sort;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class AttendanceService implements IAttendanceService {
         try {
             attendanceDao.delete(index);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Attendance with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException("Attendance with index: " + index + " dont exists.", e);
         }
     }
 
@@ -40,7 +41,7 @@ public class AttendanceService implements IAttendanceService {
         try {
             return attendanceDao.read(index).getPrice();
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Attendance with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException("Attendance with index: " + index + " dont exists.", e);
         }
     }
 
@@ -49,7 +50,7 @@ public class AttendanceService implements IAttendanceService {
         try {
             return attendanceDao.read(index);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Attendance with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException("Attendance with index: " + index + " dont exists.", e);
         }
     }
 
@@ -60,7 +61,7 @@ public class AttendanceService implements IAttendanceService {
             attendance.setPrice(price);
             attendanceDao.update(attendance);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Attendance with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException("Attendance with index: " + index + " dont exists.", e);
         }
     }
 
