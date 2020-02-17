@@ -40,6 +40,10 @@ public class DependencyService {
         for (Field field : annotatedFields) {
             final Constructor<?> constructor = DependencyInject.getInstance().injection(field);
             field.setAccessible(true);
+            if (constructor.getClass().getAnnotation(DependencyClass.class) != null) {
+                DependencyService.getInstance().setVariable(constructor.getClass());
+                DependencyService.getInstance().initializeConstructor();
+            }
             if (instanceClassMap.containsKey(constructor.getName())) {
                 field.set(instanceClass, instanceClassMap.get(constructor.getName()));
                 field.setAccessible(false);
