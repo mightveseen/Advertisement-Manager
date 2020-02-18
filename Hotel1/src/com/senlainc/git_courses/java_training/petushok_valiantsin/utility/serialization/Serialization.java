@@ -13,9 +13,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.util.jar.JarOutputStream;
 
 @DependencyClass
 public class Serialization {
@@ -38,7 +36,7 @@ public class Serialization {
     }
 
     public <T> void customMarshaller(T clazz) {
-        try (JarOutputStream fileWriter = new JarOutputStream(new FileOutputStream(getPath(clazz)))) {
+        try (OutputStream fileWriter = new FileOutputStream(getPath(clazz))) {
             final JAXBContext context = JAXBContext.newInstance(clazz.getClass());
             final Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
@@ -49,7 +47,7 @@ public class Serialization {
     }
 
     public <T> T customUnmarshaller(T clazz) {
-        try (InputStream fileReader = Serialization.class.getResourceAsStream(getPath(clazz))) {
+        try (InputStream fileReader = new FileInputStream(getPath(clazz))) {
             final JAXBContext context = JAXBContext.newInstance(clazz.getClass());
             final Unmarshaller unmarshaller = context.createUnmarshaller();
             return (T) unmarshaller.unmarshal(fileReader);

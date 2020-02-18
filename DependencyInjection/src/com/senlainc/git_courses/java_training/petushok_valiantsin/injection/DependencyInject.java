@@ -18,8 +18,8 @@ public class DependencyInject {
     private static List<Class<?>> projectClasses;
 
     private DependencyInject() {
-        String path = "/Users/mightveseen/Documents/GitLab/petushok_valiantsin/HotelUI/resources/artifact/Hotel1.jar";
-        projectClasses = ClassReader.getClassesNames(path).stream().filter(i -> i.getInterfaces().length > 0).collect(Collectors.toList());
+        String path = ClassLoader.getSystemResource("artifact/Hotel1.jar").getPath();
+        projectClasses = ClassReader.getClasses(path).stream().filter(i -> i.getInterfaces().length > 0).collect(Collectors.toList());
     }
 
     public static DependencyInject getInstance() {
