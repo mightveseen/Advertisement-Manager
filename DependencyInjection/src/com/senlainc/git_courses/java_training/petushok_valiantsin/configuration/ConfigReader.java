@@ -1,6 +1,5 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.configuration;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -20,7 +19,7 @@ public class ConfigReader {
     public Properties readConfig(String path) {
         if (!path.equals(mainPath)) {
             mainPath = path;
-            try (InputStream fileReader = new FileInputStream(mainPath + ".properties")) {
+            try (InputStream fileReader = ConfigReader.class.getResourceAsStream(mainPath + ".properties")) {
                 properties.load(fileReader);
             } catch (IOException e) {
                 throw new RuntimeException(e);

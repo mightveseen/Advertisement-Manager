@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: com.senlainc.git_courses.java_training.petushok_valiantsin.c
- ontroller.Controller
-
