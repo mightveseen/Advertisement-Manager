@@ -14,12 +14,15 @@ import java.util.stream.Collectors;
 
 public class DependencyInject {
     private static DependencyInject instance;
-    private static final Map<String, Constructor<?>> interfaceConstructorMap = new HashMap<>();
     private static List<Class<?>> projectClasses;
+    private final Map<String, Constructor<?>> interfaceConstructorMap;
 
     private DependencyInject() {
+        this.interfaceConstructorMap = new HashMap<>();
         String path = ClassLoader.getSystemResource("artifact/Hotel1.jar").getPath();
-        projectClasses = ClassReader.getClasses(path).stream().filter(i -> i.getInterfaces().length > 0).collect(Collectors.toList());
+        projectClasses = ClassReader.getClasses(path).stream()
+                .filter(i -> i.getInterfaces().length > 0)
+                .collect(Collectors.toList());
     }
 
     public static DependencyInject getInstance() {
@@ -55,7 +58,9 @@ public class DependencyInject {
         if (interfaceClass.size() == 1) {
             return interfaceClass.get(0);
         } else {
-            return interfaceClass.stream().filter(i -> i.isAnnotationPresent(DependencyPrimary.class)).findFirst().orElseThrow(ClassNotFoundException::new);
+            return interfaceClass.stream()
+                    .filter(i -> i.isAnnotationPresent(DependencyPrimary.class))
+                    .findFirst().orElseThrow(ClassNotFoundException::new);
         }
     }
 }

@@ -7,7 +7,11 @@ import java.util.Properties;
 public class ConfigReader {
     private static ConfigReader instance;
     private static String mainPath;
-    private final Properties properties = new Properties();
+    private final Properties properties;
+
+    private ConfigReader() {
+        this.properties = new Properties();
+    }
 
     public static ConfigReader getInstance() {
         if (instance == null) {

@@ -15,7 +15,11 @@ import java.util.stream.Collectors;
 public class DependencyService {
     private static DependencyService instance;
     private Object instanceClass;
-    private static final Map<String, Object> instanceClassMap = new HashMap<>();
+    private final Map<String, Object> instanceClassMap;
+
+    private DependencyService() {
+        this.instanceClassMap = new HashMap<>();
+    }
 
     public static DependencyService getInstance() {
         if (instance == null) {
@@ -36,7 +40,9 @@ public class DependencyService {
     }
 
     public void initializeConstructor() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, ClassNotFoundException {
-        final List<Field> annotatedFields = Arrays.stream(instanceClass.getClass().getDeclaredFields()).filter(i -> !i.getType().isPrimitive() && i.isAnnotationPresent(DependencyComponent.class)).collect(Collectors.toList());
+        final List<Field> annotatedFields = Arrays.stream(instanceClass.getClass().getDeclaredFields())
+                .filter(i -> !i.getType().isPrimitive() && i.isAnnotationPresent(DependencyComponent.class))
+                .collect(Collectors.toList());
         for (Field field : annotatedFields) {
             final Constructor<?> constructor = DependencyInject.getInstance().injection(field);
             field.setAccessible(true);

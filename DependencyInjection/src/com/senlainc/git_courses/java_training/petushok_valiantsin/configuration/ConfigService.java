@@ -27,13 +27,15 @@ public class ConfigService {
         this.configClass = clazz;
         final Annotation annotation = configClass.getAnnotation(ConfigClass.class);
         if (annotation == null) {
-            throw new IllegalArgumentException("Class: " + clazz + "didn't have 'ConfigClass' annotation");
+            throw new IllegalArgumentException("Class: " + clazz + " didn't have 'ConfigClass' annotation");
         }
         this.configPath = ConfigClass.class.getDeclaredMethod("configPath").invoke(annotation).toString();
     }
 
     public void addFieldValue() throws IllegalAccessException {
-        final List<Field> annotatedFields = Arrays.stream(configClass.getDeclaredFields()).filter(i -> i.isAnnotationPresent(ConfigProperty.class)).collect(Collectors.toList());
+        final List<Field> annotatedFields = Arrays.stream(configClass.getDeclaredFields())
+                .filter(i -> i.isAnnotationPresent(ConfigProperty.class))
+                .collect(Collectors.toList());
         for (Field field : annotatedFields) {
             final Config config = new Config(field);
             final Properties properties = ConfigReader.getInstance().readConfig(configPath + config.getConfigName());
@@ -45,33 +47,28 @@ public class ConfigService {
     }
 
     private Object customConverter(Field field, String variable) {
-        final String variableType = field.getType().toString();
-//        Class<?> clazz = Class.forName(field.getType().getName());
-//        System.out.println(field.getClass().cast(clazz));
-        if (variableType.matches(Byte.class.toString()) || variableType.matches("byte")) {
-            return Byte.parseByte(variable);
+        final String variableType = field.getType().getSimpleName().toLowerCase();
+        switch (variableType) {
+            case "byte":
+                return Byte.parseByte(variable);
+            case "short":
+                return Short.parseShort(variable);
+            case "int":
+            case "integer":
+                return Integer.parseInt(variable);
+            case "long":
+                return Long.parseLong(variable);
+            case "float":
+                return Float.parseFloat(variable);
+            case "double":
+                return Double.parseDouble(variable);
+            case "boolean":
+                return Boolean.parseBoolean(variable);
+            case "char":
+            case "character":
+                return variable.charAt(0);
+            default:
+                return variable;
         }
-        if (variableType.matches(Short.class.toString()) || variableType.matches("short")) {
-            return Short.parseShort(variable);
-        }
-        if (variableType.matches(Integer.class.toString()) || variableType.matches("int")) {
-            return Integer.parseInt(variable);
-        }
-        if (variableType.matches(Long.class.toString()) || variableType.matches("long")) {
-            return Long.parseLong(variable);
-        }
-        if (variableType.matches(Float.class.toString()) || variableType.matches("float")) {
-            return Float.parseFloat(variable);
-        }
-        if (variableType.matches(Double.class.toString()) || variableType.matches("double")) {
-            return Double.parseDouble(variable);
-        }
-        if (variableType.matches(Boolean.class.toString()) || variableType.matches("boolean")) {
-            return Boolean.parseBoolean(variable);
-        }
-        if (variableType.matches(Character.class.toString()) || variableType.matches("char")) {
-            return variable.charAt(0);
-        }
-        return variable;
     }
 }
