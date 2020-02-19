@@ -3,9 +3,7 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.configuration
 import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.annotation.ConfigClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.annotation.ConfigProperty;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -23,13 +21,13 @@ public class ConfigService {
         return instance;
     }
 
-    public void setValue(Class<?> clazz) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    public void setValue(Class<?> clazz) {
         this.configClass = clazz;
-        final Annotation annotation = configClass.getAnnotation(ConfigClass.class);
+        final ConfigClass annotation = configClass.getAnnotation(ConfigClass.class);
         if (annotation == null) {
             throw new IllegalArgumentException("Class: " + clazz + " didn't have 'ConfigClass' annotation");
         }
-        this.configPath = ConfigClass.class.getDeclaredMethod("configPath").invoke(annotation).toString();
+        this.configPath = annotation.configPath();
     }
 
     public void addFieldValue() throws IllegalAccessException {

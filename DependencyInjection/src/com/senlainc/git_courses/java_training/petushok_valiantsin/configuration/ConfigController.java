@@ -1,6 +1,5 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.configuration;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,7 +18,7 @@ public class ConfigController {
         try {
             ConfigService.getInstance().setValue(clazz);
             ConfigService.getInstance().addFieldValue();
-        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             LOGGER.log(Level.WARNING, "Could load program resources.properties from file: " + e.toString(), e);
         }
     }
