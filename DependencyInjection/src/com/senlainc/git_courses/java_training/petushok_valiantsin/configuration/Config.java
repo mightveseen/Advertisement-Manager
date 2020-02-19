@@ -15,7 +15,7 @@ public class Config {
         this.propertyName = setPropertyName();
     }
 
-    private static String splitCamelCase(String name) {
+    private static String snakeCase(String name) {
         if (!name.contains("_")) {
             return name.replaceAll(String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z])", "(?<=[^A-Z])(?=[A-Z])", "(?<=[A-Za-z])(?=[^A-Za-z])"), "_");
         }
@@ -36,7 +36,7 @@ public class Config {
 
     private String setPropertyName() {
         if (field.getAnnotation(ConfigProperty.class).propertyName().equals("")) {
-            return splitCamelCase(field.getDeclaringClass().getSimpleName()).toUpperCase() + "." + splitCamelCase(field.getName()).toUpperCase();
+            return snakeCase(field.getDeclaringClass().getSimpleName()).toUpperCase() + "." + snakeCase(field.getName()).toUpperCase();
         }
         return field.getAnnotation(ConfigProperty.class).propertyName();
     }
