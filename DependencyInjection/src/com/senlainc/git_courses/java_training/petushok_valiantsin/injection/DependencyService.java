@@ -45,19 +45,20 @@ public class DependencyService {
                 .collect(Collectors.toList());
         for (Field field : annotatedFields) {
             final Constructor<?> constructor = DependencyInject.getInstance().injection(field);
+            final boolean fieldAccess = field.isAccessible();
             field.setAccessible(true);
-            if (constructor.getClass().getAnnotation(DependencyClass.class) != null) {
-                DependencyService.getInstance().setVariable(constructor.getClass());
-                DependencyService.getInstance().initializeConstructor();
-            }
             if (instanceClassMap.containsKey(constructor.getName())) {
                 field.set(instanceClass, instanceClassMap.get(constructor.getName()));
-                field.setAccessible(false);
+                if (!fieldAccess) {
+                    field.setAccessible(false);
+                }
                 continue;
             }
             if (instanceClass.getClass().getName().equals(field.getType().getName())) {
                 field.set(instanceClass, instanceClass);
-                field.setAccessible(false);
+                if (!fieldAccess) {
+                    field.setAccessible(false);
+                }
                 continue;
             }
             constructor.setAccessible(true);
@@ -65,7 +66,9 @@ public class DependencyService {
             constructor.setAccessible(false);
             field.set(instanceClass, clazz);
             instanceClassMap.put(clazz.getClass().getName(), clazz);
-            field.setAccessible(false);
+            if (!fieldAccess) {
+                field.setAccessible(false);
+            }
         }
     }
 

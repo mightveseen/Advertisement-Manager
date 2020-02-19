@@ -38,6 +38,10 @@ public class ConfigService {
             final Config config = new Config(field);
             final Properties properties = ConfigReader.getInstance().readConfig(configPath + config.getConfigName());
             final Object value = customConverter(field, properties.getProperty(config.getPropertyName()));
+            if (config.getField().isAccessible()) {
+                config.getField().set(configClass, value);
+                continue;
+            }
             config.getField().setAccessible(true);
             config.getField().set(configClass, value);
             config.getField().setAccessible(false);
