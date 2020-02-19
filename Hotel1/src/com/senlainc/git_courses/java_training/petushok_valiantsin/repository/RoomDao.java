@@ -39,13 +39,17 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public void delete(int index) {
-        roomList.remove(roomList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
+        roomList.remove(roomList.stream()
+                .filter(i -> i.getId() == index)
+                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
         saveAll();
     }
 
     @Override
     public void update(Room room) {
-        roomList.set(roomList.indexOf(roomList.stream().filter(i -> i.getId() == room.getId()).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), room);
+        roomList.set(roomList.indexOf(roomList.stream()
+                .filter(i -> i.getId() == room.getId())
+                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), room);
         saveAll();
     }
 
@@ -56,7 +60,9 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public Room read(int index) {
-        return roomList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
+        return roomList.stream()
+                .filter(i -> i.getId() == index)
+                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
     }
 
     @Override

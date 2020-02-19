@@ -39,13 +39,17 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public void delete(int index) {
-        attendanceList.remove(attendanceList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
+        attendanceList.remove(attendanceList.stream()
+                .filter(i -> i.getId() == index)
+                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
         saveAll();
     }
 
     @Override
     public void update(Attendance attendance) {
-        attendanceList.set(attendanceList.indexOf(attendanceList.stream().filter(i -> i.getId() == attendance.getId()).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), attendance);
+        attendanceList.set(attendanceList.indexOf(attendanceList.stream()
+                .filter(i -> i.getId() == attendance.getId()).
+                        findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), attendance);
         saveAll();
     }
 
@@ -56,7 +60,9 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public Attendance read(int index) {
-        return attendanceList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
+        return attendanceList.stream()
+                .filter(i -> i.getId() == index)
+                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
     }
 
     @Override

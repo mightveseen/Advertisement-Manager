@@ -93,12 +93,16 @@ public class RoomService implements IRoomService {
     }
 
     private List<Room> showFreeRoom(List<Room> myList) {
-        return myList.stream().filter(i -> i.getStatus().equals(RoomStatus.FREE)).collect(Collectors.toList());
+        return myList.stream()
+                .filter(i -> i.getStatus().equals(RoomStatus.FREE))
+                .collect(Collectors.toList());
     }
 
     @Override
     public long numFreeRoom() {
-        return roomDao.readAll().stream().filter(i -> i.getStatus().equals(RoomStatus.FREE)).count();
+        return roomDao.readAll().stream()
+                .filter(i -> i.getStatus().equals(RoomStatus.FREE))
+                .count();
     }
 
     @Override

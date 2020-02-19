@@ -30,7 +30,7 @@ public class ClassReader {
                 classesList.add(classLoader.loadClass(className));
             }
         } catch (IOException | ClassNotFoundException e) {
-            LOGGER.log(Level.WARNING, e.getMessage() + "\n" + e);
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
         return classesList;
     }

@@ -39,13 +39,17 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public void delete(int index) {
-        guestList.remove(guestList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
+        guestList.remove(guestList.stream()
+                .filter(i -> i.getId() == index)
+                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
         saveAll();
     }
 
     @Override
     public void update(Guest guest) {
-        guestList.set(guestList.indexOf(guestList.stream().filter(i -> i.getId() == guest.getId()).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), guest);
+        guestList.set(guestList.indexOf(guestList.stream()
+                .filter(i -> i.getId() == guest.getId())
+                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), guest);
         saveAll();
     }
 
@@ -56,7 +60,9 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public Guest read(int index) {
-        return guestList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
+        return guestList.stream()
+                .filter(i -> i.getId() == index)
+                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
     }
 
     @Override

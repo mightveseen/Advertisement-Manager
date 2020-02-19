@@ -86,7 +86,9 @@ public class OrderService implements IOrderService {
     @Override
     public List<Room> showGuestRoom(int index) {
         final List<Room> guestRoomList = new ArrayList<>();
-        final List<Order> orderList = orderDao.readAll().stream().filter(i -> i.getGuestIndex() == index).limit(3).collect(Collectors.toList());
+        final List<Order> orderList = orderDao.readAll().stream()
+                .filter(i -> i.getGuestIndex() == index).limit(3)
+                .collect(Collectors.toList());
         for (Order order : orderList) {
             guestRoomList.add(roomService.getRoom(order.getRoomIndex()));
         }
@@ -95,8 +97,12 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Room> showAfterDate(LocalDate date) {
-        final List<Order> orderList = orderDao.readAll().stream().filter(i -> i.getEndDate().isBefore(date) && i.getStatus().equals(OrderStatus.ACTIVE)).collect(Collectors.toList());
-        final List<Room> roomList = roomService.getRoomList().stream().filter(i -> i.getStatus().equals(RoomStatus.FREE)).collect(Collectors.toList());
+        final List<Order> orderList = orderDao.readAll().stream()
+                .filter(i -> i.getEndDate().isBefore(date) && i.getStatus().equals(OrderStatus.ACTIVE))
+                .collect(Collectors.toList());
+        final List<Room> roomList = roomService.getRoomList().stream()
+                .filter(i -> i.getStatus().equals(RoomStatus.FREE))
+                .collect(Collectors.toList());
         for (Order order : orderList) {
             roomList.add(roomService.getRoom(order.getRoomIndex()));
         }
@@ -140,7 +146,9 @@ public class OrderService implements IOrderService {
         myList.clear();
         try {
             for (int index : guestService.sortByAlphabet()) {
-                myList.add(orderDao.readAll().stream().filter(i -> i.getGuestIndex() == index).findFirst().orElseThrow(EntityNotFoundException::new));
+                myList.add(orderDao.readAll().stream()
+                        .filter(i -> i.getGuestIndex() == index)
+                        .findFirst().orElseThrow(EntityNotFoundException::new));
             }
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("List is empty", e);
@@ -152,7 +160,9 @@ public class OrderService implements IOrderService {
         final List<Attendance> list = new ArrayList<>();
         final List<Integer> attendanceIndexList;
         try {
-            attendanceIndexList = orderDao.readAll().stream().filter(i -> i.getGuestIndex() == guestIndex).findFirst().orElseThrow(EntityNotFoundException::new).getAttendanceIndex();
+            attendanceIndexList = orderDao.readAll().stream()
+                    .filter(i -> i.getGuestIndex() == guestIndex)
+                    .findFirst().orElseThrow(EntityNotFoundException::new).getAttendanceIndex();
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("This guest didn't have attendance's", e);
         }
