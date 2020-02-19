@@ -15,19 +15,19 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serial
 public class LoadData {
     static {
         /** Serialization initialization */
-        DependencyController.getInstance().lestRock(Serialization.class);
+        DependencyController.getInstance().setDependency(Serialization.class);
         /** DAO initialization */
-        DependencyController.getInstance().lestRock(AttendanceDao.class);
-        DependencyController.getInstance().lestRock(GuestDao.class);
-        DependencyController.getInstance().lestRock(RoomDao.class);
-        DependencyController.getInstance().lestRock(OrderDao.class);
+        DependencyController.getInstance().setDependency(AttendanceDao.class);
+        DependencyController.getInstance().setDependency(GuestDao.class);
+        DependencyController.getInstance().setDependency(RoomDao.class);
+        DependencyController.getInstance().setDependency(OrderDao.class);
         /** Service's initialization */
-        DependencyController.getInstance().lestRock(AttendanceService.class);
-        DependencyController.getInstance().lestRock(RoomService.class);
-        DependencyController.getInstance().lestRock(GuestService.class);
-        DependencyController.getInstance().lestRock(OrderService.class);
+        DependencyController.getInstance().setDependency(AttendanceService.class);
+        DependencyController.getInstance().setDependency(RoomService.class);
+        DependencyController.getInstance().setDependency(GuestService.class);
+        DependencyController.getInstance().setDependency(OrderService.class);
         /** Controller initialization */
-        DependencyController.getInstance().lestRock(Hotel.class);
+        DependencyController.getInstance().setDependency(Hotel.class);
         /** Load data from XML files */
         final Hotel hotel = DependencyController.getInstance().getClazz(Hotel.class);
         hotel.loadAttendance();

@@ -15,7 +15,7 @@ public class GuestConfig {
     private static int GUEST_LIMIT_VALUE;
 
     private GuestConfig() {
-        ConfigController.getInstance().letsRock(GuestConfig.class);
+        ConfigController.getInstance().setConfig(GuestConfig.class);
     }
 
     public int getGuestLimit() {

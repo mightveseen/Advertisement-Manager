@@ -19,7 +19,7 @@ public class LoadConfig {
     private static String ORDER_DAO_PATH;
 
     private LoadConfig() {
-        ConfigController.getInstance().letsRock(LoadConfig.class);
+        ConfigController.getInstance().setConfig(LoadConfig.class);
     }
 
     public String getAttendanceDaoPath() {

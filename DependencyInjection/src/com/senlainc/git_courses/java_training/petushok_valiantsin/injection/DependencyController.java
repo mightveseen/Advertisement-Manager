@@ -15,7 +15,7 @@ public class DependencyController {
         return instance;
     }
 
-    public void lestRock(Class<?> clazz) {
+    public void setDependency(Class<?> clazz) {
         try {
             DependencyService.getInstance().setVariable(clazz);
             DependencyService.getInstance().initializeConstructor();

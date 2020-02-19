@@ -14,7 +14,7 @@ public class RoomConfig {
     private static boolean CHANGE_STATUS_VALUE;
 
     private RoomConfig() {
-        ConfigController.getInstance().letsRock(RoomConfig.class);
+        ConfigController.getInstance().setConfig(RoomConfig.class);
     }
 
     public boolean getChangeStatus() {

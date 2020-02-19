@@ -15,7 +15,7 @@ public class ConfigController {
         return instance;
     }
 
-    public void letsRock(Class<?> clazz) {
+    public void setConfig(Class<?> clazz) {
         try {
             ConfigService.getInstance().setValue(clazz);
             ConfigService.getInstance().addFieldValue();
