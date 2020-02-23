@@ -2,20 +2,25 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IGuestDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.GuestConfig;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.MaxElementsException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.Sort;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 
+@DependencyClass
+@DependencyPrimary
 public class GuestService implements IGuestService {
-    private final IGuestDao guestDao;
-    private final Comparator<Guest> SORT_BY_ALPHABET = Comparator.comparing(Guest::getFirstName);
-
-    public GuestService(IGuestDao guestDao) {
-        this.guestDao = guestDao;
-    }
+    @DependencyComponent
+    private static GuestConfig guestConfig;
+    @DependencyComponent
+    private IGuestDao guestDao;
 
     @Override
     public void load() {
@@ -24,9 +29,9 @@ public class GuestService implements IGuestService {
 
     @Override
     public void add(String firstName, String lastName, LocalDate birthday, String infoContact) {
-        int guestLimit = GuestConfig.getInstance().getGuestLimit();
+        int guestLimit = guestConfig.getGuestLimit();
         if (guestLimit < guestDao.readAll().size()) {
-            throw new RuntimeException("The number of guests exceeds the specified limit: " + guestLimit + " guests");
+            throw new MaxElementsException("The number of guests exceeds the specified limit: " + guestLimit + " guests");
         }
         guestDao.create(new Guest(firstName, lastName, birthday, infoContact));
     }
@@ -36,7 +41,7 @@ public class GuestService implements IGuestService {
         try {
             guestDao.delete(index);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Guest with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException("Guest with index: " + index + " dont exists.", e);
         }
     }
 
@@ -47,7 +52,7 @@ public class GuestService implements IGuestService {
             guest.setInfoContact(information);
             guestDao.update(guest);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Guest with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException("Guest with index: " + index + " dont exists.", e);
         }
     }
 
@@ -66,14 +71,14 @@ public class GuestService implements IGuestService {
         try {
             return guestDao.read(index);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Guest with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException("Guest with index: " + index + " dont exists.", e);
         }
     }
 
     @Override
     public int[] sortByAlphabet() {
         final List<Guest> myList = guestDao.readAll();
-        myList.sort(SORT_BY_ALPHABET);
+        myList.sort(Sort.GUEST.getComparator("ALPHABET"));
         return getGuestIndex(myList);
     }
 

@@ -1,14 +1,14 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.classindex.OrderIndex;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.adapter.LocalDateAdapter;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.adapter.LocalDateTimeAdapter;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "order")
-public class Order implements Cloneable{
+public class Order implements Cloneable {
     @XmlElement(name = "id")
     private int id;
     @XmlElement(name = "orderDate")
@@ -45,7 +45,6 @@ public class Order implements Cloneable{
     }
 
     public Order(int guest, int room, LocalDate endDate, double price) {
-        this.id = new OrderIndex().getIndex();
         this.orderDate = LocalDateTime.now();
         this.guestIndex = guest;
         this.roomIndex = room;
@@ -56,12 +55,16 @@ public class Order implements Cloneable{
     }
 
     @Override
-    public Order clone() throws CloneNotSupportedException{
+    public Order clone() throws CloneNotSupportedException {
         return (Order) super.clone();
     }
 
     public int getId() {
         return this.id;
+    }
+
+    public void setId(int index) {
+        this.id = index;
     }
 
     public int getGuestIndex() {

@@ -1,39 +1,37 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization;
 
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.LoadConfig;
-import sun.dc.path.PathError;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.FileNotExistException;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.IOException;
 
+@DependencyClass
 public class Serialization {
-    public static Serialization instance;
+    @DependencyComponent
+    private static LoadConfig loadConfig;
 
-    public static Serialization getInstance() {
-        if (instance == null) {
-            instance = new Serialization();
-        }
-        return instance;
-    }
-
-    private String getPath(Object clazz) {
+    private String getPath(Object clazz) throws java.io.FileNotFoundException {
         switch (clazz.getClass().getSimpleName()) {
             case "AttendanceDao":
-                return LoadConfig.getInstance().getAttendanceDaoPathProperty();
+                return loadConfig.getAttendanceDaoPath();
             case "GuestDao":
-                return LoadConfig.getInstance().getGuestDaoPathProperty();
+                return loadConfig.getGuestDaoPath();
             case "OrderDao":
-                return LoadConfig.getInstance().getOrderDaoPathProperty();
+                return loadConfig.getOrderDaoPath();
             case "RoomDao":
-                return LoadConfig.getInstance().getRoomDaoPathProperty();
+                return loadConfig.getRoomDaoPath();
             default:
-                throw new PathError("Inappropriate class");
+                throw new java.io.FileNotFoundException("Inappropriate class");
         }
     }
 
@@ -43,8 +41,8 @@ public class Serialization {
             final Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             marshaller.marshal(clazz, fileWriter);
-        } catch (JAXBException | IOException | PathError e) {
-            throw new RuntimeException("Couldn't upload data file", e);
+        } catch (JAXBException | IOException e) {
+            throw new FileNotExistException("Couldn't upload data file", e);
         }
     }
 
@@ -53,8 +51,8 @@ public class Serialization {
             final JAXBContext context = JAXBContext.newInstance(clazz.getClass());
             final Unmarshaller unmarshaller = context.createUnmarshaller();
             return (T) unmarshaller.unmarshal(fileReader);
-        } catch (JAXBException | IOException | PathError e) {
-            throw new RuntimeException("Couldn't load data file", e);
+        } catch (JAXBException | IOException e) {
+            throw new FileNotExistException("Couldn't load data file", e);
         }
     }
 }

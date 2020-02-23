@@ -1,26 +1,27 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration;
 
-public class GuestConfig extends Configuration {
-    private static final String PATH = "src/resources/properties/configuration/guest.properties";
-    private static final String GUEST_LIMIT_KEY = "GUEST_STORY_LIMIT";
+
+import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.ConfigController;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.annotation.ConfigClass;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.annotation.ConfigProperty;
+
+import java.util.logging.Logger;
+
+@ConfigClass
+public class GuestConfig {
     private static final int GUEST_LIMIT_BASIC_VALUE = 50;
-    private static GuestConfig instance;
+    private static final Logger LOGGER = Logger.getLogger(GuestConfig.class.getName());
+    @ConfigProperty(configName = "Guest")
+    private static int GUEST_LIMIT_VALUE;
 
     private GuestConfig() {
-        super(PATH);
-    }
-
-    public static GuestConfig getInstance() {
-        if (instance == null) {
-            instance = new GuestConfig();
-        }
-        return instance;
+        ConfigController.getInstance().setConfig(GuestConfig.class);
     }
 
     public int getGuestLimit() {
-        if (checkProperty(GUEST_LIMIT_KEY)) {
-            return Integer.parseInt(getValue(GUEST_LIMIT_KEY));
+        if (String.valueOf(GUEST_LIMIT_VALUE).equals("null") || GUEST_LIMIT_VALUE == 0) {
+            return GUEST_LIMIT_BASIC_VALUE;
         }
-        return GUEST_LIMIT_BASIC_VALUE;
+        return GUEST_LIMIT_VALUE;
     }
 }

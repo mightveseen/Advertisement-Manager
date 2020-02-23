@@ -1,13 +1,12 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.model.status;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.ConsoleColor;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.console.ConsoleColor;
 
 public enum OrderStatus {
     ACTIVE("Active"),
     DISABLED("Disabled");
 
     private final String name;
-
 
     OrderStatus(String name) {
         this.name = name;

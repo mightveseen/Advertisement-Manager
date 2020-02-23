@@ -2,19 +2,20 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IAttendanceDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IAttendanceService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.Sort;
 
-import java.util.Comparator;
 import java.util.List;
 
+@DependencyClass
+@DependencyPrimary
 public class AttendanceService implements IAttendanceService {
-    private final IAttendanceDao attendanceDao;
-    private final Comparator<Attendance> SORT_BY_SECTION = Comparator.comparing(Attendance::getSection);
-    private final Comparator<Attendance> SORT_BY_PRICE = Comparator.comparing(Attendance::getPrice);
-
-    public AttendanceService(IAttendanceDao attendanceDao) {
-        this.attendanceDao = attendanceDao;
-    }
+    @DependencyComponent
+    private IAttendanceDao attendanceDao;
 
     @Override
     public void load() {
@@ -31,7 +32,7 @@ public class AttendanceService implements IAttendanceService {
         try {
             attendanceDao.delete(index);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Attendance with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException("Attendance with index: " + index + " dont exists.", e);
         }
     }
 
@@ -40,7 +41,7 @@ public class AttendanceService implements IAttendanceService {
         try {
             return attendanceDao.read(index).getPrice();
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Attendance with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException("Attendance with index: " + index + " dont exists.", e);
         }
     }
 
@@ -49,7 +50,7 @@ public class AttendanceService implements IAttendanceService {
         try {
             return attendanceDao.read(index);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Attendance with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException("Attendance with index: " + index + " dont exists.", e);
         }
     }
 
@@ -60,7 +61,7 @@ public class AttendanceService implements IAttendanceService {
             attendance.setPrice(price);
             attendanceDao.update(attendance);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Attendance with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException("Attendance with index: " + index + " dont exists.", e);
         }
     }
 
@@ -84,10 +85,10 @@ public class AttendanceService implements IAttendanceService {
     }
 
     private void sortBySection(List<Attendance> myList) {
-        myList.sort(SORT_BY_SECTION);
+        myList.sort(Sort.ATTENDANCE.getComparator("SECTION"));
     }
 
     private void sortByPrice(List<Attendance> myList) {
-        myList.sort(SORT_BY_PRICE);
+        myList.sort(Sort.ATTENDANCE.getComparator("PRICE"));
     }
 }

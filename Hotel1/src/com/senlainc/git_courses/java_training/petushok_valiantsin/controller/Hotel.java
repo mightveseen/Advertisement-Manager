@@ -1,53 +1,29 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.controller;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IAttendanceDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IGuestDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IOrderDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IRoomDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IAttendanceService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.AttendanceDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.GuestDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.OrderDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.RoomDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.service.AttendanceService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.service.GuestService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.service.OrderService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.service.RoomService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@DependencyClass
 public class Hotel {
-    private static Hotel instance;
-    private final IGuestService guestService;
-    private final IRoomService roomService;
-    private final IAttendanceService attendanceService;
-    private final IOrderService orderService;
-
-    private Hotel() {
-        final IGuestDao guestDao = new GuestDao();
-        final IRoomDao roomDao = new RoomDao();
-        final IAttendanceDao attendanceDao = new AttendanceDao();
-        final IOrderDao orderDao = new OrderDao();
-        this.guestService = new GuestService(guestDao);
-        this.roomService = new RoomService(roomDao);
-        this.attendanceService = new AttendanceService(attendanceDao);
-        this.orderService = new OrderService(orderDao, roomService, guestService, attendanceService);
-    }
-
-    public static Hotel getInstance() {
-        if (instance == null) {
-            instance = new Hotel();
-        }
-        return instance;
-    }
+    @DependencyComponent
+    private IGuestService guestService;
+    @DependencyComponent
+    private IRoomService roomService;
+    @DependencyComponent
+    private IAttendanceService attendanceService;
+    @DependencyComponent
+    private IOrderService orderService;
 
     /**
      * Attendance

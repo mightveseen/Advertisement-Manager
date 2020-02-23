@@ -16,4 +16,6 @@ public interface IOrderDao {
     Order read(int index);
 
     void setAll();
+
+    void saveAll();
 }
