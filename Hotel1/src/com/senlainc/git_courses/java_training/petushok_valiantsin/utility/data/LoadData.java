@@ -13,7 +13,11 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.service.RoomSe
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization;
 
 public class LoadData {
-    static {
+    private LoadData() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static void execute() {
         /** Serialization initialization */
         DependencyController.getInstance().setDependency(Serialization.class);
         /** DAO initialization */

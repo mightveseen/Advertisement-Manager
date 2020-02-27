@@ -1,14 +1,16 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IAttendanceDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IGuestDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IOrderDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IAttendanceService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IRoomDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
@@ -17,6 +19,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.except
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotAvailableException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotFoundException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.Sort;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.SortParameter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -31,11 +34,13 @@ public class OrderService implements IOrderService {
     @DependencyComponent
     private IOrderDao orderDao;
     @DependencyComponent
+    private IRoomDao roomDao;
+    @DependencyComponent
+    private IGuestDao guestDao;
+    @DependencyComponent
+    private IAttendanceDao attendanceDao;
+    @DependencyComponent
     private IRoomService roomService;
-    @DependencyComponent
-    private IGuestService guestService;
-    @DependencyComponent
-    private IAttendanceService attendanceService;
 
     @Override
     public void load() {
@@ -44,10 +49,10 @@ public class OrderService implements IOrderService {
 
     @Override
     public void add(int guestIndex, int roomIndex, LocalDate endDate) {
-        if (roomService.getRoom(roomIndex).getStatus().equals(RoomStatus.RENTED) || roomService.getRoom(roomIndex).getStatus().equals(RoomStatus.SERVED)) {
+        if (roomDao.read(roomIndex).getStatus().equals(RoomStatus.RENTED) || roomDao.read(roomIndex).getStatus().equals(RoomStatus.SERVED)) {
             throw new EntityNotAvailableException("Room now is not available");
         }
-        orderDao.create(new Order(guestIndex, roomIndex, endDate, roomService.getRoom(roomIndex).getPrice()));
+        orderDao.create(new Order(guestIndex, roomIndex, endDate, roomDao.read(roomIndex).getPrice()));
         roomService.changeStatus(roomIndex, RoomStatus.RENTED);
     }
 
@@ -75,8 +80,8 @@ public class OrderService implements IOrderService {
     public String show(Order order) {
         return "Order index: " + order.getId() + "\n" +
                 "Order date: " + order.getOrderDate().format(DateTimeFormatter.ofPattern("HH:mm/yyyy-MM-dd")) + "\n" +
-                guestService.getGuest(order.getGuestIndex()) + "\n" +
-                roomService.getRoom(order.getRoomIndex()) + "\nStart date: " +
+                guestDao.read(order.getGuestIndex()) + "\n" +
+                roomDao.read(order.getRoomIndex()) + "\nStart date: " +
                 order.getStartDate() + "\nEnd date: " +
                 order.getEndDate() + "\nTotal amount: " +
                 order.getPrice() + "\nStatus: " +
@@ -90,7 +95,7 @@ public class OrderService implements IOrderService {
                 .filter(i -> i.getGuestIndex() == index).limit(3)
                 .collect(Collectors.toList());
         for (Order order : orderList) {
-            guestRoomList.add(roomService.getRoom(order.getRoomIndex()));
+            guestRoomList.add(roomDao.read(order.getRoomIndex()));
         }
         return guestRoomList;
     }
@@ -100,11 +105,11 @@ public class OrderService implements IOrderService {
         final List<Order> orderList = orderDao.readAll().stream()
                 .filter(i -> i.getEndDate().isBefore(date) && i.getStatus().equals(OrderStatus.ACTIVE))
                 .collect(Collectors.toList());
-        final List<Room> roomList = roomService.getRoomList().stream()
+        final List<Room> roomList = roomDao.readAll().stream()
                 .filter(i -> i.getStatus().equals(RoomStatus.FREE))
                 .collect(Collectors.toList());
         for (Order order : orderList) {
-            roomList.add(roomService.getRoom(order.getRoomIndex()));
+            roomList.add(roomDao.read(order.getRoomIndex()));
         }
         return roomList;
     }
@@ -116,7 +121,7 @@ public class OrderService implements IOrderService {
             final List<Integer> myList = new LinkedList<>(order.getAttendanceIndex());
             myList.add(attendanceIndex);
             order.setAttendanceIndex(myList);
-            final double price = order.getPrice() + attendanceService.getPrice(attendanceIndex);
+            final double price = order.getPrice() + attendanceDao.read(attendanceIndex).getPrice();
             order.setPrice(price);
             orderDao.update(order);
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -141,13 +146,13 @@ public class OrderService implements IOrderService {
     }
 
     private void sortByDate(List<Order> myList) {
-        myList.sort(Sort.ORDER.getComparator("DATE"));
+        myList.sort(Sort.ORDER.getComparator(SortParameter.DATE));
     }
 
     private void sortByAlphabet(List<Order> myList) {
         myList.clear();
         try {
-            for (int index : guestService.sortByAlphabet()) {
+            for (int index : sortGuestByAlphabet()) {
                 myList.add(orderDao.readAll().stream()
                         .filter(i -> i.getGuestIndex() == index)
                         .findFirst().orElseThrow(EntityNotFoundException::new));
@@ -155,6 +160,20 @@ public class OrderService implements IOrderService {
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("List is empty", e);
         }
+    }
+
+    private int[] sortGuestByAlphabet() {
+        final List<Guest> myList = guestDao.readAll();
+        myList.sort(Sort.GUEST.getComparator(SortParameter.ALPHABET));
+        return getGuestIndex(myList);
+    }
+
+    private int[] getGuestIndex(List<Guest> myList) {
+        final int[] guestIndex = new int[myList.size()];
+        for (int i = 0; i < myList.size(); i++) {
+            guestIndex[i] = myList.get(i).getId();
+        }
+        return guestIndex;
     }
 
     @Override
@@ -169,7 +188,7 @@ public class OrderService implements IOrderService {
             throw new EntityNotFoundException("This guest didn't have attendance's", e);
         }
         for (Integer index : attendanceIndexList) {
-            list.add(attendanceService.get(index));
+            list.add(attendanceDao.read(index));
         }
         return list;
     }

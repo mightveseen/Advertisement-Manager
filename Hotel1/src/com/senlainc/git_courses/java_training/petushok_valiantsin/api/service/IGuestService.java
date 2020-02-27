@@ -17,8 +17,4 @@ public interface IGuestService {
     int num();
 
     List<Guest> show();
-
-    Guest getGuest(int index);
-
-    int[] sortByAlphabet();
 }

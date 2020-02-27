@@ -13,13 +13,16 @@ import java.util.logging.Logger;
 
 public class ClassReader {
     private static final Logger LOGGER = Logger.getLogger(ClassReader.class.getName());
+    private ClassReader() {
+        throw new IllegalStateException("Utility class");
+    }
     public static List<Class<?>> getClasses(String pathToJar) {
-        List<Class<?>> classesList = new ArrayList<>();
+        final List<Class<?>> classesList = new ArrayList<>();
         try {
-            JarFile jarFile = new JarFile(pathToJar);
-            Enumeration<JarEntry> entriesEnum = jarFile.entries();
-            URL[] urls = {new URL("jar:file:" + pathToJar + "!/")};
-            URLClassLoader classLoader = URLClassLoader.newInstance(urls);
+            final JarFile jarFile = new JarFile(pathToJar);
+            final Enumeration<JarEntry> entriesEnum = jarFile.entries();
+            final URL[] urls = {new URL("jar:file:" + pathToJar + "!/")};
+            final URLClassLoader classLoader = URLClassLoader.newInstance(urls);
             while (entriesEnum.hasMoreElements()) {
                 JarEntry je = entriesEnum.nextElement();
                 if (je.isDirectory() || !je.getName().endsWith(".class")) {

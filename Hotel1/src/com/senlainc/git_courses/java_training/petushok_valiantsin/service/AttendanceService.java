@@ -8,6 +8,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.Sort;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.SortParameter;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
 public class AttendanceService implements IAttendanceService {
     @DependencyComponent
     private IAttendanceDao attendanceDao;
+    private static final String ELEMENT_NOT_FOUND = "Attendance with index: %d dont exists.";
 
     @Override
     public void load() {
@@ -27,16 +29,12 @@ public class AttendanceService implements IAttendanceService {
         attendanceDao.create(new Attendance(name, section, price));
     }
 
-    private static String messegeElementNotFound(int index) {
-        return "Attendance with index: " + index + " dont exists.";
-    }
-
     @Override
     public void delete(int index) {
         try {
             attendanceDao.delete(index);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ElementNotFoundException(messegeElementNotFound(index), e);
+            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
     }
 
@@ -45,7 +43,7 @@ public class AttendanceService implements IAttendanceService {
         try {
             return attendanceDao.read(index).getPrice();
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ElementNotFoundException(messegeElementNotFound(index), e);
+            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
     }
 
@@ -54,7 +52,7 @@ public class AttendanceService implements IAttendanceService {
         try {
             return attendanceDao.read(index);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ElementNotFoundException(messegeElementNotFound(index), e);
+            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
     }
 
@@ -65,7 +63,7 @@ public class AttendanceService implements IAttendanceService {
             attendance.setPrice(price);
             attendanceDao.update(attendance);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ElementNotFoundException(messegeElementNotFound(index), e);
+            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
     }
 
@@ -91,10 +89,10 @@ public class AttendanceService implements IAttendanceService {
     }
 
     private void sortBySection(List<Attendance> myList) {
-        myList.sort(Sort.ATTENDANCE.getComparator("SECTION"));
+        myList.sort(Sort.ATTENDANCE.getComparator(SortParameter.SECTION));
     }
 
     private void sortByPrice(List<Attendance> myList) {
-        myList.sort(Sort.ATTENDANCE.getComparator("PRICE"));
+        myList.sort(Sort.ATTENDANCE.getComparator(SortParameter.PRICE));
     }
 }

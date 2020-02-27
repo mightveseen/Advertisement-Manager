@@ -11,6 +11,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.config
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotAvailableException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.Sort;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.SortParameter;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ public class RoomService implements IRoomService {
     private static RoomConfig roomConfig;
     @DependencyComponent
     private IRoomDao roomDao;
+    private static final String ELEMENT_NOT_FOUND = "Room with index: %d dont exists.";
 
     @Override
     public void load() {
@@ -31,7 +33,7 @@ public class RoomService implements IRoomService {
     @Override
     public void add(Room room) {
         if (roomDao.readAll().stream().anyMatch(i -> i.getNumber() == room.getNumber())) {
-            throw new EntityNotAvailableException("Room with number: " + room.getNumber() + " already exists.");
+            throw new EntityNotAvailableException(String.format("Room with number: %d already exists.", room.getNumber()));
         }
         roomDao.create(room);
     }
@@ -41,7 +43,7 @@ public class RoomService implements IRoomService {
         try {
             roomDao.delete(index);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ElementNotFoundException("Room with index: " + index + " dont exists.");
+            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
     }
 
@@ -55,7 +57,7 @@ public class RoomService implements IRoomService {
         try {
             return roomDao.read(index);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ElementNotFoundException("Room with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
     }
 
@@ -66,7 +68,7 @@ public class RoomService implements IRoomService {
             room.setPrice(price);
             roomDao.update(room);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ElementNotFoundException("Room with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
     }
 
@@ -80,7 +82,7 @@ public class RoomService implements IRoomService {
             room.setStatus(status);
             roomDao.update(room);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ElementNotFoundException("Room with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
     }
 
@@ -118,19 +120,21 @@ public class RoomService implements IRoomService {
             case "room number":
                 sortByRoomNumber(myList);
                 break;
+            default:
+                break;
         }
         return myList;
     }
 
     private void sortByPrice(List<Room> myList) {
-        myList.sort(Sort.ROOM.getComparator("PRICE"));
+        myList.sort(Sort.ROOM.getComparator(SortParameter.PRICE));
     }
 
     private void sortByClassification(List<Room> myList) {
-        myList.sort(Sort.ROOM.getComparator("CLASSIFICATION"));
+        myList.sort(Sort.ROOM.getComparator(SortParameter.CLASSIFICATION));
     }
 
     private void sortByRoomNumber(List<Room> myList) {
-        myList.sort(Sort.ROOM.getComparator("ROOM_NUMBER"));
+        myList.sort(Sort.ROOM.getComparator(SortParameter.ROOM_NUMBER));
     }
 }

@@ -10,7 +10,7 @@
             <attendanceList/>
             <endDate>2019-03-12</endDate>
             <status>ACTIVE</status>
-            <price>30.0</price>
+            <price>230.0</price>
         </order>
         <order>
             <id>2</id>

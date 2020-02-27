@@ -35,7 +35,7 @@
             <roomNumber>2</roomNumber>
             <capacity>4</capacity>
             <status>RENTED</status>
-            <price>30.0</price>
+            <price>230.0</price>
         </room>
         <room>
             <id>5</id>
@@ -45,15 +45,6 @@
             <capacity>10</capacity>
             <status>SERVED</status>
             <price>230.0</price>
-        </room>
-        <room>
-            <id>6</id>
-            <number>123</number>
-            <classification>123</classification>
-            <roomNumber>123</roomNumber>
-            <capacity>123</capacity>
-            <status>FREE</status>
-            <price>123.0</price>
         </room>
     </roomList>
 </roomDao>

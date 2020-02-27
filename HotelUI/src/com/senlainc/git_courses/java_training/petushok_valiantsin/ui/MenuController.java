@@ -7,6 +7,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.except
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.WrongEnteredDataException;
 
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,7 +23,7 @@ public class MenuController {
 
     public void showMenu() {
         try {
-            Thread.sleep(10);
+            TimeUnit.MILLISECONDS.sleep(10);
             menuNavigator.printMenu();
             System.out.print("Choose operation: ");
             final Integer index = Integer.parseInt(new Scanner(System.in).next());

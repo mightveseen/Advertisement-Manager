@@ -54,7 +54,7 @@ public class DependencyService {
                 }
                 continue;
             }
-            if (instanceClass.getClass().getName().equals(field.getType().getName())) {
+            if (instanceClass.getClass().isAssignableFrom(field.getType())) {
                 field.set(instanceClass, instanceClass);
                 if (!fieldAccess) {
                     field.setAccessible(false);

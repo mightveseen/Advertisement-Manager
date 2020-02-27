@@ -16,7 +16,7 @@ public class AddGuest implements IAction {
     private static final Logger LOGGER = Logger.getLogger(AddGuest.class.getSimpleName());
 
     @Override
-    public void execute() throws DateTimeParseException {
+    public void execute() {
         try {
             final Hotel hotel = DependencyController.getInstance().getClazz(Hotel.class);
             final Scanner scanner = new Scanner(System.in);

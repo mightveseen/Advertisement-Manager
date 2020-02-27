@@ -9,61 +9,46 @@ import java.util.Comparator;
 
 public enum Sort {
     ATTENDANCE {
-        private final Comparator<Attendance> SECTION = Comparator.comparing(Attendance::getSection);
-        private final Comparator<Attendance> PRICE = Comparator.comparing(Attendance::getPrice);
-        private final Comparator<Attendance> DEFAULT = Comparator.comparing(Attendance::getId);
-
-        public Comparator<Attendance> getComparator(String parameter) {
-            if (parameter.toUpperCase().equals("SECTION")) {
-                return SECTION;
+        public Comparator<Attendance> getComparator(SortParameter parameter) {
+            if (parameter.equals(SortParameter.SECTION)) {
+                return Comparator.comparing(Attendance::getSection);
             }
-            if (parameter.toUpperCase().equals("PRICE")) {
-                return PRICE;
+            if (parameter.equals(SortParameter.PRICE)) {
+                return Comparator.comparing(Attendance::getPrice);
             }
-            return DEFAULT;
+            return Comparator.comparing(Attendance::getId); // Default
         }
     },
     ORDER {
-        private final Comparator<Order> DATE = Comparator.comparing(Order::getEndDate);
-        private final Comparator<Order> DEFAULT = Comparator.comparing(Order::getId);
-
-        public Comparator<Order> getComparator(String parameter) {
-            if (parameter.toUpperCase().equals("DATE")) {
-                return DATE;
+        public Comparator<Order> getComparator(SortParameter parameter) {
+            if (parameter.equals(SortParameter.DATE)) {
+                return Comparator.comparing(Order::getEndDate);
             }
-            return DEFAULT;
+            return Comparator.comparing(Order::getId); // Default
         }
     },
     GUEST {
-        private final Comparator<Guest> ALPHABET = Comparator.comparing(Guest::getFirstName);
-        private final Comparator<Guest> DEFAULT = Comparator.comparing(Guest::getId);
-
-        public Comparator<Guest> getComparator(String parameter) {
-            if (parameter.toUpperCase().equals("ALPHABET")) {
-                return ALPHABET;
+        public Comparator<Guest> getComparator(SortParameter parameter) {
+            if (parameter.equals(SortParameter.ALPHABET)) {
+                return Comparator.comparing(Guest::getFirstName);
             }
-            return DEFAULT;
+            return Comparator.comparing(Guest::getId); // Default
         }
     },
     ROOM {
-        private final Comparator<Room> PRICE = Comparator.comparing(Room::getPrice);
-        private final Comparator<Room> CLASSIFICATION = Comparator.comparing(Room::getClassification);
-        private final Comparator<Room> ROOM_NUMBER = Comparator.comparing(Room::getRoomNumber);
-        private final Comparator<Room> DEFAULT = Comparator.comparing(Room::getId);
-
-        public Comparator<Room> getComparator(String parameter) {
-            if (parameter.toUpperCase().equals("PRICE")) {
-                return PRICE;
+        public Comparator<Room> getComparator(SortParameter parameter) {
+            if (parameter.equals(SortParameter.PRICE)) {
+                return Comparator.comparing(Room::getPrice);
             }
-            if (parameter.toUpperCase().equals("CLASSIFICATION")) {
-                return CLASSIFICATION;
+            if (parameter.equals(SortParameter.CLASSIFICATION)) {
+                return Comparator.comparing(Room::getClassification);
             }
-            if (parameter.toUpperCase().equals("ROOM_NUMBER")) {
-                return ROOM_NUMBER;
+            if (parameter.equals(SortParameter.ROOM_NUMBER)) {
+                return Comparator.comparing(Room::getRoomNumber);
             }
-            return DEFAULT;
+            return Comparator.comparing(Room::getId); // Default
         }
     };
 
-    public abstract <T> Comparator<T> getComparator(String parameter);
+    public abstract <T> Comparator<T> getComparator(SortParameter parameter);
 }

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class CustomArrayList<T> implements List<T> {
-    private final int INIT_SIZE = 10;
+    private static final int INIT_SIZE = 10;
     private int index = 0;
     private T[] objArray = (T[]) new Object[INIT_SIZE];
 
@@ -190,6 +190,8 @@ public class CustomArrayList<T> implements List<T> {
                 if (objArray.length > INIT_SIZE && this.index < objArray.length / CHANGE_SIZE) {
                     resize(objArray.length / 2);
                 }
+                break;
+            default:
                 break;
         }
     }

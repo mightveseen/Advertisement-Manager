@@ -12,7 +12,9 @@ public class Menu {
     }
 
     public MenuItem getItem(int index) {
-        return menuItemList.stream().filter(i -> i.getId() == index).findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
+        return menuItemList.stream()
+                .filter(i -> i.getId() == index)
+                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
     }
 
     public List<MenuItem> getMenuItemList() {
