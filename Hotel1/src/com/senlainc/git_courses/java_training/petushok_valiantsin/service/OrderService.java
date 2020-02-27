@@ -134,6 +134,8 @@ public class OrderService implements IOrderService {
             case "alphabet":
                 sortByAlphabet(myList);
                 break;
+            default:
+                break;
         }
         return myList;
     }
@@ -166,8 +168,8 @@ public class OrderService implements IOrderService {
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("This guest didn't have attendance's", e);
         }
-        for (Object index : attendanceIndexList) {
-            list.add(attendanceService.get((int) index));
+        for (Integer index : attendanceIndexList) {
+            list.add(attendanceService.get(index));
         }
         return list;
     }

@@ -27,12 +27,16 @@ public class AttendanceService implements IAttendanceService {
         attendanceDao.create(new Attendance(name, section, price));
     }
 
+    private static String messegeElementNotFound(int index) {
+        return "Attendance with index: " + index + " dont exists.";
+    }
+
     @Override
     public void delete(int index) {
         try {
             attendanceDao.delete(index);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ElementNotFoundException("Attendance with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException(messegeElementNotFound(index), e);
         }
     }
 
@@ -41,7 +45,7 @@ public class AttendanceService implements IAttendanceService {
         try {
             return attendanceDao.read(index).getPrice();
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ElementNotFoundException("Attendance with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException(messegeElementNotFound(index), e);
         }
     }
 
@@ -50,7 +54,7 @@ public class AttendanceService implements IAttendanceService {
         try {
             return attendanceDao.read(index);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ElementNotFoundException("Attendance with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException(messegeElementNotFound(index), e);
         }
     }
 
@@ -61,7 +65,7 @@ public class AttendanceService implements IAttendanceService {
             attendance.setPrice(price);
             attendanceDao.update(attendance);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ElementNotFoundException("Attendance with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException(messegeElementNotFound(index), e);
         }
     }
 
@@ -79,6 +83,8 @@ public class AttendanceService implements IAttendanceService {
                 break;
             case "price":
                 sortByPrice(myList);
+                break;
+            default:
                 break;
         }
         return myList;

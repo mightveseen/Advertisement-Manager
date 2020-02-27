@@ -16,12 +16,12 @@ public enum RoomStatus {
     @Override
     public String toString() {
         switch (RoomStatus.this) {
-            default:
-                return ConsoleColor.GREEN.getCode() + this.name + ConsoleColor.RESET.getCode();
             case RENTED:
                 return ConsoleColor.RED.getCode() + this.name + ConsoleColor.RESET.getCode();
             case SERVED:
                 return ConsoleColor.YELLOW.getCode() + this.name + ConsoleColor.RESET.getCode();
+            default:
+                return ConsoleColor.GREEN.getCode() + this.name + ConsoleColor.RESET.getCode();
         }
     }
 }
