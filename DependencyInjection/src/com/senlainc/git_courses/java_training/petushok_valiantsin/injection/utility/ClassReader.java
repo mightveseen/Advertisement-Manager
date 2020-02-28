@@ -18,11 +18,10 @@ public class ClassReader {
     }
     public static List<Class<?>> getClasses(String pathToJar) {
         final List<Class<?>> classesList = new ArrayList<>();
-        try {
-            final JarFile jarFile = new JarFile(pathToJar);
-            final Enumeration<JarEntry> entriesEnum = jarFile.entries();
+        try (final JarFile jarFile = new JarFile(pathToJar)) {
             final URL[] urls = {new URL("jar:file:" + pathToJar + "!/")};
             final URLClassLoader classLoader = URLClassLoader.newInstance(urls);
+            final Enumeration<JarEntry> entriesEnum = jarFile.entries();
             while (entriesEnum.hasMoreElements()) {
                 JarEntry je = entriesEnum.nextElement();
                 if (je.isDirectory() || !je.getName().endsWith(".class")) {
