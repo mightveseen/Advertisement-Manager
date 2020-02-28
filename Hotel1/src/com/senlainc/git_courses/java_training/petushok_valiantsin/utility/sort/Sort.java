@@ -10,13 +10,14 @@ import java.util.Comparator;
 public enum Sort {
     ATTENDANCE {
         public Comparator<Attendance> getComparator(SortParameter parameter) {
-            if (parameter.equals(SortParameter.SECTION)) {
-                return Comparator.comparing(Attendance::getSection);
+            switch (parameter) {
+                case PRICE:
+                    return Comparator.comparing(Attendance::getSection);
+                case SECTION:
+                    return Comparator.comparing(Attendance::getPrice);
+                default:
+                    return Comparator.comparing(Attendance::getId);
             }
-            if (parameter.equals(SortParameter.PRICE)) {
-                return Comparator.comparing(Attendance::getPrice);
-            }
-            return Comparator.comparing(Attendance::getId); // Default
         }
     },
     ORDER {
@@ -24,7 +25,7 @@ public enum Sort {
             if (parameter.equals(SortParameter.DATE)) {
                 return Comparator.comparing(Order::getEndDate);
             }
-            return Comparator.comparing(Order::getId); // Default
+            return Comparator.comparing(Order::getId);
         }
     },
     GUEST {
@@ -32,21 +33,21 @@ public enum Sort {
             if (parameter.equals(SortParameter.ALPHABET)) {
                 return Comparator.comparing(Guest::getFirstName);
             }
-            return Comparator.comparing(Guest::getId); // Default
+            return Comparator.comparing(Guest::getId);
         }
     },
     ROOM {
         public Comparator<Room> getComparator(SortParameter parameter) {
-            if (parameter.equals(SortParameter.PRICE)) {
-                return Comparator.comparing(Room::getPrice);
+            switch (parameter) {
+                case PRICE:
+                    return Comparator.comparing(Room::getPrice);
+                case CLASSIFICATION:
+                    return Comparator.comparing(Room::getClassification);
+                case ROOM_NUMBER:
+                    return Comparator.comparing(Room::getRoomNumber);
+                default:
+                    return Comparator.comparing(Room::getId);
             }
-            if (parameter.equals(SortParameter.CLASSIFICATION)) {
-                return Comparator.comparing(Room::getClassification);
-            }
-            if (parameter.equals(SortParameter.ROOM_NUMBER)) {
-                return Comparator.comparing(Room::getRoomNumber);
-            }
-            return Comparator.comparing(Room::getId); // Default
         }
     };
 
