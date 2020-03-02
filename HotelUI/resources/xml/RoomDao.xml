@@ -13,7 +13,7 @@
         <room>
             <id>2</id>
             <number>312</number>
-            <classification>Business</classification>
+            <classification>5</classification>
             <roomNumber>1</roomNumber>
             <capacity>2</capacity>
             <status>FREE</status>
@@ -44,7 +44,7 @@
             <roomNumber>5</roomNumber>
             <capacity>10</capacity>
             <status>SERVED</status>
-            <price>230.0</price>
+            <price>430.0</price>
         </room>
     </roomList>
 </roomDao>

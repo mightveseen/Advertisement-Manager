@@ -58,6 +58,6 @@ public class Attendance implements Cloneable {
 
     @Override
     public String toString() {
-        return id + ")" + name + ", " + section + ", " + price;
+        return this.id + ")" + this.name + ", " + this.section + ", " + this.price;
     }
 }

@@ -22,7 +22,7 @@
         <attendance>
             <id>4</id>
             <name>Playstation 4</name>
-            <section>Entertainment</section>
+            <section>2</section>
             <price>20.5</price>
         </attendance>
     </attendanceList>
