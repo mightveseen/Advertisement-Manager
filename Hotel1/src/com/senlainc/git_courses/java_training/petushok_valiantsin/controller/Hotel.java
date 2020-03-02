@@ -135,12 +135,6 @@ public class Hotel {
 
     private <T> List<String> createStringList(List<T> list) {
         final List<String> stringList = new ArrayList<>();
-        if (list.stream().anyMatch(i -> i.getClass().isAssignableFrom(Order.class))) {
-            for (T element : list) {
-                stringList.add(orderService.show((Order) element));
-            }
-            return stringList;
-        }
         for (T element : list) {
             stringList.add(element.toString());
         }

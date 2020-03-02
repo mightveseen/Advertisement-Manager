@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,10 +24,10 @@ public class Order implements Cloneable {
     @XmlElement(name = "orderDate")
     @XmlJavaTypeAdapter(value = LocalDateTimeAdapter.class)
     private LocalDateTime orderDate;
-    @XmlElement(name = "guestIndex")
-    private int guestIndex;
-    @XmlElement(name = "roomIndex")
-    private int roomIndex;
+    @XmlElement(name = "guest")
+    private Guest guest;
+    @XmlElement(name = "room")
+    private Room room;
     @XmlElement(name = "startDate")
     @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
     private LocalDate startDate;
@@ -44,10 +45,10 @@ public class Order implements Cloneable {
     public Order() {
     }
 
-    public Order(int guest, int room, LocalDate endDate, double price) {
+    public Order(Guest guest, Room room, LocalDate endDate, double price) {
         this.orderDate = LocalDateTime.now();
-        this.guestIndex = guest;
-        this.roomIndex = room;
+        this.guest = guest;
+        this.room = room;
         this.startDate = LocalDate.now();
         this.endDate = endDate;
         this.status = OrderStatus.ACTIVE;
@@ -67,12 +68,12 @@ public class Order implements Cloneable {
         this.id = index;
     }
 
-    public int getGuestIndex() {
-        return this.guestIndex;
+    public Guest getGuest() {
+        return this.guest;
     }
 
-    public int getRoomIndex() {
-        return roomIndex;
+    public Room getRoom() {
+        return room;
     }
 
     public double getPrice() {
@@ -113,5 +114,16 @@ public class Order implements Cloneable {
 
     public void setAttendanceIndex(List<Integer> attendanceIndex) {
         this.attendanceIndex = attendanceIndex;
+    }
+    
+    public String toString() {
+        return "Order index: " + this.id + "\n" +
+                "Order date: " + this.orderDate.format(DateTimeFormatter.ofPattern("HH:mm/yyyy-MM-dd")) + "\n" +
+                this.guest + "\n" +
+                this.room + "\nStart date: " +
+                this.startDate + "\nEnd date: " +
+                this.endDate + "\nTotal amount: " +
+                this.price + "\nStatus: " +
+                this.status.toString();
     }
 }

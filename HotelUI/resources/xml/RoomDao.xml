@@ -16,7 +16,7 @@
             <classification>Business</classification>
             <roomNumber>1</roomNumber>
             <capacity>2</capacity>
-            <status>RENTED</status>
+            <status>FREE</status>
             <price>170.0</price>
         </room>
         <room>

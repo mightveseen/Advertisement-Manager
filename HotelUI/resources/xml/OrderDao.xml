@@ -3,36 +3,53 @@
     <orderList>
         <order>
             <id>1</id>
-            <orderDate>2020-02-02T16:24:37.944</orderDate>
-            <guestIndex>2</guestIndex>
-            <roomIndex>4</roomIndex>
-            <startDate>2020-02-02</startDate>
+            <orderDate>2020-03-02T22:29:02.815</orderDate>
+            <guest>
+                <id>2</id>
+                <firstName>Robert</firstName>
+                <secondName>Johnson</secondName>
+                <birthday>1967-12-01</birthday>
+                <infoContact>+278392386</infoContact>
+            </guest>
+            <room>
+                <id>1</id>
+                <number>203</number>
+                <classification>President</classification>
+                <roomNumber>4</roomNumber>
+                <capacity>6</capacity>
+                <status>RENTED</status>
+                <price>330.0</price>
+            </room>
+            <startDate>2020-03-02</startDate>
             <attendanceList/>
-            <endDate>2019-03-12</endDate>
-            <status>ACTIVE</status>
-            <price>230.0</price>
-        </order>
-        <order>
-            <id>2</id>
-            <orderDate>2020-02-02T16:24:37.953</orderDate>
-            <guestIndex>1</guestIndex>
-            <roomIndex>1</roomIndex>
-            <startDate>2020-02-02</startDate>
-            <attendanceList/>
-            <endDate>2019-01-03</endDate>
+            <endDate>2020-03-12</endDate>
             <status>ACTIVE</status>
             <price>330.0</price>
         </order>
         <order>
-            <id>3</id>
-            <orderDate>2020-02-02T16:24:37.956</orderDate>
-            <guestIndex>3</guestIndex>
-            <roomIndex>2</roomIndex>
-            <startDate>2020-02-02</startDate>
+            <id>2</id>
+            <orderDate>2020-03-02T22:29:16.230</orderDate>
+            <guest>
+                <id>3</id>
+                <firstName>Daniel</firstName>
+                <secondName>Blake</secondName>
+                <birthday>1971-01-24</birthday>
+                <infoContact>+1532521678</infoContact>
+            </guest>
+            <room>
+                <id>4</id>
+                <number>105</number>
+                <classification>Lux</classification>
+                <roomNumber>2</roomNumber>
+                <capacity>4</capacity>
+                <status>FREE</status>
+                <price>230.0</price>
+            </room>
+            <startDate>2020-03-02</startDate>
             <attendanceList/>
-            <endDate>2019-02-23</endDate>
+            <endDate>2020-05-02</endDate>
             <status>ACTIVE</status>
-            <price>170.0</price>
+            <price>230.0</price>
         </order>
     </orderList>
 </orderDao>

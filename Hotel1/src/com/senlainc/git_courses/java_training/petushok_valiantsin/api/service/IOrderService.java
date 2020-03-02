@@ -18,8 +18,6 @@ public interface IOrderService {
 
     List<Order> show(List<Order> myList);
 
-    String show(Order order);
-
     List<Room> showGuestRoom(int index);
 
     List<Order> sort(String parameter);

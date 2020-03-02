@@ -69,7 +69,7 @@ public class Guest implements Cloneable {
 
     @Override
     public String toString() {
-        return id + ")" + firstName + ", "
-                + secondName + ", " + birthday + ", " + infoContact;
+        return this.id + ")" + this.firstName + ", "
+                + this.secondName + ", " + this.birthday + ", " + this.infoContact;
     }
 }

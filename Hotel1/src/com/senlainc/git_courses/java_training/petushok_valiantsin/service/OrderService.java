@@ -52,7 +52,7 @@ public class OrderService implements IOrderService {
         if (roomDao.read(roomIndex).getStatus().equals(RoomStatus.RENTED) || roomDao.read(roomIndex).getStatus().equals(RoomStatus.SERVED)) {
             throw new EntityNotAvailableException("Room now is not available");
         }
-        orderDao.create(new Order(guestIndex, roomIndex, endDate, roomDao.read(roomIndex).getPrice()));
+        orderDao.create(new Order(guestDao.read(guestIndex), roomDao.read(roomIndex), endDate, roomDao.read(roomIndex).getPrice()));
         roomService.changeStatus(roomIndex, RoomStatus.RENTED);
     }
 
@@ -77,25 +77,13 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public String show(Order order) {
-        return "Order index: " + order.getId() + "\n" +
-                "Order date: " + order.getOrderDate().format(DateTimeFormatter.ofPattern("HH:mm/yyyy-MM-dd")) + "\n" +
-                guestDao.read(order.getGuestIndex()) + "\n" +
-                roomDao.read(order.getRoomIndex()) + "\nStart date: " +
-                order.getStartDate() + "\nEnd date: " +
-                order.getEndDate() + "\nTotal amount: " +
-                order.getPrice() + "\nStatus: " +
-                order.getStatus().toString();
-    }
-
-    @Override
     public List<Room> showGuestRoom(int index) {
         final List<Room> guestRoomList = new ArrayList<>();
         final List<Order> orderList = orderDao.readAll().stream()
-                .filter(i -> i.getGuestIndex() == index).limit(3)
+                .filter(i -> i.getGuest().getId() == index).limit(3)
                 .collect(Collectors.toList());
         for (Order order : orderList) {
-            guestRoomList.add(roomDao.read(order.getRoomIndex()));
+            guestRoomList.add(order.getRoom());
         }
         return guestRoomList;
     }
@@ -109,7 +97,7 @@ public class OrderService implements IOrderService {
                 .filter(i -> i.getStatus().equals(RoomStatus.FREE))
                 .collect(Collectors.toList());
         for (Order order : orderList) {
-            roomList.add(roomDao.read(order.getRoomIndex()));
+            roomList.add(order.getRoom());
         }
         return roomList;
     }
@@ -154,7 +142,7 @@ public class OrderService implements IOrderService {
         try {
             for (int index : sortGuestByAlphabet()) {
                 myList.add(orderDao.readAll().stream()
-                        .filter(i -> i.getGuestIndex() == index)
+                        .filter(i -> i.getGuest().getId() == index)
                         .findFirst().orElseThrow(EntityNotFoundException::new));
             }
         } catch (EntityNotFoundException e) {
@@ -182,7 +170,7 @@ public class OrderService implements IOrderService {
         final List<Integer> attendanceIndexList;
         try {
             attendanceIndexList = orderDao.readAll().stream()
-                    .filter(i -> i.getGuestIndex() == guestIndex)
+                    .filter(i -> i.getGuest().getId() == guestIndex)
                     .findFirst().orElseThrow(EntityNotFoundException::new).getAttendanceIndex();
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("This guest didn't have attendance's", e);
