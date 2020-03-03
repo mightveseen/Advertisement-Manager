@@ -33,12 +33,4 @@ public class ConnectionManager {
     public PreparedStatement getStatment(String sqlQuery) throws SQLException {
         return connection.prepareStatement(sqlQuery);
     }
-
-    public void closeStatment(PreparedStatement statement) {
-        try {
-            statement.close();
-        } catch (SQLException e) {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
-        }
-    }
 }
