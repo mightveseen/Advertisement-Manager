@@ -26,11 +26,6 @@ public class RoomService implements IRoomService {
     private static final String ELEMENT_NOT_FOUND = "Room with index: %d dont exists.";
 
     @Override
-    public void load() {
-        roomDao.setAll();
-    }
-
-    @Override
     public void add(Room room) {
         if (roomDao.readAll().stream().anyMatch(i -> i.getNumber() == room.getNumber())) {
             throw new EntityNotAvailableException(String.format("Room with number: %d already exists.", room.getNumber()));

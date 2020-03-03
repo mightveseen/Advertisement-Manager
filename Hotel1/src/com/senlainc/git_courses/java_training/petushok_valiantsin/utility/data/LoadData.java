@@ -10,6 +10,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.service.Attend
 import com.senlainc.git_courses.java_training.petushok_valiantsin.service.GuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.service.OrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.service.RoomService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization;
 
 public class LoadData {
@@ -30,13 +31,9 @@ public class LoadData {
         DependencyController.getInstance().setDependency(RoomService.class);
         DependencyController.getInstance().setDependency(GuestService.class);
         DependencyController.getInstance().setDependency(OrderService.class);
+        DependencyController.getInstance().setDependency(ConnectionManager.class);
         /** Controller initialization */
         DependencyController.getInstance().setDependency(Hotel.class);
         /** Load data from XML files */
-        final Hotel hotel = DependencyController.getInstance().getClazz(Hotel.class);
-        hotel.loadAttendance();
-        hotel.loadRoom();
-        hotel.loadGuest();
-        hotel.loadOrder();
     }
 }

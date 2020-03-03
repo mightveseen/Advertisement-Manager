@@ -5,8 +5,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendan
 import java.util.List;
 
 public interface IAttendanceService {
-    void load();
-
     void add(String name, String section, double price);
 
     void delete(int index);

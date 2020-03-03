@@ -23,11 +23,6 @@ public class GuestService implements IGuestService {
     private static final String ELEMENT_NOT_FOUND = "Guest with index: %d dont exists.";
 
     @Override
-    public void load() {
-        guestDao.setAll();
-    }
-
-    @Override
     public void add(String firstName, String lastName, LocalDate birthday, String infoContact) {
         int guestLimit = guestConfig.getGuestLimit();
         if (guestLimit < guestDao.readAll().size()) {

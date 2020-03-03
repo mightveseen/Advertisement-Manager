@@ -5,7 +5,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.FileNotExistException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -15,7 +15,6 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @DependencyClass
@@ -26,6 +25,8 @@ public class GuestDao implements IGuestDao {
     private static final Logger LOGGER = Logger.getLogger(GuestDao.class.getName());
     @DependencyComponent
     private static Serialization serialization;
+    @DependencyComponent
+    private ConnectionManager connectionManager;
     @XmlElementWrapper(name = "guestList")
     @XmlElement(name = "guest")
     private List<Guest> guestList;
@@ -34,15 +35,13 @@ public class GuestDao implements IGuestDao {
     public void create(Guest guest) {
         guest.setId(guestList.size() + 1);
         guestList.add(guest);
-        saveAll();
     }
 
     @Override
-    public void delete(int index) {
+    public void delete(Integer index) {
         guestList.remove(guestList.stream()
                 .filter(i -> i.getId() == index)
                 .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
-        saveAll();
     }
 
     @Override
@@ -50,7 +49,6 @@ public class GuestDao implements IGuestDao {
         guestList.set(guestList.indexOf(guestList.stream()
                 .filter(i -> i.getId() == guest.getId())
                 .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), guest);
-        saveAll();
     }
 
     @Override
@@ -59,28 +57,9 @@ public class GuestDao implements IGuestDao {
     }
 
     @Override
-    public Guest read(int index) {
+    public Guest read(Integer index) {
         return guestList.stream()
                 .filter(i -> i.getId() == index)
                 .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
-    }
-
-    @Override
-    public void setAll() {
-        try {
-            guestList = serialization.customUnmarshaller(this).readAll();
-        } catch (FileNotExistException e) {
-            guestList = new ArrayList<>();
-            LOGGER.log(Level.WARNING, e.getMessage() + ", create empty list", e);
-        }
-    }
-
-    @Override
-    public void saveAll() {
-        try {
-            serialization.customMarshaller(this);
-        } catch (FileNotExistException e) {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
-        }
     }
 }

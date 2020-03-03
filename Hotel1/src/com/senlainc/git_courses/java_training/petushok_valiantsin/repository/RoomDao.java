@@ -5,7 +5,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.FileNotExistException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -15,7 +15,6 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @DependencyClass
@@ -26,6 +25,8 @@ public class RoomDao implements IRoomDao {
     private static final Logger LOGGER = Logger.getLogger(RoomDao.class.getName());
     @DependencyComponent
     private static Serialization serialization;
+    @DependencyComponent
+    private ConnectionManager connectionManager;
     @XmlElementWrapper(name = "roomList")
     @XmlElement(name = "room")
     private List<Room> roomList;
@@ -34,15 +35,13 @@ public class RoomDao implements IRoomDao {
     public void create(Room room) {
         room.setId(roomList.size() + 1);
         roomList.add(room);
-        saveAll();
     }
 
     @Override
-    public void delete(int index) {
+    public void delete(Integer index) {
         roomList.remove(roomList.stream()
                 .filter(i -> i.getId() == index)
                 .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
-        saveAll();
     }
 
     @Override
@@ -50,7 +49,6 @@ public class RoomDao implements IRoomDao {
         roomList.set(roomList.indexOf(roomList.stream()
                 .filter(i -> i.getId() == room.getId())
                 .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), room);
-        saveAll();
     }
 
     @Override
@@ -59,28 +57,9 @@ public class RoomDao implements IRoomDao {
     }
 
     @Override
-    public Room read(int index) {
+    public Room read(Integer index) {
         return roomList.stream()
                 .filter(i -> i.getId() == index)
                 .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
-    }
-
-    @Override
-    public void setAll() {
-        try {
-            roomList = serialization.customUnmarshaller(this).readAll();
-        } catch (FileNotExistException e) {
-            roomList = new ArrayList<>();
-            LOGGER.log(Level.WARNING, e.getMessage() + ", create empty list", e);
-        }
-    }
-
-    @Override
-    public void saveAll() {
-        try {
-            serialization.customMarshaller(this);
-        } catch (FileNotExistException e) {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
-        }
     }
 }

@@ -27,10 +27,6 @@ public class Hotel {
     /**
      * Attendance
      */
-    public void loadAttendance() {
-        attendanceService.load();
-    }
-
     public void addAttendance(String name, String section, double price) {
         attendanceService.add(name, section, price);
     }
@@ -46,10 +42,6 @@ public class Hotel {
     /**
      * Room
      */
-    public void loadRoom() {
-        roomService.load();
-    }
-
     public void addRoom(Room room) {
         roomService.add(room);
     }
@@ -77,10 +69,6 @@ public class Hotel {
     /**
      * Guest
      */
-    public void loadGuest() {
-        guestService.load();
-    }
-
     public void addGuest(String firstName, String lastName, LocalDate birthday, String infoContact) {
         guestService.add(firstName, lastName, birthday, infoContact);
     }
@@ -96,10 +84,6 @@ public class Hotel {
     /**
      * Order
      */
-    public void loadOrder() {
-        orderService.load();
-    }
-
     public void addOrder(int guestIndex, int roomIndex, LocalDate endDate) {
         orderService.add(guestIndex, roomIndex, endDate);
     }

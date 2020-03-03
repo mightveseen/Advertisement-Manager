@@ -20,11 +20,6 @@ public class AttendanceService implements IAttendanceService {
     private static final String ELEMENT_NOT_FOUND = "Attendance with index: %d dont exists.";
 
     @Override
-    public void load() {
-        attendanceDao.setAll();
-    }
-
-    @Override
     public void add(String name, String section, double price) {
         attendanceDao.create(new Attendance(name, section, price));
     }

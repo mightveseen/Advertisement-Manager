@@ -5,82 +5,79 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.FileNotExistException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.DaoException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @DependencyClass
 @DependencyPrimary
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "attendanceDao")
 public class AttendanceDao implements IAttendanceDao {
-    private static final Logger LOGGER = Logger.getLogger(AttendanceDao.class.getName());
+    private static final String ERROR = "Could't execute SQL quary";
     @DependencyComponent
     private static Serialization serialization;
-    @XmlElementWrapper(name = "attendanceList")
-    @XmlElement(name = "attendance")
-    private List<Attendance> attendanceList;
+    @DependencyComponent
+    private ConnectionManager connectionManager;
 
     @Override
     public void create(Attendance attendance) {
-        attendance.setId(attendanceList.size() + 1);
-        attendanceList.add(attendance);
-        saveAll();
-    }
-
-    @Override
-    public void delete(int index) {
-        attendanceList.remove(attendanceList.stream()
-                .filter(i -> i.getId() == index)
-                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
-        saveAll();
-    }
-
-    @Override
-    public void update(Attendance attendance) {
-        attendanceList.set(attendanceList.indexOf(attendanceList.stream()
-                .filter(i -> i.getId() == attendance.getId()).
-                        findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), attendance);
-        saveAll();
-    }
-
-    @Override
-    public List<Attendance> readAll() {
-        return new ArrayList<>(attendanceList);
-    }
-
-    @Override
-    public Attendance read(int index) {
-        return attendanceList.stream()
-                .filter(i -> i.getId() == index)
-                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
-    }
-
-    @Override
-    public void setAll() {
-        try {
-            attendanceList = serialization.customUnmarshaller(this).readAll();
-        } catch (FileNotExistException e) {
-            attendanceList = new ArrayList<>();
-            LOGGER.log(Level.WARNING, e.getMessage() + ", create empty list", e);
+        final String SQL_INSERT_QUARY = "INSERT INTO `Attendance`(`name`, `section`, `price`) VALUES (?, ?, ?);";
+        try (final PreparedStatement statement = connectionManager.getStatment(SQL_INSERT_QUARY)) {
+            statement.setString(1, attendance.getName());
+            statement.setString(2, attendance.getSection());
+            statement.setDouble(3, attendance.getPrice());
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(ERROR, e);
         }
     }
 
     @Override
-    public void saveAll() {
-        try {
-            serialization.customMarshaller(this);
-        } catch (FileNotExistException e) {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
+    public void delete(Integer index) {
+        final String SQL_DELETE_QUARY = "DELETE FROM `Attendance` WHERE `id` = ?;";
+        try (final PreparedStatement statement = connectionManager.getStatment(SQL_DELETE_QUARY)) {
+            statement.setInt(1, index);
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(ERROR, e);
+        }
+    }
+
+    @Override
+    public void update(Attendance attendance) {
+        final String SQL_UPDATE_QUARY = "UPDATE `Attendance` SET `name` = ?, `section` = ?, `price` = ? WHERE `id` = ?;";
+        try (final PreparedStatement statement = connectionManager.getStatment(SQL_UPDATE_QUARY)) {
+            statement.setString(1, attendance.getName());
+            statement.setString(2, attendance.getSection());
+            statement.setDouble(3, attendance.getPrice());
+            statement.setDouble(4, attendance.getId());
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(ERROR, e);
+        }
+    }
+
+    @Override
+    public List<Attendance> readAll() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public Attendance read(Integer index) {
+        final String SQL_READ_QUARY = "SELECT * FROM `Attendance` WHERE `id` = ?;";
+        try (final PreparedStatement statement = connectionManager.getStatment(SQL_READ_QUARY)) {
+            statement.setInt(1, index);
+            final ResultSet result = statement.executeQuery();
+            final Attendance attendance = new Attendance(result.getString(2), result.getString(3), result.getDouble(4));
+            attendance.setId(index);
+            return attendance;
+        } catch (SQLException e) {
+            throw new DaoException(ERROR, e);
         }
     }
 }
