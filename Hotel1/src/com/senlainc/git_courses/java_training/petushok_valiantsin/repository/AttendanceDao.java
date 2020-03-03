@@ -64,7 +64,19 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public List<Attendance> readAll() {
-        return new ArrayList<>();
+        final String SQL_READ_ALL_QUARY = "SELECT * FROM `Attendance`;";
+        final List<Attendance> attendanceList = new ArrayList<>();
+        try (final PreparedStatement statement = connectionManager.getStatment(SQL_READ_ALL_QUARY)) {
+            final ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                final Attendance attendance = new Attendance(result.getString(2), result.getString(3), result.getDouble(4));
+                attendance.setId(result.getInt(1));
+                attendanceList.add(attendance);
+            }
+        } catch (SQLException e) {
+            throw new DaoException(ERROR, e);
+        }
+        return attendanceList;
     }
 
     @Override
@@ -73,9 +85,12 @@ public class AttendanceDao implements IAttendanceDao {
         try (final PreparedStatement statement = connectionManager.getStatment(SQL_READ_QUARY)) {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();
-            final Attendance attendance = new Attendance(result.getString(2), result.getString(3), result.getDouble(4));
-            attendance.setId(index);
-            return attendance;
+            if (result.next()) {
+                final Attendance attendance = new Attendance(result.getString(2), result.getString(3), result.getDouble(4));
+                attendance.setId(result.getInt(1));
+                return attendance;
+            }
+            return null;
         } catch (SQLException e) {
             throw new DaoException(ERROR, e);
         }
