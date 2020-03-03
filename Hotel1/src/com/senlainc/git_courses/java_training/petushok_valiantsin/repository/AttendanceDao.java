@@ -90,7 +90,7 @@ public class AttendanceDao implements IAttendanceDao {
                 attendance.setId(result.getInt(1));
                 return attendance;
             }
-            return null;
+            throw new DaoException(ERROR);
         } catch (SQLException e) {
             throw new DaoException(ERROR, e);
         }
