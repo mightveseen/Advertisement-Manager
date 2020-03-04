@@ -5,7 +5,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.O
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Order implements Cloneable {
@@ -14,7 +14,7 @@ public class Order implements Cloneable {
     private final Guest guest;
     private final Room room;
     private final LocalDate startDate;
-    private List<Integer> attendanceIndex = new LinkedList<>();
+    private List<Attendance> attendanceIndex = new ArrayList<>();
     private LocalDate endDate;
     private OrderStatus status;
     private double price;
@@ -92,11 +92,11 @@ public class Order implements Cloneable {
         this.status = status;
     }
 
-    public List<Integer> getAttendanceIndex() {
+    public List<Attendance> getAttendanceIndex() {
         return this.attendanceIndex;
     }
 
-    public void setAttendanceIndex(List<Integer> attendanceIndex) {
+    public void setAttendanceIndex(List<Attendance> attendanceIndex) {
         this.attendanceIndex = attendanceIndex;
     }
     

@@ -24,7 +24,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.S
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,7 +55,9 @@ public class OrderService implements IOrderService {
     @Override
     public void delete(int index) {
         try {
-            orderDao.read(index).setStatus(OrderStatus.DISABLED);
+            final Order order = orderDao.read(index);
+            order.setStatus(OrderStatus.DISABLED);
+            orderDao.update(order);
             roomService.changeStatus(index, RoomStatus.FREE);
         } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException("Order with index: " + index + " dont exists.", e);
@@ -103,11 +104,10 @@ public class OrderService implements IOrderService {
     public void addAttendance(int orderIndex, int attendanceIndex) {
         try {
             final Order order = orderDao.read(orderIndex);
-            final List<Integer> myList = new LinkedList<>(order.getAttendanceIndex());
-            myList.add(attendanceIndex);
+            final List<Attendance> myList = new ArrayList<>(order.getAttendanceIndex());
+            myList.add(attendanceDao.read(attendanceIndex));
             order.setAttendanceIndex(myList);
-            final double price = order.getPrice() + attendanceDao.read(attendanceIndex).getPrice();
-            order.setPrice(price);
+            order.setPrice(order.getPrice() + attendanceDao.read(attendanceIndex).getPrice());
             orderDao.update(order);
             connectionManager.commit();
         } catch (ElementNotFoundException e) {
@@ -165,17 +165,17 @@ public class OrderService implements IOrderService {
     @Override
     public List<Attendance> showAttendance(int guestIndex) {
         final List<Attendance> list = new ArrayList<>();
-        final List<Integer> attendanceIndexList;
-        try {
-            attendanceIndexList = orderDao.readAll().stream()
-                    .filter(i -> i.getGuest().getId() == guestIndex)
-                    .findFirst().orElseThrow(EntityNotFoundException::new).getAttendanceIndex();
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("This guest didn't have attendance's", e);
-        }
-        for (Integer index : attendanceIndexList) {
-            list.add(attendanceDao.read(index));
-        }
+//        final List<Integer> attendanceIndexList;
+//        try {
+//            attendanceIndexList = orderDao.readAll().stream()
+//                    .filter(i -> i.getGuest().getId() == guestIndex)
+//                    .findFirst().orElseThrow(EntityNotFoundException::new).getAttendanceIndex();
+//        } catch (EntityNotFoundException e) {
+//            throw new EntityNotFoundException("This guest didn't have attendance's", e);
+//        }
+//        for (Integer index : attendanceIndexList) {
+//            list.add(attendanceDao.read(index));
+//        }
         return list;
     }
 }

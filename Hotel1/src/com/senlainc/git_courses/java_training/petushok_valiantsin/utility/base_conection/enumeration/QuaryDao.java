@@ -82,7 +82,7 @@ public enum QuaryDao {
                     return "SELECT * FROM `Order`"
                             + "INNER JOIN `Room` ON `room`.`id` = `Order`.`room_id`"
                             + "INNER JOIN `Guest` ON `guest`.`id` = `Order`.`guest_id`"
-                            + "WHERE `id` = ?;";
+                            + "WHERE `Order`.`id` = ?;";
                 default:
                     return "";
             }
