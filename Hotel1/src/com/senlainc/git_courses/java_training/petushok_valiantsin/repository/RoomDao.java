@@ -75,11 +75,7 @@ public class RoomDao implements IRoomDao {
         try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
             final ResultSet result = statement.executeQuery();
             while (result.next()) {
-                final Room room = new Room(result.getInt(2), result.getString(3)
-                        , result.getShort(4), result.getShort(5)
-                        , RoomStatus.valueOf(result.getString(6)), result.getDouble(7));
-                room.setId(result.getInt(1));
-                roomList.add(room);
+                roomList.add(createFromQuary(result));
             }
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -94,15 +90,19 @@ public class RoomDao implements IRoomDao {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();
             if (result.next()) {
-                final Room room = new Room(result.getInt(2), result.getString(3)
-                        , result.getShort(4), result.getShort(5)
-                        , RoomStatus.valueOf(result.getString(6)), result.getDouble(7));
-                room.setId(result.getInt(1));
-                return room;
+                return createFromQuary(result);
             }
             throw new DaoException();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+    }
+
+    private Room createFromQuary(ResultSet result) throws SQLException {
+        final Room room = new Room(result.getInt(2), result.getString(3)
+                , result.getShort(4), result.getShort(5)
+                , RoomStatus.valueOf(result.getString(6)), result.getDouble(7));
+        room.setId(result.getInt(1));
+        return room;
     }
 }

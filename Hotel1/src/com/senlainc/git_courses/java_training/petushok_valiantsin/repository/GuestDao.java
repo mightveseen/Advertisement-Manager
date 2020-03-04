@@ -71,9 +71,7 @@ public class GuestDao implements IGuestDao {
         try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
             final ResultSet result = statement.executeQuery();
             while (result.next()) {
-                final Guest guest = new Guest(result.getString(2), result.getString(3), result.getDate(4).toLocalDate(), result.getString(5));
-                guest.setId(result.getInt(1));
-                guestList.add(guest);
+                guestList.add(createFromQuary(result));
             }
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -88,13 +86,17 @@ public class GuestDao implements IGuestDao {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();
             if (result.next()) {
-                final Guest guest = new Guest(result.getString(2), result.getString(3), result.getDate(4).toLocalDate(), result.getString(5));
-                guest.setId(result.getInt(1));
-                return guest;
+                return createFromQuary(result);
             }
             throw new DaoException();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+    }
+
+    private Guest createFromQuary(ResultSet result) throws SQLException {
+        final Guest guest = new Guest(result.getString(2), result.getString(3), result.getDate(4).toLocalDate(), result.getString(5));
+        guest.setId(result.getInt(1));
+        return guest;
     }
 }
