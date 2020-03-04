@@ -4,6 +4,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
@@ -100,6 +101,7 @@ public class OrderDao implements IOrderDao {
             final ResultSet result = statement.executeQuery();
             if (result.next()) {
                 final Order order = createFromQuary(result);
+                orderAttendance(order);
                 result.close();
                 return order;
             }
@@ -119,6 +121,23 @@ public class OrderDao implements IOrderDao {
         final Order order = new Order(result.getTimestamp(2).toLocalDateTime(), guest, room, result.getDate(5).toLocalDate()
                 , result.getDate(6).toLocalDate(), OrderStatus.valueOf(result.getString(7)), result.getDouble(8));
         order.setId(result.getInt(1));
+        orderAttendance(order);
         return order;
+    }
+
+    private void orderAttendance(Order order) throws SQLException {
+        final List<Attendance> attendanceList = new ArrayList<>();
+        final String QUARY = QuaryDao.ORDER.getQuary(QuaryType.READ_ORDER_ATTENDANCE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
+            statement.setInt(1, order.getId());
+            final ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                final Attendance attendance = new Attendance(result.getString(2), result.getString(3), result.getDouble(4));
+                attendance.setId(result.getInt(1));
+                attendanceList.add(attendance);
+            }
+            result.close();
+        }
+        order.setAttendanceIndex(attendanceList);
     }
 }
