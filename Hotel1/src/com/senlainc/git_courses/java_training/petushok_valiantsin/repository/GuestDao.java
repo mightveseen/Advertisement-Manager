@@ -22,8 +22,8 @@ public class GuestDao implements IGuestDao {
     private ConnectionManager connectionManager;
 
     @Override
-    public void create(Guest guest) {
-        final String SQL_CREATE_QUARY = "INSERT INTO `Guest`(`first_name`, `second_name`, `birthday`, `info_contact`) VALUES (?, ?, ?, ?);";
+    public Guest create(Guest guest) {
+        final String SQL_CREATE_QUARY = "INSERT INTO `Guest`(`first_name`, `second_name`, `birthday`, `info_contact`)\n" + "VALUES (?, ?, ?, ?);";
         try (PreparedStatement statement = connectionManager.getStatment(SQL_CREATE_QUARY)) {
             statement.setString(1, guest.getFirstName());
             statement.setString(2, guest.getSecondName());
@@ -33,11 +33,12 @@ public class GuestDao implements IGuestDao {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+        return guest;
     }
 
     @Override
     public void delete(Integer index) {
-        final String SQL_DELETE_QUARY = "DELETE FROM `Guest` WHERE `id` = ?;";
+        final String SQL_DELETE_QUARY = "DELETE FROM `Guest`\n" + "WHERE `id` = ?;";
         try (PreparedStatement statement = connectionManager.getStatment(SQL_DELETE_QUARY)) {
             statement.setInt(1, index);
             statement.execute();
@@ -48,7 +49,9 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public void update(Guest guest) {
-        final String SQL_UPDATE_QUARY = "UPDATE `Guest` SET `first_name` = ?, `second_name` = ?, `birthday` = ?, `info_contact` = ? WHERE `id` = ?;";
+        final String SQL_UPDATE_QUARY = "UPDATE `Guest`\n"
+                + "SET `first_name` = ?, `second_name` = ?, `birthday` = ?, `info_contact` = ?\n"
+                + "WHERE `id` = ?;";
         try (PreparedStatement statement = connectionManager.getStatment(SQL_UPDATE_QUARY)) {
             statement.setString(1, guest.getFirstName());
             statement.setString(2, guest.getSecondName());
@@ -63,7 +66,7 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public List<Guest> readAll() {
-        final String SQL_READ_ALL_QUARY = "SELECT * FROM `Guest`;";
+        final String SQL_READ_ALL_QUARY = "SELECT * \n" + "FROM `Guest`;";
         final List<Guest> guestList = new ArrayList<>();
         try (PreparedStatement statement = connectionManager.getStatment(SQL_READ_ALL_QUARY)) {
             final ResultSet result = statement.executeQuery();
@@ -80,7 +83,7 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public Guest read(Integer index) {
-        final String SQL_READ_QUARY = "SELECT * FROM `Guest` WHERE `id` = ?;";
+        final String SQL_READ_QUARY = "SELECT *\n" + "FROM `Guest`\n" + "WHERE `id` = ?;";
         try (PreparedStatement statement = connectionManager.getStatment(SQL_READ_QUARY)) {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();

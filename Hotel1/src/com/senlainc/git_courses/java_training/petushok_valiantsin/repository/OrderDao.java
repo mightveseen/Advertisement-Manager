@@ -18,9 +18,12 @@ public class OrderDao implements IOrderDao {
     private List<Order> orderList;
 
     @Override
-    public void create(Order order) {
-        order.setId(orderList.size() + 1);
-        orderList.add(order);
+    public Order create(Order order) {
+        final String SQL_CREATE_QUARY = "SELECT *\n"
+                + "FROM `Order`\n"
+                + "INNER JOIN `Room` ON `room`.`id` = `Order`.`room_id`\n"
+                + "INNER JOIN `Guest` ON `guest`.`id` = `Order`.`guest_id`;";
+        return null;
     }
 
     @Override

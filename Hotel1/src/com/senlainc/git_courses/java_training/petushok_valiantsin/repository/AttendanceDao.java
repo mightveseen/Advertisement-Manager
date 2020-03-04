@@ -21,8 +21,8 @@ public class AttendanceDao implements IAttendanceDao {
     private ConnectionManager connectionManager;
 
     @Override
-    public void create(Attendance attendance) {
-        final String SQL_INSERT_QUARY = "INSERT INTO `Attendance`(`name`, `section`, `price`) VALUES (?, ?, ?);";
+    public Attendance create(Attendance attendance) {
+        final String SQL_INSERT_QUARY = "INSERT INTO `Attendance`(`name`, `section`, `price`)\n" + "VALUES (?, ?, ?);";
         try (final PreparedStatement statement = connectionManager.getStatment(SQL_INSERT_QUARY)) {
             statement.setString(1, attendance.getName());
             statement.setString(2, attendance.getSection());
@@ -31,11 +31,12 @@ public class AttendanceDao implements IAttendanceDao {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+        return attendance;
     }
 
     @Override
     public void delete(Integer index) {
-        final String SQL_DELETE_QUARY = "DELETE FROM `Attendance` WHERE `id` = ?;";
+        final String SQL_DELETE_QUARY = "DELETE FROM `Attendance`\n" + "WHERE `id` = ?;";
         try (final PreparedStatement statement = connectionManager.getStatment(SQL_DELETE_QUARY)) {
             statement.setInt(1, index);
             statement.execute();
@@ -46,7 +47,9 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public void update(Attendance attendance) {
-        final String SQL_UPDATE_QUARY = "UPDATE `Attendance` SET `name` = ?, `section` = ?, `price` = ? WHERE `id` = ?;";
+        final String SQL_UPDATE_QUARY = "UPDATE `Attendance`\n"
+                + "SET `name` = ?, `section` = ?, `price` = ?\n"
+                + "WHERE `id` = ?;";
         try (final PreparedStatement statement = connectionManager.getStatment(SQL_UPDATE_QUARY)) {
             statement.setString(1, attendance.getName());
             statement.setString(2, attendance.getSection());
@@ -60,7 +63,7 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public List<Attendance> readAll() {
-        final String SQL_READ_ALL_QUARY = "SELECT * FROM `Attendance`;";
+        final String SQL_READ_ALL_QUARY = "SELECT *\n" + "FROM `Attendance`;";
         final List<Attendance> attendanceList = new ArrayList<>();
         try (final PreparedStatement statement = connectionManager.getStatment(SQL_READ_ALL_QUARY)) {
             final ResultSet result = statement.executeQuery();
@@ -77,7 +80,7 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public Attendance read(Integer index) {
-        final String SQL_READ_QUARY = "SELECT * FROM `Attendance` WHERE `id` = ?;";
+        final String SQL_READ_QUARY = "SELECT *\n" + "FROM `Attendance`\n" + "WHERE `id` = ?;";
         try (final PreparedStatement statement = connectionManager.getStatment(SQL_READ_QUARY)) {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();
