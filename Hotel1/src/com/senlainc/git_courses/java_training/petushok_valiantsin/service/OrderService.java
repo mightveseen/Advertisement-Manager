@@ -10,7 +10,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
@@ -101,6 +100,18 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    public List<Attendance> showAttendance(int guestIndex) {
+        try {
+            return orderDao.readAll().stream()
+                    .filter(i -> i.getGuest().getId() == guestIndex)
+                    .findFirst().orElseThrow(ElementNotFoundException::new)
+                    .getAttendanceIndex();
+        } catch (ElementNotFoundException e) {
+            throw new EntityNotFoundException("Guest with index: " + guestIndex + " dont have order.", e);
+        }
+    }
+
+    @Override
     public void addAttendance(int orderIndex, int attendanceIndex) {
         try {
             final Order order = orderDao.read(orderIndex);
@@ -136,46 +147,6 @@ public class OrderService implements IOrderService {
     }
 
     private void sortByAlphabet(List<Order> myList) {
-        myList.clear();
-        try {
-            for (int index : sortGuestByAlphabet()) {
-                orderDao.readAll().stream()
-                        .filter(i -> i.getGuest().getId() == index)
-                        .findFirst().ifPresent(myList::add);
-            }
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("List is empty", e);
-        }
-    }
-
-    private int[] sortGuestByAlphabet() {
-        final List<Guest> myList = guestDao.readAll();
-        myList.sort(Sort.GUEST.getComparator(SortParameter.ALPHABET));
-        return getGuestIndex(myList);
-    }
-
-    private int[] getGuestIndex(List<Guest> myList) {
-        final int[] guestIndex = new int[myList.size()];
-        for (int i = 0; i < myList.size(); i++) {
-            guestIndex[i] = myList.get(i).getId();
-        }
-        return guestIndex;
-    }
-
-    @Override
-    public List<Attendance> showAttendance(int guestIndex) {
-        final List<Attendance> list = new ArrayList<>();
-//        final List<Integer> attendanceIndexList;
-//        try {
-//            attendanceIndexList = orderDao.readAll().stream()
-//                    .filter(i -> i.getGuest().getId() == guestIndex)
-//                    .findFirst().orElseThrow(EntityNotFoundException::new).getAttendanceIndex();
-//        } catch (EntityNotFoundException e) {
-//            throw new EntityNotFoundException("This guest didn't have attendance's", e);
-//        }
-//        for (Integer index : attendanceIndexList) {
-//            list.add(attendanceDao.read(index));
-//        }
-        return list;
+        myList.sort(Sort.ORDER.getComparator(SortParameter.ALPHABET));
     }
 }

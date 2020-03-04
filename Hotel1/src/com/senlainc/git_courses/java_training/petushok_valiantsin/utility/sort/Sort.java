@@ -1,7 +1,6 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 
@@ -22,18 +21,14 @@ public enum Sort {
     },
     ORDER {
         public Comparator<Order> getComparator(SortParameter parameter) {
-            if (parameter.equals(SortParameter.DATE)) {
-                return Comparator.comparing(Order::getEndDate);
+            switch (parameter) {
+                case DATE:
+                    return Comparator.comparing(Order::getEndDate);
+                case ALPHABET:
+                    return Comparator.comparing(i -> i.getGuest().getFirstName());
+                default:
+                    return Comparator.comparing(Order::getId);
             }
-            return Comparator.comparing(Order::getId);
-        }
-    },
-    GUEST {
-        public Comparator<Guest> getComparator(SortParameter parameter) {
-            if (parameter.equals(SortParameter.ALPHABET)) {
-                return Comparator.comparing(Guest::getFirstName);
-            }
-            return Comparator.comparing(Guest::getId);
         }
     },
     ROOM {

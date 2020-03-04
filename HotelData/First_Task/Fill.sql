@@ -21,3 +21,9 @@ INSERT INTO `Order`(`order_date`, `guest_id`, `room_id`, `start_date`, `end_date
 VALUES
 	('2020-03-02T22:29:02.815', 2, 1, '2020-03-02', '2020-03-12', 'ACTIVE', 330),
     ('2020-03-02T22:29:16.230', 3, 4, '2020-03-02', '2020-05-02', 'ACTIVE', 230);
+INSERT INTO `OrderAttendance`(`order_id`, `attendance_id`)
+VALUES
+	(1, 1),
+    (1, 4),
+    (1, 2),
+    (2,4);
