@@ -4,10 +4,10 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.R
 
 public class Room implements Cloneable {
     private int id;
-    private int number;
-    private String classification;
-    private short roomNumber;
-    private short capacity;
+    private final int number;
+    private final String classification;
+    private final short roomNumber;
+    private final short capacity;
     private RoomStatus status;
     private double price;
 

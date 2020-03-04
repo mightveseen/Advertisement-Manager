@@ -10,10 +10,10 @@ import java.util.List;
 
 public class Order implements Cloneable {
     private int id;
-    private LocalDateTime orderDate;
-    private Guest guest;
-    private Room room;
-    private LocalDate startDate;
+    private final LocalDateTime orderDate;
+    private final Guest guest;
+    private final Room room;
+    private final LocalDate startDate;
     private List<Integer> attendanceIndex = new LinkedList<>();
     private LocalDate endDate;
     private OrderStatus status;

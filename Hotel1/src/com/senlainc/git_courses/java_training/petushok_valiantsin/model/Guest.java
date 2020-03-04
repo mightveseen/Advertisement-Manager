@@ -4,9 +4,9 @@ import java.time.LocalDate;
 
 public class Guest implements Cloneable {
     private int id;
-    private String firstName;
-    private String secondName;
-    private LocalDate birthday;
+    private final String firstName;
+    private final String secondName;
+    private final LocalDate birthday;
     private String infoContact;
 
     public Guest(String firstName, String secondName, LocalDate birthday, String infoContact) {

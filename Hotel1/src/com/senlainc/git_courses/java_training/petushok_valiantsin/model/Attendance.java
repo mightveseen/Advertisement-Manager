@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class Attendance implements Cloneable, Serializable {
     private int id;
-    private String name;
-    private String section;
+    private final String name;
+    private final String section;
     private double price;
 
     public Attendance(String name, String section, double price) {
