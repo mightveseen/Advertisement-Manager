@@ -31,7 +31,7 @@ public class OrderDao implements IOrderDao {
     private ConnectionManager connectionManager;
 
     @Override
-    public Order create(Order order) {
+    public void create(Order order) {
         final String QUARY = QuaryDao.ORDER.getQuary(QuaryType.CREATE);
         try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
             statement.setTimestamp(1, Timestamp.valueOf(order.getOrderDate()));
@@ -45,7 +45,6 @@ public class OrderDao implements IOrderDao {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
-        return order;
     }
 
     @Override

@@ -84,7 +84,7 @@ public enum QuaryDao {
                             + "INNER JOIN `Guest` ON `guest`.`id` = `Order`.`guest_id`"
                             + "WHERE `Order`.`id` = ?;";
                 case READ_ORDER_ATTENDANCE:
-                    return "SELECT * FROM `Attendance`" +
+                    return "SELECT `Attendance`.`id`, `Attendance`.`name`, `Attendance`.`section`, `Attendance`.`price` FROM `Attendance`" +
                             "INNER JOIN `OrderAttendance` ON `OrderAttendance`.`attendance_id` = `Attendance`.`id`" +
                             "WHERE `OrderAttendance`.`order_id` = ?;";
                 default:

@@ -24,7 +24,7 @@ public class AttendanceDao implements IAttendanceDao {
     private ConnectionManager connectionManager;
 
     @Override
-    public Attendance create(Attendance attendance) {
+    public void create(Attendance attendance) {
         final String QUARY = QuaryDao.ATTENDANCE.getQuary(QuaryType.CREATE);
         try (final PreparedStatement statement = connectionManager.getStatment(QUARY)) {
             statement.setString(1, attendance.getName());
@@ -34,7 +34,6 @@ public class AttendanceDao implements IAttendanceDao {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
-        return attendance;
     }
 
     @Override

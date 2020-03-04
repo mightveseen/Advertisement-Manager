@@ -25,7 +25,7 @@ public class GuestDao implements IGuestDao {
     private ConnectionManager connectionManager;
 
     @Override
-    public Guest create(Guest guest) {
+    public void create(Guest guest) {
         final String QAURY = QuaryDao.GUEST.getQuary(QuaryType.CREATE);
         try (PreparedStatement statement = connectionManager.getStatment(QAURY)) {
             statement.setString(1, guest.getFirstName());
@@ -36,7 +36,6 @@ public class GuestDao implements IGuestDao {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
-        return guest;
     }
 
     @Override

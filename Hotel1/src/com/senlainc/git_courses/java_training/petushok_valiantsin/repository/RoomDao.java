@@ -25,7 +25,7 @@ public class RoomDao implements IRoomDao {
     private ConnectionManager connectionManager;
 
     @Override
-    public Room create(Room room) {
+    public void create(Room room) {
         final String QUARY = QuaryDao.ROOM.getQuary(QuaryType.CREATE);
         try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
             statement.setInt(1, room.getNumber());
@@ -38,7 +38,6 @@ public class RoomDao implements IRoomDao {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
-        return room;
     }
 
     @Override

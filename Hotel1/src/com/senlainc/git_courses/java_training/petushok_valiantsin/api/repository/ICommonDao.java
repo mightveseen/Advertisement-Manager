@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public interface ICommonDao<T, K extends Serializable> {
-    T create(T object);
+    void create(T object);
 
     void delete(K index);
 
