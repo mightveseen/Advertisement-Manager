@@ -30,6 +30,30 @@ public class ConnectionManager {
         }
     }
 
+    public void commit() {
+        try {
+            this.connection.commit();
+        } catch (SQLException e) {
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
+        }
+    }
+
+    public void rollback() {
+        try {
+            this.connection.rollback();
+        } catch (SQLException e) {
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
+        }
+    }
+
+    public void setSavepoint(String name) {
+        try {
+            this.connection.setSavepoint(name);
+        } catch (SQLException e) {
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
+        }
+    }
+
     public PreparedStatement getStatment(String sqlQuery) throws SQLException {
         return connection.prepareStatement(sqlQuery);
     }

@@ -6,6 +6,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QuaryDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QuaryType;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.DaoException;
 
 import java.sql.Date;
@@ -23,9 +25,8 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public Guest create(Guest guest) {
-        final String SQL_CREATE_QUARY = "INSERT INTO `Guest`(`first_name`, `second_name`, `birthday`, `info_contact`)\n"
-                + "VALUES (?, ?, ?, ?);";
-        try (PreparedStatement statement = connectionManager.getStatment(SQL_CREATE_QUARY)) {
+        final String QAURY = QuaryDao.GUEST.getQuary(QuaryType.CREATE);
+        try (PreparedStatement statement = connectionManager.getStatment(QAURY)) {
             statement.setString(1, guest.getFirstName());
             statement.setString(2, guest.getSecondName());
             statement.setDate(3, Date.valueOf(guest.getBirthday()));
@@ -39,8 +40,8 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public void delete(Integer index) {
-        final String SQL_DELETE_QUARY = "DELETE FROM `Guest`\n" + "WHERE `id` = ?;";
-        try (PreparedStatement statement = connectionManager.getStatment(SQL_DELETE_QUARY)) {
+        final String QUARY = QuaryDao.GUEST.getQuary(QuaryType.DELETE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
             statement.setInt(1, index);
             statement.execute();
         } catch (SQLException e) {
@@ -50,10 +51,8 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public void update(Guest guest) {
-        final String SQL_UPDATE_QUARY = "UPDATE `Guest`\n"
-                + "SET `first_name` = ?, `second_name` = ?, `birthday` = ?, `info_contact` = ?\n"
-                + "WHERE `id` = ?;";
-        try (PreparedStatement statement = connectionManager.getStatment(SQL_UPDATE_QUARY)) {
+        final String QUARY = QuaryDao.GUEST.getQuary(QuaryType.UPDATE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
             statement.setString(1, guest.getFirstName());
             statement.setString(2, guest.getSecondName());
             statement.setDate(3, Date.valueOf(guest.getBirthday()));
@@ -67,9 +66,9 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public List<Guest> readAll() {
-        final String SQL_READ_ALL_QUARY = "SELECT * \n" + "FROM `Guest`;";
+        final String QUARY = QuaryDao.GUEST.getQuary(QuaryType.READ_ALL);
         final List<Guest> guestList = new ArrayList<>();
-        try (PreparedStatement statement = connectionManager.getStatment(SQL_READ_ALL_QUARY)) {
+        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
             final ResultSet result = statement.executeQuery();
             while (result.next()) {
                 final Guest guest = new Guest(result.getString(2), result.getString(3), result.getDate(4).toLocalDate(), result.getString(5));
@@ -84,8 +83,8 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public Guest read(Integer index) {
-        final String SQL_READ_QUARY = "SELECT *\n" + "FROM `Guest`\n" + "WHERE `id` = ?;";
-        try (PreparedStatement statement = connectionManager.getStatment(SQL_READ_QUARY)) {
+        final String QUARY = QuaryDao.GUEST.getQuary(QuaryType.READ);
+        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();
             if (result.next()) {

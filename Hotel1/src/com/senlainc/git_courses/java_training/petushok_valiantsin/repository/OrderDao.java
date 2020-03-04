@@ -10,6 +10,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QuaryDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QuaryType;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.DaoException;
 
 import java.sql.Date;
@@ -28,9 +30,8 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public Order create(Order order) {
-        final String SQL_CREATE_QUARY = "INSERT INTO `Order`(`order_date`, `guest_id`, `room_id`, `start_date`, `end_date`, `status`, `price`)\n"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?);";
-        try (PreparedStatement statement = connectionManager.getStatment(SQL_CREATE_QUARY)) {
+        final String QUARY = QuaryDao.ORDER.getQuary(QuaryType.CREATE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
             statement.setTimestamp(1, Timestamp.valueOf(order.getOrderDate()));
             statement.setInt(2, order.getGuest().getId());
             statement.setInt(3, order.getRoom().getId());
@@ -47,8 +48,8 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public void delete(Integer index) {
-        final String SQL_DELETE_QUARY = "UPDATE `Order`\n" + "SET `status` = " + OrderStatus.DISABLED.name() + "\n" + "WHERE `id` = ?;";
-        try (PreparedStatement statement = connectionManager.getStatment(SQL_DELETE_QUARY)) {
+        final String QUARY = QuaryDao.ORDER.getQuary(QuaryType.DELETE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
             statement.setInt(1, index);
             statement.execute();
         } catch (SQLException e) {
@@ -58,10 +59,8 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public void update(Order order) {
-        final String SQL_UPDATE_QUARY = "UPDATE `Order`\n"
-                + "SET `order_date` = ?, `guest_id` = ?, `room_id` = ?, `start_date` = ?, `end_date` = ?, `status` = ?, `price` = ?\n"
-                + "WHERE `id` = ?;";
-        try (PreparedStatement statement = connectionManager.getStatment(SQL_UPDATE_QUARY)) {
+        final String QUARY = QuaryDao.ORDER.getQuary(QuaryType.UPDATE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
             statement.setTimestamp(1, Timestamp.valueOf(order.getOrderDate()));
             statement.setInt(2, order.getGuest().getId());
             statement.setInt(3, order.getRoom().getId());
@@ -78,12 +77,9 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public List<Order> readAll() {
-        final String SQL_READ_ALL_QUARY = "SELECT *\n"
-                + "FROM `Order`\n"
-                + "INNER JOIN `Room` ON `room`.`id` = `Order`.`room_id`\n"
-                + "INNER JOIN `Guest` ON `guest`.`id` = `Order`.`guest_id`;";
+        final String QUARY = QuaryDao.ORDER.getQuary(QuaryType.READ_ALL);
         final List<Order> orderList = new ArrayList<>();
-        try (PreparedStatement statement = connectionManager.getStatment(SQL_READ_ALL_QUARY)) {
+        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
             final ResultSet result = statement.executeQuery();
             while (result.next()) {
                 orderList.add(createFromQuary(result));
@@ -96,12 +92,8 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public Order read(Integer index) {
-        final String SQL_READ_QUARY = "SELECT *\n"
-                + "FROM `Order`\n"
-                + "INNER JOIN `Room` ON `room`.`id` = `Order`.`room_id`\n"
-                + "INNER JOIN `Guest` ON `guest`.`id` = `Order`.`guest_id`\n"
-                + "WHERE `id` = ?;";
-        try (PreparedStatement statement = connectionManager.getStatment(SQL_READ_QUARY)) {
+        final String QUARY = QuaryDao.ORDER.getQuary(QuaryType.READ);
+        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();
             if (result.next()) {

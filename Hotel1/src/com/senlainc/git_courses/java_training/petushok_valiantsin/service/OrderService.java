@@ -135,9 +135,9 @@ public class OrderService implements IOrderService {
         myList.clear();
         try {
             for (int index : sortGuestByAlphabet()) {
-                myList.add(orderDao.readAll().stream()
+                orderDao.readAll().stream()
                         .filter(i -> i.getGuest().getId() == index)
-                        .findFirst().orElseThrow(EntityNotFoundException::new));
+                        .findFirst().ifPresent(myList::add);
             }
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("List is empty", e);

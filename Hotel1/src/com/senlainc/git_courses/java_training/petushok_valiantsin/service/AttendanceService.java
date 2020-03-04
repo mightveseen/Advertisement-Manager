@@ -26,18 +26,14 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     public void delete(int index) {
-        try {
-            attendanceDao.delete(index);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
-        }
+        attendanceDao.delete(index);
     }
 
     @Override
     public double getPrice(int index) {
         try {
             return attendanceDao.read(index).getPrice();
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
     }
@@ -46,7 +42,7 @@ public class AttendanceService implements IAttendanceService {
     public Attendance get(int index) {
         try {
             return attendanceDao.read(index);
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
     }
@@ -57,7 +53,7 @@ public class AttendanceService implements IAttendanceService {
             final Attendance attendance = attendanceDao.read(index);
             attendance.setPrice(price);
             attendanceDao.update(attendance);
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
     }

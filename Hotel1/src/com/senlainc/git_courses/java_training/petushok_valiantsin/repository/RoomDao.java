@@ -7,6 +7,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QuaryDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QuaryType;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.DaoException;
 
 import java.sql.PreparedStatement;
@@ -23,9 +25,8 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public Room create(Room room) {
-        final String SQL_CREATE_QUARY = "INSERT INTO `Room`(`number`, `classification`, `room_number`, `capacity`, `status`, `price`)\n"
-                + "VALUES (?, ?, ?, ?, ?, ?);";
-        try (PreparedStatement statement = connectionManager.getStatment(SQL_CREATE_QUARY)) {
+        final String QUARY = QuaryDao.ROOM.getQuary(QuaryType.CREATE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
             statement.setInt(1, room.getNumber());
             statement.setString(2, room.getClassification());
             statement.setShort(3, room.getRoomNumber());
@@ -41,8 +42,8 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public void delete(Integer index) {
-        final String SQL_DELETE_QUARY = "DELETE FROM `Room`\n" + "WHERE `id` = ?;";
-        try (PreparedStatement statement = connectionManager.getStatment(SQL_DELETE_QUARY)) {
+        final String QUARY = QuaryDao.ROOM.getQuary(QuaryType.DELETE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
             statement.setInt(1, index);
             statement.execute();
         } catch (SQLException e) {
@@ -52,10 +53,8 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public void update(Room room) {
-        final String SQL_UPDATE_QUARY = "UPDATE `Room`\n"
-                + "SET `number` = ?, `classification` = ?, `room_number` = ?, `capacity` = ?, `status` = ?, `price` = ?\n"
-                + "WHERE `id` = ?";
-        try (PreparedStatement statement = connectionManager.getStatment(SQL_UPDATE_QUARY)) {
+        final String QUARY = QuaryDao.ROOM.getQuary(QuaryType.UPDATE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
             statement.setInt(1, room.getNumber());
             statement.setString(2, room.getClassification());
             statement.setShort(3, room.getRoomNumber());
@@ -71,9 +70,9 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public List<Room> readAll() {
-        final String SQL_READ_ALL_QUARY = "SELECT *\n" + "FROM `Room`;";
+        final String QUARY = QuaryDao.ROOM.getQuary(QuaryType.READ_ALL);
         final List<Room> roomList = new ArrayList<>();
-        try (PreparedStatement statement = connectionManager.getStatment(SQL_READ_ALL_QUARY)) {
+        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
             final ResultSet result = statement.executeQuery();
             while (result.next()) {
                 final Room room = new Room(result.getInt(2), result.getString(3)
@@ -90,8 +89,8 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public Room read(Integer index) {
-        final String SQL_READ_QUARY = "SELECT *\n" + "FROM `Room`\n" + "WHERE `id` = ?;";
-        try (PreparedStatement statement = connectionManager.getStatment(SQL_READ_QUARY)) {
+        final String QUARY = QuaryDao.ROOM.getQuary(QuaryType.READ);
+        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();
             if (result.next()) {

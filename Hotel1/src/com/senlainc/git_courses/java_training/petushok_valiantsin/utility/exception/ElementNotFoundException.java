@@ -8,4 +8,12 @@ public class ElementNotFoundException extends RuntimeException {
     public ElementNotFoundException(String reason, Throwable stackTrace) {
         super(reason, stackTrace);
     }
+
+    public ElementNotFoundException(Throwable e) {
+        super(e);
+    }
+
+    public ElementNotFoundException() {
+        super();
+    }
 }
