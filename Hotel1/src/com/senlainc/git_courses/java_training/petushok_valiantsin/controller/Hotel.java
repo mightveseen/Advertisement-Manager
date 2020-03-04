@@ -118,9 +118,7 @@ public class Hotel {
 
     private <T> List<String> createStringList(List<T> list) {
         final List<String> stringList = new ArrayList<>();
-        for (T element : list) {
-            stringList.add(element.toString());
-        }
+        list.forEach(i -> stringList.add(i.toString()));
         return stringList;
     }
 }

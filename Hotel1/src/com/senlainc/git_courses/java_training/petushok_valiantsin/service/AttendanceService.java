@@ -35,24 +35,6 @@ public class AttendanceService implements IAttendanceService {
     }
 
     @Override
-    public double getPrice(int index) {
-        try {
-            return attendanceDao.read(index).getPrice();
-        } catch (ElementNotFoundException e) {
-            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
-        }
-    }
-
-    @Override
-    public Attendance get(int index) {
-        try {
-            return attendanceDao.read(index);
-        } catch (ElementNotFoundException e) {
-            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
-        }
-    }
-
-    @Override
     public void changePrice(int index, double price) {
         try {
             final Attendance attendance = attendanceDao.read(index);

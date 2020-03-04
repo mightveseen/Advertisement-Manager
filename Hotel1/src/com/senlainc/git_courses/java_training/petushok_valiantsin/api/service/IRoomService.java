@@ -12,8 +12,6 @@ public interface IRoomService {
 
     List<Room> getRoomList();
 
-    Room getRoom(int index);
-
     void changePrice(int index, double price);
 
     void changeStatus(int index, RoomStatus status);

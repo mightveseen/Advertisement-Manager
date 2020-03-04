@@ -53,15 +53,6 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public Room getRoom(int index) {
-        try {
-            return roomDao.read(index);
-        } catch (ElementNotFoundException e) {
-            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
-        }
-    }
-
-    @Override
     public void changePrice(int index, double price) {
         try {
             final Room room = roomDao.read(index);
@@ -91,15 +82,11 @@ public class RoomService implements IRoomService {
     @Override
     public List<Room> show(String parameter, List<Room> myList) {
         if (parameter.equals("free")) {
-            return showFreeRoom(myList);
+            return myList.stream()
+                    .filter(i -> i.getStatus().equals(RoomStatus.FREE))
+                    .collect(Collectors.toList());
         }
         return myList;
-    }
-
-    private List<Room> showFreeRoom(List<Room> myList) {
-        return myList.stream()
-                .filter(i -> i.getStatus().equals(RoomStatus.FREE))
-                .collect(Collectors.toList());
     }
 
     @Override

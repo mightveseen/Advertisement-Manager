@@ -93,9 +93,7 @@ public class OrderService implements IOrderService {
         final List<Room> roomList = roomDao.readAll().stream()
                 .filter(i -> i.getStatus().equals(RoomStatus.FREE))
                 .collect(Collectors.toList());
-        for (Order order : orderList) {
-            roomList.add(order.getRoom());
-        }
+        orderList.forEach(i -> roomList.add(i.getRoom()));
         return roomList;
     }
 
