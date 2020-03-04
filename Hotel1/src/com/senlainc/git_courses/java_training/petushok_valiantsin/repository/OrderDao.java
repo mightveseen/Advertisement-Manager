@@ -84,6 +84,7 @@ public class OrderDao implements IOrderDao {
             while (result.next()) {
                 orderList.add(createFromQuary(result));
             }
+            result.close();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -97,7 +98,9 @@ public class OrderDao implements IOrderDao {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();
             if (result.next()) {
-                return createFromQuary(result);
+                final Order order = createFromQuary(result);
+                result.close();
+                return order;
             }
             throw new DaoException();
         } catch (SQLException e) {

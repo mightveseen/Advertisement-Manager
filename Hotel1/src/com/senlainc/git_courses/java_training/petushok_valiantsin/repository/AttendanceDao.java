@@ -71,10 +71,11 @@ public class AttendanceDao implements IAttendanceDao {
             while (result.next()) {
                 attendanceList.add(createFromQuary(result));
             }
-            return attendanceList;
+            result.close();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+        return attendanceList;
     }
 
     @Override
@@ -84,7 +85,9 @@ public class AttendanceDao implements IAttendanceDao {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();
             if (result.next()) {
-                return createFromQuary(result);
+                final Attendance attendance = createFromQuary(result);
+                result.close();
+                return attendance;
             }
             throw new ElementNotFoundException();
         } catch (SQLException e) {

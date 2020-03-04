@@ -73,6 +73,7 @@ public class GuestDao implements IGuestDao {
             while (result.next()) {
                 guestList.add(createFromQuary(result));
             }
+            result.close();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -86,7 +87,9 @@ public class GuestDao implements IGuestDao {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();
             if (result.next()) {
-                return createFromQuary(result);
+                final Guest guest = createFromQuary(result);
+                result.close();
+                return guest;
             }
             throw new DaoException();
         } catch (SQLException e) {

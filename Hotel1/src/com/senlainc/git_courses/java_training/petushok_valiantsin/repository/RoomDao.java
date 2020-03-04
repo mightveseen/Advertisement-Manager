@@ -77,6 +77,7 @@ public class RoomDao implements IRoomDao {
             while (result.next()) {
                 roomList.add(createFromQuary(result));
             }
+            result.close();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -90,7 +91,9 @@ public class RoomDao implements IRoomDao {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();
             if (result.next()) {
-                return createFromQuary(result);
+                final Room room = createFromQuary(result);
+                result.close();
+                return room;
             }
             throw new DaoException();
         } catch (SQLException e) {
