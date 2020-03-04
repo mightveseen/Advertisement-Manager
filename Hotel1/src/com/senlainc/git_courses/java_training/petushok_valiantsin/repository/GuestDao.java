@@ -23,7 +23,8 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public Guest create(Guest guest) {
-        final String SQL_CREATE_QUARY = "INSERT INTO `Guest`(`first_name`, `second_name`, `birthday`, `info_contact`)\n" + "VALUES (?, ?, ?, ?);";
+        final String SQL_CREATE_QUARY = "INSERT INTO `Guest`(`first_name`, `second_name`, `birthday`, `info_contact`)\n"
+                + "VALUES (?, ?, ?, ?);";
         try (PreparedStatement statement = connectionManager.getStatment(SQL_CREATE_QUARY)) {
             statement.setString(1, guest.getFirstName());
             statement.setString(2, guest.getSecondName());

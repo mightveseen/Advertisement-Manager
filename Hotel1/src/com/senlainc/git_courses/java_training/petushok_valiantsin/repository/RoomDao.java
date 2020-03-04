@@ -23,7 +23,8 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public Room create(Room room) {
-        final String SQL_CREATE_QUARY = "INSERT INTO `Room`(`number`, `classification`, `room_number`, `capacity`, `status`, `price`)\n" + "VALUES (?, ?, ?, ?, ?, ?);";
+        final String SQL_CREATE_QUARY = "INSERT INTO `Room`(`number`, `classification`, `room_number`, `capacity`, `status`, `price`)\n"
+                + "VALUES (?, ?, ?, ?, ?, ?);";
         try (PreparedStatement statement = connectionManager.getStatment(SQL_CREATE_QUARY)) {
             statement.setInt(1, room.getNumber());
             statement.setString(2, room.getClassification());
