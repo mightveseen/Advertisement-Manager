@@ -1,31 +1,13 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.adapter.LocalDateAdapter;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "guest")
 public class Guest implements Cloneable {
-    @XmlElement(name = "id")
     private int id;
-    @XmlElement(name = "firstName")
     private String firstName;
-    @XmlElement(name = "secondName")
     private String secondName;
-    @XmlElement(name = "birthday")
-    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
     private LocalDate birthday;
-    @XmlElement(name = "infoContact")
     private String infoContact;
-
-    public Guest() {
-    }
 
     public Guest(String firstName, String secondName, LocalDate birthday, String infoContact) {
         this.firstName = firstName;

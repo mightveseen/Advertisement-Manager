@@ -11,7 +11,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.service.GuestS
 import com.senlainc.git_courses.java_training.petushok_valiantsin.service.OrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.service.RoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization;
 
 public class LoadData {
     private LoadData() {
@@ -19,8 +18,8 @@ public class LoadData {
     }
 
     public static void execute() {
-        /** Serialization initialization */
-        DependencyController.getInstance().setDependency(Serialization.class);
+        /** Create connection to DataBase */
+        DependencyController.getInstance().setDependency(ConnectionManager.class);
         /** DAO initialization */
         DependencyController.getInstance().setDependency(AttendanceDao.class);
         DependencyController.getInstance().setDependency(GuestDao.class);
@@ -31,7 +30,6 @@ public class LoadData {
         DependencyController.getInstance().setDependency(RoomService.class);
         DependencyController.getInstance().setDependency(GuestService.class);
         DependencyController.getInstance().setDependency(OrderService.class);
-        DependencyController.getInstance().setDependency(ConnectionManager.class);
         /** Controller initialization */
         DependencyController.getInstance().setDependency(Hotel.class);
         /** Load data from XML files */

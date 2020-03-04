@@ -6,29 +6,15 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @DependencyClass
 @DependencyPrimary
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "orderDao")
 public class OrderDao implements IOrderDao {
-    private static final Logger LOGGER = Logger.getLogger(OrderDao.class.getName());
-    @DependencyComponent
-    private static Serialization serialization;
     @DependencyComponent
     private ConnectionManager connectionManager;
-    @XmlElementWrapper(name = "orderList")
-    @XmlElement(name = "order")
     private List<Order> orderList;
 
     @Override

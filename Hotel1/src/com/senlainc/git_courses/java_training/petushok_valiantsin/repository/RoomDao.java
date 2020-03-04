@@ -5,61 +5,101 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.DaoException;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @DependencyClass
 @DependencyPrimary
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "roomDao")
 public class RoomDao implements IRoomDao {
-    private static final Logger LOGGER = Logger.getLogger(RoomDao.class.getName());
-    @DependencyComponent
-    private static Serialization serialization;
     @DependencyComponent
     private ConnectionManager connectionManager;
-    @XmlElementWrapper(name = "roomList")
-    @XmlElement(name = "room")
-    private List<Room> roomList;
 
     @Override
     public void create(Room room) {
-        room.setId(roomList.size() + 1);
-        roomList.add(room);
+        final String SQL_CREATE_QUARY = "INSERT INTO `Room`(`number`, `classification`, `room_number`, `capacity`, `status`, `price`) VALUES (?, ?, ?, ?, ?, ?);";
+        try (PreparedStatement statement = connectionManager.getStatment(SQL_CREATE_QUARY)) {
+            statement.setInt(1, room.getNumber());
+            statement.setString(2, room.getClassification());
+            statement.setShort(3, room.getRoomNumber());
+            statement.setShort(4, room.getCapacity());
+            statement.setString(5, room.getStatus().toString());
+            statement.setDouble(6, room.getPrice());
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
     public void delete(Integer index) {
-        roomList.remove(roomList.stream()
-                .filter(i -> i.getId() == index)
-                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
+        final String SQL_DELETE_QUARY = "DELETE FROM `Room` WHERE `id` = ?;";
+        try (PreparedStatement statement = connectionManager.getStatment(SQL_DELETE_QUARY)) {
+            statement.setInt(1, index);
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
     public void update(Room room) {
-        roomList.set(roomList.indexOf(roomList.stream()
-                .filter(i -> i.getId() == room.getId())
-                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), room);
+        final String SQL_UPDATE_QUARY = "UPDATE `Room` SET `number` = ?, `classification` = ?, `room_number` = ?, `capacity` = ?, `status` = ?, `price` = ? WHERE `id` = ?";
+        try (PreparedStatement statement = connectionManager.getStatment(SQL_UPDATE_QUARY)) {
+            statement.setInt(1, room.getNumber());
+            statement.setString(2, room.getClassification());
+            statement.setShort(3, room.getRoomNumber());
+            statement.setShort(4, room.getCapacity());
+            statement.setString(5, room.getStatus().name());
+            statement.setDouble(6, room.getPrice());
+            statement.setInt(7, room.getId());
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
     public List<Room> readAll() {
-        return new ArrayList<>(roomList);
+        final String SQL_READ_ALL_QUARY = "SELECT * FROM `Room`;";
+        final List<Room> roomList = new ArrayList<>();
+        try (PreparedStatement statement = connectionManager.getStatment(SQL_READ_ALL_QUARY)) {
+            final ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                final Room room = new Room(result.getInt(2), result.getString(3)
+                        , result.getShort(4), result.getShort(5)
+                        , RoomStatus.valueOf(result.getString(6)), result.getDouble(7));
+                room.setId(result.getInt(1));
+                roomList.add(room);
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return roomList;
     }
 
     @Override
     public Room read(Integer index) {
-        return roomList.stream()
-                .filter(i -> i.getId() == index)
-                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
+        final String SQL_READ_QUARY = "SELECT * FROM `Room` WHERE `id` = ?;";
+        try (PreparedStatement statement = connectionManager.getStatment(SQL_READ_QUARY)) {
+            statement.setInt(1, index);
+            final ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                final Room room = new Room(result.getInt(2), result.getString(3)
+                        , result.getShort(4), result.getShort(5)
+                        , RoomStatus.valueOf(result.getString(6)), result.getDouble(7));
+                room.setId(result.getInt(1));
+                return room;
+            }
+            throw new DaoException();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 }

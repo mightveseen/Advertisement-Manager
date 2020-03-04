@@ -1,49 +1,23 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.adapter.LocalDateAdapter;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.adapter.LocalDateTimeAdapter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "order")
 public class Order implements Cloneable {
-    @XmlElement(name = "id")
     private int id;
-    @XmlElement(name = "orderDate")
-    @XmlJavaTypeAdapter(value = LocalDateTimeAdapter.class)
     private LocalDateTime orderDate;
-    @XmlElement(name = "guest")
     private Guest guest;
-    @XmlElement(name = "room")
     private Room room;
-    @XmlElement(name = "startDate")
-    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
     private LocalDate startDate;
-    @XmlElementWrapper(name = "attendanceList")
-    @XmlElement(name = "attendanceIndex")
     private List<Integer> attendanceIndex = new LinkedList<>();
-    @XmlElement(name = "endDate")
-    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
     private LocalDate endDate;
-    @XmlElement(name = "status")
     private OrderStatus status;
-    @XmlElement(name = "price")
     private double price;
-
-    public Order() {
-    }
 
     public Order(Guest guest, Room room, LocalDate endDate, double price) {
         this.orderDate = LocalDateTime.now();

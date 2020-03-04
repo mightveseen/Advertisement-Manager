@@ -54,6 +54,7 @@ public class GuestDao implements IGuestDao {
             statement.setString(2, guest.getSecondName());
             statement.setDate(3, Date.valueOf(guest.getBirthday()));
             statement.setString(4, guest.getInfoContact());
+            statement.setInt(5, guest.getId());
             statement.execute();
         } catch (SQLException e) {
             throw new DaoException(e);

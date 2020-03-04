@@ -51,7 +51,7 @@ public class AttendanceDao implements IAttendanceDao {
             statement.setString(1, attendance.getName());
             statement.setString(2, attendance.getSection());
             statement.setDouble(3, attendance.getPrice());
-            statement.setDouble(4, attendance.getId());
+            statement.setInt(4, attendance.getId());
             statement.execute();
         } catch (SQLException e) {
             throw new DaoException(e);

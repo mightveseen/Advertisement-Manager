@@ -1,26 +1,12 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "attendance")
 public class Attendance implements Cloneable, Serializable {
-    @XmlElement(name = "id")
     private int id;
-    @XmlElement(name = "name")
     private String name;
-    @XmlElement(name = "section")
     private String section;
-    @XmlElement(name = "price")
     private double price;
-
-    public Attendance() {
-
-    }
 
     public Attendance(String name, String section, double price) {
         this.name = name;
