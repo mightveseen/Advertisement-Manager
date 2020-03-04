@@ -6,60 +6,91 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.DaoException;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @DependencyClass
 @DependencyPrimary
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "guestDao")
 public class GuestDao implements IGuestDao {
-    private static final Logger LOGGER = Logger.getLogger(GuestDao.class.getName());
-    @DependencyComponent
-    private static Serialization serialization;
     @DependencyComponent
     private ConnectionManager connectionManager;
-    @XmlElementWrapper(name = "guestList")
-    @XmlElement(name = "guest")
-    private List<Guest> guestList;
 
     @Override
     public void create(Guest guest) {
-        guest.setId(guestList.size() + 1);
-        guestList.add(guest);
+        final String SQL_CREATE_QUARY = "INSERT INTO `Guest`(`first_name`, `second_name`, `birthday`, `info_contact`) VALUES (?, ?, ?, ?);";
+        try (PreparedStatement statement = connectionManager.getStatment(SQL_CREATE_QUARY)) {
+            statement.setString(1, guest.getFirstName());
+            statement.setString(2, guest.getSecondName());
+            statement.setDate(3, Date.valueOf(guest.getBirthday()));
+            statement.setString(4, guest.getInfoContact());
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
     public void delete(Integer index) {
-        guestList.remove(guestList.stream()
-                .filter(i -> i.getId() == index)
-                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
+        final String SQL_DELETE_QUARY = "DELETE FROM `Guest` WHERE `id` = ?;";
+        try (PreparedStatement statement = connectionManager.getStatment(SQL_DELETE_QUARY)) {
+            statement.setInt(1, index);
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
     public void update(Guest guest) {
-        guestList.set(guestList.indexOf(guestList.stream()
-                .filter(i -> i.getId() == guest.getId())
-                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), guest);
+        final String SQL_UPDATE_QUARY = "UPDATE `Guest` SET `first_name` = ?, `second_name` = ?, `birthday` = ?, `info_contact` = ? WHERE `id` = ?;";
+        try (PreparedStatement statement = connectionManager.getStatment(SQL_UPDATE_QUARY)) {
+            statement.setString(1, guest.getFirstName());
+            statement.setString(2, guest.getSecondName());
+            statement.setDate(3, Date.valueOf(guest.getBirthday()));
+            statement.setString(4, guest.getInfoContact());
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
     public List<Guest> readAll() {
-        return new ArrayList<>(guestList);
+        final String SQL_READ_ALL_QUARY = "SELECT * FROM `Guest`;";
+        final List<Guest> guestList = new ArrayList<>();
+        try (PreparedStatement statement = connectionManager.getStatment(SQL_READ_ALL_QUARY)) {
+            final ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                final Guest guest = new Guest(result.getString(2), result.getString(3), result.getDate(4).toLocalDate(), result.getString(5));
+                guest.setId(result.getInt(1));
+                guestList.add(guest);
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return guestList;
     }
 
     @Override
     public Guest read(Integer index) {
-        return guestList.stream()
-                .filter(i -> i.getId() == index)
-                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
+        final String SQL_READ_QUARY = "SELECT * FROM `Guest` WHERE `id` = ?;";
+        try (PreparedStatement statement = connectionManager.getStatment(SQL_READ_QUARY)) {
+            statement.setInt(1, index);
+            final ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                final Guest guest = new Guest(result.getString(2), result.getString(3), result.getDate(4).toLocalDate(), result.getString(5));
+                guest.setId(result.getInt(1));
+                return guest;
+            }
+            throw new DaoException();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 }

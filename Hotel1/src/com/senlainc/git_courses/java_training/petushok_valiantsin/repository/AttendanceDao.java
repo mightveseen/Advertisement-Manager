@@ -7,7 +7,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.DaoException;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,9 +17,6 @@ import java.util.List;
 @DependencyClass
 @DependencyPrimary
 public class AttendanceDao implements IAttendanceDao {
-    private static final String ERROR = "Could't execute SQL quary";
-    @DependencyComponent
-    private static Serialization serialization;
     @DependencyComponent
     private ConnectionManager connectionManager;
 
@@ -33,7 +29,7 @@ public class AttendanceDao implements IAttendanceDao {
             statement.setDouble(3, attendance.getPrice());
             statement.execute();
         } catch (SQLException e) {
-            throw new DaoException(ERROR, e);
+            throw new DaoException(e);
         }
     }
 
@@ -44,7 +40,7 @@ public class AttendanceDao implements IAttendanceDao {
             statement.setInt(1, index);
             statement.execute();
         } catch (SQLException e) {
-            throw new DaoException(ERROR, e);
+            throw new DaoException(e);
         }
     }
 
@@ -58,7 +54,7 @@ public class AttendanceDao implements IAttendanceDao {
             statement.setDouble(4, attendance.getId());
             statement.execute();
         } catch (SQLException e) {
-            throw new DaoException(ERROR, e);
+            throw new DaoException(e);
         }
     }
 
@@ -74,7 +70,7 @@ public class AttendanceDao implements IAttendanceDao {
                 attendanceList.add(attendance);
             }
         } catch (SQLException e) {
-            throw new DaoException(ERROR, e);
+            throw new DaoException(e);
         }
         return attendanceList;
     }
@@ -90,9 +86,9 @@ public class AttendanceDao implements IAttendanceDao {
                 attendance.setId(result.getInt(1));
                 return attendance;
             }
-            throw new DaoException(ERROR);
+            throw new DaoException();
         } catch (SQLException e) {
-            throw new DaoException(ERROR, e);
+            throw new DaoException(e);
         }
     }
 }

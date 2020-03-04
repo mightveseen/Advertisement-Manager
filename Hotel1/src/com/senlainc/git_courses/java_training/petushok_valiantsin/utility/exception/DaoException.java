@@ -5,7 +5,11 @@ public class DaoException extends RuntimeException {
         super(reason);
     }
 
-    public DaoException(String reason, Throwable stackTrace) {
-        super(reason, stackTrace);
+    public DaoException(Throwable stackTrace) {
+        super(stackTrace);
+    }
+
+    public DaoException() {
+        super();
     }
 }
