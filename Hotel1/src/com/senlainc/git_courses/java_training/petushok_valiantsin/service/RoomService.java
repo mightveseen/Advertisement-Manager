@@ -7,6 +7,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.RoomConfig;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotAvailableException;
@@ -19,11 +20,13 @@ import java.util.stream.Collectors;
 @DependencyClass
 @DependencyPrimary
 public class RoomService implements IRoomService {
+    private static final String ELEMENT_NOT_FOUND = "Room with index: %d dont exists.";
     @DependencyComponent
     private static RoomConfig roomConfig;
     @DependencyComponent
     private IRoomDao roomDao;
-    private static final String ELEMENT_NOT_FOUND = "Room with index: %d dont exists.";
+    @DependencyComponent
+    private ConnectionManager connectionManager;
 
     @Override
     public void add(Room room) {
@@ -31,13 +34,15 @@ public class RoomService implements IRoomService {
             throw new EntityNotAvailableException(String.format("Room with number: %d already exists.", room.getNumber()));
         }
         roomDao.create(room);
+        connectionManager.commit();
     }
 
     @Override
     public void delete(int index) {
         try {
             roomDao.delete(index);
-        } catch (ArrayIndexOutOfBoundsException e) {
+            connectionManager.commit();
+        } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
     }
@@ -51,7 +56,7 @@ public class RoomService implements IRoomService {
     public Room getRoom(int index) {
         try {
             return roomDao.read(index);
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
     }
@@ -62,7 +67,8 @@ public class RoomService implements IRoomService {
             final Room room = roomDao.read(index);
             room.setPrice(price);
             roomDao.update(room);
-        } catch (ArrayIndexOutOfBoundsException e) {
+            connectionManager.commit();
+        } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
     }
@@ -76,7 +82,8 @@ public class RoomService implements IRoomService {
             final Room room = roomDao.read(index);
             room.setStatus(status);
             roomDao.update(room);
-        } catch (ArrayIndexOutOfBoundsException e) {
+            connectionManager.commit();
+        } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
     }

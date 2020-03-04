@@ -13,6 +13,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_c
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QuaryDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QuaryType;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.DaoException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -102,7 +103,7 @@ public class OrderDao implements IOrderDao {
                 result.close();
                 return order;
             }
-            throw new DaoException();
+            throw new ElementNotFoundException();
         } catch (SQLException e) {
             throw new DaoException(e);
         }

@@ -15,6 +15,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotAvailableException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotFoundException;
@@ -40,6 +41,8 @@ public class OrderService implements IOrderService {
     private IAttendanceDao attendanceDao;
     @DependencyComponent
     private IRoomService roomService;
+    @DependencyComponent
+    private ConnectionManager connectionManager;
 
     @Override
     public void add(int guestIndex, int roomIndex, LocalDate endDate) {
@@ -55,7 +58,7 @@ public class OrderService implements IOrderService {
         try {
             orderDao.read(index).setStatus(OrderStatus.DISABLED);
             roomService.changeStatus(index, RoomStatus.FREE);
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException("Order with index: " + index + " dont exists.", e);
         }
     }
@@ -106,7 +109,8 @@ public class OrderService implements IOrderService {
             final double price = order.getPrice() + attendanceDao.read(attendanceIndex).getPrice();
             order.setPrice(price);
             orderDao.update(order);
-        } catch (ArrayIndexOutOfBoundsException e) {
+            connectionManager.commit();
+        } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException("Failed to add attendance", e);
         }
     }

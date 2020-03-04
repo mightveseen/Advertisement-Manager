@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,6 +33,15 @@ public class ConnectionManager {
         ConfigController.getInstance().setConfig(ConnectionManager.class);
         try {
             this.connection = DriverManager.getConnection(String.format("jdbc:mysql://%s:%s/%s", IP, PORT, BASE_NAME), USER, PASSWORD);
+            setAutoCommit(false);
+        } catch (SQLException e) {
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
+        }
+    }
+
+    public void setAutoCommit(Boolean condition) {
+        try {
+            this.connection.setAutoCommit(condition);
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
@@ -61,9 +71,18 @@ public class ConnectionManager {
         }
     }
 
-    public void setSavepoint(String name) {
+    public Savepoint setSavepoint(String name) {
         try {
-            this.connection.setSavepoint(name);
+            return this.connection.setSavepoint(name);
+        } catch (SQLException e) {
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
+        }
+        return null;
+    }
+
+    public void releaseSavepoint(Savepoint savepoint) {
+        try {
+            this.connection.releaseSavepoint(savepoint);
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
         }

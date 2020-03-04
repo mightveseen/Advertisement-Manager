@@ -6,6 +6,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.Sort;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.SortParameter;
@@ -15,18 +16,22 @@ import java.util.List;
 @DependencyClass
 @DependencyPrimary
 public class AttendanceService implements IAttendanceService {
+    private static final String ELEMENT_NOT_FOUND = "Attendance with index: %d dont exists.";
     @DependencyComponent
     private IAttendanceDao attendanceDao;
-    private static final String ELEMENT_NOT_FOUND = "Attendance with index: %d dont exists.";
+    @DependencyComponent
+    private ConnectionManager connectionManager;
 
     @Override
     public void add(String name, String section, double price) {
         attendanceDao.create(new Attendance(name, section, price));
+        connectionManager.commit();
     }
 
     @Override
     public void delete(int index) {
         attendanceDao.delete(index);
+        connectionManager.commit();
     }
 
     @Override
@@ -53,6 +58,7 @@ public class AttendanceService implements IAttendanceService {
             final Attendance attendance = attendanceDao.read(index);
             attendance.setPrice(price);
             attendanceDao.update(attendance);
+            connectionManager.commit();
         } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
