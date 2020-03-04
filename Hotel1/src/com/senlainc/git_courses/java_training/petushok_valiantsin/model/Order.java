@@ -29,6 +29,16 @@ public class Order implements Cloneable {
         this.price = price;
     }
 
+    public Order(LocalDateTime orderDate, Guest guest, Room room, LocalDate startDate, LocalDate endDate, OrderStatus status, double price) {
+        this.orderDate = orderDate;
+        this.guest = guest;
+        this.room = room;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = status;
+        this.price = price;
+    }
+
     @Override
     public Order clone() throws CloneNotSupportedException {
         return (Order) super.clone();
@@ -93,11 +103,11 @@ public class Order implements Cloneable {
     public String toString() {
         return "Order index: " + this.id + "\n" +
                 "Order date: " + this.orderDate.format(DateTimeFormatter.ofPattern("HH:mm/yyyy-MM-dd")) + "\n" +
-                this.guest + "\n" +
-                this.room + "\nStart date: " +
-                this.startDate + "\nEnd date: " +
-                this.endDate + "\nTotal amount: " +
-                this.price + "\nStatus: " +
-                this.status.toString();
+                "Guest: " + this.guest + "\n" +
+                "Room: " + this.room + "\n" +
+                "Start date: " + this.startDate + "\t" +
+                "End date: " + this.endDate + "\n" +
+                "Total amount: " + this.price + "\t" +
+                "Status: " + this.status.toString();
     }
 }

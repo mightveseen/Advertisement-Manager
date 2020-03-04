@@ -4,9 +4,19 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.DaoException;
 
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,40 +25,104 @@ import java.util.List;
 public class OrderDao implements IOrderDao {
     @DependencyComponent
     private ConnectionManager connectionManager;
-    private List<Order> orderList;
 
     @Override
     public Order create(Order order) {
-        final String SQL_CREATE_QUARY = "SELECT *\n"
-                + "FROM `Order`\n"
-                + "INNER JOIN `Room` ON `room`.`id` = `Order`.`room_id`\n"
-                + "INNER JOIN `Guest` ON `guest`.`id` = `Order`.`guest_id`;";
-        return null;
+        final String SQL_CREATE_QUARY = "INSERT INTO `Order`(`order_date`, `guest_id`, `room_id`, `start_date`, `end_date`, `status`, `price`)\n"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?);";
+        try (PreparedStatement statement = connectionManager.getStatment(SQL_CREATE_QUARY)) {
+            statement.setTimestamp(1, Timestamp.valueOf(order.getOrderDate()));
+            statement.setInt(2, order.getGuest().getId());
+            statement.setInt(3, order.getRoom().getId());
+            statement.setDate(4, Date.valueOf(order.getStartDate()));
+            statement.setDate(5, Date.valueOf(order.getEndDate()));
+            statement.setString(6, order.getStatus().name());
+            statement.setDouble(7, order.getPrice());
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return order;
     }
 
     @Override
     public void delete(Integer index) {
-        orderList.remove(orderList.stream()
-                .filter(i -> i.getId() == index)
-                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
+        final String SQL_DELETE_QUARY = "UPDATE `Order`\n" + "SET `status` = " + OrderStatus.DISABLED.name() + "\n" + "WHERE `id` = ?;";
+        try (PreparedStatement statement = connectionManager.getStatment(SQL_DELETE_QUARY)) {
+            statement.setInt(1, index);
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
     public void update(Order order) {
-        orderList.set(orderList.indexOf(orderList.stream()
-                .filter(i -> i.getId() == order.getId())
-                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), order);
+        final String SQL_UPDATE_QUARY = "UPDATE `Order`\n"
+                + "SET `order_date` = ?, `guest_id` = ?, `room_id` = ?, `start_date` = ?, `end_date` = ?, `status` = ?, `price` = ?\n"
+                + "WHERE `id` = ?;";
+        try (PreparedStatement statement = connectionManager.getStatment(SQL_UPDATE_QUARY)) {
+            statement.setTimestamp(1, Timestamp.valueOf(order.getOrderDate()));
+            statement.setInt(2, order.getGuest().getId());
+            statement.setInt(3, order.getRoom().getId());
+            statement.setDate(4, Date.valueOf(order.getStartDate()));
+            statement.setDate(5, Date.valueOf(order.getEndDate()));
+            statement.setString(6, order.getStatus().name());
+            statement.setDouble(7, order.getPrice());
+            statement.setInt(8, order.getId());
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
     public List<Order> readAll() {
-        return new ArrayList<>(orderList);
+        final String SQL_READ_ALL_QUARY = "SELECT *\n"
+                + "FROM `Order`\n"
+                + "INNER JOIN `Room` ON `room`.`id` = `Order`.`room_id`\n"
+                + "INNER JOIN `Guest` ON `guest`.`id` = `Order`.`guest_id`;";
+        final List<Order> orderList = new ArrayList<>();
+        try (PreparedStatement statement = connectionManager.getStatment(SQL_READ_ALL_QUARY)) {
+            final ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                orderList.add(createFromQuary(result));
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return orderList;
     }
 
     @Override
     public Order read(Integer index) {
-        return orderList.stream()
-                .filter(i -> i.getId() == index)
-                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
+        final String SQL_READ_QUARY = "SELECT *\n"
+                + "FROM `Order`\n"
+                + "INNER JOIN `Room` ON `room`.`id` = `Order`.`room_id`\n"
+                + "INNER JOIN `Guest` ON `guest`.`id` = `Order`.`guest_id`\n"
+                + "WHERE `id` = ?;";
+        try (PreparedStatement statement = connectionManager.getStatment(SQL_READ_QUARY)) {
+            statement.setInt(1, index);
+            final ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                return createFromQuary(result);
+            }
+            throw new DaoException();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    private Order createFromQuary(ResultSet result) throws SQLException {
+        final Room room = new Room(result.getInt(10), result.getString(11), result.getShort(12)
+                , result.getShort(13), RoomStatus.valueOf(result.getString(14)), result.getDouble(15));
+        room.setId(result.getInt(9));
+        final Guest guest = new Guest(result.getString(17), result.getString(18), result.getDate(19).toLocalDate()
+                , result.getString(20));
+        guest.setId(result.getInt(16));
+        final Order order = new Order(result.getTimestamp(2).toLocalDateTime(), guest, room, result.getDate(5).toLocalDate()
+                , result.getDate(6).toLocalDate(), OrderStatus.valueOf(result.getString(7)), result.getDouble(8));
+        order.setId(result.getInt(1));
+        return order;
     }
 }
