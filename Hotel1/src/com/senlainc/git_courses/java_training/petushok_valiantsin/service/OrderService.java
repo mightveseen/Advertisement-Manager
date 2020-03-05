@@ -23,7 +23,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.S
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.SortParameter;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,24 +59,20 @@ public class OrderService implements IOrderService {
             final Order order = orderDao.read(index);
             order.setStatus(OrderStatus.DISABLED);
             orderDao.update(order);
-            roomService.changeStatus(index, RoomStatus.FREE);
+            roomService.changeStatus(order.getRoom().getId(), RoomStatus.FREE);
         } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException("Order with index: " + index + " dont exists.", e);
         }
     }
 
     @Override
-    public List<Order> show() {
+    public List<Order> getOrderList() {
         return orderDao.readAll();
     }
 
     @Override
     public List<Room> showGuestRoom(int index) {
-        final List<Room> guestRoomList = new ArrayList<>();
-        orderDao.readAll().stream()
-                .filter(i -> i.getGuest().getId() == index).limit(3)
-                .forEach(i -> guestRoomList.add(i.getRoom()));
-        return guestRoomList;
+        return orderDao.readLastRoom(index);
     }
 
     @Override

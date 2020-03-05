@@ -12,4 +12,8 @@ public class DaoException extends RuntimeException {
     public DaoException() {
         super();
     }
+
+    public DaoException(String message, Throwable stackTrace) {
+        super(message, stackTrace);
+    }
 }

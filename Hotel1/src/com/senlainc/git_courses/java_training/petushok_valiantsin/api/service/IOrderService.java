@@ -12,7 +12,7 @@ public interface IOrderService {
 
     void delete(int index);
 
-    List<Order> show();
+    List<Order> getOrderList();
 
     List<Room> showGuestRoom(int index);
 

@@ -40,21 +40,24 @@ public class QueryConst {
      */
     protected static final String ORDER_CREATE = "INSERT INTO `Order`(`order_date`, `guest_id`, `room_id`, `start_date`, `end_date`, `status`, `price`)"
             + "VALUES (?, ?, ?, ?, ?, ?, ?);";
+    protected static final String ORDER_ADD_ATTENDANCE = "INSERT INTO `OrderAttendance`(`order_id`, `attendance_id`)" +
+            "VALUES (?, ?);";
     protected static final String ORDER_DELETE = "UPDATE `Order` SET `status` = 'DISABLED' WHERE `id` = ?;";
     protected static final String ORDER_UPDATE = "UPDATE `Order` SET `guest_id` = ?, `room_id` = ?, `end_date` = ?, `price` = ?"
             + "WHERE `id` = ?;";
     protected static final String ORDER_READ_ALL = "SELECT * FROM `Order`"
-            + "INNER JOIN `Room` ON `room`.`id` = `Order`.`room_id`"
-            + "INNER JOIN `Guest` ON `guest`.`id` = `Order`.`guest_id`;";
+            + "INNER JOIN `Room` ON `Room`.`id` = `Order`.`room_id`"
+            + "INNER JOIN `Guest` ON `Guest`.`id` = `Order`.`guest_id`;";
     protected static final String ORDER_READ = "SELECT * FROM `Order`"
-            + "INNER JOIN `Room` ON `room`.`id` = `Order`.`room_id`"
-            + "INNER JOIN `Guest` ON `guest`.`id` = `Order`.`guest_id`"
+            + "INNER JOIN `Room` ON `Room`.`id` = `Order`.`room_id`"
+            + "INNER JOIN `Guest` ON `Guest`.`id` = `Order`.`guest_id`"
             + "WHERE `Order`.`id` = ?;";
-    protected static final String READ_ORDER_ATTENDANCE = "SELECT `Attendance`.`id`, `Attendance`.`name`, `Attendance`.`section`, `Attendance`.`price` FROM `Attendance`" +
-            "INNER JOIN `OrderAttendance` ON `OrderAttendance`.`attendance_id` = `Attendance`.`id`" +
-            "WHERE `OrderAttendance`.`order_id` = ?;";
-    protected static final String ADD_ORDER_ATTENDANCE = "INSERT INTO `OrderAttendance`(`order_id`, `attendance_id`)" +
-            "VALUES (?, ?);";
+    protected static final String ORDER_READ_ATTENDANCE = "SELECT `Attendance`.`id`, `Attendance`.`name`, `Attendance`.`section`, `Attendance`.`price` FROM `Attendance`"
+            + "INNER JOIN `OrderAttendance` ON `OrderAttendance`.`attendance_id` = `Attendance`.`id`"
+            + "WHERE `OrderAttendance`.`order_id` = ?;";
+    protected static final String ORDER_READ_LAST_ROOM = "SELECT `Room`.`id`, `number`, `classification`, `room_number`, `capacity`, `Room`.`status`, `Room`.`price`, `Order`.`order_date`"
+            + "FROM `Room` INNER JOIN `Order` ON `Order`.`room_id` = `Room`.`id` WHERE `Order`.`guest_id` = ? ORDER BY `Order`.`order_date` DESC LIMIT 3;";
+
 
     private QueryConst() {
         throw new IllegalStateException("Utility class");

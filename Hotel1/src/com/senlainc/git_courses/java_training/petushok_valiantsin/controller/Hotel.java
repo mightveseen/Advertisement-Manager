@@ -97,7 +97,7 @@ public class Hotel {
     }
 
     public List<String> showOrder() {
-        return createStringList(orderService.show());
+        return createStringList(orderService.getOrderList());
     }
 
     public List<String> showAfterDate(LocalDate freeDate) {

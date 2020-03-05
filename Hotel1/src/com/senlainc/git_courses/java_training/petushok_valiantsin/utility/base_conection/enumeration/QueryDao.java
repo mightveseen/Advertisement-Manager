@@ -68,6 +68,8 @@ public enum QueryDao {
             switch (type) {
                 case CREATE:
                     return QueryConst.ORDER_CREATE;
+                case ADD_ORDER_ATTENDANCE:
+                    return QueryConst.ORDER_ADD_ATTENDANCE;
                 case DELETE:
                     return QueryConst.ORDER_DELETE;
                 case UPDATE:
@@ -77,9 +79,9 @@ public enum QueryDao {
                 case READ:
                     return QueryConst.ORDER_READ;
                 case READ_ORDER_ATTENDANCE:
-                    return QueryConst.READ_ORDER_ATTENDANCE;
-                case ADD_ORDER_ATTENDANCE:
-                    return QueryConst.ADD_ORDER_ATTENDANCE;
+                    return QueryConst.ORDER_READ_ATTENDANCE;
+                case READ_LAST_ROOM:
+                    return QueryConst.ORDER_READ_LAST_ROOM;
                 default:
                     return "";
             }

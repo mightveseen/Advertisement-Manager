@@ -102,6 +102,26 @@ public class OrderDao implements IOrderDao {
     }
 
     @Override
+    public List<Room> readLastRoom(Integer index) {
+        final String QUERY = QueryDao.ORDER.getQuery(QueryType.READ_LAST_ROOM);
+        final List<Room> roomList = new ArrayList<>();
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
+            statement.setInt(1, index);
+            final ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                final Room room = new Room(result.getInt("number"), result.getString("classification"), result.getShort("room_number")
+                        , result.getShort("capacity"), RoomStatus.valueOf(result.getString("status")), result.getDouble("price"));
+                room.setId(result.getInt("id"));
+                roomList.add(room);
+            }
+            result.close();
+        } catch (SQLException e) {
+            throw new DaoException();
+        }
+        return roomList;
+    }
+
+    @Override
     public Order read(Integer index) {
         final String QUERY = QueryDao.ORDER.getQuery(QueryType.READ);
         try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
