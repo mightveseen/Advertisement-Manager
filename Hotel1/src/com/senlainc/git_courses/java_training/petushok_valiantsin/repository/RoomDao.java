@@ -32,7 +32,7 @@ public class RoomDao implements IRoomDao {
             statement.setString(2, room.getClassification());
             statement.setShort(3, room.getRoomNumber());
             statement.setShort(4, room.getCapacity());
-            statement.setString(5, room.getStatus().toString());
+            statement.setString(5, room.getStatus().name());
             statement.setDouble(6, room.getPrice());
             statement.execute();
         } catch (SQLException e) {

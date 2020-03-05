@@ -77,6 +77,18 @@ public class OrderDao implements IOrderDao {
     }
 
     @Override
+    public void update(Order order, Attendance attendance) {
+        final String QUARY = QuaryDao.ORDER.getQuary(QuaryType.ADD_ORDER_ATTENDANCE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
+            statement.setInt(1, order.getId());
+            statement.setInt(2, attendance.getId());
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
     public List<Order> readAll() {
         final String QUARY = QuaryDao.ORDER.getQuary(QuaryType.READ_ALL);
         final List<Order> orderList = new ArrayList<>();

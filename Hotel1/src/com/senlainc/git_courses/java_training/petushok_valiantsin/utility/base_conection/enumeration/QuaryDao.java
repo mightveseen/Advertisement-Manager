@@ -87,6 +87,9 @@ public enum QuaryDao {
                     return "SELECT `Attendance`.`id`, `Attendance`.`name`, `Attendance`.`section`, `Attendance`.`price` FROM `Attendance`" +
                             "INNER JOIN `OrderAttendance` ON `OrderAttendance`.`attendance_id` = `Attendance`.`id`" +
                             "WHERE `OrderAttendance`.`order_id` = ?;";
+                case ADD_ORDER_ATTENDANCE:
+                    return "INSERT INTO `OrderAttendance`(`order_id`, `attendance_id`)" +
+                            "VALUES (?, ?);";
                 default:
                     return "";
             }

@@ -76,24 +76,20 @@ public class OrderService implements IOrderService {
     @Override
     public List<Room> showGuestRoom(int index) {
         final List<Room> guestRoomList = new ArrayList<>();
-        final List<Order> orderList = orderDao.readAll().stream()
+        orderDao.readAll().stream()
                 .filter(i -> i.getGuest().getId() == index).limit(3)
-                .collect(Collectors.toList());
-        for (Order order : orderList) {
-            guestRoomList.add(order.getRoom());
-        }
+                .forEach(i -> guestRoomList.add(i.getRoom()));
         return guestRoomList;
     }
 
     @Override
     public List<Room> showAfterDate(LocalDate date) {
-        final List<Order> orderList = orderDao.readAll().stream()
-                .filter(i -> i.getEndDate().isBefore(date) && i.getStatus().equals(OrderStatus.ACTIVE))
-                .collect(Collectors.toList());
         final List<Room> roomList = roomDao.readAll().stream()
                 .filter(i -> i.getStatus().equals(RoomStatus.FREE))
                 .collect(Collectors.toList());
-        orderList.forEach(i -> roomList.add(i.getRoom()));
+        orderDao.readAll().stream()
+                .filter(i -> i.getEndDate().isBefore(date) && i.getStatus().equals(OrderStatus.ACTIVE))
+                .forEach(i -> roomList.add(i.getRoom()));
         return roomList;
     }
 
@@ -113,13 +109,13 @@ public class OrderService implements IOrderService {
     public void addAttendance(int orderIndex, int attendanceIndex) {
         try {
             final Order order = orderDao.read(orderIndex);
-            final List<Attendance> myList = new ArrayList<>(order.getAttendanceIndex());
-            myList.add(attendanceDao.read(attendanceIndex));
-            order.setAttendanceIndex(myList);
-            order.setPrice(order.getPrice() + attendanceDao.read(attendanceIndex).getPrice());
+            final Attendance attendance = attendanceDao.read(attendanceIndex);
+            order.setPrice(order.getPrice() + attendance.getPrice());
             orderDao.update(order);
+            orderDao.update(order, attendance);
             connectionManager.commit();
         } catch (ElementNotFoundException e) {
+            connectionManager.rollback();
             throw new ElementNotFoundException("Failed to add attendance", e);
         }
     }

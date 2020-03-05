@@ -20,7 +20,7 @@ public class AddAttendanceOrder implements IAction {
             hotel.showOrder().forEach(System.out::println);
             System.out.print("Enter order index: ");
             final int orderIndex = Integer.parseInt(scanner.nextLine());
-            hotel.showAttendance();
+            hotel.showAttendance().forEach(System.out::println);
             System.out.print("Enter attendance index: ");
             final int attendanceIndex = Integer.parseInt(scanner.nextLine());
             hotel.addOrderAttendance(orderIndex, attendanceIndex);
