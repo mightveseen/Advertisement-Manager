@@ -66,8 +66,9 @@ public class OrderDao implements IOrderDao {
             statement.setInt(1, order.getGuest().getId());
             statement.setInt(2, order.getRoom().getId());
             statement.setDate(3, Date.valueOf(order.getEndDate()));
-            statement.setDouble(4, order.getPrice());
-            statement.setInt(5, order.getId());
+            statement.setString(4, order.getStatus().name());
+            statement.setDouble(5, order.getPrice());
+            statement.setInt(6, order.getId());
             statement.execute();
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -119,6 +120,7 @@ public class OrderDao implements IOrderDao {
         return roomList;
     }
 
+    @Override
     public List<Room> readAfterDate(LocalDate date) {
         final String QUERY = QueryDao.ORDER.getQuery(QueryType.READ_AFTER_DATE);
         final List<Room> roomList = new ArrayList<>();

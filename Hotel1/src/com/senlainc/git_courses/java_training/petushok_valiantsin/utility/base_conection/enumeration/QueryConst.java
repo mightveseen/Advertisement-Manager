@@ -43,7 +43,7 @@ public class QueryConst {
     protected static final String ORDER_ADD_ATTENDANCE = "INSERT INTO `OrderAttendance`(`order_id`, `attendance_id`)" +
             "VALUES (?, ?);";
     protected static final String ORDER_DELETE = "UPDATE `Order` SET `status` = 'DISABLED' WHERE `id` = ?;";
-    protected static final String ORDER_UPDATE = "UPDATE `Order` SET `guest_id` = ?, `room_id` = ?, `end_date` = ?, `price` = ?"
+    protected static final String ORDER_UPDATE = "UPDATE `Order` SET `guest_id` = ?, `room_id` = ?, `end_date` = ?, `status` = ?, `price` = ?"
             + "WHERE `id` = ?;";
     protected static final String ORDER_READ_ALL = "SELECT * FROM `Order`"
             + "INNER JOIN `Room` ON `Room`.`id` = `Order`.`room_id`"

@@ -57,6 +57,7 @@ public class OrderService implements IOrderService {
         try {
             final Order order = orderDao.read(index);
             order.setStatus(OrderStatus.DISABLED);
+            order.setEndDate(LocalDate.now());
             orderDao.update(order);
             roomService.changeStatus(order.getRoom().getId(), RoomStatus.FREE);
         } catch (ElementNotFoundException e) {
