@@ -59,7 +59,7 @@ public class Hotel {
     }
 
     public List<String> showRoom(String parameter) {
-        return createStringList(roomService.getRoomList());
+        return createStringList(roomService.getRoomList(parameter));
     }
 
     public String numFreeRoom() {
