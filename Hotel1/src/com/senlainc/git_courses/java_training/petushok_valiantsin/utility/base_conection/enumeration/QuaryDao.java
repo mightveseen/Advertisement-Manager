@@ -70,7 +70,7 @@ public enum QuaryDao {
                 case DELETE:
                     return "UPDATE `Order` SET `status` = 'DISABLED' WHERE `id` = ?;";
                 case UPDATE:
-                    return "UPDATE `Order` SET `order_date` = ?, `guest_id` = ?, `room_id` = ?, `start_date` = ?, `end_date` = ?, `status` = ?, `price` = ?"
+                    return "UPDATE `Order` SET `guest_id` = ?, `room_id` = ?, `end_date` = ?, `price` = ?"
                             + "WHERE `id` = ?;";
                 case READ_ALL:
                     return "SELECT * FROM `Order`"

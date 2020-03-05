@@ -17,8 +17,8 @@ public class ShowAttendanceOrder implements IAction {
         try {
             final Hotel hotel = DependencyController.getInstance().getClazz(Hotel.class);
             final Scanner scanner = new Scanner(System.in);
-            hotel.showGuest().forEach(System.out::println);
-            System.out.print("Enter guest index: ");
+            hotel.showOrder().forEach(System.out::println);
+            System.out.print("Enter order index: ");
             final int index = Integer.parseInt(scanner.nextLine());
             hotel.showOrderAttendance(index).forEach(System.out::println);
             LOGGER.log(Level.INFO, "Show guest attendance");

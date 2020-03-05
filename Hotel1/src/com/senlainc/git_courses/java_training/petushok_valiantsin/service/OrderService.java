@@ -94,14 +94,11 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Attendance> showAttendance(int guestIndex) {
+    public List<Attendance> showAttendance(int orderIndex) {
         try {
-            return orderDao.readAll().stream()
-                    .filter(i -> i.getGuest().getId() == guestIndex)
-                    .findFirst().orElseThrow(ElementNotFoundException::new)
-                    .getAttendanceIndex();
+            return orderDao.read(orderIndex).getAttendanceIndex();
         } catch (ElementNotFoundException e) {
-            throw new EntityNotFoundException("Guest with index: " + guestIndex + " dont have order.", e);
+            throw new EntityNotFoundException("Order with index: " + orderIndex + " dont have order.", e);
         }
     }
 

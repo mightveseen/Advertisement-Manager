@@ -62,14 +62,11 @@ public class OrderDao implements IOrderDao {
     public void update(Order order) {
         final String QUARY = QuaryDao.ORDER.getQuary(QuaryType.UPDATE);
         try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
-            statement.setTimestamp(1, Timestamp.valueOf(order.getOrderDate()));
-            statement.setInt(2, order.getGuest().getId());
-            statement.setInt(3, order.getRoom().getId());
-            statement.setDate(4, Date.valueOf(order.getStartDate()));
-            statement.setDate(5, Date.valueOf(order.getEndDate()));
-            statement.setString(6, order.getStatus().name());
-            statement.setDouble(7, order.getPrice());
-            statement.setInt(8, order.getId());
+            statement.setInt(1, order.getGuest().getId());
+            statement.setInt(2, order.getRoom().getId());
+            statement.setDate(3, Date.valueOf(order.getEndDate()));
+            statement.setDouble(4, order.getPrice());
+            statement.setInt(5, order.getId());
             statement.execute();
         } catch (SQLException e) {
             throw new DaoException(e);
