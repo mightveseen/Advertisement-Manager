@@ -6,7 +6,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IO
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 
@@ -28,16 +27,12 @@ public class Hotel {
     /**
      * Attendance
      */
-    public void loadAttendance() {
-        attendanceService.load();
-    }
-
     public void addAttendance(String name, String section, double price) {
         attendanceService.add(name, section, price);
     }
 
     public List<String> showAttendance() {
-        return createStringList(attendanceService.showAttendance());
+        return createStringList(attendanceService.getAttendanceList());
     }
 
     public void changePriceAttendance(int index, double price) {
@@ -47,10 +42,6 @@ public class Hotel {
     /**
      * Room
      */
-    public void loadRoom() {
-        roomService.load();
-    }
-
     public void addRoom(Room room) {
         roomService.add(room);
     }
@@ -64,11 +55,11 @@ public class Hotel {
     }
 
     public List<String> sortRoom(String type, String parameter) {
-        return createStringList(roomService.show(type, roomService.sort(parameter)));
+        return createStringList(roomService.sort(type, parameter));
     }
 
     public List<String> showRoom(String parameter) {
-        return createStringList(roomService.show(parameter, roomService.getRoomList()));
+        return createStringList(roomService.getRoomList(parameter));
     }
 
     public String numFreeRoom() {
@@ -78,12 +69,8 @@ public class Hotel {
     /**
      * Guest
      */
-    public void loadGuest() {
-        guestService.load();
-    }
-
-    public void addGuest(String firstName, String lastName, LocalDate birthday, String infoContact) {
-        guestService.add(firstName, lastName, birthday, infoContact);
+    public void addGuest(String firstName, String lastName, LocalDate birthday) {
+        guestService.add(firstName, lastName, birthday);
     }
 
     public String numGuest() {
@@ -97,10 +84,6 @@ public class Hotel {
     /**
      * Order
      */
-    public void loadOrder() {
-        orderService.load();
-    }
-
     public void addOrder(int guestIndex, int roomIndex, LocalDate endDate) {
         orderService.add(guestIndex, roomIndex, endDate);
     }
@@ -110,11 +93,11 @@ public class Hotel {
     }
 
     public List<String> sortOrder(String parameter) {
-        return createStringList(orderService.show(orderService.sort(parameter)));
+        return createStringList(orderService.sort(parameter));
     }
 
     public List<String> showOrder() {
-        return createStringList(orderService.show());
+        return createStringList(orderService.getOrderList());
     }
 
     public List<String> showAfterDate(LocalDate freeDate) {
@@ -135,15 +118,7 @@ public class Hotel {
 
     private <T> List<String> createStringList(List<T> list) {
         final List<String> stringList = new ArrayList<>();
-        if (list.stream().anyMatch(i -> i instanceof Order)) {
-            for (T element : list) {
-                stringList.add(orderService.show((Order) element));
-            }
-            return stringList;
-        }
-        for (T element : list) {
-            stringList.add(element.toString());
-        }
+        list.forEach(i -> stringList.add(i.toString()));
         return stringList;
     }
 }

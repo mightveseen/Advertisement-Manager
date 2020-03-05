@@ -2,20 +2,6 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.api.repositor
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 
-import java.util.List;
+public interface IAttendanceDao extends ICommonDao<Attendance, Integer> {
 
-public interface IAttendanceDao {
-    void create(Attendance attendance);
-
-    void delete(int index);
-
-    void update(Attendance attendance);
-
-    List<Attendance> readAll();
-
-    Attendance read(int index);
-
-    void setAll();
-
-    void saveAll();
 }

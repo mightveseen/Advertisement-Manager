@@ -10,12 +10,16 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.service.Attend
 import com.senlainc.git_courses.java_training.petushok_valiantsin.service.GuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.service.OrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.service.RoomService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
 
 public class LoadData {
-    static {
-        /** Serialization initialization */
-        DependencyController.getInstance().setDependency(Serialization.class);
+    private LoadData() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static void execute() {
+        /** Create connection to DataBase */
+        DependencyController.getInstance().setDependency(ConnectionManager.class);
         /** DAO initialization */
         DependencyController.getInstance().setDependency(AttendanceDao.class);
         DependencyController.getInstance().setDependency(GuestDao.class);
@@ -29,10 +33,5 @@ public class LoadData {
         /** Controller initialization */
         DependencyController.getInstance().setDependency(Hotel.class);
         /** Load data from XML files */
-        final Hotel hotel = DependencyController.getInstance().getClazz(Hotel.class);
-        hotel.loadAttendance();
-        hotel.loadRoom();
-        hotel.loadGuest();
-        hotel.loadOrder();
     }
 }

@@ -5,82 +5,157 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.FileNotExistException;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QueryDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QueryType;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.DaoException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @DependencyClass
 @DependencyPrimary
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "roomDao")
 public class RoomDao implements IRoomDao {
-    private static final Logger LOGGER = Logger.getLogger(RoomDao.class.getName());
+    private static final String ERROR = "Error during connection to Database. Check query.";
     @DependencyComponent
-    private static Serialization serialization;
-    @XmlElementWrapper(name = "roomList")
-    @XmlElement(name = "room")
-    private List<Room> roomList;
+    private ConnectionManager connectionManager;
 
     @Override
     public void create(Room room) {
-        room.setId(roomList.size() + 1);
-        roomList.add(room);
-        saveAll();
+        final String QUERY = QueryDao.ROOM.getQuery(QueryType.CREATE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
+            statement.setInt(1, room.getNumber());
+            statement.setString(2, room.getClassification());
+            statement.setShort(3, room.getRoomNumber());
+            statement.setShort(4, room.getCapacity());
+            statement.setString(5, room.getStatus().name());
+            statement.setDouble(6, room.getPrice());
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(ERROR, e);
+        }
     }
 
     @Override
-    public void delete(int index) {
-        roomList.remove(roomList.stream()
-                .filter(i -> i.getId() == index)
-                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
-        saveAll();
+    public void delete(Integer index) {
+        final String QUERY = QueryDao.ROOM.getQuery(QueryType.DELETE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
+            statement.setInt(1, index);
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(ERROR, e);
+        }
     }
 
     @Override
     public void update(Room room) {
-        roomList.set(roomList.indexOf(roomList.stream()
-                .filter(i -> i.getId() == room.getId())
-                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), room);
-        saveAll();
+        final String QUERY = QueryDao.ROOM.getQuery(QueryType.UPDATE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
+            statement.setInt(1, room.getNumber());
+            statement.setString(2, room.getClassification());
+            statement.setShort(3, room.getRoomNumber());
+            statement.setShort(4, room.getCapacity());
+            statement.setString(5, room.getStatus().name());
+            statement.setDouble(6, room.getPrice());
+            statement.setInt(7, room.getId());
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(ERROR, e);
+        }
     }
 
     @Override
     public List<Room> readAll() {
-        return new ArrayList<>(roomList);
+        final String QUERY = QueryDao.ROOM.getQuery(QueryType.READ_ALL);
+        final List<Room> roomList = new ArrayList<>();
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
+            final ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                roomList.add(createFromQuery(result));
+            }
+            result.close();
+        } catch (SQLException e) {
+            throw new DaoException(ERROR, e);
+        }
+        return roomList;
     }
 
     @Override
-    public Room read(int index) {
-        return roomList.stream()
-                .filter(i -> i.getId() == index)
-                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
+    public List<Room> readAllFree() {
+        final String QUERY = QueryDao.ROOM.getQuery(QueryType.READ_ALL_FREE);
+        final List<Room> roomList = new ArrayList<>();
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
+            final ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                roomList.add(createFromQuery(result));
+            }
+            result.close();
+        } catch (SQLException e) {
+            throw new DaoException(ERROR, e);
+        }
+        return roomList;
     }
 
     @Override
-    public void setAll() {
-        try {
-            roomList = serialization.customUnmarshaller(this).readAll();
-        } catch (FileNotExistException e) {
-            roomList = new ArrayList<>();
-            LOGGER.log(Level.WARNING, e.getMessage() + ", create empty list", e);
+    public Integer readFreeSize() {
+        final String QUERY = QueryDao.ROOM.getQuery(QueryType.FREE_SIZE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
+            final ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                final Integer size = result.getInt(1);
+                result.close();
+                return size;
+            }
+            throw new ElementNotFoundException();
+        } catch (SQLException e) {
+            throw new DaoException(ERROR, e);
         }
     }
 
     @Override
-    public void saveAll() {
-        try {
-            serialization.customMarshaller(this);
-        } catch (FileNotExistException e) {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
+    public Room read(Integer index) {
+        final String QUERY = QueryDao.ROOM.getQuery(QueryType.READ);
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
+            statement.setInt(1, index);
+            final ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                final Room room = createFromQuery(result);
+                result.close();
+                return room;
+            }
+            throw new ElementNotFoundException();
+        } catch (SQLException e) {
+            throw new DaoException(ERROR, e);
         }
+    }
+
+    @Override
+    public Room readByNumber(Integer number) {
+        final String QUERY = QueryDao.ROOM.getQuery(QueryType.READ_BY_NUMBER);
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
+            statement.setInt(1, number);
+            final ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                final Room room = createFromQuery(result);
+                result.close();
+                return room;
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DaoException(ERROR, e);
+        }
+    }
+
+    private Room createFromQuery(ResultSet result) throws SQLException {
+        final Room room = new Room(result.getInt("number"), result.getString("classification")
+                , result.getShort("room_number"), result.getShort("capacity")
+                , RoomStatus.valueOf(result.getString("status")), result.getDouble("price"));
+        room.setId(result.getInt("id"));
+        return room;
     }
 }

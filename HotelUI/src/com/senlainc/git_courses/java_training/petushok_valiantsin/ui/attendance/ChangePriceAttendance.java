@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ChangePriceAttendance implements IAction {
-        private static final Logger LOGGER = Logger.getLogger(ChangePriceAttendance.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(ChangePriceAttendance.class.getSimpleName());
 
     @Override
     public void execute() {

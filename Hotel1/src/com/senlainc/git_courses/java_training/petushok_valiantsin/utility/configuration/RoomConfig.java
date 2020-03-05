@@ -4,11 +4,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.
 import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.annotation.ConfigClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.annotation.ConfigProperty;
 
-import java.util.logging.Logger;
-
 @ConfigClass
 public class RoomConfig {
-    private static final Logger LOGGER = Logger.getLogger(RoomConfig.class.getName());
     private static final boolean CHANGE_STATUS_BASIC_VALUE = true;
     @ConfigProperty(configName = "Room")
     private static boolean CHANGE_STATUS_VALUE;

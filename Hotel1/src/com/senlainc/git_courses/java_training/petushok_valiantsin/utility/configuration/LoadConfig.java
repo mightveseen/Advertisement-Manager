@@ -4,11 +4,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.
 import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.annotation.ConfigClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.annotation.ConfigProperty;
 
-import java.util.logging.Logger;
-
 @ConfigClass
 public class LoadConfig {
-    private static final Logger LOGGER = Logger.getLogger(LoadConfig.class.getName());
     @ConfigProperty(configName = "Load")
     private static String ATTENDANCE_DAO_PATH;
     @ConfigProperty(configName = "Load")

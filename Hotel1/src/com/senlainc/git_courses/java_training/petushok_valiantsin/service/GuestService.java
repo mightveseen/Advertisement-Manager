@@ -6,10 +6,10 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.GuestConfig;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.MaxElementsException;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.Sort;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,76 +17,41 @@ import java.util.List;
 @DependencyClass
 @DependencyPrimary
 public class GuestService implements IGuestService {
+    private static final String ELEMENT_NOT_FOUND = "Guest with index: %d dont exists.";
     @DependencyComponent
     private static GuestConfig guestConfig;
     @DependencyComponent
     private IGuestDao guestDao;
+    @DependencyComponent
+    private ConnectionManager connectionManager;
 
     @Override
-    public void load() {
-        guestDao.setAll();
-    }
-
-    @Override
-    public void add(String firstName, String lastName, LocalDate birthday, String infoContact) {
+    public void add(String firstName, String lastName, LocalDate birthday) {
         int guestLimit = guestConfig.getGuestLimit();
-        if (guestLimit < guestDao.readAll().size()) {
-            throw new MaxElementsException("The number of guests exceeds the specified limit: " + guestLimit + " guests");
+        if (guestLimit < guestDao.readSize()) {
+            throw new MaxElementsException(String.format("The number of guests exceeds the specified limit: %d guests", guestLimit));
         }
-        guestDao.create(new Guest(firstName, lastName, birthday, infoContact));
+        guestDao.create(new Guest(firstName, lastName, birthday));
+        connectionManager.commit();
     }
 
     @Override
     public void delete(int index) {
         try {
             guestDao.delete(index);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ElementNotFoundException("Guest with index: " + index + " dont exists.", e);
-        }
-    }
-
-    @Override
-    public void changeInfoContact(int index, String information) {
-        try {
-            final Guest guest = guestDao.read(index);
-            guest.setInfoContact(information);
-            guestDao.update(guest);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ElementNotFoundException("Guest with index: " + index + " dont exists.", e);
+            connectionManager.commit();
+        } catch (ElementNotFoundException e) {
+            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
     }
 
     @Override
     public int num() {
-        return guestDao.readAll().size();
+        return guestDao.readSize();
     }
 
     @Override
     public List<Guest> show() {
         return guestDao.readAll();
-    }
-
-    @Override
-    public Guest getGuest(int index) {
-        try {
-            return guestDao.read(index);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ElementNotFoundException("Guest with index: " + index + " dont exists.", e);
-        }
-    }
-
-    @Override
-    public int[] sortByAlphabet() {
-        final List<Guest> myList = guestDao.readAll();
-        myList.sort(Sort.GUEST.getComparator("ALPHABET"));
-        return getGuestIndex(myList);
-    }
-
-    private int[] getGuestIndex(List<Guest> myList) {
-        final int[] guestIndex = new int[myList.size()];
-        for (int i = 0; i < myList.size(); i++) {
-            guestIndex[i] = myList.get(i).getId();
-        }
-        return guestIndex;
     }
 }

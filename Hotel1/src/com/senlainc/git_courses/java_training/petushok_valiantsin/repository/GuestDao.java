@@ -5,82 +5,116 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.FileNotExistException;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.Serialization;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QueryDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QueryType;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.DaoException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @DependencyClass
 @DependencyPrimary
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "guestDao")
 public class GuestDao implements IGuestDao {
-    private static final Logger LOGGER = Logger.getLogger(GuestDao.class.getName());
+    private static final String ERROR = "Error during connection to Database. Check query.";
     @DependencyComponent
-    private static Serialization serialization;
-    @XmlElementWrapper(name = "guestList")
-    @XmlElement(name = "guest")
-    private List<Guest> guestList;
+    private ConnectionManager connectionManager;
 
     @Override
     public void create(Guest guest) {
-        guest.setId(guestList.size() + 1);
-        guestList.add(guest);
-        saveAll();
+        final String QAURY = QueryDao.GUEST.getQuery(QueryType.CREATE);
+        try (PreparedStatement statement = connectionManager.getStatment(QAURY)) {
+            statement.setString(1, guest.getFirstName());
+            statement.setString(2, guest.getSecondName());
+            statement.setDate(3, Date.valueOf(guest.getBirthday()));
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(ERROR, e);
+        }
     }
 
     @Override
-    public void delete(int index) {
-        guestList.remove(guestList.stream()
-                .filter(i -> i.getId() == index)
-                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new));
-        saveAll();
+    public void delete(Integer index) {
+        final String QUERY = QueryDao.GUEST.getQuery(QueryType.DELETE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
+            statement.setInt(1, index);
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(ERROR, e);
+        }
     }
 
     @Override
     public void update(Guest guest) {
-        guestList.set(guestList.indexOf(guestList.stream()
-                .filter(i -> i.getId() == guest.getId())
-                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new)), guest);
-        saveAll();
+        final String QUERY = QueryDao.GUEST.getQuery(QueryType.UPDATE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
+            statement.setString(1, guest.getFirstName());
+            statement.setString(2, guest.getSecondName());
+            statement.setDate(3, Date.valueOf(guest.getBirthday()));
+            statement.setInt(4, guest.getId());
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
     public List<Guest> readAll() {
-        return new ArrayList<>(guestList);
+        final String QUERY = QueryDao.GUEST.getQuery(QueryType.READ_ALL);
+        final List<Guest> guestList = new ArrayList<>();
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
+            final ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                guestList.add(createFromQuery(result));
+            }
+            result.close();
+        } catch (SQLException e) {
+            throw new DaoException(ERROR, e);
+        }
+        return guestList;
     }
 
     @Override
-    public Guest read(int index) {
-        return guestList.stream()
-                .filter(i -> i.getId() == index)
-                .findFirst().orElseThrow(ArrayIndexOutOfBoundsException::new);
-    }
-
-    @Override
-    public void setAll() {
-        try {
-            guestList = serialization.customUnmarshaller(this).readAll();
-        } catch (FileNotExistException e) {
-            guestList = new ArrayList<>();
-            LOGGER.log(Level.WARNING, e.getMessage() + ", create empty list", e);
+    public Integer readSize() {
+        final String QUERY = QueryDao.GUEST.getQuery(QueryType.SIZE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
+            final ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                final Integer size = result.getInt(1);
+                result.close();
+                return size;
+            }
+            throw new ElementNotFoundException();
+        } catch (SQLException e) {
+            throw new DaoException(ERROR, e);
         }
     }
 
     @Override
-    public void saveAll() {
-        try {
-            serialization.customMarshaller(this);
-        } catch (FileNotExistException e) {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
+    public Guest read(Integer index) {
+        final String QUERY = QueryDao.GUEST.getQuery(QueryType.READ);
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
+            statement.setInt(1, index);
+            final ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                final Guest guest = createFromQuery(result);
+                result.close();
+                return guest;
+            }
+            throw new ElementNotFoundException();
+        } catch (SQLException e) {
+            throw new DaoException(ERROR, e);
         }
+    }
+
+    private Guest createFromQuery(ResultSet result) throws SQLException {
+        final Guest guest = new Guest(result.getString("first_name"), result.getString("second_name"), result.getDate("birthday").toLocalDate());
+        guest.setId(result.getInt("id"));
+        return guest;
     }
 }

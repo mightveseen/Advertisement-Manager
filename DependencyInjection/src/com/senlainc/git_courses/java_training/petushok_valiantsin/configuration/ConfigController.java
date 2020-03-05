@@ -19,7 +19,7 @@ public class ConfigController {
             ConfigService.getInstance().setValue(clazz);
             ConfigService.getInstance().addFieldValue();
         } catch (IllegalAccessException e) {
-            LOGGER.log(Level.WARNING, "Could load program resources.properties from file: " + e.toString(), e);
+            LOGGER.log(Level.WARNING, String.format("Could load program resources.properties from file: %s", e.toString()), e);
         }
     }
 }

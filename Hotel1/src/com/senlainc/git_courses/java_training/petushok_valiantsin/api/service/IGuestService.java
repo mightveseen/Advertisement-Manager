@@ -6,19 +6,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface IGuestService {
-    void load();
-
-    void add(String firstName, String lastName, LocalDate birthday, String infoContact);
+    void add(String firstName, String lastName, LocalDate birthday);
 
     void delete(int index);
-
-    void changeInfoContact(int index, String information);
 
     int num();
 
     List<Guest> show();
-
-    Guest getGuest(int index);
-
-    int[] sortByAlphabet();
 }

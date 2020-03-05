@@ -8,17 +8,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface IOrderService {
-    void load();
-
     void add(int guestIndex, int roomIndex, LocalDate endDate);
 
     void delete(int index);
 
-    List<Order> show();
-
-    List<Order> show(List<Order> myList);
-
-    String show(Order order);
+    List<Order> getOrderList();
 
     List<Room> showGuestRoom(int index);
 

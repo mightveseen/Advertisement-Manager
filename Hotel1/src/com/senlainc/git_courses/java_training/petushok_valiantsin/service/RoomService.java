@@ -7,41 +7,42 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.RoomConfig;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotAvailableException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.Sort;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.SortParameter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @DependencyClass
 @DependencyPrimary
 public class RoomService implements IRoomService {
+    private static final String ELEMENT_NOT_FOUND = "Room with index: %d dont exists.";
     @DependencyComponent
     private static RoomConfig roomConfig;
     @DependencyComponent
     private IRoomDao roomDao;
-
-    @Override
-    public void load() {
-        roomDao.setAll();
-    }
+    @DependencyComponent
+    private ConnectionManager connectionManager;
 
     @Override
     public void add(Room room) {
-        if (roomDao.readAll().stream().anyMatch(i -> i.getNumber() == room.getNumber())) {
-            throw new EntityNotAvailableException("Room with number: " + room.getNumber() + " already exists.");
+        if (roomDao.readByNumber(room.getNumber()) != null) {
+            throw new EntityNotAvailableException(String.format("Room with number: %d already exists.", room.getNumber()));
         }
         roomDao.create(room);
+        connectionManager.commit();
     }
 
     @Override
     public void delete(int index) {
         try {
             roomDao.delete(index);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ElementNotFoundException("Room with index: " + index + " dont exists.");
+            connectionManager.commit();
+        } catch (ElementNotFoundException e) {
+            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
     }
 
@@ -51,12 +52,11 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public Room getRoom(int index) {
-        try {
-            return roomDao.read(index);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ElementNotFoundException("Room with index: " + index + " dont exists.", e);
+    public List<Room> getRoomList(String parameter) {
+        if (parameter.equals("free")) {
+            return roomDao.readAllFree();
         }
+        return roomDao.readAll();
     }
 
     @Override
@@ -65,8 +65,9 @@ public class RoomService implements IRoomService {
             final Room room = roomDao.read(index);
             room.setPrice(price);
             roomDao.update(room);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ElementNotFoundException("Room with index: " + index + " dont exists.", e);
+            connectionManager.commit();
+        } catch (ElementNotFoundException e) {
+            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
     }
 
@@ -79,35 +80,20 @@ public class RoomService implements IRoomService {
             final Room room = roomDao.read(index);
             room.setStatus(status);
             roomDao.update(room);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ElementNotFoundException("Room with index: " + index + " dont exists.", e);
+            connectionManager.commit();
+        } catch (ElementNotFoundException e) {
+            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
-    }
-
-    @Override
-    public List<Room> show(String parameter, List<Room> myList) {
-        if (parameter.equals("free")) {
-            return showFreeRoom(myList);
-        }
-        return myList;
-    }
-
-    private List<Room> showFreeRoom(List<Room> myList) {
-        return myList.stream()
-                .filter(i -> i.getStatus().equals(RoomStatus.FREE))
-                .collect(Collectors.toList());
     }
 
     @Override
     public long numFreeRoom() {
-        return roomDao.readAll().stream()
-                .filter(i -> i.getStatus().equals(RoomStatus.FREE))
-                .count();
+        return roomDao.readFreeSize();
     }
 
     @Override
-    public List<Room> sort(String parameter) {
-        final List<Room> myList = roomDao.readAll();
+    public List<Room> sort(String type, String parameter) {
+        final List<Room> myList = getRoomList(type);
         switch (parameter) {
             case "price":
                 sortByPrice(myList);
@@ -118,19 +104,21 @@ public class RoomService implements IRoomService {
             case "room number":
                 sortByRoomNumber(myList);
                 break;
+            default:
+                break;
         }
         return myList;
     }
 
     private void sortByPrice(List<Room> myList) {
-        myList.sort(Sort.ROOM.getComparator("PRICE"));
+        myList.sort(Sort.ROOM.getComparator(SortParameter.PRICE));
     }
 
     private void sortByClassification(List<Room> myList) {
-        myList.sort(Sort.ROOM.getComparator("CLASSIFICATION"));
+        myList.sort(Sort.ROOM.getComparator(SortParameter.CLASSIFICATION));
     }
 
     private void sortByRoomNumber(List<Room> myList) {
-        myList.sort(Sort.ROOM.getComparator("ROOM_NUMBER"));
+        myList.sort(Sort.ROOM.getComparator(SortParameter.ROOM_NUMBER));
     }
 }

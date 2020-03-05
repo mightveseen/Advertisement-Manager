@@ -1,6 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.ui;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.console.ConsoleColor;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
 
 public class MenuNavigator {
     private Menu currentMenu;
@@ -18,7 +19,7 @@ public class MenuNavigator {
             currentMenu.getItem(index).doAction();
             currentMenu = currentMenu.getItem(index).getNextMenu();
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new RuntimeException("Menu with index: " + index + " didn't exists", e);
+            throw new ElementNotFoundException("Menu with index: " + index + " didn't exists", e);
         }
 
     }

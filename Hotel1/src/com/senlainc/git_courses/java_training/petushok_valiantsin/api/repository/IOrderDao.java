@@ -1,21 +1,16 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository;
 
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 
+import java.time.LocalDate;
 import java.util.List;
 
-public interface IOrderDao {
-    void create(Order order);
+public interface IOrderDao extends ICommonDao<Order, Integer> {
+    void update(Order order, Attendance attendance);
 
-    void delete(int index);
+    List<Room> readLastRoom(Integer index);
 
-    void update(Order order);
-
-    List<Order> readAll();
-
-    Order read(int index);
-
-    void setAll();
-
-    void saveAll();
+    List<Room> readAfterDate(LocalDate date);
 }

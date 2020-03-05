@@ -21,7 +21,7 @@ public class ShowThreeRoomGuest implements IAction {
             System.out.print("Enter guest index: ");
             final int index = Integer.parseInt(scanner.nextLine());
             hotel.showGuestRoom(index).forEach(System.out::println);
-            LOGGER.log(Level.INFO, "Show last 3 room of guest");
+            LOGGER.log(Level.INFO, "Show last 3 room's of guest");
         } catch (NumberFormatException e) {
             throw new WrongEnteredDataException("Wrong entered data in: " + e.getMessage(), e);
         }

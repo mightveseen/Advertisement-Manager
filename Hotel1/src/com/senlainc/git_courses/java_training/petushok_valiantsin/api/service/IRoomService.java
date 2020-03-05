@@ -6,23 +6,19 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.R
 import java.util.List;
 
 public interface IRoomService {
-    void load();
-
     void add(Room room);
 
     void delete(int index);
 
     List<Room> getRoomList();
 
-    Room getRoom(int index);
-
     void changePrice(int index, double price);
 
     void changeStatus(int index, RoomStatus status);
 
-    List<Room> show(String parameter, List<Room> myList);
+    List<Room> getRoomList(String parameter);
 
     long numFreeRoom();
 
-    List<Room> sort(String parameter);
+    List<Room> sort(String type, String parameter);
 }

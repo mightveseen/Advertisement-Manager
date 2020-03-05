@@ -5,7 +5,11 @@ import java.io.InputStream;
 import java.util.logging.LogManager;
 
 public class CustomLogger {
-    static {
+    private CustomLogger() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static void execute() {
         try (InputStream configReader = CustomLogger.class.getResourceAsStream("/properties/log.properties")) {
             LogManager.getLogManager().readConfiguration(configReader);
         } catch (IOException e) {

@@ -4,18 +4,10 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 
 import java.util.List;
 
-public interface IRoomDao {
-    void create(Room room);
+public interface IRoomDao extends ICommonDao<Room, Integer> {
+    List<Room> readAllFree();
 
-    void delete(int index);
+    Integer readFreeSize();
 
-    void update(Room room);
-
-    List<Room> readAll();
-
-    Room read(int index);
-
-    void setAll();
-
-    void saveAll();
+    Room readByNumber(Integer number);
 }

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class DependencyInject {
     private static DependencyInject instance;
-    private static List<Class<?>> projectClasses;
+    private final List<Class<?>> projectClasses;
     private final Map<String, Constructor<?>> interfaceConstructorMap;
 
     private DependencyInject() {

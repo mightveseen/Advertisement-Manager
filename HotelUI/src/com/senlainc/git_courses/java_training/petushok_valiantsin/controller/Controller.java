@@ -6,8 +6,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.logger
 
 public class Controller {
     public static void main(String[] args) {
-        new CustomLogger();
-        new LoadData();
+        CustomLogger.execute();
+        LoadData.execute();
         new MenuController().run();
     }
 }

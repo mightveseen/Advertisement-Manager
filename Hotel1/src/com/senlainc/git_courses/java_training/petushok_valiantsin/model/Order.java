@@ -1,56 +1,41 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.adapter.LocalDateAdapter;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.serialization.adapter.LocalDateTimeAdapter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "order")
 public class Order implements Cloneable {
-    @XmlElement(name = "id")
     private int id;
-    @XmlElement(name = "orderDate")
-    @XmlJavaTypeAdapter(value = LocalDateTimeAdapter.class)
-    private LocalDateTime orderDate;
-    @XmlElement(name = "guestIndex")
-    private int guestIndex;
-    @XmlElement(name = "roomIndex")
-    private int roomIndex;
-    @XmlElement(name = "startDate")
-    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
-    private LocalDate startDate;
-    @XmlElementWrapper(name = "attendanceList")
-    @XmlElement(name = "attendanceIndex")
-    private List<Integer> attendanceIndex = new LinkedList<>();
-    @XmlElement(name = "endDate")
-    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
+    private final LocalDateTime orderDate;
+    private final Guest guest;
+    private final Room room;
+    private final LocalDate startDate;
+    private List<Attendance> attendanceIndex = new ArrayList<>();
     private LocalDate endDate;
-    @XmlElement(name = "status")
     private OrderStatus status;
-    @XmlElement(name = "price")
     private double price;
 
-    public Order() {
-    }
-
-    public Order(int guest, int room, LocalDate endDate, double price) {
+    public Order(Guest guest, Room room, LocalDate endDate, double price) {
         this.orderDate = LocalDateTime.now();
-        this.guestIndex = guest;
-        this.roomIndex = room;
+        this.guest = guest;
+        this.room = room;
         this.startDate = LocalDate.now();
         this.endDate = endDate;
         this.status = OrderStatus.ACTIVE;
+        this.price = price;
+    }
+
+    public Order(LocalDateTime orderDate, Guest guest, Room room, LocalDate startDate, LocalDate endDate, OrderStatus status, double price) {
+        this.orderDate = orderDate;
+        this.guest = guest;
+        this.room = room;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = status;
         this.price = price;
     }
 
@@ -67,12 +52,12 @@ public class Order implements Cloneable {
         this.id = index;
     }
 
-    public int getGuestIndex() {
-        return this.guestIndex;
+    public Guest getGuest() {
+        return this.guest;
     }
 
-    public int getRoomIndex() {
-        return roomIndex;
+    public Room getRoom() {
+        return room;
     }
 
     public double getPrice() {
@@ -107,11 +92,22 @@ public class Order implements Cloneable {
         this.status = status;
     }
 
-    public List<Integer> getAttendanceIndex() {
+    public List<Attendance> getAttendanceIndex() {
         return this.attendanceIndex;
     }
 
-    public void setAttendanceIndex(List<Integer> attendanceIndex) {
+    public void setAttendanceIndex(List<Attendance> attendanceIndex) {
         this.attendanceIndex = attendanceIndex;
+    }
+    
+    public String toString() {
+        return "Order index: " + this.id + "\n" +
+                "Order date: " + this.orderDate.format(DateTimeFormatter.ofPattern("HH:mm/yyyy-MM-dd")) + "\n" +
+                "Guest: " + this.guest + "\n" +
+                "Room: " + this.room + "\n" +
+                "Start date: " + this.startDate + "\t" +
+                "End date: " + this.endDate + "\n" +
+                "Total amount: " + this.price + "\t" +
+                "Status: " + this.status.getColorName();
     }
 }
