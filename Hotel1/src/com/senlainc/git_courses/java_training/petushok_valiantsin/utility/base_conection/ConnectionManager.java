@@ -20,8 +20,6 @@ public class ConnectionManager {
     @ConfigProperty(configName = "Base")
     private static String URL;
     @ConfigProperty(configName = "Base")
-    private static String BASE_NAME;
-    @ConfigProperty(configName = "Base")
     private static String USER;
     @ConfigProperty(configName = "Base")
     private static String PASSWORD;
@@ -30,7 +28,7 @@ public class ConnectionManager {
     private ConnectionManager() {
         ConfigController.getInstance().setConfig(ConnectionManager.class);
         try {
-            this.connection = DriverManager.getConnection(String.format("jdbc:mysql://%s/%s", URL, BASE_NAME), USER, PASSWORD);
+            this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
             setAutoCommit(false);
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
