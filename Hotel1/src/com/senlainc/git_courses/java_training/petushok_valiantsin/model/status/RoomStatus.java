@@ -15,6 +15,10 @@ public enum RoomStatus {
 
     @Override
     public String toString() {
+        return this.name;
+    }
+
+    public String getColorName() {
         switch (RoomStatus.this) {
             case RENTED:
                 return ConsoleColor.RED.getCode() + this.name + ConsoleColor.RESET.getCode();

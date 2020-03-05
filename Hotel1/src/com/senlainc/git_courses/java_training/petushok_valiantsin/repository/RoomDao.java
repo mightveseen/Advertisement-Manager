@@ -21,6 +21,7 @@ import java.util.List;
 @DependencyClass
 @DependencyPrimary
 public class RoomDao implements IRoomDao {
+    private static final String ERROR = "Error during connection to Database. Check query.";
     @DependencyComponent
     private ConnectionManager connectionManager;
 
@@ -36,7 +37,7 @@ public class RoomDao implements IRoomDao {
             statement.setDouble(6, room.getPrice());
             statement.execute();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
     }
 
@@ -47,7 +48,7 @@ public class RoomDao implements IRoomDao {
             statement.setInt(1, index);
             statement.execute();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
     }
 
@@ -64,7 +65,7 @@ public class RoomDao implements IRoomDao {
             statement.setInt(7, room.getId());
             statement.execute();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
     }
 
@@ -79,7 +80,7 @@ public class RoomDao implements IRoomDao {
             }
             result.close();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
         return roomList;
     }
@@ -95,7 +96,7 @@ public class RoomDao implements IRoomDao {
             }
             result.close();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
         return roomList;
     }
@@ -112,7 +113,7 @@ public class RoomDao implements IRoomDao {
             }
             throw new ElementNotFoundException();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
     }
 
@@ -129,7 +130,7 @@ public class RoomDao implements IRoomDao {
             }
             throw new ElementNotFoundException();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
     }
 
@@ -146,15 +147,15 @@ public class RoomDao implements IRoomDao {
             }
             return null;
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
     }
 
     private Room createFromQuery(ResultSet result) throws SQLException {
-        final Room room = new Room(result.getInt(2), result.getString(3)
-                , result.getShort(4), result.getShort(5)
-                , RoomStatus.valueOf(result.getString(6)), result.getDouble(7));
-        room.setId(result.getInt(1));
+        final Room room = new Room(result.getInt("number"), result.getString("classification")
+                , result.getShort("room_number"), result.getShort("capacity")
+                , RoomStatus.valueOf(result.getString("status")), result.getDouble("price"));
+        room.setId(result.getInt("id"));
         return room;
     }
 }

@@ -21,6 +21,7 @@ import java.util.List;
 @DependencyClass
 @DependencyPrimary
 public class GuestDao implements IGuestDao {
+    private static final String ERROR = "Error during connection to Database. Check query.";
     @DependencyComponent
     private ConnectionManager connectionManager;
 
@@ -33,7 +34,7 @@ public class GuestDao implements IGuestDao {
             statement.setDate(3, Date.valueOf(guest.getBirthday()));
             statement.execute();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
     }
 
@@ -44,7 +45,7 @@ public class GuestDao implements IGuestDao {
             statement.setInt(1, index);
             statement.execute();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
     }
 
@@ -73,7 +74,7 @@ public class GuestDao implements IGuestDao {
             }
             result.close();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
         return guestList;
     }
@@ -90,7 +91,7 @@ public class GuestDao implements IGuestDao {
             }
             throw new ElementNotFoundException();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
     }
 
@@ -107,7 +108,7 @@ public class GuestDao implements IGuestDao {
             }
             throw new ElementNotFoundException();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
     }
 

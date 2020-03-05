@@ -57,7 +57,6 @@ public class QueryConst {
             + "WHERE `OrderAttendance`.`order_id` = ?;";
     protected static final String ORDER_READ_LAST_ROOM = "SELECT `Room`.`id`, `number`, `classification`, `room_number`, `capacity`, `Room`.`status`, `Room`.`price`, `Order`.`order_date`"
             + "FROM `Room` INNER JOIN `Order` ON `Order`.`room_id` = `Room`.`id` WHERE `Order`.`guest_id` = ? ORDER BY `Order`.`order_date` DESC LIMIT 3;";
-
     protected static final String ORDER_READ_AFTER_DATE = "SELECT `Room`.`id`, `number`, `classification`, `room_number`, `capacity`, `Room`.`status`, `Room`.`price`" +
             "FROM `Room` INNER JOIN `Order` ON `Order`.`room_id` = `Room`.`id`" +
             "WHERE `Order`.`status` = 'ACTIVE' AND `order`.`end_date` < ? GROUP BY `Room`.`id`;";

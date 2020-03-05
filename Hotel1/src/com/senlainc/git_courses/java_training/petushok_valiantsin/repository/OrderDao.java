@@ -28,6 +28,7 @@ import java.util.List;
 @DependencyClass
 @DependencyPrimary
 public class OrderDao implements IOrderDao {
+    private static final String ERROR = "Error during connection to Database. Check query.";
     @DependencyComponent
     private ConnectionManager connectionManager;
 
@@ -44,7 +45,7 @@ public class OrderDao implements IOrderDao {
             statement.setDouble(7, order.getPrice());
             statement.execute();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
     }
 
@@ -55,7 +56,7 @@ public class OrderDao implements IOrderDao {
             statement.setInt(1, index);
             statement.execute();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
     }
 
@@ -71,7 +72,7 @@ public class OrderDao implements IOrderDao {
             statement.setInt(6, order.getId());
             statement.execute();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
     }
 
@@ -83,7 +84,7 @@ public class OrderDao implements IOrderDao {
             statement.setInt(2, attendance.getId());
             statement.execute();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
     }
 
@@ -98,7 +99,7 @@ public class OrderDao implements IOrderDao {
             }
             result.close();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
         return orderList;
     }
@@ -115,7 +116,7 @@ public class OrderDao implements IOrderDao {
             }
             result.close();
         } catch (SQLException e) {
-            throw new DaoException();
+            throw new DaoException(ERROR, e);
         }
         return roomList;
     }
@@ -132,7 +133,7 @@ public class OrderDao implements IOrderDao {
             }
             result.close();
         } catch (SQLException e) {
-            throw new DaoException();
+            throw new DaoException(ERROR, e);
         }
         return roomList;
     }
@@ -158,18 +159,18 @@ public class OrderDao implements IOrderDao {
             }
             throw new ElementNotFoundException();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
     }
 
     private Order createOrderFromQuery(ResultSet result) throws SQLException {
-        final Room room = new Room(result.getInt(10), result.getString(11), result.getShort(12)
-                , result.getShort(13), RoomStatus.valueOf(result.getString(14)), result.getDouble(15));
+        final Room room = new Room(result.getInt("number"), result.getString("classification"), result.getShort("room_number")
+                , result.getShort("capacity"), RoomStatus.valueOf(result.getString(14)), result.getDouble(15));
         room.setId(result.getInt(9));
-        final Guest guest = new Guest(result.getString(17), result.getString(18), result.getDate(19).toLocalDate());
+        final Guest guest = new Guest(result.getString("first_name"), result.getString("second_name"), result.getDate("birthday").toLocalDate());
         guest.setId(result.getInt(16));
-        final Order order = new Order(result.getTimestamp(2).toLocalDateTime(), guest, room, result.getDate(5).toLocalDate()
-                , result.getDate(6).toLocalDate(), OrderStatus.valueOf(result.getString(7)), result.getDouble(8));
+        final Order order = new Order(result.getTimestamp("order_date").toLocalDateTime(), guest, room, result.getDate("start_date").toLocalDate()
+                , result.getDate("end_date").toLocalDate(), OrderStatus.valueOf(result.getString(7)), result.getDouble(8));
         order.setId(result.getInt(1));
         orderAttendance(order);
         return order;
@@ -182,8 +183,8 @@ public class OrderDao implements IOrderDao {
             statement.setInt(1, order.getId());
             final ResultSet result = statement.executeQuery();
             while (result.next()) {
-                final Attendance attendance = new Attendance(result.getString(2), result.getString(3), result.getDouble(4));
-                attendance.setId(result.getInt(1));
+                final Attendance attendance = new Attendance(result.getString("name"), result.getString("section"), result.getDouble("price"));
+                attendance.setId(result.getInt("id"));
                 attendanceList.add(attendance);
             }
             result.close();

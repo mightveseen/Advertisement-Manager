@@ -14,6 +14,10 @@ public enum OrderStatus {
 
     @Override
     public String toString() {
+        return this.name;
+    }
+
+    public String getColorName() {
         if (OrderStatus.this == OrderStatus.DISABLED) {
             return ConsoleColor.RED.getCode() + this.name + ConsoleColor.RESET.getCode();
         }

@@ -20,6 +20,7 @@ import java.util.List;
 @DependencyClass
 @DependencyPrimary
 public class AttendanceDao implements IAttendanceDao {
+    private static final String ERROR = "Error during connection to Database. Check query.";
     @DependencyComponent
     private ConnectionManager connectionManager;
 
@@ -32,7 +33,7 @@ public class AttendanceDao implements IAttendanceDao {
             statement.setDouble(3, attendance.getPrice());
             statement.execute();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
     }
 
@@ -43,7 +44,7 @@ public class AttendanceDao implements IAttendanceDao {
             statement.setInt(1, index);
             statement.execute();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
     }
 
@@ -57,7 +58,7 @@ public class AttendanceDao implements IAttendanceDao {
             statement.setInt(4, attendance.getId());
             statement.execute();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
     }
 
@@ -72,7 +73,7 @@ public class AttendanceDao implements IAttendanceDao {
             }
             result.close();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
         return attendanceList;
     }
@@ -90,7 +91,7 @@ public class AttendanceDao implements IAttendanceDao {
             }
             throw new ElementNotFoundException();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(ERROR, e);
         }
     }
 
