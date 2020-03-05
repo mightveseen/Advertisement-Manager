@@ -21,6 +21,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,7 +93,7 @@ public class OrderDao implements IOrderDao {
         try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
             final ResultSet result = statement.executeQuery();
             while (result.next()) {
-                orderList.add(createFromQuery(result));
+                orderList.add(createOrderFromQuery(result));
             }
             result.close();
         } catch (SQLException e) {
@@ -109,16 +110,36 @@ public class OrderDao implements IOrderDao {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();
             while (result.next()) {
-                final Room room = new Room(result.getInt("number"), result.getString("classification"), result.getShort("room_number")
-                        , result.getShort("capacity"), RoomStatus.valueOf(result.getString("status")), result.getDouble("price"));
-                room.setId(result.getInt("id"));
-                roomList.add(room);
+                roomList.add(createRoomFromQuery(result));
             }
             result.close();
         } catch (SQLException e) {
             throw new DaoException();
         }
         return roomList;
+    }
+
+    public List<Room> readAfterDate(LocalDate date) {
+        final String QUERY = QueryDao.ORDER.getQuery(QueryType.READ_AFTER_DATE);
+        final List<Room> roomList = new ArrayList<>();
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
+            statement.setDate(1, Date.valueOf(date));
+            final ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                roomList.add(createRoomFromQuery(result));
+            }
+            result.close();
+        } catch (SQLException e) {
+            throw new DaoException();
+        }
+        return roomList;
+    }
+
+    private Room createRoomFromQuery(ResultSet result) throws SQLException {
+        final Room room = new Room(result.getInt("number"), result.getString("classification"), result.getShort("room_number")
+                , result.getShort("capacity"), RoomStatus.valueOf(result.getString("status")), result.getDouble("price"));
+        room.setId(result.getInt("id"));
+        return room;
     }
 
     @Override
@@ -128,7 +149,7 @@ public class OrderDao implements IOrderDao {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();
             if (result.next()) {
-                final Order order = createFromQuery(result);
+                final Order order = createOrderFromQuery(result);
                 orderAttendance(order);
                 result.close();
                 return order;
@@ -139,7 +160,7 @@ public class OrderDao implements IOrderDao {
         }
     }
 
-    private Order createFromQuery(ResultSet result) throws SQLException {
+    private Order createOrderFromQuery(ResultSet result) throws SQLException {
         final Room room = new Room(result.getInt(10), result.getString(11), result.getShort(12)
                 , result.getShort(13), RoomStatus.valueOf(result.getString(14)), result.getDouble(15));
         room.setId(result.getInt(9));

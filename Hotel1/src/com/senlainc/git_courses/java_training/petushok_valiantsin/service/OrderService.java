@@ -24,7 +24,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.S
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @DependencyClass
 @DependencyPrimary
@@ -77,12 +76,8 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Room> showAfterDate(LocalDate date) {
-        final List<Room> roomList = roomDao.readAll().stream()
-                .filter(i -> i.getStatus().equals(RoomStatus.FREE))
-                .collect(Collectors.toList());
-        orderDao.readAll().stream()
-                .filter(i -> i.getEndDate().isBefore(date) && i.getStatus().equals(OrderStatus.ACTIVE))
-                .forEach(i -> roomList.add(i.getRoom()));
+        final List<Room> roomList = roomDao.readAllFree();
+        roomList.addAll(orderDao.readAfterDate(date));
         return roomList;
     }
 

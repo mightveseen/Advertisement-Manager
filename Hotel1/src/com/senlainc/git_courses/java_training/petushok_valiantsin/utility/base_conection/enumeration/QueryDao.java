@@ -82,6 +82,8 @@ public enum QueryDao {
                     return QueryConst.ORDER_READ_ATTENDANCE;
                 case READ_LAST_ROOM:
                     return QueryConst.ORDER_READ_LAST_ROOM;
+                case READ_AFTER_DATE:
+                    return QueryConst.ORDER_READ_AFTER_DATE;
                 default:
                     return "";
             }
