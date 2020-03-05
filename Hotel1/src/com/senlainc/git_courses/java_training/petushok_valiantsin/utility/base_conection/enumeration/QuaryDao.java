@@ -1,7 +1,5 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
-
 public enum QuaryDao {
     ATTENDANCE {
         public String getQuary(QuaryType type) {
@@ -70,7 +68,7 @@ public enum QuaryDao {
                     return "INSERT INTO `Order`(`order_date`, `guest_id`, `room_id`, `start_date`, `end_date`, `status`, `price`)"
                             + "VALUES (?, ?, ?, ?, ?, ?, ?);";
                 case DELETE:
-                    return "UPDATE `Order` SET `status` = " + OrderStatus.DISABLED.name() + "WHERE `id` = ?;";
+                    return "UPDATE `Order` SET `status` = 'DISABLED' WHERE `id` = ?;";
                 case UPDATE:
                     return "UPDATE `Order` SET `order_date` = ?, `guest_id` = ?, `room_id` = ?, `start_date` = ?, `end_date` = ?, `status` = ?, `price` = ?"
                             + "WHERE `id` = ?;";
