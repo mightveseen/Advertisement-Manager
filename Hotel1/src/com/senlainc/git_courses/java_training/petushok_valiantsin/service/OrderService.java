@@ -10,6 +10,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
@@ -44,10 +45,12 @@ public class OrderService implements IOrderService {
 
     @Override
     public void add(int guestIndex, int roomIndex, LocalDate endDate) {
-        if (roomDao.read(roomIndex).getStatus().equals(RoomStatus.RENTED) || roomDao.read(roomIndex).getStatus().equals(RoomStatus.SERVED)) {
+        final Room room = roomDao.read(roomIndex);
+        final Guest guest = guestDao.read(guestIndex);
+        if (room.getStatus().equals(RoomStatus.RENTED) || room.getStatus().equals(RoomStatus.SERVED)) {
             throw new EntityNotAvailableException("Room now is not available");
         }
-        orderDao.create(new Order(guestDao.read(guestIndex), roomDao.read(roomIndex), endDate, roomDao.read(roomIndex).getPrice()));
+        orderDao.create(new Order(guest, room, endDate, room.getPrice()));
         roomService.changeStatus(roomIndex, RoomStatus.RENTED);
     }
 
