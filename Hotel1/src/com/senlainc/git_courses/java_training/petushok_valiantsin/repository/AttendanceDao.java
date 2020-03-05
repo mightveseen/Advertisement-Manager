@@ -6,8 +6,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.anno
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QuaryDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QuaryType;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QueryDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QueryType;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.DaoException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
 
@@ -25,8 +25,8 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public void create(Attendance attendance) {
-        final String QUARY = QuaryDao.ATTENDANCE.getQuary(QuaryType.CREATE);
-        try (final PreparedStatement statement = connectionManager.getStatment(QUARY)) {
+        final String QUERY = QueryDao.ATTENDANCE.getQuery(QueryType.CREATE);
+        try (final PreparedStatement statement = connectionManager.getStatment(QUERY)) {
             statement.setString(1, attendance.getName());
             statement.setString(2, attendance.getSection());
             statement.setDouble(3, attendance.getPrice());
@@ -38,8 +38,8 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public void delete(Integer index) {
-        final String QUARY = QuaryDao.ATTENDANCE.getQuary(QuaryType.DELETE);
-        try (final PreparedStatement statement = connectionManager.getStatment(QUARY)) {
+        final String QUERY = QueryDao.ATTENDANCE.getQuery(QueryType.DELETE);
+        try (final PreparedStatement statement = connectionManager.getStatment(QUERY)) {
             statement.setInt(1, index);
             statement.execute();
         } catch (SQLException e) {
@@ -49,8 +49,8 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public void update(Attendance attendance) {
-        final String QUARY = QuaryDao.ATTENDANCE.getQuary(QuaryType.UPDATE);
-        try (final PreparedStatement statement = connectionManager.getStatment(QUARY)) {
+        final String QUERY = QueryDao.ATTENDANCE.getQuery(QueryType.UPDATE);
+        try (final PreparedStatement statement = connectionManager.getStatment(QUERY)) {
             statement.setString(1, attendance.getName());
             statement.setString(2, attendance.getSection());
             statement.setDouble(3, attendance.getPrice());
@@ -63,12 +63,12 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public List<Attendance> readAll() {
-        final String QUARY = QuaryDao.ATTENDANCE.getQuary(QuaryType.READ_ALL);
+        final String QUERY = QueryDao.ATTENDANCE.getQuery(QueryType.READ_ALL);
         final List<Attendance> attendanceList = new ArrayList<>();
-        try (final PreparedStatement statement = connectionManager.getStatment(QUARY)) {
+        try (final PreparedStatement statement = connectionManager.getStatment(QUERY)) {
             final ResultSet result = statement.executeQuery();
             while (result.next()) {
-                attendanceList.add(createFromQuary(result));
+                attendanceList.add(createFromQuery(result));
             }
             result.close();
         } catch (SQLException e) {
@@ -79,12 +79,12 @@ public class AttendanceDao implements IAttendanceDao {
 
     @Override
     public Attendance read(Integer index) {
-        final String QUARY = QuaryDao.ATTENDANCE.getQuary(QuaryType.READ);
-        try (final PreparedStatement statement = connectionManager.getStatment(QUARY)) {
+        final String QUERY = QueryDao.ATTENDANCE.getQuery(QueryType.READ);
+        try (final PreparedStatement statement = connectionManager.getStatment(QUERY)) {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();
             if (result.next()) {
-                final Attendance attendance = createFromQuary(result);
+                final Attendance attendance = createFromQuery(result);
                 result.close();
                 return attendance;
             }
@@ -94,9 +94,9 @@ public class AttendanceDao implements IAttendanceDao {
         }
     }
 
-    private Attendance createFromQuary(ResultSet result) throws SQLException {
-        final Attendance attendance = new Attendance(result.getString(2), result.getString(3), result.getDouble(4));
-        attendance.setId(result.getInt(1));
+    private Attendance createFromQuery(ResultSet result) throws SQLException {
+        final Attendance attendance = new Attendance(result.getString("name"), result.getString("section"), result.getDouble("price"));
+        attendance.setId(result.getInt("id"));
         return attendance;
     }
 }

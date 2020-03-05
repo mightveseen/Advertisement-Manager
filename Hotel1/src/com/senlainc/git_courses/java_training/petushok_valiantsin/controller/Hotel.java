@@ -32,7 +32,7 @@ public class Hotel {
     }
 
     public List<String> showAttendance() {
-        return createStringList(attendanceService.showAttendance());
+        return createStringList(attendanceService.getAttendanceList());
     }
 
     public void changePriceAttendance(int index, double price) {
@@ -55,11 +55,11 @@ public class Hotel {
     }
 
     public List<String> sortRoom(String type, String parameter) {
-        return createStringList(roomService.show(type, roomService.sort(parameter)));
+        return createStringList(roomService.sort(type, parameter));
     }
 
     public List<String> showRoom(String parameter) {
-        return createStringList(roomService.show(parameter, roomService.getRoomList()));
+        return createStringList(roomService.getRoomList());
     }
 
     public String numFreeRoom() {
@@ -69,8 +69,8 @@ public class Hotel {
     /**
      * Guest
      */
-    public void addGuest(String firstName, String lastName, LocalDate birthday, String infoContact) {
-        guestService.add(firstName, lastName, birthday, infoContact);
+    public void addGuest(String firstName, String lastName, LocalDate birthday) {
+        guestService.add(firstName, lastName, birthday);
     }
 
     public String numGuest() {
@@ -93,7 +93,7 @@ public class Hotel {
     }
 
     public List<String> sortOrder(String parameter) {
-        return createStringList(orderService.show(orderService.sort(parameter)));
+        return createStringList(orderService.sort(parameter));
     }
 
     public List<String> showOrder() {

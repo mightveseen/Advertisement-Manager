@@ -24,12 +24,10 @@ public class AddGuest implements IAction {
             final String firstName = scanner.nextLine();
             System.out.print("Enter last name: ");
             final String lastName = scanner.nextLine();
-            System.out.print("Enter info contact(Email/Phone number): ");
-            final String infoContact = scanner.nextLine();
             System.out.print("Enter birthday(Format: YYYY-MM-DD): ");
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             final LocalDate birthday = LocalDate.parse(scanner.nextLine(), formatter);
-            hotel.addGuest(firstName, lastName, birthday, infoContact);
+            hotel.addGuest(firstName, lastName, birthday);
             LOGGER.log(Level.INFO, "Add guest in list");
         } catch (DateTimeParseException | NumberFormatException e) {
             throw new WrongEnteredDataException("Wrong entered data in: " + e.getMessage(), e);

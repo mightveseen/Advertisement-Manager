@@ -14,8 +14,6 @@ public interface IOrderService {
 
     List<Order> show();
 
-    List<Order> show(List<Order> myList);
-
     List<Room> showGuestRoom(int index);
 
     List<Order> sort(String parameter);

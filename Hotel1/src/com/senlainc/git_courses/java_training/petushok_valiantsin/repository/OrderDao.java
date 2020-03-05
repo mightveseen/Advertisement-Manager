@@ -11,8 +11,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QuaryDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QuaryType;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QueryDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QueryType;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.DaoException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
 
@@ -32,8 +32,8 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public void create(Order order) {
-        final String QUARY = QuaryDao.ORDER.getQuary(QuaryType.CREATE);
-        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
+        final String QUERY = QueryDao.ORDER.getQuery(QueryType.CREATE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
             statement.setTimestamp(1, Timestamp.valueOf(order.getOrderDate()));
             statement.setInt(2, order.getGuest().getId());
             statement.setInt(3, order.getRoom().getId());
@@ -49,8 +49,8 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public void delete(Integer index) {
-        final String QUARY = QuaryDao.ORDER.getQuary(QuaryType.DELETE);
-        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
+        final String QUERY = QueryDao.ORDER.getQuery(QueryType.DELETE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
             statement.setInt(1, index);
             statement.execute();
         } catch (SQLException e) {
@@ -60,8 +60,8 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public void update(Order order) {
-        final String QUARY = QuaryDao.ORDER.getQuary(QuaryType.UPDATE);
-        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
+        final String QUERY = QueryDao.ORDER.getQuery(QueryType.UPDATE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
             statement.setInt(1, order.getGuest().getId());
             statement.setInt(2, order.getRoom().getId());
             statement.setDate(3, Date.valueOf(order.getEndDate()));
@@ -75,8 +75,8 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public void update(Order order, Attendance attendance) {
-        final String QUARY = QuaryDao.ORDER.getQuary(QuaryType.ADD_ORDER_ATTENDANCE);
-        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
+        final String QUERY = QueryDao.ORDER.getQuery(QueryType.ADD_ORDER_ATTENDANCE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
             statement.setInt(1, order.getId());
             statement.setInt(2, attendance.getId());
             statement.execute();
@@ -87,12 +87,12 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public List<Order> readAll() {
-        final String QUARY = QuaryDao.ORDER.getQuary(QuaryType.READ_ALL);
+        final String QUERY = QueryDao.ORDER.getQuery(QueryType.READ_ALL);
         final List<Order> orderList = new ArrayList<>();
-        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
             final ResultSet result = statement.executeQuery();
             while (result.next()) {
-                orderList.add(createFromQuary(result));
+                orderList.add(createFromQuery(result));
             }
             result.close();
         } catch (SQLException e) {
@@ -103,12 +103,12 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public Order read(Integer index) {
-        final String QUARY = QuaryDao.ORDER.getQuary(QuaryType.READ);
-        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
+        final String QUERY = QueryDao.ORDER.getQuery(QueryType.READ);
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();
             if (result.next()) {
-                final Order order = createFromQuary(result);
+                final Order order = createFromQuery(result);
                 orderAttendance(order);
                 result.close();
                 return order;
@@ -119,12 +119,11 @@ public class OrderDao implements IOrderDao {
         }
     }
 
-    private Order createFromQuary(ResultSet result) throws SQLException {
+    private Order createFromQuery(ResultSet result) throws SQLException {
         final Room room = new Room(result.getInt(10), result.getString(11), result.getShort(12)
                 , result.getShort(13), RoomStatus.valueOf(result.getString(14)), result.getDouble(15));
         room.setId(result.getInt(9));
-        final Guest guest = new Guest(result.getString(17), result.getString(18), result.getDate(19).toLocalDate()
-                , result.getString(20));
+        final Guest guest = new Guest(result.getString(17), result.getString(18), result.getDate(19).toLocalDate());
         guest.setId(result.getInt(16));
         final Order order = new Order(result.getTimestamp(2).toLocalDateTime(), guest, room, result.getDate(5).toLocalDate()
                 , result.getDate(6).toLocalDate(), OrderStatus.valueOf(result.getString(7)), result.getDouble(8));
@@ -135,8 +134,8 @@ public class OrderDao implements IOrderDao {
 
     private void orderAttendance(Order order) throws SQLException {
         final List<Attendance> attendanceList = new ArrayList<>();
-        final String QUARY = QuaryDao.ORDER.getQuary(QuaryType.READ_ORDER_ATTENDANCE);
-        try (PreparedStatement statement = connectionManager.getStatment(QUARY)) {
+        final String QUERY = QueryDao.ORDER.getQuery(QueryType.READ_ORDER_ATTENDANCE);
+        try (PreparedStatement statement = connectionManager.getStatment(QUERY)) {
             statement.setInt(1, order.getId());
             final ResultSet result = statement.executeQuery();
             while (result.next()) {

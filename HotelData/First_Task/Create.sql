@@ -10,8 +10,7 @@ CREATE TABLE IF NOT EXISTS `Guest` (
 	`id` INT AUTO_INCREMENT PRIMARY KEY,
     `first_name` VARCHAR(50),
     `second_name` VARCHAR(50),
-    `birthday` DATE,
-    `info_contact` VARCHAR(50)
+    `birthday` DATE
 );
 CREATE TABLE IF NOT EXISTS `Room` (
 	`id` INT AUTO_INCREMENT PRIMARY KEY,

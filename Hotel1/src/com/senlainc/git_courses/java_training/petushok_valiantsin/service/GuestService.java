@@ -26,12 +26,12 @@ public class GuestService implements IGuestService {
     private ConnectionManager connectionManager;
 
     @Override
-    public void add(String firstName, String lastName, LocalDate birthday, String infoContact) {
+    public void add(String firstName, String lastName, LocalDate birthday) {
         int guestLimit = guestConfig.getGuestLimit();
-        if (guestLimit < guestDao.readAll().size()) {
+        if (guestLimit < guestDao.readSize()) {
             throw new MaxElementsException(String.format("The number of guests exceeds the specified limit: %d guests", guestLimit));
         }
-        guestDao.create(new Guest(firstName, lastName, birthday, infoContact));
+        guestDao.create(new Guest(firstName, lastName, birthday));
         connectionManager.commit();
     }
 
@@ -46,20 +46,8 @@ public class GuestService implements IGuestService {
     }
 
     @Override
-    public void changeInfoContact(int index, String information) {
-        try {
-            final Guest guest = guestDao.read(index);
-            guest.setInfoContact(information);
-            guestDao.update(guest);
-            connectionManager.commit();
-        } catch (ElementNotFoundException e) {
-            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
-        }
-    }
-
-    @Override
     public int num() {
-        return guestDao.readAll().size();
+        return guestDao.readSize();
     }
 
     @Override

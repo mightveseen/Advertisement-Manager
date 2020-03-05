@@ -18,9 +18,7 @@ import java.util.logging.Logger;
 public class ConnectionManager {
     private static final Logger LOGGER = Logger.getLogger(ConnectionManager.class.getName());
     @ConfigProperty(configName = "Base")
-    private static String IP;
-    @ConfigProperty(configName = "Base")
-    private static String PORT;
+    private static String URL;
     @ConfigProperty(configName = "Base")
     private static String BASE_NAME;
     @ConfigProperty(configName = "Base")
@@ -32,7 +30,7 @@ public class ConnectionManager {
     private ConnectionManager() {
         ConfigController.getInstance().setConfig(ConnectionManager.class);
         try {
-            this.connection = DriverManager.getConnection(String.format("jdbc:mysql://%s:%s/%s", IP, PORT, BASE_NAME), USER, PASSWORD);
+            this.connection = DriverManager.getConnection(String.format("jdbc:mysql://%s/%s", URL, BASE_NAME), USER, PASSWORD);
             setAutoCommit(false);
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);

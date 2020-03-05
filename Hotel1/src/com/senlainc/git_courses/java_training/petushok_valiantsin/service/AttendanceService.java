@@ -47,7 +47,7 @@ public class AttendanceService implements IAttendanceService {
     }
 
     @Override
-    public List<Attendance> showAttendance() {
+    public List<Attendance> getAttendanceList() {
         return attendanceDao.readAll();
     }
 

@@ -15,7 +15,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.S
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.SortParameter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @DependencyClass
 @DependencyPrimary
@@ -30,7 +29,7 @@ public class RoomService implements IRoomService {
 
     @Override
     public void add(Room room) {
-        if (roomDao.readAll().stream().anyMatch(i -> i.getNumber() == room.getNumber())) {
+        if (roomDao.readByNumber(room.getNumber()) != null) {
             throw new EntityNotAvailableException(String.format("Room with number: %d already exists.", room.getNumber()));
         }
         roomDao.create(room);
@@ -49,6 +48,14 @@ public class RoomService implements IRoomService {
 
     @Override
     public List<Room> getRoomList() {
+        return roomDao.readAll();
+    }
+
+    @Override
+    public List<Room> getRoomList(String parameter) {
+        if (parameter.equals("free")) {
+            return roomDao.readAllFree();
+        }
         return roomDao.readAll();
     }
 
@@ -80,25 +87,13 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public List<Room> show(String parameter, List<Room> myList) {
-        if (parameter.equals("free")) {
-            return myList.stream()
-                    .filter(i -> i.getStatus().equals(RoomStatus.FREE))
-                    .collect(Collectors.toList());
-        }
-        return myList;
-    }
-
-    @Override
     public long numFreeRoom() {
-        return roomDao.readAll().stream()
-                .filter(i -> i.getStatus().equals(RoomStatus.FREE))
-                .count();
+        return roomDao.readFreeSize();
     }
 
     @Override
-    public List<Room> sort(String parameter) {
-        final List<Room> myList = roomDao.readAll();
+    public List<Room> sort(String type, String parameter) {
+        final List<Room> myList = getRoomList(type);
         switch (parameter) {
             case "price":
                 sortByPrice(myList);

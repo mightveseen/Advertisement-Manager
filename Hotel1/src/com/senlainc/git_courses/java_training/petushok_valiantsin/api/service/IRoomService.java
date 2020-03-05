@@ -16,9 +16,9 @@ public interface IRoomService {
 
     void changeStatus(int index, RoomStatus status);
 
-    List<Room> show(String parameter, List<Room> myList);
+    List<Room> getRoomList(String parameter);
 
     long numFreeRoom();
 
-    List<Room> sort(String parameter);
+    List<Room> sort(String type, String parameter);
 }

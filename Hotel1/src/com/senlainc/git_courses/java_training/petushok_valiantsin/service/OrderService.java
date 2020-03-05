@@ -72,11 +72,6 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Order> show(List<Order> myList) {
-        return myList;
-    }
-
-    @Override
     public List<Room> showGuestRoom(int index) {
         final List<Room> guestRoomList = new ArrayList<>();
         orderDao.readAll().stream()

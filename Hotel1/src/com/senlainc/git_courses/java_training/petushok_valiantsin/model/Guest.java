@@ -7,13 +7,11 @@ public class Guest implements Cloneable {
     private final String firstName;
     private final String secondName;
     private final LocalDate birthday;
-    private String infoContact;
 
-    public Guest(String firstName, String secondName, LocalDate birthday, String infoContact) {
+    public Guest(String firstName, String secondName, LocalDate birthday) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.birthday = birthday;
-        this.infoContact = infoContact;
     }
 
     @Override
@@ -41,17 +39,9 @@ public class Guest implements Cloneable {
         return this.birthday;
     }
 
-    public String getInfoContact() {
-        return this.infoContact;
-    }
-
-    public void setInfoContact(String infoContact) {
-        this.infoContact = infoContact;
-    }
-
     @Override
     public String toString() {
         return this.id + ")" + this.firstName + ", "
-                + this.secondName + ", " + this.birthday + ", " + this.infoContact;
+                + this.secondName + ", " + this.birthday;
     }
 }
