@@ -37,8 +37,8 @@ public class Hotel {
     /**
      * Room
      */
-    public void addRoom(Room room) {
-        roomService.add(room);
+    public void addRoom(int number, String classification, short roomNumber, short capacity, double price) {
+        roomService.add(number, classification, roomNumber, capacity, price);
     }
 
     public void changePriceRoom(int index, double price) {

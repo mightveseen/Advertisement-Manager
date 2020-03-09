@@ -11,5 +11,16 @@
 
     <artifactId>user-interface</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.senlainc.git_courses.java_training.petushok_valiantsin</groupId>
+            <artifactId>dependency-injection</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.senlainc.git_courses.java_training.petushok_valiantsin</groupId>
+            <artifactId>controller</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

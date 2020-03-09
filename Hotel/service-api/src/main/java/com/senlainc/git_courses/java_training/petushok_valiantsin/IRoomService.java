@@ -5,7 +5,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.status.RoomSta
 import java.util.List;
 
 public interface IRoomService {
-    void add(Room room);
+    void add(int number, String classification, short roomNumber, short capacity, double price);
 
     void delete(int index);
 
