@@ -11,5 +11,22 @@
 
     <artifactId>service</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.senlainc.git_courses.java_training.petushok_valiantsin</groupId>
+            <artifactId>service-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.senlainc.git_courses.java_training.petushok_valiantsin</groupId>
+            <artifactId>repository-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.senlainc.git_courses.java_training.petushok_valiantsin</groupId>
+            <artifactId>dependency-injection</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>

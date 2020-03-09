@@ -1,0 +1,15 @@
+package com.senlainc.git_courses.java_training.petushok_valiantsin;
+
+import java.util.List;
+
+public interface IAttendanceService {
+    void add(String name, String section, double price);
+
+    void delete(int index);
+
+    void changePrice(int index, double price);
+
+    List<Attendance> getAttendanceList();
+
+    List<Attendance> sort(String parameter);
+}
