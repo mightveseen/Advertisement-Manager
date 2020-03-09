@@ -40,8 +40,8 @@ public class QueryConst {
      */
     protected static final String ORDER_CREATE = "INSERT INTO `Order`(`order_date`, `guest_id`, `room_id`, `start_date`, `end_date`, `status`, `price`)"
             + "VALUES (?, ?, ?, ?, ?, ?, ?);";
-    protected static final String ORDER_ADD_ATTENDANCE = "INSERT INTO `OrderAttendance`(`order_id`, `attendance_id`)" +
-            "VALUES (?, ?);";
+    protected static final String ORDER_ADD_ATTENDANCE = "INSERT INTO `OrderAttendance`(`order_id`, `attendance_id`)"
+            + "VALUES (?, ?);";
     protected static final String ORDER_DELETE = "UPDATE `Order` SET `status` = 'DISABLED' WHERE `id` = ?;";
     protected static final String ORDER_UPDATE = "UPDATE `Order` SET `guest_id` = ?, `room_id` = ?, `end_date` = ?, `status` = ?, `price` = ?"
             + "WHERE `id` = ?;";
@@ -57,9 +57,9 @@ public class QueryConst {
             + "WHERE `OrderAttendance`.`order_id` = ?;";
     protected static final String ORDER_READ_LAST_ROOM = "SELECT `Room`.`id`, `number`, `classification`, `room_number`, `capacity`, `Room`.`status`, `Room`.`price`, `Order`.`order_date`"
             + "FROM `Room` INNER JOIN `Order` ON `Order`.`room_id` = `Room`.`id` WHERE `Order`.`guest_id` = ? ORDER BY `Order`.`order_date` DESC LIMIT 3;";
-    protected static final String ORDER_READ_AFTER_DATE = "SELECT `Room`.`id`, `number`, `classification`, `room_number`, `capacity`, `Room`.`status`, `Room`.`price`" +
-            "FROM `Room` INNER JOIN `Order` ON `Order`.`room_id` = `Room`.`id`" +
-            "WHERE `Order`.`status` = 'ACTIVE' AND `order`.`end_date` < ? GROUP BY `Room`.`id`;";
+    protected static final String ORDER_READ_AFTER_DATE = "SELECT `Room`.`id`, `number`, `classification`, `room_number`, `capacity`, `Room`.`status`, `Room`.`price`"
+            + "FROM `Room` INNER JOIN `Order` ON `Order`.`room_id` = `Room`.`id`"
+            + "WHERE `Order`.`status` = 'ACTIVE' AND `order`.`end_date` < ? GROUP BY `Room`.`id`;";
 
     private QueryConst() {
         throw new IllegalStateException("Utility class");
