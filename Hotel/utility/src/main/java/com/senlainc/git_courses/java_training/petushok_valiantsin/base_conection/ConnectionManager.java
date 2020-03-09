@@ -1,9 +1,9 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.base_conection;
 
+import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.ConfigController;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.annotation.ConfigClass;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.configuration.annotation.ConfigProperty;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.ConfigController;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.annotation.ConfigClass;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.annotation.ConfigProperty;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

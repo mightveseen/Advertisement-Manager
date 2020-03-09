@@ -10,6 +10,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>utility</artifactId>
-    <name>utility</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.senlainc.git_courses.java_training.petushok_valiantsin</groupId>
+            <artifactId>dependency-injection</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>
