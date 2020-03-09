@@ -1,6 +1,6 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.status.RoomStatus;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.attendance.AddAttendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.attendance.ChangePriceAttendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.exit.MenuExit;

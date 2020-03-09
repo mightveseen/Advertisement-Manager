@@ -6,7 +6,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IO
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyComponent;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.status.RoomStatus;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
