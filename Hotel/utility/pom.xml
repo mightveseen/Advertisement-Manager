@@ -17,6 +17,26 @@
             <artifactId>dependency-injection</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.senlainc.git_courses.java_training.petushok_valiantsin</groupId>
+            <artifactId>model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.senlainc.git_courses.java_training.petushok_valiantsin</groupId>
+            <artifactId>service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.senlainc.git_courses.java_training.petushok_valiantsin</groupId>
+            <artifactId>controller</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.senlainc.git_courses.java_training.petushok_valiantsin</groupId>
+            <artifactId>repository</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
