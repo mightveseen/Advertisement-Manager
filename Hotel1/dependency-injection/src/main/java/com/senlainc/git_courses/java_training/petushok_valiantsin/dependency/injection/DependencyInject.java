@@ -1,7 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation.DependencyPrimary;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.utility.ClassReader;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyPrimary;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.utility.ClassReader;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

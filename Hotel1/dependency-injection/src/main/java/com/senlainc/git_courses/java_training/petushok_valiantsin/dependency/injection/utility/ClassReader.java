@@ -1,4 +1,4 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.injection.utility;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.utility;
 
 import java.io.IOException;
 import java.net.URL;

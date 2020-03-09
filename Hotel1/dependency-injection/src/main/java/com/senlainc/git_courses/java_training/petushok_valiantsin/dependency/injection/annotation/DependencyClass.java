@@ -1,4 +1,4 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.injection.annotation;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
