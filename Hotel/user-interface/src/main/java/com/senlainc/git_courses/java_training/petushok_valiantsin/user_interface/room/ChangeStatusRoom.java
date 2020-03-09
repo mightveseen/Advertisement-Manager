@@ -1,7 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.room;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.DependencyController;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.IAction;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.WrongEnteredDataException;

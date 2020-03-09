@@ -1,7 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.injection.DependencyController;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.AttendanceDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.GuestDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.OrderDao;

@@ -1,4 +1,4 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.injection;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
