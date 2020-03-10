@@ -1,23 +1,23 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.attendance.AddAttendance;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.attendance.ChangePriceAttendance;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.exit.MenuExit;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.guest.AddGuest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.guest.ShowNumberGuest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.guest.ShowThreeRoomGuest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.order.AddAttendanceOrder;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.order.AddOrder;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.order.DeleteOrder;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.order.ShowAttendanceOrder;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.order.ShowOrder;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.room.AddRoom;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.room.ChangePriceRoom;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.room.ChangeStatusRoom;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.room.ShowDateRoom;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.room.ShowNumberFreeRoom;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.room.ShowRoom;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.attendance.AddAttendance;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.attendance.ChangePriceAttendance;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.exit.MenuExit;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.guest.AddGuest;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.guest.ShowNumberGuest;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.guest.ShowThreeRoomGuest;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.order.AddAttendanceOrder;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.order.AddOrder;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.order.DeleteOrder;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.order.ShowAttendanceOrder;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.order.ShowOrder;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.room.AddRoom;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.room.ChangePriceRoom;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.room.ChangeStatusRoom;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.room.ShowDateRoom;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.room.ShowNumberFreeRoom;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.room.ShowRoom;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

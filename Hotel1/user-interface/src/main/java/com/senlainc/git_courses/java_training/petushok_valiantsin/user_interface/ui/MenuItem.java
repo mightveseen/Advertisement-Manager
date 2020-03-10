@@ -1,4 +1,4 @@
-package com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface;
+package com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui;
 
 public class MenuItem {
     private final String title;
