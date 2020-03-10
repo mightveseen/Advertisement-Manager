@@ -19,9 +19,8 @@
         </dependency>
         <dependency>
             <groupId>com.senlainc.git_courses.java_training.petushok_valiantsin</groupId>
-            <artifactId>dependency-injection</artifactId>
+            <artifactId>utility</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
-
 </project>

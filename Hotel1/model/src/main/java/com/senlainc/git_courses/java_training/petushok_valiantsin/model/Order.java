@@ -108,6 +108,6 @@ public class Order implements Cloneable {
                 "Start date: " + this.startDate + "\t" +
                 "End date: " + this.endDate + "\n" +
                 "Total amount: " + this.price + "\t" +
-                "Status: " + this.status.getColorName();
+                "Status: " + this.status.toString();
     }
 }

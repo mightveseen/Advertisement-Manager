@@ -78,6 +78,6 @@ public class Room implements Cloneable {
     public String toString() {
         return this.id + ")" + this.number + ", "
                 + this.classification + ", " + this.roomNumber + ", "
-                + this.capacity + ", " + this.status.getColorName() + ", " + this.price;
+                + this.capacity + ", " + this.status.toString() + ", " + this.price;
     }
 }
