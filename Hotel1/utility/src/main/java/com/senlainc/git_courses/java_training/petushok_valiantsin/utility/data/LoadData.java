@@ -2,6 +2,8 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 //import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.DependencyController;
 //import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.AttendanceDao;
@@ -15,6 +17,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_c
 //import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
 //
 public class LoadData {
+    private static final Logger LOGGER = Logger.getLogger(LoadData.class);
+
     private LoadData() {
         throw new IllegalStateException("Utility class");
     }
@@ -22,6 +26,7 @@ public class LoadData {
     public static void execute(Class<?> clazz) {
         /* Create connection to DataBase */
         DependencyController.getInstance().setDependency(ConnectionManager.class);
+        LOGGER.log(Level.DEBUG, "Initialize ConnectionManager");
 //        /** DAO initialization */
 //        DependencyController.getInstance().setDependency(AttendanceDao.class);
 //        DependencyController.getInstance().setDependency(GuestDao.class);

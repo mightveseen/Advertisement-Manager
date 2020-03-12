@@ -51,7 +51,7 @@ public class DependencyService {
                 field.setAccessible(false);
                 continue;
             }
-            if (constructor.isAnnotationPresent(DependencyClass.class)) {
+            if (constructor.getClass().isAnnotationPresent(DependencyClass.class)) {
                 DependencyService.getInstance().setVariable(field.getClass());
                 DependencyService.getInstance().initializeConstructor();
             }

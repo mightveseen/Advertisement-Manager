@@ -1,5 +1,9 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.utility;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -8,8 +12,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ClassReader {
     private static final Logger LOGGER = Logger.getLogger(ClassReader.class.getName());
@@ -34,8 +36,49 @@ public class ClassReader {
                 classesList.add(classLoader.loadClass(className));
             }
         } catch (IOException | ClassNotFoundException e) {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            LOGGER.log(Level.WARN, e.getMessage(), e);
         }
         return classesList;
+    }
+
+    public static List<Class<?>> getAllClasses(String packageName) {
+        try {
+            final ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+            final String path = packageName.replace('.', '/');
+            final Enumeration<URL> resources = classLoader.getResources(path);
+            final List<File> dirs = new ArrayList<>();
+            while (resources.hasMoreElements()) {
+                final URL resource = resources.nextElement();
+                dirs.add(new File(resource.getFile()));
+            }
+            final List<Class<?>> classes = new ArrayList<>();
+            for (File directory : dirs) {
+                classes.addAll(findClasses(directory, packageName));
+            }
+            return classes;
+        } catch (ClassNotFoundException | IOException e) {
+            LOGGER.log(Level.WARN, "Error while scanning all project", e);
+        }
+        return null;
+    }
+
+    private static List<Class<?>> findClasses(File directory, String packageName) throws ClassNotFoundException {
+        final List<Class<?>> classes = new ArrayList<>();
+        if (!directory.exists()) {
+            return classes;
+        }
+        final File[] files = directory.listFiles();
+        if (files == null) {
+            return classes;
+        }
+        for (File file : files) {
+            if (file.isDirectory()) {
+                String nextPackage = packageName.equals("") ? file.getName() : packageName + "." + file.getName();
+                classes.addAll(findClasses(file, nextPackage));
+            } else if (file.getName().endsWith(".class")) {
+                classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+            }
+        }
+        return classes;
     }
 }
