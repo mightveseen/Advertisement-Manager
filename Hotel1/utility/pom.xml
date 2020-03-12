@@ -13,6 +13,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.19</version>
+        </dependency>
+        <dependency>
             <groupId>com.senlainc.git_courses.java_training.petushok_valiantsin</groupId>
             <artifactId>dependency-injection</artifactId>
             <version>${project.version}</version>

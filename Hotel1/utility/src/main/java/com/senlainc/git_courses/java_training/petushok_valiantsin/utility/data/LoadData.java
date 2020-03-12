@@ -1,5 +1,8 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data;
 
+import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.DependencyController;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
+
 //import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
 //import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.DependencyController;
 //import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.AttendanceDao;
@@ -12,14 +15,14 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data;
 //import com.senlainc.git_courses.java_training.petushok_valiantsin.service.RoomService;
 //import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
 //
-//public class LoadData {
-//    private LoadData() {
-//        throw new IllegalStateException("Utility class");
-//    }
-//
-//    public static void execute() {
-//        /** Create connection to DataBase */
-//        DependencyController.getInstance().setDependency(ConnectionManager.class);
+public class LoadData {
+    private LoadData() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static void execute() {
+        /* Create connection to DataBase */
+        DependencyController.getInstance().setDependency(ConnectionManager.class);
 //        /** DAO initialization */
 //        DependencyController.getInstance().setDependency(AttendanceDao.class);
 //        DependencyController.getInstance().setDependency(GuestDao.class);
@@ -33,5 +36,5 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data;
 //        /** Controller initialization */
 //        DependencyController.getInstance().setDependency(Hotel.class);
 //        /** Load data from XML files */
-//    }
-//}
+    }
+}
