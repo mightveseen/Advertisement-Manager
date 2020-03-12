@@ -3,7 +3,6 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
 
-//import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
 //import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.DependencyController;
 //import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.AttendanceDao;
 //import com.senlainc.git_courses.java_training.petushok_valiantsin.repository.GuestDao;
@@ -20,7 +19,7 @@ public class LoadData {
         throw new IllegalStateException("Utility class");
     }
 
-    public static void execute() {
+    public static void execute(Class<?> clazz) {
         /* Create connection to DataBase */
         DependencyController.getInstance().setDependency(ConnectionManager.class);
 //        /** DAO initialization */
@@ -34,7 +33,7 @@ public class LoadData {
 //        DependencyController.getInstance().setDependency(GuestService.class);
 //        DependencyController.getInstance().setDependency(OrderService.class);
 //        /** Controller initialization */
-//        DependencyController.getInstance().setDependency(Hotel.class);
+        DependencyController.getInstance().setDependency(clazz);
 //        /** Load data from XML files */
     }
 }
