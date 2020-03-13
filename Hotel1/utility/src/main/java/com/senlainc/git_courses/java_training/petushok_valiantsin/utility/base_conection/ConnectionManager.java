@@ -3,7 +3,6 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.configuration.ConfigController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.configuration.annotation.ConfigClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.configuration.annotation.ConfigProperty;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyClass;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,7 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @ConfigClass
-@DependencyClass
 public class ConnectionManager {
     private static final Logger LOGGER = Logger.getLogger(ConnectionManager.class.getName());
     @ConfigProperty(configName = "Base")
