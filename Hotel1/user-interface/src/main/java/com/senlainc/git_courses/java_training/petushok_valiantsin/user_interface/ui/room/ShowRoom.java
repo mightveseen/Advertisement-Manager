@@ -19,7 +19,7 @@ public class ShowRoom implements IAction {
 
     @Override
     public void execute() {
-        final Hotel hotel = DependencyController.getInstance().getClazz(Hotel.class);
+        final Hotel hotel = (Hotel) DependencyController.getInstance().getClazz(Hotel.class);
         hotel.sortRoom(type, parameter).forEach(System.out::println);
         LOGGER.log(Level.INFO, String.format("Show room list sorted by: %s", parameter));
     }

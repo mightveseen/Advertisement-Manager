@@ -11,9 +11,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_c
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.RoomConfig;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotAvailableException;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.Sort;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.SortParameter;
 
+import java.util.Comparator;
 import java.util.List;
 
 @DependencyClass
@@ -111,14 +110,14 @@ public class RoomService implements IRoomService {
     }
 
     private void sortByPrice(List<Room> myList) {
-        myList.sort(Sort.ROOM.getComparator(SortParameter.PRICE));
+        myList.sort(Comparator.comparing(Room::getPrice));
     }
 
     private void sortByClassification(List<Room> myList) {
-        myList.sort(Sort.ROOM.getComparator(SortParameter.CLASSIFICATION));
+        myList.sort(Comparator.comparing(Room::getClassification));
     }
 
     private void sortByRoomNumber(List<Room> myList) {
-        myList.sort(Sort.ROOM.getComparator(SortParameter.ROOM_NUMBER));
+        myList.sort(Comparator.comparing(Room::getRoomNumber));
     }
 }

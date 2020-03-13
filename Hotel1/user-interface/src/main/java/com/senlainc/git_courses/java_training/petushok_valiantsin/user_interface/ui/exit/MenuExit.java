@@ -9,9 +9,10 @@ import org.apache.logging.log4j.Logger;
 
 public class MenuExit implements IAction {
     private static final Logger LOGGER = LogManager.getLogger(MenuExit.class.getName());
+
     @Override
     public void execute() {
-        final ConnectionManager connectionManager = DependencyController.getInstance().getClazz(ConnectionManager.class);
+        final ConnectionManager connectionManager = (ConnectionManager) DependencyController.getInstance().getClazz(ConnectionManager.class);
         connectionManager.closeConnection();
         LOGGER.log(Level.DEBUG, "Close Database connection");
         System.exit(0);

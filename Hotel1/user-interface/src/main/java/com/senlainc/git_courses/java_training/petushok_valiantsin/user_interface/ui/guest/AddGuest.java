@@ -19,7 +19,7 @@ public class AddGuest implements IAction {
     @Override
     public void execute() {
         try {
-            final Hotel hotel = DependencyController.getInstance().getClazz(Hotel.class);
+            final Hotel hotel = (Hotel) DependencyController.getInstance().getClazz(Hotel.class);
             final Scanner scanner = new Scanner(System.in);
             System.out.print("Enter first name: ");
             final String firstName = scanner.nextLine();

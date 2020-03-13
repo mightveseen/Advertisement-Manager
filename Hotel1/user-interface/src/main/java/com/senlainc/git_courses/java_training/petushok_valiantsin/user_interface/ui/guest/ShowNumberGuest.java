@@ -12,7 +12,7 @@ public class ShowNumberGuest implements IAction {
 
     @Override
     public void execute() {
-        final Hotel hotel = DependencyController.getInstance().getClazz(Hotel.class);
+        final Hotel hotel = (Hotel) DependencyController.getInstance().getClazz(Hotel.class);
         System.out.println(hotel.numGuest());
         LOGGER.log(Level.INFO, "Show number of guest");
     }

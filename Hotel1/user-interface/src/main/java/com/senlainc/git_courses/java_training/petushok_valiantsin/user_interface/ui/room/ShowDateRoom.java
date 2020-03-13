@@ -20,7 +20,7 @@ public class ShowDateRoom implements IAction {
     public void execute() {
         Scanner scanner = new Scanner(System.in);
         try {
-            final Hotel hotel = DependencyController.getInstance().getClazz(Hotel.class);
+            final Hotel hotel = (Hotel) DependencyController.getInstance().getClazz(Hotel.class);
             System.out.print("Enter date(Format: YYYY-MM-DD): ");
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             final LocalDate date = LocalDate.parse(scanner.nextLine(), formatter);

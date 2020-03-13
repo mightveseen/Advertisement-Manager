@@ -8,9 +8,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.inj
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.Sort;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.SortParameter;
 
+import java.util.Comparator;
 import java.util.List;
 
 @DependencyClass
@@ -68,10 +67,10 @@ public class AttendanceService implements IAttendanceService {
     }
 
     private void sortBySection(List<Attendance> myList) {
-        myList.sort(Sort.ATTENDANCE.getComparator(SortParameter.SECTION));
+        myList.sort(Comparator.comparing(Attendance::getSection));
     }
 
     private void sortByPrice(List<Attendance> myList) {
-        myList.sort(Sort.ATTENDANCE.getComparator(SortParameter.PRICE));
+        myList.sort(Comparator.comparing(Attendance::getPrice));
     }
 }

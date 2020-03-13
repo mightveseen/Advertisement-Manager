@@ -19,10 +19,9 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_c
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotAvailableException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotFoundException;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.Sort;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.sort.SortParameter;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 @DependencyClass
@@ -123,10 +122,10 @@ public class OrderService implements IOrderService {
     }
 
     private void sortByDate(List<Order> myList) {
-        myList.sort(Sort.ORDER.getComparator(SortParameter.DATE));
+        myList.sort(Comparator.comparing(Order::getEndDate));
     }
 
     private void sortByAlphabet(List<Order> myList) {
-        myList.sort(Sort.ORDER.getComparator(SortParameter.ALPHABET));
+        myList.sort(Comparator.comparing(i -> i.getGuest().getFirstName()));
     }
 }

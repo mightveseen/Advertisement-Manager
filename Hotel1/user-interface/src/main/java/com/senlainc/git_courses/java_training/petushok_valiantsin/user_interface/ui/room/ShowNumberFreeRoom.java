@@ -13,7 +13,7 @@ public class ShowNumberFreeRoom implements IAction {
 
     @Override
     public void execute() {
-        final Hotel hotel = DependencyController.getInstance().getClazz(Hotel.class);
+        final Hotel hotel = (Hotel) DependencyController.getInstance().getClazz(Hotel.class);
         System.out.println(hotel.numFreeRoom());
         LOGGER.log(Level.INFO, "Show umber of free room");
     }

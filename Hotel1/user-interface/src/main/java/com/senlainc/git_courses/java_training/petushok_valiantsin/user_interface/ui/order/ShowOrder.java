@@ -17,7 +17,7 @@ public class ShowOrder implements IAction {
 
     @Override
     public void execute() {
-        final Hotel hotel = DependencyController.getInstance().getClazz(Hotel.class);
+        final Hotel hotel = (Hotel) DependencyController.getInstance().getClazz(Hotel.class);
         hotel.sortOrder(parameter).forEach(System.out::println);
         LOGGER.log(Level.INFO, String.format("Show order list sorted by: %s", parameter));
     }

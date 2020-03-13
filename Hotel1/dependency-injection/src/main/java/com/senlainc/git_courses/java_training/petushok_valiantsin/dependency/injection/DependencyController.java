@@ -27,7 +27,7 @@ public class DependencyController {
         }
     }
 
-    public <T> T getClazz(Class<?> clazz) {
-        return (T) DependencyService.getInstance().getInstanceClass(clazz);
+    public Object getClazz(Class<?> clazz) {
+        return DependencyService.getInstance().getInstanceClass(clazz);
     }
 }
