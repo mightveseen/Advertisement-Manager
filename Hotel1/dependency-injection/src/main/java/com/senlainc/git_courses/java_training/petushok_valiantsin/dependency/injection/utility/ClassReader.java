@@ -43,6 +43,7 @@ public class ClassReader {
     }
 
     public static List<Class<?>> getAllClasses(String packageName) {
+        final List<Class<?>> classes = new ArrayList<>();
         try {
             final ClassLoader classLoader = ClassLoader.getSystemClassLoader();
             final String path = packageName.replace('.', '/');
@@ -52,15 +53,13 @@ public class ClassReader {
                 final URL resource = resources.nextElement();
                 dirs.add(new File(resource.getFile()));
             }
-            final List<Class<?>> classes = new ArrayList<>();
             for (File directory : dirs) {
                 classes.addAll(findClasses(directory, packageName));
             }
-            return classes;
         } catch (ClassNotFoundException | IOException e) {
             LOGGER.log(Level.WARN, "Error while scanning all project", e);
         }
-        return null;
+        return classes;
     }
 
     private static List<Class<?>> findClasses(File directory, String packageName) throws ClassNotFoundException {

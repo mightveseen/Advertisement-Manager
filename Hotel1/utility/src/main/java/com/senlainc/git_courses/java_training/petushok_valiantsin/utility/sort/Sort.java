@@ -8,16 +8,16 @@ import java.util.Comparator;
 
 public enum Sort {
     ATTENDANCE {
-        public Comparator<Attendance> getComparator(SortParameter parameter) {
-            switch (parameter) {
-                case PRICE:
-                    return Comparator.comparing(Attendance::getSection);
-                case SECTION:
-                    return Comparator.comparing(Attendance::getPrice);
-                default:
-                    return Comparator.comparing(Attendance::getId);
+            public Comparator<Attendance> getComparator(SortParameter parameter) {
+                switch (parameter) {
+                    case PRICE:
+                        return Comparator.comparing(Attendance::getSection);
+                    case SECTION:
+                        return Comparator.comparing(Attendance::getPrice);
+                    default:
+                        return Comparator.comparing(Attendance::getId);
+                }
             }
-        }
     },
     ORDER {
         public Comparator<Order> getComparator(SortParameter parameter) {

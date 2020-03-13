@@ -27,5 +27,11 @@
             <artifactId>model</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.8.0-beta4</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>

@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class LoadData {
-    private static final Logger LOGGER = LogManager.getLogger(LoadData.class);
+    private static final Logger LOGGER = LogManager.getLogger(LoadData.class.getName());
 
     private LoadData() {
         throw new IllegalStateException("Utility class");
@@ -15,6 +15,6 @@ public class LoadData {
     public static void execute(Class<?> clazz) {
         /* Create instance's of project classes */
         DependencyController.getInstance().setDependency(clazz);
-        LOGGER.log(Level.DEBUG, String.format("Successful initialize class: %s", clazz.getSimpleName()));
+        LOGGER.log(Level.INFO, String.format("Successful initialize class: %s", clazz.getSimpleName()));
     }
 }
