@@ -3,12 +3,12 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.user_interfac
 import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.IAction;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ShowNumberGuest implements IAction {
-    private static final Logger LOGGER = Logger.getLogger(ShowNumberGuest.class.getSimpleName());
+    private static final Logger LOGGER = LogManager.getLogger(ShowNumberGuest.class.getName());
 
     @Override
     public void execute() {

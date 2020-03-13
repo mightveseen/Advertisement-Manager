@@ -4,16 +4,17 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hot
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.IAction;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.WrongEnteredDataException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class AddGuest implements IAction {
-    private static final Logger LOGGER = Logger.getLogger(AddGuest.class.getSimpleName());
+    private static final Logger LOGGER = LogManager.getLogger(AddGuest.class.getName());
 
     @Override
     public void execute() {

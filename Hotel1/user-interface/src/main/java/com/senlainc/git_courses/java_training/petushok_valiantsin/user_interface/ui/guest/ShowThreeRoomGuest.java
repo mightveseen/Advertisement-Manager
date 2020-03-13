@@ -4,13 +4,14 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hot
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.IAction;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.WrongEnteredDataException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ShowThreeRoomGuest implements IAction {
-    private static final Logger LOGGER = Logger.getLogger(ShowThreeRoomGuest.class.getSimpleName());
+    private static final Logger LOGGER = LogManager.getLogger(ShowThreeRoomGuest.class.getName());
 
     @Override
     public void execute() {

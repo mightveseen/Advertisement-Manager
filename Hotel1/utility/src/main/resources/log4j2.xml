@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
     <Appenders>
-        <File name="A1" fileName="Logger.log" append="false">
-            <PatternLayout pattern="[%-4p] %d{HH:mm:ss yyyy-MM-dd} [%c{1}:%L] - %m%n"/>
-        </File>
         <Console name="STDOUT" target="SYSTEM_OUT">
             <PatternLayout pattern="[%-4p] %d{HH:mm:ss yyyy-MM-dd} [%c{1}:%L] - %m%n"/>
         </Console>
+        <File name="LogFile" fileName="logging.log" immediateFlush="false" append="true">
+            <PatternLayout pattern="[%-4p] %d{HH:mm:ss yyyy-MM-dd} [%c{1}:%L] - %m%n"/>
+        </File>
     </Appenders>
     <Loggers>
-        <Logger name="org.apache.log4j.xml" level="debug">
-            <AppenderRef ref="A1"/>
-        </Logger>
-        <Root level="debug">
+        <Logger name="org.apache.log4j.xml" level="info"/>
+        <Root level="DEBUG">
             <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="LogFile"/>
         </Root>
     </Loggers>
 </Configuration>

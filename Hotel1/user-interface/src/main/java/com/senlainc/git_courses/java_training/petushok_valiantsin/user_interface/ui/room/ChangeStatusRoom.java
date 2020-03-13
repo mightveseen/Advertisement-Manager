@@ -5,13 +5,14 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.inj
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.IAction;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.WrongEnteredDataException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ChangeStatusRoom implements IAction {
-    private static final Logger LOGGER = Logger.getLogger(ChangeStatusRoom.class.getSimpleName());
+    private static final Logger LOGGER = LogManager.getLogger(ChangeStatusRoom.class.getName());
     private final RoomStatus status;
 
     public ChangeStatusRoom(RoomStatus status) {

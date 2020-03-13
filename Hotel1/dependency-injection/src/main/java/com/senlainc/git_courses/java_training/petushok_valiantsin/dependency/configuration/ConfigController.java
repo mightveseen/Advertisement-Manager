@@ -1,10 +1,11 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.configuration;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ConfigController {
-    private static final Logger LOGGER = Logger.getLogger(ConfigController.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(ConfigController.class.getName());
     private static ConfigController instance;
 
     public static ConfigController getInstance() {
@@ -18,8 +19,9 @@ public class ConfigController {
         try {
             ConfigService.getInstance().setValue(clazz);
             ConfigService.getInstance().addFieldValue();
+            LOGGER.log(Level.DEBUG, String.format("Successful load properties for class: %s", clazz.getSimpleName()));
         } catch (IllegalAccessException e) {
-            LOGGER.log(Level.WARNING, String.format("Could load program resources.properties from file: %s", e.toString()), e);
+            LOGGER.log(Level.WARN, String.format("Could load program resources.properties from file: %s", e.toString()), e);
         }
     }
 }

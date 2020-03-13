@@ -4,16 +4,17 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hot
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.IAction;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.WrongEnteredDataException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ShowDateRoom implements IAction {
-    private static final Logger LOGGER = Logger.getLogger(ShowDateRoom.class.getSimpleName());
+    private static final Logger LOGGER = LogManager.getLogger(ShowDateRoom.class.getName());
 
     @Override
     public void execute() {
@@ -25,7 +26,7 @@ public class ShowDateRoom implements IAction {
             final LocalDate date = LocalDate.parse(scanner.nextLine(), formatter);
             System.out.println("Room will be available after [" + date + "]:");
             hotel.showAfterDate(date).forEach(System.out::println);
-            LOGGER.log(Level.INFO, "Show room will free after: " + date);
+            LOGGER.log(Level.INFO, String.format("Show room will free after: %s", date));
         } catch (DateTimeParseException e) {
             throw new WrongEnteredDataException("Wrong entered data in: " + e.getMessage(), e);
         }
