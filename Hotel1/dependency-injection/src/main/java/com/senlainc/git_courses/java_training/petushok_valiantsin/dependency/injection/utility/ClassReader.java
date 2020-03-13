@@ -1,7 +1,8 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.utility;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class ClassReader {
-    private static final Logger LOGGER = Logger.getLogger(ClassReader.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(ClassReader.class.getName());
 
     private ClassReader() {
         throw new IllegalStateException("Utility class");
