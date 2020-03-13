@@ -10,7 +10,6 @@ public class CustomLogger {
 
     public static void execute() {
         try (InputStream configReader = CustomLogger.class.getResourceAsStream("/xml/Log4j")) {
-
         } catch (IOException e) {
             System.err.println("Could not setup logger res.configuration: " + e.toString());
         }
