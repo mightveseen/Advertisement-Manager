@@ -7,7 +7,7 @@ public enum RoomStatus {
 
     private final String name;
 
-    RoomStatus(String name) {
+    RoomStatus(final String name) {
         this.name = name;
     }
 
