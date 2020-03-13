@@ -48,7 +48,7 @@ public class OrderService implements IOrderService {
             throw new EntityNotAvailableException("Room now is not available");
         }
         orderDao.create(new Order(guest, room, endDate, room.getPrice()));
-        roomService.changeStatus(roomIndex, RoomStatus.RENTED);
+        roomService.changeStatus(roomIndex, RoomStatus.RENTED.name());
     }
 
     @Override
@@ -58,7 +58,7 @@ public class OrderService implements IOrderService {
             order.setStatus(OrderStatus.DISABLED);
             order.setEndDate(LocalDate.now());
             orderDao.update(order);
-            roomService.changeStatus(order.getRoom().getId(), RoomStatus.FREE);
+            roomService.changeStatus(order.getRoom().getId(), RoomStatus.FREE.name());
         } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException("Order with index: " + index + " dont exists.", e);
         }

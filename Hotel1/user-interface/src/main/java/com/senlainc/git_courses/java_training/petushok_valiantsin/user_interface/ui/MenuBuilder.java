@@ -1,6 +1,5 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.attendance.AddAttendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.attendance.ChangePriceAttendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.exit.MenuExit;
@@ -116,9 +115,9 @@ public class MenuBuilder {
     }
 
     private void roomStatusMenuInit(Menu roomStatus) {
-        roomStatus.addItem(new MenuItem("Rented", new ChangeStatusRoom(RoomStatus.RENTED), rootMenu));
-        roomStatus.addItem(new MenuItem("Free", new ChangeStatusRoom(RoomStatus.FREE), rootMenu));
-        roomStatus.addItem(new MenuItem("Served", new ChangeStatusRoom(RoomStatus.SERVED), rootMenu));
+        roomStatus.addItem(new MenuItem("Rented", new ChangeStatusRoom("RENTED"), rootMenu));
+        roomStatus.addItem(new MenuItem("Free", new ChangeStatusRoom("FREE"), rootMenu));
+        roomStatus.addItem(new MenuItem("Served", new ChangeStatusRoom("SERVED"), rootMenu));
         roomStatus.addItem(new MenuItem("Exit", rootMenu));
         menuNumeration(roomStatus);
     }

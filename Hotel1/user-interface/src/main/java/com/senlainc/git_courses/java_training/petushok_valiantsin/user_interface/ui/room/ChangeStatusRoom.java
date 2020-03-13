@@ -2,7 +2,6 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.user_interfac
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.DependencyController;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.IAction;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.WrongEnteredDataException;
 import org.apache.logging.log4j.Level;
@@ -13,9 +12,9 @@ import java.util.Scanner;
 
 public class ChangeStatusRoom implements IAction {
     private static final Logger LOGGER = LogManager.getLogger(ChangeStatusRoom.class.getName());
-    private final RoomStatus status;
+    private final String status;
 
-    public ChangeStatusRoom(RoomStatus status) {
+    public ChangeStatusRoom(String status) {
         this.status = status;
     }
 

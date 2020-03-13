@@ -71,13 +71,13 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void changeStatus(int index, RoomStatus status) {
+    public void changeStatus(int index, String status) {
         if (!roomConfig.getChangeStatus()) {
             throw new EntityNotAvailableException("Property for change status is false");
         }
         try {
             final Room room = roomDao.read(index);
-            room.setStatus(status);
+            room.setStatus(RoomStatus.valueOf(status));
             roomDao.update(room);
             connectionManager.commit();
         } catch (ElementNotFoundException e) {

@@ -6,7 +6,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IO
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyComponent;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -49,7 +48,7 @@ public class Hotel {
         roomService.changePrice(index, price);
     }
 
-    public void changeStatusRoom(int index, RoomStatus status) {
+    public void changeStatusRoom(int index, String status) {
         roomService.changeStatus(index, status);
     }
 
