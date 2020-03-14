@@ -11,7 +11,9 @@ public class Room implements Cloneable {
     private RoomStatus status;
     private double price;
 
-    public Room(int number, String classification, short roomNumber, short capacity, double price) {
+    public Room(final int number, final String classification,
+                final short roomNumber, final short capacity,
+                final double price) {
         this.number = number;
         this.classification = classification;
         this.roomNumber = roomNumber;
@@ -20,7 +22,9 @@ public class Room implements Cloneable {
         this.price = price;
     }
 
-    public Room(int number, String classification, short roomNumber, short capacity, RoomStatus status, double price) {
+    public Room(final int number, final String classification,
+                final short roomNumber, final short capacity,
+                final RoomStatus status, final double price) {
         this.number = number;
         this.classification = classification;
         this.roomNumber = roomNumber;
@@ -30,52 +34,52 @@ public class Room implements Cloneable {
     }
 
     @Override
-    public Room clone() throws CloneNotSupportedException {
+    public final Room clone() throws CloneNotSupportedException {
         return (Room) super.clone();
     }
 
-    public int getId() {
+    public final int getId() {
         return this.id;
     }
 
-    public void setId(int index) {
+    public final void setId(int index) {
         this.id = index;
     }
 
-    public short getCapacity() {
+    public final short getCapacity() {
         return this.capacity;
     }
 
-    public int getNumber() {
+    public final int getNumber() {
         return this.number;
     }
 
-    public String getClassification() {
+    public final String getClassification() {
         return this.classification;
     }
 
-    public short getRoomNumber() {
+    public final short getRoomNumber() {
         return this.roomNumber;
     }
 
-    public RoomStatus getStatus() {
+    public final RoomStatus getStatus() {
         return this.status;
     }
 
-    public void setStatus(RoomStatus status) {
+    public final void setStatus(RoomStatus status) {
         this.status = status;
     }
 
-    public double getPrice() {
+    public final double getPrice() {
         return this.price;
     }
 
-    public void setPrice(double price) {
+    public final void setPrice(double price) {
         this.price = price;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return this.id + ")" + this.number + ", "
                 + this.classification + ", " + this.roomNumber + ", "
                 + this.capacity + ", " + this.status.toString() + ", " + this.price;
