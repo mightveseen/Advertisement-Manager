@@ -57,7 +57,7 @@
                     <encoding>UTF-8</encoding>
                     <configLocation>checkstyle.xml</configLocation>
                     <suppressionsLocation>suppressions.xml</suppressionsLocation>
-                    <failsOnError>false</failsOnError>
+                    <failsOnError>true</failsOnError>
                 </configuration>
             </plugin>
         </plugins>
