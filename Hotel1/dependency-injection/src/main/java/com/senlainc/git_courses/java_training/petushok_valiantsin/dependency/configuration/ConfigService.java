@@ -10,6 +10,7 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 
 public class ConfigService {
+
     private static ConfigService instance;
     private Class<?> configClass;
     private String configPath;

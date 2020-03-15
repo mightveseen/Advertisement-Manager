@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ShowRoom implements IAction {
+
     private static final Logger LOGGER = LogManager.getLogger(ShowRoom.class);
     private final String type;
     private final String parameter;

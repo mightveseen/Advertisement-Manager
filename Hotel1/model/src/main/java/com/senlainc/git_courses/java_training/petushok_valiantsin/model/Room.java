@@ -3,6 +3,7 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 
 public class Room implements Cloneable {
+
     private final int number;
     private final String classification;
     private final short roomNumber;

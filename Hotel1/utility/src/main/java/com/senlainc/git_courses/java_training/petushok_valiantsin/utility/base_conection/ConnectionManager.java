@@ -12,7 +12,8 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 
 @ConfigClass
-public class ConnectionManager {
+public final class ConnectionManager {
+
     private static final Logger LOGGER = LogManager.getLogger(ConnectionManager.class);
     @ConfigProperty(configName = "Base")
     private static String URL;

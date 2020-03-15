@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class DependencyService {
+public final class DependencyService {
+
     private static DependencyService instance;
     private final Map<String, Object> instanceClassMap;
     private Object instanceClass;

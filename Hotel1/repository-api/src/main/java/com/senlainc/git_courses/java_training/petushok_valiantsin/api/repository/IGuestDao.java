@@ -3,5 +3,6 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.api.repositor
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 
 public interface IGuestDao extends ICommonDao<Guest, Integer> {
+
     Integer readSize();
 }

@@ -13,6 +13,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class AddOrder implements IAction {
+
     private static final Logger LOGGER = LogManager.getLogger(AddOrder.class);
 
     @Override
@@ -34,6 +35,5 @@ public class AddOrder implements IAction {
         } catch (DateTimeParseException | NumberFormatException e) {
             throw new WrongEnteredDataException("Wrong entered data in: " + e.getMessage(), e);
         }
-
     }
 }

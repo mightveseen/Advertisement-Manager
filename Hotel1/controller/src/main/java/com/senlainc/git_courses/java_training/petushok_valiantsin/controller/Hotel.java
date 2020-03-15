@@ -13,6 +13,7 @@ import java.util.List;
 
 @DependencyClass
 public class Hotel {
+
     @DependencyComponent
     private IGuestService guestService;
     @DependencyComponent

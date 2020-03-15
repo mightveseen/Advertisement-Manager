@@ -5,7 +5,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.con
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.configuration.annotation.ConfigProperty;
 
 @ConfigClass
-public class RoomConfig {
+public final class RoomConfig {
+
     private static final boolean CHANGE_STATUS_BASIC_VALUE = true;
     @ConfigProperty(configName = "Room")
     private static boolean CHANGE_STATUS_VALUE;

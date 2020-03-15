@@ -21,14 +21,15 @@ import java.util.List;
 @DependencyClass
 @DependencyPrimary
 public class GuestDao implements IGuestDao {
+
     private static final String ERROR = "Error during connection to Database. Check query.";
     @DependencyComponent
     private ConnectionManager connectionManager;
 
     @Override
     public void create(Guest guest) {
-        final String QUERY = QueryDao.GUEST.getQuery(QueryType.CREATE);
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        final String query = QueryDao.GUEST.getQuery(QueryType.CREATE);
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             statement.setString(1, guest.getFirstName());
             statement.setString(2, guest.getSecondName());
             statement.setDate(3, Date.valueOf(guest.getBirthday()));
@@ -40,8 +41,8 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public void delete(Integer index) {
-        final String QUERY = QueryDao.GUEST.getQuery(QueryType.DELETE);
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        final String query = QueryDao.GUEST.getQuery(QueryType.DELETE);
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             statement.setInt(1, index);
             statement.execute();
         } catch (SQLException e) {
@@ -51,8 +52,8 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public void update(Guest guest) {
-        final String QUERY = QueryDao.GUEST.getQuery(QueryType.UPDATE);
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        final String query = QueryDao.GUEST.getQuery(QueryType.UPDATE);
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             statement.setString(1, guest.getFirstName());
             statement.setString(2, guest.getSecondName());
             statement.setDate(3, Date.valueOf(guest.getBirthday()));
@@ -65,9 +66,9 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public List<Guest> readAll() {
-        final String QUERY = QueryDao.GUEST.getQuery(QueryType.READ_ALL);
+        final String query = QueryDao.GUEST.getQuery(QueryType.READ_ALL);
         final List<Guest> guestList = new ArrayList<>();
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             final ResultSet result = statement.executeQuery();
             while (result.next()) {
                 guestList.add(createFromQuery(result));
@@ -81,8 +82,8 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public Integer readSize() {
-        final String QUERY = QueryDao.GUEST.getQuery(QueryType.SIZE);
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        final String query = QueryDao.GUEST.getQuery(QueryType.SIZE);
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             final ResultSet result = statement.executeQuery();
             if (result.next()) {
                 final Integer size = result.getInt(1);
@@ -97,8 +98,8 @@ public class GuestDao implements IGuestDao {
 
     @Override
     public Guest read(Integer index) {
-        final String QUERY = QueryDao.GUEST.getQuery(QueryType.READ);
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        final String query = QueryDao.GUEST.getQuery(QueryType.READ);
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();
             if (result.next()) {

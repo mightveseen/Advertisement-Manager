@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface IOrderDao extends ICommonDao<Order, Integer> {
+
     void update(Order order, Attendance attendance);
 
     List<Room> readLastRoom(Integer index);

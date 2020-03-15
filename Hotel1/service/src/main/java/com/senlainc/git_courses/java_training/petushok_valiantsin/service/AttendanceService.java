@@ -15,6 +15,7 @@ import java.util.List;
 @DependencyClass
 @DependencyPrimary
 public class AttendanceService implements IAttendanceService {
+
     private static final String ELEMENT_NOT_FOUND = "Attendance with index: %d dont exists.";
     @DependencyComponent
     private IAttendanceDao attendanceDao;

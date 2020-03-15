@@ -21,14 +21,15 @@ import java.util.List;
 @DependencyClass
 @DependencyPrimary
 public class RoomDao implements IRoomDao {
+
     private static final String ERROR = "Error during connection to Database. Check query.";
     @DependencyComponent
     private ConnectionManager connectionManager;
 
     @Override
     public void create(Room room) {
-        final String QUERY = QueryDao.ROOM.getQuery(QueryType.CREATE);
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        final String query = QueryDao.ROOM.getQuery(QueryType.CREATE);
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             statement.setInt(1, room.getNumber());
             statement.setString(2, room.getClassification());
             statement.setShort(3, room.getRoomNumber());
@@ -43,8 +44,8 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public void delete(Integer index) {
-        final String QUERY = QueryDao.ROOM.getQuery(QueryType.DELETE);
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        final String query = QueryDao.ROOM.getQuery(QueryType.DELETE);
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             statement.setInt(1, index);
             statement.execute();
         } catch (SQLException e) {
@@ -54,8 +55,8 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public void update(Room room) {
-        final String QUERY = QueryDao.ROOM.getQuery(QueryType.UPDATE);
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        final String query = QueryDao.ROOM.getQuery(QueryType.UPDATE);
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             statement.setInt(1, room.getNumber());
             statement.setString(2, room.getClassification());
             statement.setShort(3, room.getRoomNumber());
@@ -71,9 +72,9 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public List<Room> readAll() {
-        final String QUERY = QueryDao.ROOM.getQuery(QueryType.READ_ALL);
+        final String query = QueryDao.ROOM.getQuery(QueryType.READ_ALL);
         final List<Room> roomList = new ArrayList<>();
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             final ResultSet result = statement.executeQuery();
             while (result.next()) {
                 roomList.add(createFromQuery(result));
@@ -87,9 +88,9 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public List<Room> readAllFree() {
-        final String QUERY = QueryDao.ROOM.getQuery(QueryType.READ_ALL_FREE);
+        final String query = QueryDao.ROOM.getQuery(QueryType.READ_ALL_FREE);
         final List<Room> roomList = new ArrayList<>();
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             final ResultSet result = statement.executeQuery();
             while (result.next()) {
                 roomList.add(createFromQuery(result));
@@ -103,8 +104,8 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public Integer readFreeSize() {
-        final String QUERY = QueryDao.ROOM.getQuery(QueryType.FREE_SIZE);
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        final String query = QueryDao.ROOM.getQuery(QueryType.FREE_SIZE);
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             final ResultSet result = statement.executeQuery();
             if (result.next()) {
                 final Integer size = result.getInt(1);
@@ -119,8 +120,8 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public Room read(Integer index) {
-        final String QUERY = QueryDao.ROOM.getQuery(QueryType.READ);
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        final String query = QueryDao.ROOM.getQuery(QueryType.READ);
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();
             if (result.next()) {
@@ -136,8 +137,8 @@ public class RoomDao implements IRoomDao {
 
     @Override
     public Room readByNumber(Integer number) {
-        final String QUERY = QueryDao.ROOM.getQuery(QueryType.READ_BY_NUMBER);
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        final String query = QueryDao.ROOM.getQuery(QueryType.READ_BY_NUMBER);
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             statement.setInt(1, number);
             final ResultSet result = statement.executeQuery();
             if (result.next()) {
@@ -152,9 +153,9 @@ public class RoomDao implements IRoomDao {
     }
 
     private Room createFromQuery(ResultSet result) throws SQLException {
-        final Room room = new Room(result.getInt("number"), result.getString("classification")
-                , result.getShort("room_number"), result.getShort("capacity")
-                , RoomStatus.valueOf(result.getString("status")), result.getDouble("price"));
+        final Room room = new Room(result.getInt("number"), result.getString("classification"),
+                result.getShort("room_number"), result.getShort("capacity"),
+                RoomStatus.valueOf(result.getString("status")), result.getDouble("price"));
         room.setId(result.getInt("id"));
         return room;
     }

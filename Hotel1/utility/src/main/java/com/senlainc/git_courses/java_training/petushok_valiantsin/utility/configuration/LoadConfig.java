@@ -5,7 +5,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.con
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.configuration.annotation.ConfigProperty;
 
 @ConfigClass
-public class LoadConfig {
+public final class LoadConfig {
+
     @ConfigProperty(configName = "Load")
     private static String ATTENDANCE_DAO_PATH;
     @ConfigProperty(configName = "Load")

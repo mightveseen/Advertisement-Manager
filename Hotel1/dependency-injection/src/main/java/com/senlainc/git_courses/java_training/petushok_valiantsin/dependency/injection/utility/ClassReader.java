@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public class ClassReader {
+public final class ClassReader {
+
     private static final Logger LOGGER = LogManager.getLogger(ClassReader.class.getName());
 
     private ClassReader() {
@@ -23,7 +24,7 @@ public class ClassReader {
 
     public static List<Class<?>> getClasses(String pathToJar) {
         final List<Class<?>> classesList = new ArrayList<>();
-        try (final JarFile jarFile = new JarFile(pathToJar)) {
+        try (JarFile jarFile = new JarFile(pathToJar)) {
             final URL[] urls = {new URL("jar:file:" + pathToJar + "!/")};
             final URLClassLoader classLoader = URLClassLoader.newInstance(urls);
             final Enumeration<JarEntry> entriesEnum = jarFile.entries();

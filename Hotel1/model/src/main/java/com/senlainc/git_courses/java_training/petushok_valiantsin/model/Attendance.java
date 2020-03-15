@@ -3,6 +3,7 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 import java.io.Serializable;
 
 public class Attendance implements Cloneable, Serializable {
+
     private final String name;
     private final String section;
     private int id;

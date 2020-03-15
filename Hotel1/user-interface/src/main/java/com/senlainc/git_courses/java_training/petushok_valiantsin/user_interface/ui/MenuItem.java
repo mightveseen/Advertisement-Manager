@@ -1,6 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui;
 
 public class MenuItem {
+
     private final String title;
     private Menu nextMenu;
     private int id;

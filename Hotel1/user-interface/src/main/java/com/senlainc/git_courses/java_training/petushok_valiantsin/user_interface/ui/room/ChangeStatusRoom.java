@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.Scanner;
 
 public class ChangeStatusRoom implements IAction {
+
     private static final Logger LOGGER = LogManager.getLogger(ChangeStatusRoom.class);
     private final String status;
 

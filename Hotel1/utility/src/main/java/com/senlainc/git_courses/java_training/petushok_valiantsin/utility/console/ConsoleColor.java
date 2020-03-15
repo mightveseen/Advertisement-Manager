@@ -1,6 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.console;
 
 public enum ConsoleColor {
+
     GREEN("\u001B[92m"),
     RED("\u001B[91m"),
     YELLOW("\u001B[93m"),

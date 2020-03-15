@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ConfigController {
+
     private static final Logger LOGGER = LogManager.getLogger(ConfigController.class);
     private static ConfigController instance;
 

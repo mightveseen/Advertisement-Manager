@@ -4,6 +4,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.consol
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
 
 public class MenuNavigator {
+
     private Menu currentMenu;
 
     public MenuNavigator(Menu currentMenu) {
@@ -21,6 +22,5 @@ public class MenuNavigator {
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new ElementNotFoundException("Menu with index: " + index + " didn't exists", e);
         }
-
     }
 }

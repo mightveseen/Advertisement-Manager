@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 
 public class DependencyController {
+
     private static final Logger LOGGER = LogManager.getLogger(DependencyController.class.getName());
     private static DependencyController instance;
 

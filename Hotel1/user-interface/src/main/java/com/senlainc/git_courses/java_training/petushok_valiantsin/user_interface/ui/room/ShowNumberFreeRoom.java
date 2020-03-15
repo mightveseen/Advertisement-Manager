@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 
 public class ShowNumberFreeRoom implements IAction {
+
     private static final Logger LOGGER = LogManager.getLogger(ShowNumberFreeRoom.class);
 
     @Override

@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class ConfigReader {
+public final class ConfigReader {
+
     private static ConfigReader instance;
     private static String mainPath;
     private final Properties properties;

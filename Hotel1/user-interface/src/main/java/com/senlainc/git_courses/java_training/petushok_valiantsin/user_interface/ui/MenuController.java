@@ -13,6 +13,7 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class MenuController {
+
     private static final Logger LOGGER = LogManager.getLogger(MenuController.class);
     private final MenuNavigator menuNavigator;
 

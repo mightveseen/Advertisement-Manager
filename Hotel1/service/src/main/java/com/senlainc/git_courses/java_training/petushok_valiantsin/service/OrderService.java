@@ -27,6 +27,7 @@ import java.util.List;
 @DependencyClass
 @DependencyPrimary
 public class OrderService implements IOrderService {
+
     @DependencyComponent
     private IOrderDao orderDao;
     @DependencyComponent

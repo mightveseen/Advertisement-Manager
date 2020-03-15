@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.Scanner;
 
 public class AddRoom implements IAction {
+
     private static final Logger LOGGER = LogManager.getLogger(AddRoom.class);
 
     @Override

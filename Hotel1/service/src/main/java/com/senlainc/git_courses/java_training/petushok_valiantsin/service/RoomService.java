@@ -18,6 +18,7 @@ import java.util.List;
 @DependencyClass
 @DependencyPrimary
 public class RoomService implements IRoomService {
+
     private static final String ELEMENT_NOT_FOUND = "Room with index: %d dont exists.";
     @DependencyComponent
     private static RoomConfig roomConfig;

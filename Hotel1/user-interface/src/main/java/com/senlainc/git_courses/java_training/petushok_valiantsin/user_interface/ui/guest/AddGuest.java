@@ -13,6 +13,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class AddGuest implements IAction {
+
     private static final Logger LOGGER = LogManager.getLogger(AddGuest.class);
 
     @Override

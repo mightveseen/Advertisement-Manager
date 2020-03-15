@@ -5,7 +5,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.con
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.configuration.annotation.ConfigProperty;
 
 @ConfigClass
-public class GuestConfig {
+public final class GuestConfig {
+
     private static final int GUEST_LIMIT_BASIC_VALUE = 50;
     @ConfigProperty(configName = "Guest")
     private static int GUEST_LIMIT_VALUE;

@@ -21,6 +21,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MenuBuilder {
+
     private final Menu rootMenu = new Menu("Main menu");
 
     public void buildMenu() {

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE module PUBLIC
         "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
-        "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+        "http://www.puppycrawl.com/checkstyle/dtds/configuration_1_2.dtd">
 
 <!--
 
@@ -182,10 +182,6 @@
         <module name="TodoComment"/>
         <module name="UpperEll"/>
 
-    </module>
-
-    <module name="SuppressionFilter">
-        <property name="file" value="${checkstyle.config.path}/suppressions.xml"/>
     </module>
 
     <module name="RegexpMultiline">

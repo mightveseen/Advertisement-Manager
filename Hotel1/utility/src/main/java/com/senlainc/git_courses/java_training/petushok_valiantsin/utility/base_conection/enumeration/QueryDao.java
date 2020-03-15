@@ -1,6 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration;
 
 public enum QueryDao {
+
     ATTENDANCE {
         public String getQuery(QueryType type) {
             switch (type) {

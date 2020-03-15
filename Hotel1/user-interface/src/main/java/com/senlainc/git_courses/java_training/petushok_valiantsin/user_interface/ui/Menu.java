@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Menu {
+
     private final String name;
     private final List<MenuItem> menuItemList = new ArrayList<>();
 

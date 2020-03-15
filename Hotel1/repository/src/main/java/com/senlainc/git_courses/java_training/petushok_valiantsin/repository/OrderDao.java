@@ -28,14 +28,15 @@ import java.util.List;
 @DependencyClass
 @DependencyPrimary
 public class OrderDao implements IOrderDao {
+
     private static final String ERROR = "Error during connection to Database. Check query.";
     @DependencyComponent
     private ConnectionManager connectionManager;
 
     @Override
     public void create(Order order) {
-        final String QUERY = QueryDao.ORDER.getQuery(QueryType.CREATE);
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        final String query = QueryDao.ORDER.getQuery(QueryType.CREATE);
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             statement.setTimestamp(1, Timestamp.valueOf(order.getOrderDate()));
             statement.setInt(2, order.getGuest().getId());
             statement.setInt(3, order.getRoom().getId());
@@ -51,8 +52,8 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public void delete(Integer index) {
-        final String QUERY = QueryDao.ORDER.getQuery(QueryType.DELETE);
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        final String query = QueryDao.ORDER.getQuery(QueryType.DELETE);
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             statement.setInt(1, index);
             statement.execute();
         } catch (SQLException e) {
@@ -62,8 +63,8 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public void update(Order order) {
-        final String QUERY = QueryDao.ORDER.getQuery(QueryType.UPDATE);
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        final String query = QueryDao.ORDER.getQuery(QueryType.UPDATE);
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             statement.setInt(1, order.getGuest().getId());
             statement.setInt(2, order.getRoom().getId());
             statement.setDate(3, Date.valueOf(order.getEndDate()));
@@ -78,8 +79,8 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public void update(Order order, Attendance attendance) {
-        final String QUERY = QueryDao.ORDER.getQuery(QueryType.ADD_ORDER_ATTENDANCE);
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        final String query = QueryDao.ORDER.getQuery(QueryType.ADD_ORDER_ATTENDANCE);
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             statement.setInt(1, order.getId());
             statement.setInt(2, attendance.getId());
             statement.execute();
@@ -90,9 +91,9 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public List<Order> readAll() {
-        final String QUERY = QueryDao.ORDER.getQuery(QueryType.READ_ALL);
+        final String query = QueryDao.ORDER.getQuery(QueryType.READ_ALL);
         final List<Order> orderList = new ArrayList<>();
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             final ResultSet result = statement.executeQuery();
             while (result.next()) {
                 orderList.add(createOrderFromQuery(result));
@@ -106,9 +107,9 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public List<Room> readLastRoom(Integer index) {
-        final String QUERY = QueryDao.ORDER.getQuery(QueryType.READ_LAST_ROOM);
+        final String query = QueryDao.ORDER.getQuery(QueryType.READ_LAST_ROOM);
         final List<Room> roomList = new ArrayList<>();
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();
             while (result.next()) {
@@ -123,9 +124,9 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public List<Room> readAfterDate(LocalDate date) {
-        final String QUERY = QueryDao.ORDER.getQuery(QueryType.READ_AFTER_DATE);
+        final String query = QueryDao.ORDER.getQuery(QueryType.READ_AFTER_DATE);
         final List<Room> roomList = new ArrayList<>();
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             statement.setDate(1, Date.valueOf(date));
             final ResultSet result = statement.executeQuery();
             while (result.next()) {
@@ -139,16 +140,16 @@ public class OrderDao implements IOrderDao {
     }
 
     private Room createRoomFromQuery(ResultSet result) throws SQLException {
-        final Room room = new Room(result.getInt("number"), result.getString("classification"), result.getShort("room_number")
-                , result.getShort("capacity"), RoomStatus.valueOf(result.getString("status")), result.getDouble("price"));
+        final Room room = new Room(result.getInt("number"), result.getString("classification"), result.getShort("room_number"),
+                result.getShort("capacity"), RoomStatus.valueOf(result.getString("status")), result.getDouble("price"));
         room.setId(result.getInt("id"));
         return room;
     }
 
     @Override
     public Order read(Integer index) {
-        final String QUERY = QueryDao.ORDER.getQuery(QueryType.READ);
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        final String query = QueryDao.ORDER.getQuery(QueryType.READ);
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();
             if (result.next()) {
@@ -164,13 +165,13 @@ public class OrderDao implements IOrderDao {
     }
 
     private Order createOrderFromQuery(ResultSet result) throws SQLException {
-        final Room room = new Room(result.getInt("number"), result.getString("classification"), result.getShort("room_number")
-                , result.getShort("capacity"), RoomStatus.valueOf(result.getString(14)), result.getDouble(15));
+        final Room room = new Room(result.getInt("number"), result.getString("classification"), result.getShort("room_number"),
+                result.getShort("capacity"), RoomStatus.valueOf(result.getString(14)), result.getDouble(15));
         room.setId(result.getInt(9));
         final Guest guest = new Guest(result.getString("first_name"), result.getString("second_name"), result.getDate("birthday").toLocalDate());
         guest.setId(result.getInt(16));
-        final Order order = new Order(result.getTimestamp("order_date").toLocalDateTime(), guest, room, result.getDate("start_date").toLocalDate()
-                , result.getDate("end_date").toLocalDate(), OrderStatus.valueOf(result.getString(7)), result.getDouble(8));
+        final Order order = new Order(result.getTimestamp("order_date").toLocalDateTime(), guest, room, result.getDate("start_date").toLocalDate(),
+                result.getDate("end_date").toLocalDate(), OrderStatus.valueOf(result.getString(7)), result.getDouble(8));
         order.setId(result.getInt(1));
         orderAttendance(order);
         return order;
@@ -178,8 +179,8 @@ public class OrderDao implements IOrderDao {
 
     private void orderAttendance(Order order) throws SQLException {
         final List<Attendance> attendanceList = new ArrayList<>();
-        final String QUERY = QueryDao.ORDER.getQuery(QueryType.READ_ORDER_ATTENDANCE);
-        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
+        final String query = QueryDao.ORDER.getQuery(QueryType.READ_ORDER_ATTENDANCE);
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             statement.setInt(1, order.getId());
             final ResultSet result = statement.executeQuery();
             while (result.next()) {
