@@ -27,7 +27,7 @@ public class AttendanceDao implements IAttendanceDao {
     @Override
     public void create(Attendance attendance) {
         final String QUERY = QueryDao.ATTENDANCE.getQuery(QueryType.CREATE);
-        try (final PreparedStatement statement = connectionManager.getStatement(QUERY)) {
+        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
             statement.setString(1, attendance.getName());
             statement.setString(2, attendance.getSection());
             statement.setDouble(3, attendance.getPrice());
@@ -40,7 +40,7 @@ public class AttendanceDao implements IAttendanceDao {
     @Override
     public void delete(Integer index) {
         final String QUERY = QueryDao.ATTENDANCE.getQuery(QueryType.DELETE);
-        try (final PreparedStatement statement = connectionManager.getStatement(QUERY)) {
+        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
             statement.setInt(1, index);
             statement.execute();
         } catch (SQLException e) {
@@ -51,7 +51,7 @@ public class AttendanceDao implements IAttendanceDao {
     @Override
     public void update(Attendance attendance) {
         final String QUERY = QueryDao.ATTENDANCE.getQuery(QueryType.UPDATE);
-        try (final PreparedStatement statement = connectionManager.getStatement(QUERY)) {
+        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
             statement.setString(1, attendance.getName());
             statement.setString(2, attendance.getSection());
             statement.setDouble(3, attendance.getPrice());
@@ -66,7 +66,7 @@ public class AttendanceDao implements IAttendanceDao {
     public List<Attendance> readAll() {
         final String QUERY = QueryDao.ATTENDANCE.getQuery(QueryType.READ_ALL);
         final List<Attendance> attendanceList = new ArrayList<>();
-        try (final PreparedStatement statement = connectionManager.getStatement(QUERY)) {
+        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
             final ResultSet result = statement.executeQuery();
             while (result.next()) {
                 attendanceList.add(createFromQuery(result));
@@ -81,7 +81,7 @@ public class AttendanceDao implements IAttendanceDao {
     @Override
     public Attendance read(Integer index) {
         final String QUERY = QueryDao.ATTENDANCE.getQuery(QueryType.READ);
-        try (final PreparedStatement statement = connectionManager.getStatement(QUERY)) {
+        try (final PreparedStatement statement = connectionManager.getConnection().prepareStatement(QUERY)) {
             statement.setInt(1, index);
             final ResultSet result = statement.executeQuery();
             if (result.next()) {

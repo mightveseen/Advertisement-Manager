@@ -4,14 +4,13 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hot
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.IAction;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.WrongEnteredDataException;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Scanner;
 
 public class AddRoom implements IAction {
-    private static final Logger LOGGER = LogManager.getLogger(AddRoom.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(AddRoom.class);
 
     @Override
     public void execute() {
@@ -29,7 +28,7 @@ public class AddRoom implements IAction {
             System.out.print("Enter price(split cost - '.'): ");
             final double price = Double.parseDouble(scanner.nextLine());
             hotel.addRoom(number, classification, numberRoom, capacity, price);
-            LOGGER.log(Level.INFO, "Add room in list");
+            LOGGER.info("Add room in list");
         } catch (NumberFormatException e) {
             throw new WrongEnteredDataException("Wrong entered data in: " + e.getMessage(), e);
         }

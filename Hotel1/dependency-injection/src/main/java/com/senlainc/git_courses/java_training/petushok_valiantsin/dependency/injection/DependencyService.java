@@ -30,7 +30,7 @@ public class DependencyService {
 
     public void setVariable(Class<?> clazz) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         if (clazz.getAnnotation(DependencyClass.class) == null) {
-            throw new IllegalArgumentException("Class: " + clazz + " didn't have 'DependencyClass' annotation");
+            throw new IllegalArgumentException("Class: " + clazz.getSimpleName() + " didn't have 'DependencyClass' annotation");
         }
         final Constructor<?> constructor = clazz.getDeclaredConstructor();
         constructor.setAccessible(true);

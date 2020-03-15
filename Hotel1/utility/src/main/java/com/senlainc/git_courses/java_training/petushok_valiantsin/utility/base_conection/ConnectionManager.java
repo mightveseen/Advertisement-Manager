@@ -3,19 +3,17 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.configuration.ConfigController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.configuration.annotation.ConfigClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.configuration.annotation.ConfigProperty;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 
 @ConfigClass
 public class ConnectionManager {
-    private static final Logger LOGGER = LogManager.getLogger(ConnectionManager.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(ConnectionManager.class);
     @ConfigProperty(configName = "Base")
     private static String URL;
     @ConfigProperty(configName = "Base")
@@ -30,7 +28,7 @@ public class ConnectionManager {
             this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
             setAutoCommit(false);
         } catch (SQLException e) {
-            LOGGER.log(Level.WARN, e.getMessage(), e);
+            LOGGER.warn(e.getMessage(), e);
         }
     }
 
@@ -38,23 +36,28 @@ public class ConnectionManager {
         try {
             this.connection.setAutoCommit(condition);
         } catch (SQLException e) {
-            LOGGER.log(Level.WARN, e.getMessage(), e);
+            LOGGER.warn(e.getMessage(), e);
         }
     }
 
     public void closeConnection() {
         try {
             this.connection.close();
+            LOGGER.debug("Close Database connection");
         } catch (SQLException e) {
-            LOGGER.log(Level.WARN, e.getMessage(), e);
+            LOGGER.warn(e.getMessage(), e);
         }
+    }
+
+    public Connection getConnection() {
+        return this.connection;
     }
 
     public void commit() {
         try {
             this.connection.commit();
         } catch (SQLException e) {
-            LOGGER.log(Level.WARN, e.getMessage(), e);
+            LOGGER.warn(e.getMessage(), e);
         }
     }
 
@@ -62,7 +65,7 @@ public class ConnectionManager {
         try {
             this.connection.rollback();
         } catch (SQLException e) {
-            LOGGER.log(Level.WARN, e.getMessage(), e);
+            LOGGER.warn(e.getMessage(), e);
         }
     }
 
@@ -70,7 +73,7 @@ public class ConnectionManager {
         try {
             return this.connection.setSavepoint(name);
         } catch (SQLException e) {
-            LOGGER.log(Level.WARN, e.getMessage(), e);
+            LOGGER.warn(e.getMessage(), e);
         }
         return null;
     }
@@ -79,11 +82,7 @@ public class ConnectionManager {
         try {
             this.connection.releaseSavepoint(savepoint);
         } catch (SQLException e) {
-            LOGGER.log(Level.WARN, e.getMessage(), e);
+            LOGGER.warn(e.getMessage(), e);
         }
-    }
-
-    public PreparedStatement getStatement(String sqlQuery) throws SQLException {
-        return connection.prepareStatement(sqlQuery);
     }
 }

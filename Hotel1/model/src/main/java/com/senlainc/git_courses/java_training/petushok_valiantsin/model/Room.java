@@ -38,43 +38,43 @@ public class Room implements Cloneable {
         return (Room) super.clone();
     }
 
-    public final int getId() {
+    public int getId() {
         return this.id;
     }
 
-    public final void setId(int index) {
+    public void setId(int index) {
         this.id = index;
     }
 
-    public final short getCapacity() {
+    public short getCapacity() {
         return this.capacity;
     }
 
-    public final int getNumber() {
+    public int getNumber() {
         return this.number;
     }
 
-    public final String getClassification() {
+    public String getClassification() {
         return this.classification;
     }
 
-    public final short getRoomNumber() {
+    public short getRoomNumber() {
         return this.roomNumber;
     }
 
-    public final RoomStatus getStatus() {
+    public RoomStatus getStatus() {
         return this.status;
     }
 
-    public final void setStatus(RoomStatus status) {
+    public void setStatus(RoomStatus status) {
         this.status = status;
     }
 
-    public final double getPrice() {
+    public double getPrice() {
         return this.price;
     }
 
-    public final void setPrice(double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

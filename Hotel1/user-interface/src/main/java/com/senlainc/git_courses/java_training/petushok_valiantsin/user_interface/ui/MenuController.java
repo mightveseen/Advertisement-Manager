@@ -6,7 +6,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.except
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotFoundException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.MaxElementsException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.WrongEnteredDataException;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,7 +13,7 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class MenuController {
-    private static final Logger LOGGER = LogManager.getLogger(MenuController.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(MenuController.class);
     private final MenuNavigator menuNavigator;
 
     public MenuController() {
@@ -31,7 +30,7 @@ public class MenuController {
             final Integer index = Integer.parseInt(new Scanner(System.in).next());
             menuNavigator.navigate(index);
         } catch (EntityNotFoundException | MaxElementsException | ElementNotFoundException | EntityNotAvailableException | WrongEnteredDataException | InterruptedException | DaoException e) {
-            LOGGER.log(Level.WARN, e.getMessage(), e);
+            LOGGER.warn(e.getMessage(), e);
         }
     }
 

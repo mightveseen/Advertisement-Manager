@@ -1,10 +1,10 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection;
 
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
 
 public class DependencyController {
     private static final Logger LOGGER = LogManager.getLogger(DependencyController.class.getName());
@@ -21,9 +21,9 @@ public class DependencyController {
         try {
             DependencyService.getInstance().setVariable(clazz);
             DependencyService.getInstance().initializeConstructor();
-            LOGGER.log(Level.DEBUG, String.format("Successful load class: %s", clazz.getSimpleName()));
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException | ClassNotFoundException e) {
-            LOGGER.log(Level.WARN, String.format("Could load class: %s, reason: %s", clazz, e.toString()), e);
+            LOGGER.debug("Successful load class: {}", clazz.getSimpleName());
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException | IllegalStateException | IllegalArgumentException | ClassNotFoundException e) {
+            LOGGER.warn(MessageFormat.format("Could load class: {0}, reason: {1}", clazz, e.getMessage()), e);
         }
     }
 

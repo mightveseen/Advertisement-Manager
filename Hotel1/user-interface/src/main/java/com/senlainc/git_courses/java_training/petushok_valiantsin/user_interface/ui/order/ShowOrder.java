@@ -3,12 +3,11 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.user_interfac
 import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.IAction;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ShowOrder implements IAction {
-    private static final Logger LOGGER = LogManager.getLogger(ShowOrder.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(ShowOrder.class);
     private final String parameter;
 
     public ShowOrder(String parameter) {
@@ -19,6 +18,6 @@ public class ShowOrder implements IAction {
     public void execute() {
         final Hotel hotel = (Hotel) DependencyController.getInstance().getClazz(Hotel.class);
         hotel.sortOrder(parameter).forEach(System.out::println);
-        LOGGER.log(Level.INFO, String.format("Show order list sorted by: %s", parameter));
+        LOGGER.info(String.format("Show order list sorted by: %s", parameter));
     }
 }
