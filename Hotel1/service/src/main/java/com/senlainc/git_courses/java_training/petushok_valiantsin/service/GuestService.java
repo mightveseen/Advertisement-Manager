@@ -18,7 +18,7 @@ import java.util.List;
 @DependencyPrimary
 public class GuestService implements IGuestService {
 
-    private static final String ELEMENT_NOT_FOUND = "Guest with index: %d dont exists.";
+    private static final String ELEMENT_NOT_FOUND = "Guest with index: %d don't exists.";
     @DependencyComponent
     private static GuestConfig guestConfig;
     @DependencyComponent

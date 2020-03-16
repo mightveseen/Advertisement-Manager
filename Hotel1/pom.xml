@@ -54,9 +54,10 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <encoding>UTF-8</encoding>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                     <configLocation>checkstyle.xml</configLocation>
                     <suppressionsLocation>suppression.xml</suppressionsLocation>
+                    <suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
                     <failsOnError>true</failsOnError>
                 </configuration>
             </plugin>
