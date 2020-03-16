@@ -4,9 +4,13 @@
         <Console name="LogConsole" target="SYSTEM_OUT">
             <PatternLayout pattern="[%-4p] %d{HH:mm:ss yyyy-MM-dd} [%c{1}:%L] - %msg%n"/>
         </Console>
-        <File name="LogFile" fileName="logging.log" immediateFlush="false" append="true">
-            <PatternLayout pattern="[%-4p] %d{HH:mm:ss yyyy-MM-dd} [%c{1}:%L] - %m%n"/>
-        </File>
+        <RollingFile name="LogFile" fileName="logging.log" filePattern="target/archive/rolling-%d{MM-dd-yy}.log.gz">
+            <PatternLayout pattern="[%-4p] %d{HH:mm:ss yyyy-MM-dd} [%c{1}:%L] - %msg%n"/>
+            <Policies>
+                <CronTriggeringPolicy schedule="0 0 0 **  **  ?"/>
+                <SizeBasedTriggeringPolicy size="50M"/>
+            </Policies>
+        </RollingFile>
     </Appenders>
     <Loggers>
         <Logger name="org.apache.log4j.xml" level="info"/>
