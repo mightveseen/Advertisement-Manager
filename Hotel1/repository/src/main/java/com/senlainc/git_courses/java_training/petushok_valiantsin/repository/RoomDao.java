@@ -4,12 +4,10 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyClass;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QueryDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QueryType;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.DaoException;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 @DependencyClass
@@ -17,26 +15,20 @@ import java.util.List;
 public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
 
     private static final String ERROR = "Error during connection to Database. Check query.";
-    private final EntityManager entityManager;
-
-    public RoomDao() {
-        super(Room.class);
-        this.entityManager = CustomEntityManager.getEntityManager();
-    }
 
     @Override
     public List<Room> readAllFree() {
         try {
-            return entityManager.createQuery("FROM " + getTableName() + " WHERE `status` = 'FREE';").getResultList();
+            return entityManager.createQuery(QueryDao.ROOM.getQuery(QueryType.READ_ALL_FREE)).getResultList();
         } catch (Exception e) {
             throw new DaoException(ERROR, e);
         }
     }
 
     @Override
-    public Integer readFreeSize() {
+    public Long readFreeSize() {
         try {
-            return entityManager.createQuery(QueryDao.ROOM.getQuery(QueryType.FREE_SIZE)).getFirstResult();
+            return (Long) entityManager.createQuery(QueryDao.ROOM.getQuery(QueryType.FREE_SIZE)).getSingleResult();
         } catch (Exception e) {
             throw new DaoException(ERROR, e);
         }

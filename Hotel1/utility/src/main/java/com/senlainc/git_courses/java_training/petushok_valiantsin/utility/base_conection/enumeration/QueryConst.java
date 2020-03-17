@@ -22,7 +22,7 @@ public final class QueryConst {
             + "WHERE `id` = ?;";
     protected static final String GUEST_READ_ALL = "SELECT * FROM `Guest`;";
     protected static final String GUEST_READ = "SELECT * FROM `Guest` WHERE `id` = ?;";
-    protected static final String GUEST_SIZE = "SELECT COUNT(`id`) FROM `Guest`;";
+    protected static final String GUEST_SIZE = "SELECT COUNT(id) FROM Guest";
     /**
      * Room const query variables
      */

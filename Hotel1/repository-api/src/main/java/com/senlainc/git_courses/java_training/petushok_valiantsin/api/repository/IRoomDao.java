@@ -8,7 +8,7 @@ public interface IRoomDao extends ICommonDao<Room, Long> {
 
     List<Room> readAllFree();
 
-    Integer readFreeSize();
+    Long readFreeSize();
 
     Room readByNumber(Integer number);
 }

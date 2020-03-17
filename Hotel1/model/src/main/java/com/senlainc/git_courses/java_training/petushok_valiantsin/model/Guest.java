@@ -1,13 +1,30 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "Guest")
 public class Guest implements Cloneable {
 
-    private final String firstName;
-    private final String secondName;
-    private final LocalDate birthday;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "first_name")
+    private String firstName;
+    @Column(name = "second_name")
+    private String secondName;
+    @Column
+    private LocalDate birthday;
+
+    public Guest() {
+
+    }
 
     public Guest(String firstName, String secondName, LocalDate birthday) {
         this.firstName = firstName;

@@ -44,7 +44,7 @@ public class OrderService implements IOrderService {
     @Override
     public void add(int guestIndex, int roomIndex, LocalDate endDate) {
         final Room room = roomDao.read((long) roomIndex);
-        final Guest guest = guestDao.read(guestIndex);
+        final Guest guest = guestDao.read((long) guestIndex);
         if (room.getStatus().equals(RoomStatus.RENTED) || room.getStatus().equals(RoomStatus.SERVED)) {
             throw new EntityNotAvailableException("Room now is not available");
         }

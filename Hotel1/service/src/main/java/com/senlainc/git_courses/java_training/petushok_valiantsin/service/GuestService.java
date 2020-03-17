@@ -39,7 +39,7 @@ public class GuestService implements IGuestService {
     @Override
     public void delete(int index) {
         try {
-            guestDao.delete(index);
+            guestDao.delete((long) index);
             connectionManager.commit();
         } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
@@ -47,7 +47,7 @@ public class GuestService implements IGuestService {
     }
 
     @Override
-    public int num() {
+    public Long num() {
         return guestDao.readSize();
     }
 

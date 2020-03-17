@@ -7,16 +7,17 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.except
 import javax.persistence.EntityManager;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 public abstract class AbstractDao<T, K extends Serializable> implements ICommonDao<T, K> {
 
     private static final String ERROR = "Error during connection to Database. Check query.";
-    private final EntityManager entityManager;
+    protected final EntityManager entityManager;
     private final Class<T> clazz;
 
-    public AbstractDao(Class<T> clazz) {
-        this.clazz = clazz;
+    public AbstractDao() {
+        this.clazz = ((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
         this.entityManager = CustomEntityManager.getEntityManager();
     }
 
