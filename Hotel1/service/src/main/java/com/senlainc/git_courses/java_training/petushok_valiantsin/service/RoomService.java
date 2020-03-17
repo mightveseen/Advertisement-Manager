@@ -7,11 +7,12 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.inj
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.RoomConfig;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotAvailableException;
 
+import javax.persistence.EntityManager;
 import java.util.Comparator;
 import java.util.List;
 
@@ -22,25 +23,26 @@ public class RoomService implements IRoomService {
     private static final String ELEMENT_NOT_FOUND = "Room with index: %d dont exists.";
     @DependencyComponent
     private static RoomConfig roomConfig;
+    private final EntityManager entityManager = CustomEntityManager.getEntityManager();
     @DependencyComponent
     private IRoomDao roomDao;
-    @DependencyComponent
-    private ConnectionManager connectionManager;
 
     @Override
     public void add(int number, String classification, short roomNumber, short capacity, double price) {
+        entityManager.getTransaction().begin();
         if (roomDao.readByNumber(number) != null) {
             throw new EntityNotAvailableException(String.format("Room with number: %d already exists.", number));
         }
         roomDao.create(new Room(number, classification, roomNumber, capacity, price));
-        connectionManager.commit();
+        entityManager.getTransaction().commit();
     }
 
     @Override
     public void delete(int index) {
         try {
+            entityManager.getTransaction().begin();
             roomDao.delete((long) index);
-            connectionManager.commit();
+            entityManager.getTransaction().commit();
         } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
@@ -62,10 +64,11 @@ public class RoomService implements IRoomService {
     @Override
     public void changePrice(int index, double price) {
         try {
+            entityManager.getTransaction().begin();
             final Room room = roomDao.read((long) index);
             room.setPrice(price);
             roomDao.update(room);
-            connectionManager.commit();
+            entityManager.getTransaction().commit();
         } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
@@ -77,10 +80,11 @@ public class RoomService implements IRoomService {
             throw new EntityNotAvailableException("Property for change status is false");
         }
         try {
+            entityManager.getTransaction().begin();
             final Room room = roomDao.read((long) index);
             room.setStatus(RoomStatus.valueOf(status));
             roomDao.update(room);
-            connectionManager.commit();
+            entityManager.getTransaction().commit();
         } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }

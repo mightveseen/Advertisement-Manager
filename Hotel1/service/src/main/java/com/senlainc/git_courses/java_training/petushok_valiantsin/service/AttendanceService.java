@@ -31,16 +31,21 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     public void delete(int index) {
+        entityManager.getTransaction().begin();
         attendanceDao.delete((long) index);
+        entityManager.getTransaction().commit();
     }
 
     @Override
     public void changePrice(int index, double price) {
         try {
+            entityManager.getTransaction().begin();
             final Attendance attendance = attendanceDao.read((long) index);
             attendance.setPrice(price);
             attendanceDao.update(attendance);
+            entityManager.getTransaction().commit();
         } catch (ElementNotFoundException e) {
+            entityManager.getTransaction().rollback();
             throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
     }

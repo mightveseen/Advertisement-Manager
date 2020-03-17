@@ -4,10 +4,13 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.R
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "Room")
@@ -28,6 +31,8 @@ public class Room implements Cloneable {
     private RoomStatus status;
     @Column
     private double price;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "room")
+    private List<Order> order;
 
     public Room() {
 

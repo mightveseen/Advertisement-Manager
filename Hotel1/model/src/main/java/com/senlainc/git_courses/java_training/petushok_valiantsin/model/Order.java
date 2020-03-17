@@ -2,22 +2,47 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "Order")
 public class Order implements Cloneable {
 
-    private final LocalDateTime orderDate;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "guest_id", nullable = false)
     private final Guest guest;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "room_id", nullable = false)
     private final Room room;
+    @Column(name = "start_date")
     private final LocalDate startDate;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "order_date")
+    private LocalDateTime orderDate;
+    @ManyToMany
     private List<Attendance> attendanceIndex = new ArrayList<>();
+    @Column(name = "end_date")
     private LocalDate endDate;
+    @Column
     private OrderStatus status;
+    @Column
     private double price;
 
     public Order(Guest guest, Room room, LocalDate endDate, double price) {
