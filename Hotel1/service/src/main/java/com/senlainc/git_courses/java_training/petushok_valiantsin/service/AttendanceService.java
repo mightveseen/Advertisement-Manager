@@ -30,14 +30,14 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     public void delete(int index) {
-        attendanceDao.delete(index);
+        attendanceDao.delete((long) index);
         connectionManager.commit();
     }
 
     @Override
     public void changePrice(int index, double price) {
         try {
-            final Attendance attendance = attendanceDao.read(index);
+            final Attendance attendance = attendanceDao.read((long) index);
             attendance.setPrice(price);
             attendanceDao.update(attendance);
             connectionManager.commit();

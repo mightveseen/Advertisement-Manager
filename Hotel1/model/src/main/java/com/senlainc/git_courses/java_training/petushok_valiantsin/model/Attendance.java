@@ -1,17 +1,30 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "")
+@Table
 public class Attendance implements Cloneable, Serializable {
 
-    private final String name;
-    private final String section;
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column
+    private String name;
+    @Column
+    private String section;
+    @Column
     private double price;
+
+    public Attendance() {
+
+    }
 
     public Attendance(String name, String section, double price) {
         this.name = name;
@@ -24,7 +37,7 @@ public class Attendance implements Cloneable, Serializable {
         return (Attendance) super.clone();
     }
 
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 

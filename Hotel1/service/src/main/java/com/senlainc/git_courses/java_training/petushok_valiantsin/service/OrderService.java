@@ -95,7 +95,7 @@ public class OrderService implements IOrderService {
     public void addAttendance(int orderIndex, int attendanceIndex) {
         try {
             final Order order = orderDao.read(orderIndex);
-            final Attendance attendance = attendanceDao.read(attendanceIndex);
+            final Attendance attendance = attendanceDao.read((long) attendanceIndex);
             order.setPrice(order.getPrice() + attendance.getPrice());
             orderDao.update(order);
             orderDao.update(order, attendance);

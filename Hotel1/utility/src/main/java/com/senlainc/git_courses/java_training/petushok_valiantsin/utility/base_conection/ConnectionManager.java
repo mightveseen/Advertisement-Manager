@@ -7,7 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 
@@ -25,12 +24,13 @@ public final class ConnectionManager {
 
     private ConnectionManager() {
         ConfigController.getInstance().setConfig(ConnectionManager.class);
-        try {
-            this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            setAutoCommit(false);
-        } catch (SQLException e) {
-            LOGGER.warn(e.getMessage(), e);
-        }
+//        try {
+//            this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
+//            setAutoCommit(false);
+//            LOGGER.info("Open Database connection");
+//        } catch (SQLException e) {
+//            LOGGER.warn(e.getMessage(), e);
+//        }
     }
 
     public void setAutoCommit(Boolean condition) {
@@ -44,7 +44,7 @@ public final class ConnectionManager {
     public void closeConnection() {
         try {
             this.connection.close();
-            LOGGER.debug("Close Database connection");
+            LOGGER.info("Close Database connection");
         } catch (SQLException e) {
             LOGGER.warn(e.getMessage(), e);
         }

@@ -22,7 +22,7 @@ public class DependencyController {
         try {
             DependencyService.getInstance().setVariable(clazz);
             DependencyService.getInstance().initializeConstructor();
-            LOGGER.debug("Successful load class: {}", clazz.getSimpleName());
+            LOGGER.info("Successful load class: {}", clazz.getSimpleName());
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException | IllegalStateException | IllegalArgumentException | ClassNotFoundException e) {
             LOGGER.warn(MessageFormat.format("Could load class: {0}, reason: {1}", clazz, e.getMessage()), e);
         }

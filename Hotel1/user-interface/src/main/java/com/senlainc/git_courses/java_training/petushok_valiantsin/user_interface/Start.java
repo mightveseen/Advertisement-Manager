@@ -7,6 +7,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data.L
 public class Start {
 
     public static void main(String[] args) {
+//        LoadData.execute(HibernateSessionFactory.class);
         LoadData.execute(Hotel.class);
         new MenuController().run();
     }

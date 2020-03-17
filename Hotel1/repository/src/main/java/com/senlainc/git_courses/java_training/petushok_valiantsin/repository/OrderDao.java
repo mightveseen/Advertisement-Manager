@@ -82,7 +82,7 @@ public class OrderDao implements IOrderDao {
         final String query = QueryDao.ORDER.getQuery(QueryType.ADD_ORDER_ATTENDANCE);
         try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
             statement.setInt(1, order.getId());
-            statement.setInt(2, attendance.getId());
+            statement.setInt(2, (int) attendance.getId());
             statement.execute();
         } catch (SQLException e) {
             throw new DaoException(ERROR, e);
