@@ -1,7 +1,11 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 
+@Entity
+@Table(name = "")
 public class Attendance implements Cloneable, Serializable {
 
     private final String name;
