@@ -6,9 +6,10 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.inj
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
 
+import javax.persistence.EntityManager;
 import java.util.Comparator;
 import java.util.List;
 
@@ -17,21 +18,20 @@ import java.util.List;
 public class AttendanceService implements IAttendanceService {
 
     private static final String ELEMENT_NOT_FOUND = "Attendance with index: %d don't exists.";
+    private final EntityManager entityManager = CustomEntityManager.getEntityManager();
     @DependencyComponent
     private IAttendanceDao attendanceDao;
-    @DependencyComponent
-    private ConnectionManager connectionManager;
 
     @Override
     public void add(String name, String section, double price) {
+        entityManager.getTransaction().begin();
         attendanceDao.create(new Attendance(name, section, price));
-        connectionManager.commit();
+        entityManager.getTransaction().commit();
     }
 
     @Override
     public void delete(int index) {
         attendanceDao.delete((long) index);
-        connectionManager.commit();
     }
 
     @Override
@@ -40,7 +40,6 @@ public class AttendanceService implements IAttendanceService {
             final Attendance attendance = attendanceDao.read((long) index);
             attendance.setPrice(price);
             attendanceDao.update(attendance);
-            connectionManager.commit();
         } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }

@@ -5,6 +5,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendan
 
 public class AttendanceDao extends AbstractDao<Attendance, Long> implements IAttendanceDao {
     public AttendanceDao() {
-        setClass(Attendance.class);
+        super(Attendance.class);
     }
 }

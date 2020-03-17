@@ -2,19 +2,38 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "Room")
 public class Room implements Cloneable {
 
-    private final int number;
-    private final String classification;
-    private final short roomNumber;
-    private final short capacity;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column
+    private int number;
+    @Column
+    private String classification;
+    @Column
+    private short roomNumber;
+    @Column
+    private short capacity;
+    @Column
     private RoomStatus status;
+    @Column
     private double price;
 
-    public Room(final int number, final String classification,
-                final short roomNumber, final short capacity,
-                final double price) {
+    public Room() {
+
+    }
+
+    public Room(int number, String classification, short roomNumber, short capacity, double price) {
         this.number = number;
         this.classification = classification;
         this.roomNumber = roomNumber;
@@ -23,9 +42,7 @@ public class Room implements Cloneable {
         this.price = price;
     }
 
-    public Room(final int number, final String classification,
-                final short roomNumber, final short capacity,
-                final RoomStatus status, final double price) {
+    public Room(int number, String classification, short roomNumber, short capacity, RoomStatus status, double price) {
         this.number = number;
         this.classification = classification;
         this.roomNumber = roomNumber;

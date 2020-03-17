@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table
+@Table(name = "Attendance")
 public class Attendance implements Cloneable, Serializable {
 
     @Id

@@ -39,7 +39,7 @@ public class RoomService implements IRoomService {
     @Override
     public void delete(int index) {
         try {
-            roomDao.delete(index);
+            roomDao.delete((long) index);
             connectionManager.commit();
         } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
@@ -62,7 +62,7 @@ public class RoomService implements IRoomService {
     @Override
     public void changePrice(int index, double price) {
         try {
-            final Room room = roomDao.read(index);
+            final Room room = roomDao.read((long) index);
             room.setPrice(price);
             roomDao.update(room);
             connectionManager.commit();
@@ -77,7 +77,7 @@ public class RoomService implements IRoomService {
             throw new EntityNotAvailableException("Property for change status is false");
         }
         try {
-            final Room room = roomDao.read(index);
+            final Room room = roomDao.read((long) index);
             room.setStatus(RoomStatus.valueOf(status));
             roomDao.update(room);
             connectionManager.commit();

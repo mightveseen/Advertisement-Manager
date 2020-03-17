@@ -43,7 +43,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public void add(int guestIndex, int roomIndex, LocalDate endDate) {
-        final Room room = roomDao.read(roomIndex);
+        final Room room = roomDao.read((long) roomIndex);
         final Guest guest = guestDao.read(guestIndex);
         if (room.getStatus().equals(RoomStatus.RENTED) || room.getStatus().equals(RoomStatus.SERVED)) {
             throw new EntityNotAvailableException("Room now is not available");
@@ -55,7 +55,7 @@ public class OrderService implements IOrderService {
     @Override
     public void delete(int index) {
         try {
-            final Order order = orderDao.read(index);
+            final Order order = orderDao.read((long) index);
             order.setStatus(OrderStatus.DISABLED);
             order.setEndDate(LocalDate.now());
             orderDao.update(order);
@@ -72,7 +72,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Room> showGuestRoom(int index) {
-        return orderDao.readLastRoom(index);
+        return orderDao.readLastRoom((long) index);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class OrderService implements IOrderService {
     @Override
     public List<Attendance> showAttendance(int orderIndex) {
         try {
-            return orderDao.read(orderIndex).getAttendanceIndex();
+            return orderDao.read((long) orderIndex).getAttendanceIndex();
         } catch (ElementNotFoundException e) {
             throw new EntityNotFoundException("Order with index: " + orderIndex + " dont have order.", e);
         }
@@ -94,7 +94,7 @@ public class OrderService implements IOrderService {
     @Override
     public void addAttendance(int orderIndex, int attendanceIndex) {
         try {
-            final Order order = orderDao.read(orderIndex);
+            final Order order = orderDao.read((long) orderIndex);
             final Attendance attendance = attendanceDao.read((long) attendanceIndex);
             order.setPrice(order.getPrice() + attendance.getPrice());
             orderDao.update(order);
