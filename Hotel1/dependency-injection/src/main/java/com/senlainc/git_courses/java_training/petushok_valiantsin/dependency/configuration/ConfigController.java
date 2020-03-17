@@ -19,7 +19,6 @@ public class ConfigController {
         try {
             ConfigService.getInstance().setValue(clazz);
             ConfigService.getInstance().addFieldValue();
-            LOGGER.info("Successful load properties for class: {}", clazz.getSimpleName());
         } catch (IllegalAccessException | RuntimeException e) {
             LOGGER.warn("Could load program properties from file, reason: {}", e.getMessage(), e);
         }

@@ -20,7 +20,7 @@ public class DeleteOrder implements IAction {
             final Scanner scanner = new Scanner(System.in);
             hotel.showOrder().forEach(System.out::println);
             System.out.print("Enter order index: ");
-            hotel.deleteOrder(scanner.nextInt());
+            hotel.deleteOrder(scanner.nextLong());
             LOGGER.info("Delete order from list");
         } catch (NumberFormatException e) {
             throw new WrongEnteredDataException("Wrong entered data in: " + e.getMessage(), e);

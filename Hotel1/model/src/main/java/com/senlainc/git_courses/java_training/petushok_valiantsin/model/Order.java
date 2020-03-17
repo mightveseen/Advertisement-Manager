@@ -33,7 +33,7 @@ public class Order implements Cloneable {
     private final LocalDate startDate;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @Column(name = "order_date")
     private LocalDateTime orderDate;
     @ManyToMany
@@ -55,26 +55,16 @@ public class Order implements Cloneable {
         this.price = price;
     }
 
-    public Order(LocalDateTime orderDate, Guest guest, Room room, LocalDate startDate, LocalDate endDate, OrderStatus status, double price) {
-        this.orderDate = orderDate;
-        this.guest = guest;
-        this.room = room;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.status = status;
-        this.price = price;
-    }
-
     @Override
     public Order clone() throws CloneNotSupportedException {
         return (Order) super.clone();
     }
 
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(int index) {
+    public void setId(long index) {
         this.id = index;
     }
 
@@ -134,6 +124,6 @@ public class Order implements Cloneable {
                 "Start date: " + this.startDate + "\t" +
                 "End date: " + this.endDate + "\n" +
                 "Total amount: " + this.price + "\t" +
-                "Status: " + this.status.toString();
+                "Status: " + this.status;
     }
 }

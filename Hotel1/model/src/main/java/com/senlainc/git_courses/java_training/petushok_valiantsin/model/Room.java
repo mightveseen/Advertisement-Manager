@@ -4,13 +4,12 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.R
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.List;
 
 @Entity
 @Table(name = "Room")
@@ -18,21 +17,22 @@ public class Room implements Cloneable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @Column
     private int number;
     @Column
     private String classification;
-    @Column
+    @Column(name = "room_number")
     private short roomNumber;
     @Column
     private short capacity;
     @Column
+    @Enumerated(value = EnumType.STRING)
     private RoomStatus status;
     @Column
     private double price;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "room")
-    private List<Order> order;
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "room")
+//    private List<Order> order;
 
     public Room() {
 
@@ -61,11 +61,11 @@ public class Room implements Cloneable {
         return (Room) super.clone();
     }
 
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(int index) {
+    public void setId(long index) {
         this.id = index;
     }
 
@@ -105,6 +105,6 @@ public class Room implements Cloneable {
     public final String toString() {
         return this.id + ")" + this.number + ", "
                 + this.classification + ", " + this.roomNumber + ", "
-                + this.capacity + ", " + this.status.toString() + ", " + this.price;
+                + this.capacity + ", " + this.status + ", " + this.price;
     }
 }

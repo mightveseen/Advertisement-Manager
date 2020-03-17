@@ -17,14 +17,14 @@ public class Guest implements Cloneable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "second_name")
     private String secondName;
     @Column
     private LocalDate birthday;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "guest")
+    @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY)
     private List<Order> order;
 
     public Guest() {
@@ -42,11 +42,11 @@ public class Guest implements Cloneable {
         return (Guest) super.clone();
     }
 
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(int index) {
+    public void setId(long index) {
         this.id = index;
     }
 

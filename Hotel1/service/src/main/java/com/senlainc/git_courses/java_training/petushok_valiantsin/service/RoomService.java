@@ -20,28 +20,28 @@ import java.util.List;
 @DependencyPrimary
 public class RoomService implements IRoomService {
 
-    private static final String ELEMENT_NOT_FOUND = "Room with index: %d dont exists.";
+    private static final String ELEMENT_NOT_FOUND = "Room with index: %d don't exists.";
     @DependencyComponent
     private static RoomConfig roomConfig;
-    private final EntityManager entityManager = CustomEntityManager.getEntityManager();
     @DependencyComponent
     private IRoomDao roomDao;
+    private final EntityManager entityManager = CustomEntityManager.getEntityManager();
 
     @Override
     public void add(int number, String classification, short roomNumber, short capacity, double price) {
-        entityManager.getTransaction().begin();
         if (roomDao.readByNumber(number) != null) {
             throw new EntityNotAvailableException(String.format("Room with number: %d already exists.", number));
         }
+        entityManager.getTransaction().begin();
         roomDao.create(new Room(number, classification, roomNumber, capacity, price));
         entityManager.getTransaction().commit();
     }
 
     @Override
-    public void delete(int index) {
+    public void delete(long index) {
         try {
             entityManager.getTransaction().begin();
-            roomDao.delete((long) index);
+            roomDao.delete(index);
             entityManager.getTransaction().commit();
         } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
@@ -62,10 +62,10 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void changePrice(int index, double price) {
+    public void changePrice(long index, double price) {
         try {
             entityManager.getTransaction().begin();
-            final Room room = roomDao.read((long) index);
+            final Room room = roomDao.read(index);
             room.setPrice(price);
             roomDao.update(room);
             entityManager.getTransaction().commit();
@@ -75,13 +75,13 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void changeStatus(int index, String status) {
+    public void changeStatus(long index, String status) {
         if (!roomConfig.getChangeStatus()) {
             throw new EntityNotAvailableException("Property for change status is false");
         }
         try {
             entityManager.getTransaction().begin();
-            final Room room = roomDao.read((long) index);
+            final Room room = roomDao.read(index);
             room.setStatus(RoomStatus.valueOf(status));
             roomDao.update(room);
             entityManager.getTransaction().commit();

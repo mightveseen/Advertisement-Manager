@@ -20,7 +20,7 @@ public class ChangePriceAttendance implements IAction {
             final Scanner scanner = new Scanner(System.in);
             hotel.showAttendance().forEach(System.out::println);
             System.out.print("Enter attendance index: ");
-            final int index = Integer.parseInt(scanner.nextLine());
+            final long index = Long.parseLong(scanner.nextLine());
             System.out.print("Enter price: ");
             final double price = Double.parseDouble(scanner.nextLine());
             hotel.changePriceAttendance(index, price);

@@ -25,7 +25,7 @@ public class ChangeStatusRoom implements IAction {
             final Scanner scanner = new Scanner(System.in);
             hotel.showRoom("all").forEach(System.out::println);
             System.out.print("Enter room index: ");
-            final int index = Integer.parseInt(scanner.nextLine());
+            final long index = Long.parseLong(scanner.nextLine());
             hotel.changeStatusRoom(index, status);
             LOGGER.info("Change room status");
         } catch (NumberFormatException e) {

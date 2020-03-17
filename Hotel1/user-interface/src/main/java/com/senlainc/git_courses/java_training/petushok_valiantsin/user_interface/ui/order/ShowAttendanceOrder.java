@@ -20,7 +20,7 @@ public class ShowAttendanceOrder implements IAction {
             final Scanner scanner = new Scanner(System.in);
             hotel.showOrder().forEach(System.out::println);
             System.out.print("Enter order index: ");
-            final int index = Integer.parseInt(scanner.nextLine());
+            final long index = Long.parseLong(scanner.nextLine());
             hotel.showOrderAttendance(index).forEach(System.out::println);
             LOGGER.info("Show guest attendance");
         } catch (NumberFormatException e) {

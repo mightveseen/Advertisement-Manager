@@ -20,7 +20,7 @@ public class ChangePriceRoom implements IAction {
             final Scanner scanner = new Scanner(System.in);
             hotel.showRoom("all").forEach(System.out::println);
             System.out.print("Enter room index: ");
-            final int index = Integer.parseInt(scanner.nextLine());
+            final long index = Long.parseLong(scanner.nextLine());
             System.out.print("Enter price(split cost - '.'): ");
             final double price = Double.parseDouble(scanner.nextLine());
             hotel.changePriceRoom(index, price);

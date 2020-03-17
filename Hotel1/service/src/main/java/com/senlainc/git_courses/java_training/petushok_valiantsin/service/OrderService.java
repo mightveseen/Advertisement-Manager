@@ -15,11 +15,12 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotAvailableException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotFoundException;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -38,30 +39,33 @@ public class OrderService implements IOrderService {
     private IAttendanceDao attendanceDao;
     @DependencyComponent
     private IRoomService roomService;
-    @DependencyComponent
-    private ConnectionManager connectionManager;
+    private final EntityManager entityManager = CustomEntityManager.getEntityManager();
 
     @Override
-    public void add(int guestIndex, int roomIndex, LocalDate endDate) {
-        final Room room = roomDao.read((long) roomIndex);
-        final Guest guest = guestDao.read((long) guestIndex);
+    public void add(long guestIndex, long roomIndex, LocalDate endDate) {
+        final Room room = roomDao.read(roomIndex);
+        final Guest guest = guestDao.read(guestIndex);
         if (room.getStatus().equals(RoomStatus.RENTED) || room.getStatus().equals(RoomStatus.SERVED)) {
             throw new EntityNotAvailableException("Room now is not available");
         }
+        entityManager.getTransaction().begin();
         orderDao.create(new Order(guest, room, endDate, room.getPrice()));
         roomService.changeStatus(roomIndex, RoomStatus.RENTED.name());
+        entityManager.getTransaction().commit();
     }
 
     @Override
-    public void delete(int index) {
+    public void delete(long index) {
         try {
-            final Order order = orderDao.read((long) index);
+            final Order order = orderDao.read(index);
             order.setStatus(OrderStatus.DISABLED);
             order.setEndDate(LocalDate.now());
+            entityManager.getTransaction().begin();
             orderDao.update(order);
-            roomService.changeStatus(order.getRoom().getId(), RoomStatus.FREE.name());
+            roomService.changeStatus((int) order.getRoom().getId(), RoomStatus.FREE.name());
+            entityManager.getTransaction().commit();
         } catch (ElementNotFoundException e) {
-            throw new ElementNotFoundException("Order with index: " + index + " dont exists.", e);
+            throw new ElementNotFoundException("Order with index: " + index + " don't exists.", e);
         }
     }
 
@@ -71,8 +75,8 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Room> showGuestRoom(int index) {
-        return orderDao.readLastRoom((long) index);
+    public List<Room> showGuestRoom(long index) {
+        return orderDao.readLastRoom(index);
     }
 
     @Override
@@ -83,25 +87,26 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Attendance> showAttendance(int orderIndex) {
+    public List<Attendance> showAttendance(long orderIndex) {
         try {
-            return orderDao.read((long) orderIndex).getAttendanceIndex();
+            return orderDao.read(orderIndex).getAttendanceIndex();
         } catch (ElementNotFoundException e) {
-            throw new EntityNotFoundException("Order with index: " + orderIndex + " dont have order.", e);
+            throw new EntityNotFoundException("Order with index: " + orderIndex + " don't have order.", e);
         }
     }
 
     @Override
-    public void addAttendance(int orderIndex, int attendanceIndex) {
+    public void addAttendance(long orderIndex, long attendanceIndex) {
         try {
-            final Order order = orderDao.read((long) orderIndex);
-            final Attendance attendance = attendanceDao.read((long) attendanceIndex);
+            final Order order = orderDao.read(orderIndex);
+            final Attendance attendance = attendanceDao.read(attendanceIndex);
             order.setPrice(order.getPrice() + attendance.getPrice());
+            entityManager.getTransaction().begin();
             orderDao.update(order);
             orderDao.update(order, attendance);
-            connectionManager.commit();
+            entityManager.getTransaction().commit();
         } catch (ElementNotFoundException e) {
-            connectionManager.rollback();
+            entityManager.getTransaction().rollback();
             throw new ElementNotFoundException("Failed to add attendance", e);
         }
     }

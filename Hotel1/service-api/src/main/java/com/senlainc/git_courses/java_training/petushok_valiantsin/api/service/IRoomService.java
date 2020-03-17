@@ -8,13 +8,13 @@ public interface IRoomService {
 
     void add(int number, String classification, short roomNumber, short capacity, double price);
 
-    void delete(int index);
+    void delete(long index);
 
     List<Room> getRoomList();
 
-    void changePrice(int index, double price);
+    void changePrice(long index, double price);
 
-    void changeStatus(int index, String status);
+    void changeStatus(long index, String status);
 
     List<Room> getRoomList(String parameter);
 

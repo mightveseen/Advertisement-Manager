@@ -20,7 +20,7 @@ public class ShowThreeRoomGuest implements IAction {
             final Scanner scanner = new Scanner(System.in);
             hotel.showGuest().forEach(System.out::println);
             System.out.print("Enter guest index: ");
-            final int index = Integer.parseInt(scanner.nextLine());
+            final long index = Long.parseLong(scanner.nextLine());
             hotel.showGuestRoom(index).forEach(System.out::println);
             LOGGER.info("Show last 3 room's of guest");
         } catch (NumberFormatException e) {

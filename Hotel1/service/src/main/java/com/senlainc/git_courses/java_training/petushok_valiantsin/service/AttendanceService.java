@@ -30,17 +30,17 @@ public class AttendanceService implements IAttendanceService {
     }
 
     @Override
-    public void delete(int index) {
+    public void delete(long index) {
         entityManager.getTransaction().begin();
-        attendanceDao.delete((long) index);
+        attendanceDao.delete(index);
         entityManager.getTransaction().commit();
     }
 
     @Override
-    public void changePrice(int index, double price) {
+    public void changePrice(long index, double price) {
         try {
             entityManager.getTransaction().begin();
-            final Attendance attendance = attendanceDao.read((long) index);
+            final Attendance attendance = attendanceDao.read(index);
             attendance.setPrice(price);
             attendanceDao.update(attendance);
             entityManager.getTransaction().commit();
