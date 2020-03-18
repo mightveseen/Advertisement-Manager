@@ -29,6 +29,7 @@ import java.util.List;
 @DependencyPrimary
 public class OrderService implements IOrderService {
 
+    private final EntityManager entityManager = CustomEntityManager.getEntityManager();
     @DependencyComponent
     private IOrderDao orderDao;
     @DependencyComponent
@@ -39,7 +40,6 @@ public class OrderService implements IOrderService {
     private IAttendanceDao attendanceDao;
     @DependencyComponent
     private IRoomService roomService;
-    private final EntityManager entityManager = CustomEntityManager.getEntityManager();
 
     @Override
     public void add(long guestIndex, long roomIndex, LocalDate endDate) {

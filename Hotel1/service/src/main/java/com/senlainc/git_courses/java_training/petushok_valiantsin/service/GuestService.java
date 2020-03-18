@@ -22,9 +22,9 @@ public class GuestService implements IGuestService {
     private static final String ELEMENT_NOT_FOUND = "Guest with index: %d don't exists.";
     @DependencyComponent
     private static GuestConfig guestConfig;
+    private final EntityManager entityManager = CustomEntityManager.getEntityManager();
     @DependencyComponent
     private IGuestDao guestDao;
-    private final EntityManager entityManager = CustomEntityManager.getEntityManager();
 
     @Override
     public void add(String firstName, String lastName, LocalDate birthday) {

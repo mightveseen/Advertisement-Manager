@@ -23,9 +23,9 @@ public class RoomService implements IRoomService {
     private static final String ELEMENT_NOT_FOUND = "Room with index: %d don't exists.";
     @DependencyComponent
     private static RoomConfig roomConfig;
+    private final EntityManager entityManager = CustomEntityManager.getEntityManager();
     @DependencyComponent
     private IRoomDao roomDao;
-    private final EntityManager entityManager = CustomEntityManager.getEntityManager();
 
     @Override
     public void add(int number, String classification, short roomNumber, short capacity, double price) {
