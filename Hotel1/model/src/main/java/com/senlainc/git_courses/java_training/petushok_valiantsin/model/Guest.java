@@ -2,6 +2,7 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +24,7 @@ public class Guest implements Cloneable {
     private String secondName;
     @Column
     private LocalDate birthday;
-    @OneToMany(mappedBy = "guest")
+    @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY)
     private Set<Order> order;
 
     public Guest() {

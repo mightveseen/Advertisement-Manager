@@ -34,7 +34,7 @@ public class Room implements Cloneable {
     private RoomStatus status;
     @Column
     private double price;
-    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     private Set<Order> order;
 
     public Room() {
