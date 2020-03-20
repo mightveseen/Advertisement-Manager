@@ -29,8 +29,8 @@ public class RoomService implements IRoomService {
 
     @Override
     public void add(int number, String classification, short roomNumber, short capacity, double price) {
-        if (roomDao.readByNumber(number) != null) {
-            throw new EntityNotAvailableException(String.format("Room with number: %d already exists.", number));
+        if (roomDao.readByNumber(number).equals(Boolean.FALSE)) {
+            throw new ElementNotFoundException("Room with number: " + number + " already exists.");
         }
         entityManager.getTransaction().begin();
         roomDao.create(new Room(number, classification, roomNumber, capacity, price));

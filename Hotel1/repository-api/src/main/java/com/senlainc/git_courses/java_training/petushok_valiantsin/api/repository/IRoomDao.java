@@ -10,5 +10,5 @@ public interface IRoomDao extends ICommonDao<Room, Long> {
 
     Long readFreeSize();
 
-    Room readByNumber(Integer number);
+    Boolean readByNumber(Integer number);
 }
