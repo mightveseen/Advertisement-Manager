@@ -35,7 +35,7 @@ public class Room implements Cloneable {
     @Column
     private double price;
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
-    private Set<Order> order;
+    private Set<Order> orders;
 
     public Room() {
 

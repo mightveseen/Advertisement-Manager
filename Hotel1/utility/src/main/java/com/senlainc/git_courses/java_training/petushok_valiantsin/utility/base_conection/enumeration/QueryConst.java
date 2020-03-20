@@ -32,10 +32,10 @@ public final class QueryConst {
     protected static final String ROOM_UPDATE = "UPDATE `Room` SET `number` = ?, `classification` = ?, `room_number` = ?, `capacity` = ?, `status` = ?, `price` = ?"
             + "WHERE `id` = ?";
     protected static final String ROOM_READ_ALL = "SELECT * FROM `Room`;";
-    protected static final String ROOM_READ_ALL_FREE = "SELECT * FROM `Room` WHERE `status` = 'FREE';";
+    protected static final String ROOM_READ_ALL_FREE = "FROM Room WHERE status = 'FREE'";
     protected static final String ROOM_READ = "SELECT * FROM `Room` WHERE `id` = ?;";
     protected static final String ROOM_READ_BY_NUMBER = "SELECT * FROM `Room` WHERE `number` = ?;";
-    protected static final String ROOM_FREE_SIZE = "SELECT COUNT(`id`) FROM `Room` WHERE `status` = 'FREE';";
+    protected static final String ROOM_FREE_SIZE = "SELECT COUNT(id) FROM Room WHERE status = 'FREE'";
     /**
      * Order const query variables
      */

@@ -6,6 +6,8 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.except
 
 import javax.persistence.EntityManager;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaQuery;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -59,7 +61,7 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
     @Override
     public T read(K index) {
         try {
-            return entityManager.find(clazz, index);
+            return entityManager.find(this.clazz, index);
         } catch (Exception e) {
             throw new DaoException(ERROR, e);
         }
@@ -68,7 +70,10 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
     @Override
     public List<T> readAll() {
         try {
-            return entityManager.createQuery("FROM " + getTableName()).getResultList();
+            final CriteriaQuery<T> criteriaQuery = entityManager.getCriteriaBuilder().createQuery(this.clazz);
+            criteriaQuery.select(criteriaQuery.from(this.clazz));
+            final TypedQuery<T> query = entityManager.createQuery(criteriaQuery);
+            return query.getResultList();
         } catch (Exception e) {
             throw new DaoException(ERROR, e);
         }
