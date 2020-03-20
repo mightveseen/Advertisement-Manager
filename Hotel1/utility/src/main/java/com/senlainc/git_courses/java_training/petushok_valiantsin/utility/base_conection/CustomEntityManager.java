@@ -10,8 +10,8 @@ import javax.persistence.Persistence;
 public final class CustomEntityManager {
 
     private static final Logger LOGGER = LogManager.getLogger(CustomEntityManager.class);
-    private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("persistence");
-    private static EntityManager entityManager = entityManagerFactory.createEntityManager();
+    private static final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("persistence");
+    private static final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
     private CustomEntityManager() {
         throw new IllegalStateException("Utility class");

@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDate;
@@ -35,8 +37,11 @@ public class Order implements Cloneable {
     private long id;
     @Column(name = "order_date")
     private LocalDateTime orderDate;
-    //    @ManyToMany
-//    private List<Attendance> attendanceIndex = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name = "OrderAttendance",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "attendance_id"))
+    private List<Attendance> attendanceList;
     @Column(name = "end_date")
     private LocalDate endDate;
     @Column
@@ -113,12 +118,11 @@ public class Order implements Cloneable {
     }
 
     public List<Attendance> getAttendanceIndex() {
-//        return this.attendanceIndex;
-        return null;
+        return this.attendanceList;
     }
 
-    public void setAttendanceIndex(List<Attendance> attendanceIndex) {
-//        this.attendanceIndex = attendanceIndex;
+    public void setAttendanceIndex(List<Attendance> attendanceList) {
+        this.attendanceList = attendanceList;
     }
 
     public String toString() {

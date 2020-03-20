@@ -21,6 +21,8 @@ public class Attendance implements Cloneable, Serializable {
     private String section;
     @Column
     private double price;
+//    @ManyToMany(mappedBy = "attendanceList")
+//    private Set<Order> order;
 
     public Attendance() {
 
