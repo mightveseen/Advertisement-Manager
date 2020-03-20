@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `Room` (
     `status` VARCHAR(20),
     `price` DOUBLE NOT NULL
 );
-CREATE TABLE IF NOT EXISTS `Order` (
+CREATE TABLE IF NOT EXISTS `Orders` (
 	`id` INT AUTO_INCREMENT PRIMARY KEY,
     `order_date` DATETIME,
     `guest_id` INT,
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `OrderAttendance` (
 	`order_id` INT,
     `attendance_id` INT,
 	FOREIGN KEY (`attendance_id`) REFERENCES `Attendance`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (`order_id`) REFERENCES `Order`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (`order_id`) REFERENCES `Orders`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 	

@@ -5,9 +5,11 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_c
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.DaoException;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Table;
-import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -23,14 +25,6 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
         this.entityManager = CustomEntityManager.getEntityManager();
     }
 
-    protected String getTableName() {
-        final String tableName = clazz.getAnnotation(Table.class).name();
-        if (tableName.equals("")) {
-            return clazz.getSimpleName();
-        }
-        return tableName;
-    }
-
     @Override
     public void create(T object) {
         try {
@@ -43,7 +37,12 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
     @Override
     public void delete(K index) {
         try {
-            entityManager.remove(index);
+            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            final CriteriaDelete<T> criteriaDelete = criteriaBuilder.createCriteriaDelete(this.clazz);
+            final Root<T> root = criteriaDelete.from(this.clazz);
+            final Predicate predicate = criteriaBuilder.equal(root.get("id"), index);
+            criteriaDelete.where(predicate);
+            entityManager.createQuery(criteriaDelete).executeUpdate();
         } catch (Exception e) {
             throw new DaoException(ERROR, e);
         }
@@ -72,8 +71,7 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
         try {
             final CriteriaQuery<T> criteriaQuery = entityManager.getCriteriaBuilder().createQuery(this.clazz);
             criteriaQuery.select(criteriaQuery.from(this.clazz));
-            final TypedQuery<T> query = entityManager.createQuery(criteriaQuery);
-            return query.getResultList();
+            return entityManager.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
             throw new DaoException(ERROR, e);
         }
