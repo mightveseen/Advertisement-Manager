@@ -22,10 +22,10 @@ import java.util.List;
 @Table(name = "Orders")
 public class Order implements Cloneable {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "guest_id", nullable = false)
     private Guest guest;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
     @Column(name = "start_date")

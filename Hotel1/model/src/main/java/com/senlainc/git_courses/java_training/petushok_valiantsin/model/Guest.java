@@ -21,8 +21,6 @@ public class Guest implements Cloneable {
     private String secondName;
     @Column
     private LocalDate birthday;
-//    @OneToMany(mappedBy = "guest", fetch = FetchType.EAGER)
-//    private Set<Order> order;
 
     public Guest() {
 
