@@ -41,8 +41,9 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
             final CriteriaDelete<T> criteriaDelete = criteriaBuilder.createCriteriaDelete(this.clazz);
             final Root<T> root = criteriaDelete.from(this.clazz);
             final Predicate predicate = criteriaBuilder.equal(root.get("id"), index);
-            criteriaDelete.where(predicate);
-            entityManager.createQuery(criteriaDelete).executeUpdate();
+            entityManager.createQuery(criteriaDelete
+                    .where(predicate))
+                    .executeUpdate();
         } catch (Exception e) {
             throw new DaoException(ERROR, e);
         }
@@ -70,8 +71,9 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
     public List<T> readAll() {
         try {
             final CriteriaQuery<T> criteriaQuery = entityManager.getCriteriaBuilder().createQuery(this.clazz);
-            criteriaQuery.select(criteriaQuery.from(this.clazz));
-            return entityManager.createQuery(criteriaQuery).getResultList();
+            return entityManager.createQuery(criteriaQuery
+                    .select(criteriaQuery.from(this.clazz)))
+                    .getResultList();
         } catch (Exception e) {
             throw new DaoException(ERROR, e);
         }

@@ -11,7 +11,7 @@ public interface IOrderDao extends ICommonDao<Order, Long> {
 
     void update(Order order, Attendance attendance);
 
-    List<Room> readLastRoom(Long index);
+    List<Room> readLastRoom(Long index, Integer limit);
 
     List<Room> readAfterDate(LocalDate date);
 }

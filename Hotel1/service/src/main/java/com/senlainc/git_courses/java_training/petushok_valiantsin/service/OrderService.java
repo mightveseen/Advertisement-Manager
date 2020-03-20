@@ -62,7 +62,7 @@ public class OrderService implements IOrderService {
             order.setEndDate(LocalDate.now());
             entityManager.getTransaction().begin();
             orderDao.update(order);
-            roomService.changeStatus((int) order.getRoom().getId(), RoomStatus.FREE.name());
+            roomService.changeStatus(order.getRoom().getId(), RoomStatus.FREE.name());
             entityManager.getTransaction().commit();
         } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException("Order with index: " + index + " don't exists.", e);
@@ -76,7 +76,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Room> showGuestRoom(long index) {
-        return orderDao.readLastRoom(index);
+        return orderDao.readLastRoom(index, 3);
     }
 
     @Override

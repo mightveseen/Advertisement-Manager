@@ -21,10 +21,11 @@ public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
             final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
             final Root<Room> root = criteriaQuery.from(Room.class);
-            criteriaQuery.select(root);
             final Predicate predicate = criteriaBuilder.equal(root.get("status"), RoomStatus.FREE);
-            criteriaQuery.where(predicate);
-            return entityManager.createQuery(criteriaQuery).getResultList();
+            return entityManager.createQuery(criteriaQuery
+                    .select(root)
+                    .where(predicate))
+                    .getResultList();
         } catch (Exception e) {
             throw new DaoException(ERROR, e);
         }
@@ -36,10 +37,11 @@ public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
             final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
             final Root<Room> root = criteriaQuery.from(Room.class);
-            criteriaQuery.select(criteriaBuilder.count(root));
             final Predicate predicate = criteriaBuilder.equal(root.get("status"), RoomStatus.FREE);
-            criteriaQuery.where(predicate);
-            return entityManager.createQuery(criteriaQuery).getSingleResult();
+            return entityManager.createQuery(criteriaQuery
+                    .select(criteriaBuilder.count(root))
+                    .where(predicate))
+                    .getSingleResult();
         } catch (Exception e) {
             throw new DaoException(ERROR, e);
         }
@@ -48,13 +50,15 @@ public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
     @Override
     public Room readByNumber(Integer number) {
         try {
+            /* FIXME: Here drop error */
             final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
             final Root<Room> root = criteriaQuery.from(Room.class);
-            criteriaQuery.select(root);
             final Predicate predicate = criteriaBuilder.equal(root.get("number"), number);
-            criteriaQuery.where(predicate);
-            return entityManager.createQuery(criteriaQuery).getSingleResult();
+            return entityManager.createQuery(criteriaQuery
+                    .select(root)
+                    .where(predicate))
+                    .getSingleResult();
         } catch (Exception e) {
             throw new DaoException(ERROR, e);
         }

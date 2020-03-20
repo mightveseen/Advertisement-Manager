@@ -16,8 +16,9 @@ public class GuestDao extends AbstractDao<Guest, Long> implements IGuestDao {
         try {
             final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-            criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(Guest.class)));
-            return entityManager.createQuery(criteriaQuery).getSingleResult();
+            return entityManager.createQuery(criteriaQuery
+                    .select(criteriaBuilder.count(criteriaQuery.from(Guest.class))))
+                    .getSingleResult();
         } catch (Exception e) {
             throw new DaoException(ERROR, e);
         }

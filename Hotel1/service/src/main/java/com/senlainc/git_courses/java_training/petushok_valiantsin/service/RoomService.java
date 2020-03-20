@@ -80,11 +80,16 @@ public class RoomService implements IRoomService {
             throw new EntityNotAvailableException("Property for change status is false");
         }
         try {
-            entityManager.getTransaction().begin();
+            final boolean transactionActivity = entityManager.getTransaction().isActive();
+            if (!transactionActivity) {
+                entityManager.getTransaction().begin();
+            }
             final Room room = roomDao.read(index);
             room.setStatus(RoomStatus.valueOf(status));
             roomDao.update(room);
-            entityManager.getTransaction().commit();
+            if (!transactionActivity) {
+                entityManager.getTransaction().commit();
+            }
         } catch (ElementNotFoundException e) {
             throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
         }
