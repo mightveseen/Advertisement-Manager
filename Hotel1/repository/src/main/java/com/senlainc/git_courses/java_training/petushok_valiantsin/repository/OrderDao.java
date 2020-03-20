@@ -1,7 +1,6 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.repository;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IOrderDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.DaoException;
@@ -17,16 +16,6 @@ import java.util.List;
 public class OrderDao extends AbstractDao<Order, Long> implements IOrderDao {
 
     private static final String ERROR = "Error during connection to Database. Check query.";
-
-    @Override
-    public void update(Order order, Attendance attendance) {
-        try {
-            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-            final CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(Order.class);
-        } catch (Exception e) {
-            throw new DaoException(ERROR, e);
-        }
-    }
 
     @Override
     public List<Room> readLastRoom(Long index, Integer limit) {

@@ -5,8 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "Attendance")
@@ -21,8 +23,8 @@ public class Attendance implements Cloneable, Serializable {
     private String section;
     @Column
     private double price;
-//    @ManyToMany(mappedBy = "attendanceList")
-//    private Set<Order> order;
+    @ManyToMany(mappedBy = "attendanceList")
+    private Set<Order> order;
 
     public Attendance() {
 

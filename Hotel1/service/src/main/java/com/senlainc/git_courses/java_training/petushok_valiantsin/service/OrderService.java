@@ -100,13 +100,14 @@ public class OrderService implements IOrderService {
         try {
             final Order order = orderDao.read(orderIndex);
             final Attendance attendance = attendanceDao.read(attendanceIndex);
+            final List<Attendance> attendanceList = order.getAttendanceIndex();
+            attendanceList.add(attendance);
+            order.setAttendanceIndex(attendanceList);
             order.setPrice(order.getPrice() + attendance.getPrice());
             entityManager.getTransaction().begin();
             orderDao.update(order);
-            orderDao.update(order, attendance);
             entityManager.getTransaction().commit();
         } catch (ElementNotFoundException e) {
-            entityManager.getTransaction().rollback();
             throw new ElementNotFoundException("Failed to add attendance", e);
         }
     }
