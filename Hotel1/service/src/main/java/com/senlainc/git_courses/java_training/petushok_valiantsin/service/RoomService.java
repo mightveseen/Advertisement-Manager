@@ -29,7 +29,7 @@ public class RoomService implements IRoomService {
 
     @Override
     public void add(int number, String classification, short roomNumber, short capacity, double price) {
-        if (false) {
+        if (roomDao.readByNumber(number) != null) {
             throw new EntityNotAvailableException(String.format("Room with number: %d already exists.", number));
         }
         entityManager.getTransaction().begin();
