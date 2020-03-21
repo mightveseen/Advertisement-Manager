@@ -8,10 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "Attendance")
+@Table(name = "Attendances")
 public class Attendance implements Cloneable, Serializable {
 
     @Id
@@ -23,7 +24,7 @@ public class Attendance implements Cloneable, Serializable {
     private String section;
     @Column
     private double price;
-    @ManyToMany(mappedBy = "attendanceList")
+    @ManyToMany(mappedBy = "attendances")
     private Set<Order> order;
 
     public Attendance() {
@@ -39,6 +40,16 @@ public class Attendance implements Cloneable, Serializable {
     @Override
     public Attendance clone() throws CloneNotSupportedException {
         return (Attendance) super.clone();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return this == object || object instanceof Attendance;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, section, price);
     }
 
     public long getId() {

@@ -88,7 +88,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Attendance> showAttendance(long orderIndex) {
-        final List<Attendance> attendanceList = orderDao.read(orderIndex).getAttendanceIndex();
+        final List<Attendance> attendanceList = orderDao.read(orderIndex).getAttendances();
         if (attendanceList == null) {
             throw new EntityNotFoundException("Order with index: " + orderIndex + " don't have order.");
         }
@@ -100,9 +100,9 @@ public class OrderService implements IOrderService {
         try {
             final Order order = orderDao.read(orderIndex);
             final Attendance attendance = attendanceDao.read(attendanceIndex);
-            final List<Attendance> attendanceList = order.getAttendanceIndex();
+            final List<Attendance> attendanceList = order.getAttendances();
             attendanceList.add(attendance);
-            order.setAttendanceIndex(attendanceList);
+            order.setAttendances(attendanceList);
             order.setPrice(order.getPrice() + attendance.getPrice());
             entityManager.getTransaction().begin();
             orderDao.update(order);

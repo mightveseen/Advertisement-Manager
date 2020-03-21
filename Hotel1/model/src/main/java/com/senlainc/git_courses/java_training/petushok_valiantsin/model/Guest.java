@@ -8,10 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "Guest")
+@Table(name = "Guests")
 public class Guest implements Cloneable {
 
     @Id
@@ -39,6 +40,16 @@ public class Guest implements Cloneable {
     @Override
     public Guest clone() throws CloneNotSupportedException {
         return (Guest) super.clone();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return this == object || object instanceof Guest;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, secondName, birthday);
     }
 
     public long getId() {

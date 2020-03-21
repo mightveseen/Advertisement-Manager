@@ -59,9 +59,9 @@ public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
                     .select(root)
                     .where(predicate))
                     .getSingleResult();
-            return Boolean.FALSE;
-        } catch (NoResultException e) {
             return Boolean.TRUE;
+        } catch (NoResultException e) {
+            return Boolean.FALSE;
         }
     }
 }

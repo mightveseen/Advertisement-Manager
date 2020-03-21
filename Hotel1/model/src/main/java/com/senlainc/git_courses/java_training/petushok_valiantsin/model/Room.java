@@ -11,10 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "Room")
+@Table(name = "Rooms")
 public class Room implements Cloneable {
 
     @Id
@@ -61,6 +62,16 @@ public class Room implements Cloneable {
     @Override
     public final Room clone() throws CloneNotSupportedException {
         return (Room) super.clone();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return this == object || object instanceof Room;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, number, classification, roomNumber, capacity, status, price);
     }
 
     public long getId() {

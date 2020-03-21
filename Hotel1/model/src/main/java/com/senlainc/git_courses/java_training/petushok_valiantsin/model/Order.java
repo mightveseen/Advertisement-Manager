@@ -2,6 +2,7 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -19,17 +20,18 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Orders")
 public class Order implements Cloneable {
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "guest_id", nullable = false)
-    private Guest guest;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "guest_id", nullable = false)
+    private Guest guest;
     @Column(name = "start_date")
     private LocalDate startDate;
     @Id
@@ -38,10 +40,10 @@ public class Order implements Cloneable {
     @Column(name = "order_date")
     private LocalDateTime orderDate;
     @ManyToMany
-    @JoinTable(name = "OrderAttendance",
+    @JoinTable(name = "OrderAttendances",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "attendance_id"))
-    private List<Attendance> attendanceList;
+    private List<Attendance> attendances;
     @Column(name = "end_date")
     private LocalDate endDate;
     @Column
@@ -67,6 +69,16 @@ public class Order implements Cloneable {
     @Override
     public Order clone() throws CloneNotSupportedException {
         return (Order) super.clone();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return this == object || object instanceof Order;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, room, guest, startDate, orderDate, attendances, endDate, status, price);
     }
 
     public long getId() {
@@ -117,12 +129,12 @@ public class Order implements Cloneable {
         this.status = status;
     }
 
-    public List<Attendance> getAttendanceIndex() {
-        return this.attendanceList;
+    public List<Attendance> getAttendances() {
+        return this.attendances;
     }
 
-    public void setAttendanceIndex(List<Attendance> attendanceList) {
-        this.attendanceList = attendanceList;
+    public void setAttendances(List<Attendance> attendances) {
+        this.attendances = attendances;
     }
 
     public String toString() {
