@@ -38,7 +38,7 @@ public class Order implements Cloneable {
     private long id;
     @Column(name = "order_date")
     private LocalDateTime orderDate;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "OrderAttendances",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "attendance_id"))

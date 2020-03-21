@@ -14,7 +14,6 @@ public class ShowNumberGuest implements IAction {
     public void execute() {
         final Hotel hotel = (Hotel) DependencyController.getInstance().getClazz(Hotel.class);
         System.out.println(hotel.numGuest());
-        System.out.println(hotel.showGuest());
         LOGGER.info("Show number of guest");
     }
 }
