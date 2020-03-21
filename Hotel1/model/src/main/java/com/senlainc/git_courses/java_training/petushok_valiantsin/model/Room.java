@@ -115,7 +115,7 @@ public class Room implements Cloneable {
     }
 
     @Override
-    public final String toString() {
+    public String toString() {
         return this.id + ")" + this.number + ", "
                 + this.classification + ", " + this.roomNumber + ", "
                 + this.capacity + ", " + this.status + ", " + this.price;
