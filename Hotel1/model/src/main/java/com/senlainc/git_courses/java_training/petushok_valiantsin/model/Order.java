@@ -2,7 +2,6 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -26,10 +25,10 @@ import java.util.Objects;
 @Table(name = "Orders")
 public class Order implements Cloneable {
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "guest_id", nullable = false)
     private Guest guest;
     @Column(name = "start_date")
