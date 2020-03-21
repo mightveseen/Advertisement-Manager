@@ -66,7 +66,7 @@ public class Room implements Cloneable {
 
     @Override
     public boolean equals(Object object) {
-        return this == object || object instanceof Room;
+        return this == object;
     }
 
     @Override

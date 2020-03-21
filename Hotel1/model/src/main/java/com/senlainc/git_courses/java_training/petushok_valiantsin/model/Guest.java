@@ -44,7 +44,7 @@ public class Guest implements Cloneable {
 
     @Override
     public boolean equals(Object object) {
-        return this == object || object instanceof Guest;
+        return this == object;
     }
 
     @Override

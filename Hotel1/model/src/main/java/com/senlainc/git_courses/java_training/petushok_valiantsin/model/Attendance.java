@@ -44,7 +44,7 @@ public class Attendance implements Cloneable, Serializable {
 
     @Override
     public boolean equals(Object object) {
-        return this == object || object instanceof Attendance;
+        return this == object;
     }
 
     @Override

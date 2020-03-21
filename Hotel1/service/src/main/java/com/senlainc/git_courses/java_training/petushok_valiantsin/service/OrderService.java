@@ -31,13 +31,13 @@ public class OrderService implements IOrderService {
 
     private final EntityManager entityManager = CustomEntityManager.getEntityManager();
     @DependencyComponent
-    private IOrderDao orderDao;
-    @DependencyComponent
     private IRoomDao roomDao;
     @DependencyComponent
     private IGuestDao guestDao;
     @DependencyComponent
     private IAttendanceDao attendanceDao;
+    @DependencyComponent
+    private IOrderDao orderDao;
     @DependencyComponent
     private IRoomService roomService;
 

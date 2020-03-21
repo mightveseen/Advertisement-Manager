@@ -73,7 +73,7 @@ public class Order implements Cloneable {
 
     @Override
     public boolean equals(Object object) {
-        return this == object || object instanceof Order;
+        return this == object;
     }
 
     @Override
