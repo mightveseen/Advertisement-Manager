@@ -43,8 +43,14 @@ public class Attendance implements Cloneable, Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
-        return this == object;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Attendance that = (Attendance) o;
+        return id == that.id &&
+                Double.compare(that.price, price) == 0 &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(section, that.section);
     }
 
     @Override

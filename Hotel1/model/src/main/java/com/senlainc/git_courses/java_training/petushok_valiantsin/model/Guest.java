@@ -43,8 +43,14 @@ public class Guest implements Cloneable {
     }
 
     @Override
-    public boolean equals(Object object) {
-        return this == object;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Guest guest = (Guest) o;
+        return id == guest.id &&
+                Objects.equals(firstName, guest.firstName) &&
+                Objects.equals(secondName, guest.secondName) &&
+                Objects.equals(birthday, guest.birthday);
     }
 
     @Override

@@ -60,13 +60,22 @@ public class Room implements Cloneable {
     }
 
     @Override
-    public final Room clone() throws CloneNotSupportedException {
+    public Room clone() throws CloneNotSupportedException {
         return (Room) super.clone();
     }
 
     @Override
-    public boolean equals(Object object) {
-        return this == object;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Room room = (Room) o;
+        return id == room.id &&
+                number == room.number &&
+                roomNumber == room.roomNumber &&
+                capacity == room.capacity &&
+                Double.compare(room.price, price) == 0 &&
+                Objects.equals(classification, room.classification) &&
+                status == room.status;
     }
 
     @Override

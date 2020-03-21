@@ -71,13 +71,24 @@ public class Order implements Cloneable {
     }
 
     @Override
-    public boolean equals(Object object) {
-        return this == object;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return id == order.id &&
+                Double.compare(order.price, price) == 0 &&
+                Objects.equals(room, order.room) &&
+                Objects.equals(guest, order.guest) &&
+                Objects.equals(startDate, order.startDate) &&
+                Objects.equals(orderDate, order.orderDate) &&
+                Objects.equals(attendances, order.attendances) &&
+                Objects.equals(endDate, order.endDate) &&
+                status == order.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, room, guest, startDate, orderDate, attendances, endDate, status, price);
+        return Objects.hash(room, guest, startDate, id, orderDate, attendances, endDate, status, price);
     }
 
     public long getId() {
