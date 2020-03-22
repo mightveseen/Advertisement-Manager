@@ -17,6 +17,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.EntityManager;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class RoomService implements IRoomService {
             entityManager.getTransaction().begin();
             roomDao.create(new Room(number, classification, roomNumber, capacity, price));
             entityManager.getTransaction().commit();
-            LOGGER.info("Add room in list");
+            LOGGER.info("Add room in database");
         } catch (CreateQueryException e) {
             entityManager.getTransaction().rollback();
             LOGGER.warn("Error while creating room", e);
@@ -54,6 +55,7 @@ public class RoomService implements IRoomService {
             entityManager.getTransaction().begin();
             roomDao.delete(index);
             entityManager.getTransaction().commit();
+            LOGGER.info("Delete room with index: {} from database", index);
         } catch (DeleteQueryException e) {
             entityManager.getTransaction().rollback();
             LOGGER.warn("Error while deleting room", e);
@@ -62,29 +64,39 @@ public class RoomService implements IRoomService {
 
     @Override
     public List<Room> getRoomList() {
-        return roomDao.readAll();
+        try {
+            return roomDao.readAll();
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read room's.", e);
+        }
+        return Collections.emptyList();
     }
 
     @Override
     public List<Room> getRoomList(String parameter) {
-        if (parameter.equals("free")) {
-            return roomDao.readAllFree();
+        try {
+            if (parameter.equals("free")) {
+                return roomDao.readAllFree();
+            }
+            return roomDao.readAll();
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read room's.", e);
         }
-        return roomDao.readAll();
+        return Collections.emptyList();
     }
 
     @Override
     public void changePrice(long index, double price) {
         try {
-            entityManager.getTransaction().begin();
             final Room room = roomDao.read(index);
             room.setPrice(price);
             entityManager.getTransaction().begin();
             roomDao.update(room);
             entityManager.getTransaction().commit();
+            LOGGER.info("Change room price");
         } catch (UpdateQueryException e) {
             entityManager.getTransaction().rollback();
-            LOGGER.warn("Error while updating room - change price.", e);
+            LOGGER.warn("Error while updating room. Update operation: change price.", e);
         } catch (ReadQueryException e) {
             LOGGER.warn("Room with index {} don't exists.", index, e);
         }
@@ -107,17 +119,25 @@ public class RoomService implements IRoomService {
             if (!transactionActivity) {
                 entityManager.getTransaction().commit();
             }
+            LOGGER.info("Change room status");
         } catch (UpdateQueryException e) {
             entityManager.getTransaction().rollback();
-            LOGGER.warn("Error while updating room - change status.", e);
+            LOGGER.warn("Error while updating room. Update operation: change status.", e);
         } catch (ReadQueryException e) {
             LOGGER.warn("Room with index {} don't exists.", index, e);
         }
     }
 
     @Override
-    public long numFreeRoom() {
-        return roomDao.readFreeSize();
+    public Long numFreeRoom() {
+        try {
+            final long numFree = roomDao.readFreeSize();
+            LOGGER.info("Show umber of free room");
+            return numFree;
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read room's. Read operation: number of free room's.", e);
+        }
+        return null;
     }
 
     @Override

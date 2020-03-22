@@ -77,7 +77,7 @@ public class Hotel {
     }
 
     public List<String> showGuest() {
-        return createStringList(guestService.show());
+        return createStringList(guestService.getGuestList());
     }
 
     /**

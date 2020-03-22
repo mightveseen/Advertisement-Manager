@@ -13,5 +13,5 @@ public interface IGuestService {
 
     Long num();
 
-    List<Guest> show();
+    List<Guest> getGuestList();
 }

@@ -10,11 +10,13 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_c
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.GuestConfig;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.CreateQueryException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.DeleteQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.ReadQueryException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 @DependencyClass
@@ -32,14 +34,14 @@ public class GuestService implements IGuestService {
     public void add(String firstName, String lastName, LocalDate birthday) {
         final int guestLimit = guestConfig.getGuestLimit();
         if (guestLimit < guestDao.readSize()) {
-            LOGGER.info("The number of guests exceeds the specified limit: {} guests", guestLimit);
+            LOGGER.info("The number of guest's exceeds the specified limit: {} guest's", guestLimit);
             return;
         }
         try {
             entityManager.getTransaction().begin();
             guestDao.create(new Guest(firstName, lastName, birthday));
             entityManager.getTransaction().commit();
-            LOGGER.info("Add guest in list");
+            LOGGER.info("Add guest in database");
         } catch (CreateQueryException e) {
             entityManager.getTransaction().rollback();
             LOGGER.warn("Error while creating guest", e);
@@ -52,6 +54,7 @@ public class GuestService implements IGuestService {
             entityManager.getTransaction().begin();
             guestDao.delete((long) index);
             entityManager.getTransaction().commit();
+            LOGGER.info("Delete guest with index: {} from database", index);
         } catch (DeleteQueryException e) {
             entityManager.getTransaction().rollback();
             LOGGER.warn("Error while deleting guest.", e);
@@ -60,12 +63,23 @@ public class GuestService implements IGuestService {
 
     @Override
     public Long num() {
-        LOGGER.info("Show number of guest");
-        return guestDao.readSize();
+        try {
+            final Long num = guestDao.readSize();
+            LOGGER.info("Show number of guest");
+            return num;
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read guest's. Read operation: number of guest's", e);
+        }
+        return null;
     }
 
     @Override
-    public List<Guest> show() {
-        return guestDao.readAll();
+    public List<Guest> getGuestList() {
+        try {
+            return guestDao.readAll();
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read all guest's.", e);
+        }
+        return Collections.emptyList();
     }
 }

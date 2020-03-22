@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.EntityManager;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class AttendanceService implements IAttendanceService {
             entityManager.getTransaction().begin();
             attendanceDao.create(new Attendance(name, section, price));
             entityManager.getTransaction().commit();
-            LOGGER.info("Add attendance in list");
+            LOGGER.info("Add attendance in database");
         } catch (CreateQueryException e) {
             entityManager.getTransaction().rollback();
             LOGGER.warn("Error while creating attendance.", e);
@@ -46,6 +47,7 @@ public class AttendanceService implements IAttendanceService {
             entityManager.getTransaction().begin();
             attendanceDao.delete(index);
             entityManager.getTransaction().commit();
+            LOGGER.info("Delete attendance with index: {} from database", index);
         } catch (DeleteQueryException e) {
             entityManager.getTransaction().rollback();
             LOGGER.warn("Error while deleting attendance.", e);
@@ -63,7 +65,7 @@ public class AttendanceService implements IAttendanceService {
             LOGGER.info("Change attendance price");
         } catch (UpdateQueryException e) {
             entityManager.getTransaction().rollback();
-            LOGGER.warn("Error while updating attendance - change price.", e);
+            LOGGER.warn("Error while updating attendance. Update operation: change price.", e);
         } catch (ReadQueryException e) {
             LOGGER.warn("Attendance with index {} don't exists.", index, e);
         }
@@ -71,12 +73,17 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     public List<Attendance> getAttendanceList() {
-        return attendanceDao.readAll();
+        try {
+            return attendanceDao.readAll();
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read attendance's.", e);
+        }
+        return Collections.emptyList();
     }
 
     @Override
     public List<Attendance> sort(String parameter) {
-        final List<Attendance> attendances = attendanceDao.readAll();
+        final List<Attendance> attendances = getAttendanceList();
         switch (parameter) {
             case "section":
                 sortBySection(attendances);

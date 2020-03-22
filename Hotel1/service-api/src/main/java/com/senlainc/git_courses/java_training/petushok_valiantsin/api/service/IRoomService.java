@@ -18,7 +18,7 @@ public interface IRoomService {
 
     List<Room> getRoomList(String parameter);
 
-    long numFreeRoom();
+    Long numFreeRoom();
 
     List<Room> sort(String type, String parameter);
 }

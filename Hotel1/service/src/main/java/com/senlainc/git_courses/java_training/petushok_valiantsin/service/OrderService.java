@@ -52,7 +52,7 @@ public class OrderService implements IOrderService {
         try {
             final RoomStatus roomStatus = roomDao.readStatus(roomIndex);
             if (roomStatus.equals(RoomStatus.RENTED) || roomStatus.equals(RoomStatus.SERVED)) {
-                LOGGER.info("Room now is not available now.");
+                LOGGER.info("Room with index: {} is not available now.", roomIndex);
                 return;
             }
             final Room room = roomDao.read(roomIndex);
@@ -61,7 +61,7 @@ public class OrderService implements IOrderService {
             orderDao.create(new Order(guest, room, endDate, room.getPrice()));
             roomService.changeStatus(roomIndex, RoomStatus.RENTED.name());
             entityManager.getTransaction().commit();
-            LOGGER.info("Add order in list");
+            LOGGER.info("Add order in database");
         } catch (CreateQueryException e) {
             entityManager.getTransaction().rollback();
             LOGGER.warn("Error while creating order.", e);
@@ -81,7 +81,7 @@ public class OrderService implements IOrderService {
             orderDao.update(order);
             roomService.changeStatus(order.getRoom().getId(), RoomStatus.FREE.name());
             entityManager.getTransaction().commit();
-            LOGGER.info("Delete order from list");
+            LOGGER.info("Delete order from database");
         } catch (DeleteQueryException e) {
             entityManager.getTransaction().rollback();
             LOGGER.warn("Error while deleting order.", e);
@@ -95,7 +95,7 @@ public class OrderService implements IOrderService {
         try {
             return orderDao.readAll();
         } catch (ReadQueryException e) {
-            LOGGER.warn("Error while read all orders.", e);
+            LOGGER.warn("Error while read all order's.", e);
         }
         return Collections.emptyList();
     }
@@ -107,7 +107,7 @@ public class OrderService implements IOrderService {
             LOGGER.info("Show last 3 room's of guest");
             return guestRooms;
         } catch (ReadQueryException e) {
-            LOGGER.warn("Error while read all orders.", e);
+            LOGGER.warn("Error while read all order's. Read operation: room's of guest.", e);
         }
         return Collections.emptyList();
     }
@@ -117,10 +117,10 @@ public class OrderService implements IOrderService {
         try {
             final List<Room> rooms = roomDao.readAllFree();
             rooms.addAll(orderDao.readAfterDate(date));
-            LOGGER.info("Show room will free after: {}", date);
+            LOGGER.info("Show room's will be available after: {}", date);
             return rooms;
         } catch (ReadQueryException e) {
-            LOGGER.warn("Error while read all orders.", e);
+            LOGGER.warn("Error while read all order's. Read operation: room's will be available after date.", e);
         }
         return Collections.emptyList();
     }
@@ -133,10 +133,10 @@ public class OrderService implements IOrderService {
                 LOGGER.info("Order with index: {} don't have attendance's.", orderIndex);
                 return Collections.emptyList();
             }
-            LOGGER.info("Show guest attendance");
+            LOGGER.info("Show guest attendance's");
             return attendances;
         } catch (ReadQueryException e) {
-            LOGGER.warn("Error while read order - show attendances.", e);
+            LOGGER.warn("Error while read order. Read operation: show order attendance's.", e);
         }
         return Collections.emptyList();
     }
@@ -156,7 +156,7 @@ public class OrderService implements IOrderService {
             LOGGER.info("Add attendance to order");
         } catch (UpdateQueryException e) {
             entityManager.getTransaction().rollback();
-            LOGGER.warn("Error while updating attendance - add order attendance.", e);
+            LOGGER.warn("Error while updating attendance. Update operation: add attendance to order.", e);
         } catch (ReadQueryException e) {
             LOGGER.warn(new MessageFormatMessage("Order with index {0} or Attendance with index: {1} don't exists.",
                     orderIndex, attendanceIndex), e);
@@ -165,7 +165,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Order> sort(String parameter) {
-        final List<Order> orders = orderDao.readAll();
+        final List<Order> orders = getOrderList();
         switch (parameter) {
             case "date":
                 sortByDate(orders);
