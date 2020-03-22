@@ -9,6 +9,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.RoomConfig;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data.MaxResult;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.CreateQueryException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.DeleteQueryException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.ReadQueryException;
@@ -63,22 +64,14 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public List<Room> getRoomList() {
-        try {
-            return roomDao.readAll();
-        } catch (ReadQueryException e) {
-            LOGGER.warn("Error while read room's.", e);
-        }
-        return Collections.emptyList();
-    }
-
-    @Override
     public List<Room> getRoomList(String parameter) {
+        final int maxResult = MaxResult.ROOM.getMaxResult();
         try {
             if (parameter.equals("free")) {
-                return roomDao.readAllFree();
+                return roomDao.readAllFreePagination(roomDao.readSize().intValue() - maxResult, maxResult);
+            } else {
+                return roomDao.readAllPagination(roomDao.readSize().intValue() - maxResult, maxResult);
             }
-            return roomDao.readAll();
         } catch (ReadQueryException e) {
             LOGGER.warn("Error while read room's.", e);
         }
@@ -145,34 +138,33 @@ public class RoomService implements IRoomService {
         final List<Room> rooms = getRoomList(type);
         switch (parameter) {
             case "price":
-                sortByPrice(rooms);
-                break;
+                rooms.sort(sortByPrice());
+                return rooms;
             case "classification":
-                sortByClassification(rooms);
-                break;
+                rooms.sort(sortByClassification());
+                return rooms;
             case "room number":
-                sortByRoomNumber(rooms);
-                break;
+                rooms.sort(sortByRoomNumber());
+                return rooms;
             default:
-                sortById(rooms);
-                break;
+                rooms.sort(sortById());
+                return rooms;
         }
-        return rooms;
     }
 
-    private void sortByPrice(List<Room> rooms) {
-        rooms.sort(Comparator.comparing(Room::getPrice));
+    private Comparator<Room> sortByPrice() {
+        return Comparator.comparing(Room::getPrice);
     }
 
-    private void sortByClassification(List<Room> rooms) {
-        rooms.sort(Comparator.comparing(Room::getClassification));
+    private Comparator<Room> sortByClassification() {
+        return Comparator.comparing(Room::getClassification);
     }
 
-    private void sortByRoomNumber(List<Room> rooms) {
-        rooms.sort(Comparator.comparing(Room::getRoomNumber));
+    private Comparator<Room> sortByRoomNumber() {
+        return Comparator.comparing(Room::getRoomNumber);
     }
 
-    private void sortById(List<Room> rooms) {
-        rooms.sort(Comparator.comparing(Room::getId));
+    private Comparator<Room> sortById() {
+        return Comparator.comparing(Room::getId);
     }
 }

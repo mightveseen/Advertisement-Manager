@@ -8,6 +8,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.inj
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.GuestConfig;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data.MaxResult;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.CreateQueryException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.DeleteQueryException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.ReadQueryException;
@@ -75,8 +76,9 @@ public class GuestService implements IGuestService {
 
     @Override
     public List<Guest> getGuestList() {
+        final int maxResult = MaxResult.GUEST.getMaxResult();
         try {
-            return guestDao.readAll();
+            return guestDao.readAllPagination(guestDao.readSize().intValue() - maxResult, maxResult);
         } catch (ReadQueryException e) {
             LOGGER.warn("Error while read all guest's.", e);
         }

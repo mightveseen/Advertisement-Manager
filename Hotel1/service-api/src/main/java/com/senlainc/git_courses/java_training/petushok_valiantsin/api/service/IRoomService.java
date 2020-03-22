@@ -10,8 +10,6 @@ public interface IRoomService {
 
     void delete(long index);
 
-    List<Room> getRoomList();
-
     void changePrice(long index, double price);
 
     void changeStatus(long index, String status);

@@ -9,9 +9,11 @@ public interface IRoomDao extends ICommonDao<Room, Long> {
 
     List<Room> readAllFree();
 
+    List<Room> readAllFreePagination(int fistElement, int maxResult);
+
     Long readFreeSize();
 
     RoomStatus readStatus(long index);
 
-    Boolean readByNumber(Integer number);
+    Boolean readByNumber(int number);
 }

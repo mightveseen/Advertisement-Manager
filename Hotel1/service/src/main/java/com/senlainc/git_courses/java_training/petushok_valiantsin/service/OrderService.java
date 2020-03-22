@@ -16,6 +16,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data.MaxResult;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.CreateQueryException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.DeleteQueryException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.ReadQueryException;
@@ -92,8 +93,9 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Order> getOrderList() {
+        final int maxResult = MaxResult.ORDER.getMaxResult();
         try {
-            return orderDao.readAll();
+            return orderDao.readAllPagination(orderDao.readSize().intValue() - maxResult, maxResult);
         } catch (ReadQueryException e) {
             LOGGER.warn("Error while read all order's.", e);
         }

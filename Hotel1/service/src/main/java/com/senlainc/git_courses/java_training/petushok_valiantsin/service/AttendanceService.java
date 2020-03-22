@@ -7,6 +7,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.inj
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data.MaxResult;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.CreateQueryException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.DeleteQueryException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.ReadQueryException;
@@ -73,8 +74,9 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     public List<Attendance> getAttendanceList() {
+        final int maxResult = MaxResult.ATTENDANCE.getMaxResult();
         try {
-            return attendanceDao.readAll();
+            return attendanceDao.readAllPagination(attendanceDao.readSize().intValue() - maxResult, maxResult);
         } catch (ReadQueryException e) {
             LOGGER.warn("Error while read attendance's.", e);
         }

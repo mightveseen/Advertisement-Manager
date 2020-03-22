@@ -82,4 +82,35 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
             throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
         }
     }
+
+    @Override
+    public List<T> readAllPagination(int fistElement, int maxResult) {
+        try {
+            if (fistElement < 0) {
+                fistElement = 0;
+            }
+            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            final CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(this.clazz);
+            return entityManager.createQuery(criteriaQuery
+                    .select(criteriaQuery.from(this.clazz)))
+                    .setFirstResult(fistElement)
+                    .setMaxResults(maxResult)
+                    .getResultList();
+        } catch (PersistenceException e) {
+            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
+        }
+    }
+
+    @Override
+    public Long readSize() {
+        try {
+            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            final CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+            return entityManager.createQuery(criteriaQuery
+                    .select(criteriaBuilder.count(criteriaQuery.from(this.clazz))))
+                    .getSingleResult();
+        } catch (PersistenceException e) {
+            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
+        }
+    }
 }

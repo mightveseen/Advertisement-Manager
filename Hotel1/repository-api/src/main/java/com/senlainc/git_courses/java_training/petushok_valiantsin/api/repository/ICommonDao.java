@@ -13,5 +13,9 @@ public interface ICommonDao<T, K extends Serializable> {
 
     List<T> readAll();
 
+    Long readSize();
+
+    List<T> readAllPagination(int firstElement, int maxResult);
+
     T read(K index);
 }

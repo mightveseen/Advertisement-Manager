@@ -31,6 +31,26 @@ public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
     }
 
     @Override
+    public List<Room> readAllFreePagination(int fistElement, int maxResult) {
+        try {
+            if (fistElement < 0) {
+                fistElement = 0;
+            }
+            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
+            final Root<Room> root = criteriaQuery.from(Room.class);
+            final Predicate predicate = criteriaBuilder.equal(root.get("status"), RoomStatus.FREE);
+            return entityManager.createQuery(criteriaQuery
+                    .select(root)
+                    .where(predicate))
+                    .setFirstResult(fistElement)
+                    .getResultList();
+        } catch (PersistenceException e) {
+            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
+        }
+    }
+
+    @Override
     public Long readFreeSize() {
         try {
             final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -63,7 +83,7 @@ public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
     }
 
     @Override
-    public Boolean readByNumber(Integer number) {
+    public Boolean readByNumber(int number) {
         try {
             final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
