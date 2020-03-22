@@ -88,27 +88,26 @@ public class AttendanceService implements IAttendanceService {
         final List<Attendance> attendances = getAttendanceList();
         switch (parameter) {
             case "section":
-                sortBySection(attendances);
-                break;
+                attendances.sort(sortBySection());
+                return attendances;
             case "price":
-                sortByPrice(attendances);
-                break;
+                attendances.sort(sortByPrice());
+                return attendances;
             default:
-                sortById(attendances);
-                break;
+                attendances.sort(sortById());
+                return attendances;
         }
-        return attendances;
     }
 
-    private void sortBySection(List<Attendance> attendances) {
-        attendances.sort(Comparator.comparing(Attendance::getSection));
+    private Comparator<Attendance> sortBySection() {
+        return Comparator.comparing(Attendance::getSection);
     }
 
-    private void sortByPrice(List<Attendance> attendances) {
-        attendances.sort(Comparator.comparing(Attendance::getPrice));
+    private Comparator<Attendance> sortByPrice() {
+        return Comparator.comparing(Attendance::getPrice);
     }
 
-    private void sortById(List<Attendance> attendances) {
-        attendances.sort(Comparator.comparing(Attendance::getId));
+    private Comparator<Attendance> sortById() {
+        return Comparator.comparing(Attendance::getId);
     }
 }

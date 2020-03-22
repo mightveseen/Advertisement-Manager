@@ -170,27 +170,26 @@ public class OrderService implements IOrderService {
         final List<Order> orders = getOrderList();
         switch (parameter) {
             case "date":
-                sortByDate(orders);
-                break;
+                orders.sort(sortByDate());
+                return orders;
             case "alphabet":
-                sortByAlphabet(orders);
-                break;
+                orders.sort(sortByAlphabet());
+                return orders;
             default:
-                sortById(orders);
-                break;
+                orders.sort(sortById());
+                return orders;
         }
-        return orders;
     }
 
-    private void sortByDate(List<Order> orders) {
-        orders.sort(Comparator.comparing(Order::getEndDate));
+    private Comparator<Order> sortByDate() {
+        return Comparator.comparing(Order::getEndDate);
     }
 
-    private void sortByAlphabet(List<Order> orders) {
-        orders.sort(Comparator.comparing(i -> i.getGuest().getFirstName()));
+    private Comparator<Order> sortByAlphabet() {
+        return Comparator.comparing(i -> i.getGuest().getFirstName());
     }
 
-    private void sortById(List<Order> orders) {
-        orders.sort(Comparator.comparing(Order::getId));
+    private Comparator<Order> sortById() {
+        return Comparator.comparing(Order::getId);
     }
 }
