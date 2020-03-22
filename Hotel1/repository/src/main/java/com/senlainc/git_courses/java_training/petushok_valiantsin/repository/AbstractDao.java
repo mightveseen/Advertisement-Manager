@@ -2,9 +2,13 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.repository;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.ICommonDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.DaoException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.CreateQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.DeleteQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.ReadQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.UpdateQueryException;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
@@ -16,9 +20,9 @@ import java.util.List;
 
 public abstract class AbstractDao<T, K extends Serializable> implements ICommonDao<T, K> {
 
-    private static final String ERROR = "Error during connection to Database. Check query.";
+    protected static final String ERROR = "Error during connection to Database with entity: ";
     protected final EntityManager entityManager;
-    private final Class<T> clazz;
+    protected final Class<T> clazz;
 
     public AbstractDao() {
         this.clazz = ((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
@@ -29,8 +33,8 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
     public void create(T object) {
         try {
             entityManager.persist(object);
-        } catch (Exception e) {
-            throw new DaoException(ERROR, e);
+        } catch (PersistenceException e) {
+            throw new CreateQueryException(ERROR + clazz.getSimpleName(), e);
         }
     }
 
@@ -44,8 +48,8 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
             entityManager.createQuery(criteriaDelete
                     .where(predicate))
                     .executeUpdate();
-        } catch (Exception e) {
-            throw new DaoException(ERROR, e);
+        } catch (PersistenceException e) {
+            throw new DeleteQueryException(ERROR + clazz.getSimpleName(), e);
         }
     }
 
@@ -53,8 +57,8 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
     public void update(T object) {
         try {
             entityManager.merge(object);
-        } catch (Exception e) {
-            throw new DaoException(ERROR, e);
+        } catch (PersistenceException e) {
+            throw new UpdateQueryException(ERROR + clazz.getSimpleName(), e);
         }
     }
 
@@ -62,8 +66,8 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
     public T read(K index) {
         try {
             return entityManager.find(this.clazz, index);
-        } catch (Exception e) {
-            throw new DaoException(ERROR, e);
+        } catch (PersistenceException e) {
+            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
         }
     }
 
@@ -74,8 +78,8 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
             return entityManager.createQuery(criteriaQuery
                     .select(criteriaQuery.from(this.clazz)))
                     .getResultList();
-        } catch (Exception e) {
-            throw new DaoException(ERROR, e);
+        } catch (PersistenceException e) {
+            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
         }
     }
 }

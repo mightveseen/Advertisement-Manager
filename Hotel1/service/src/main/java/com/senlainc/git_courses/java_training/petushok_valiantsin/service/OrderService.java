@@ -16,12 +16,17 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotAvailableException;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotFoundException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.CreateQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.DeleteQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.ReadQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.UpdateQueryException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.message.MessageFormatMessage;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -29,6 +34,7 @@ import java.util.List;
 @DependencyPrimary
 public class OrderService implements IOrderService {
 
+    private static final Logger LOGGER = LogManager.getLogger(OrderService.class);
     private final EntityManager entityManager = CustomEntityManager.getEntityManager();
     @DependencyComponent
     private IRoomDao roomDao;
@@ -43,15 +49,26 @@ public class OrderService implements IOrderService {
 
     @Override
     public void add(long guestIndex, long roomIndex, LocalDate endDate) {
-        final Room room = roomDao.read(roomIndex);
-        final Guest guest = guestDao.read(guestIndex);
-        if (room.getStatus().equals(RoomStatus.RENTED) || room.getStatus().equals(RoomStatus.SERVED)) {
-            throw new EntityNotAvailableException("Room now is not available");
+        try {
+            final RoomStatus roomStatus = roomDao.readStatus(roomIndex);
+            if (roomStatus.equals(RoomStatus.RENTED) || roomStatus.equals(RoomStatus.SERVED)) {
+                LOGGER.info("Room now is not available now.");
+                return;
+            }
+            final Room room = roomDao.read(roomIndex);
+            final Guest guest = guestDao.read(guestIndex);
+            entityManager.getTransaction().begin();
+            orderDao.create(new Order(guest, room, endDate, room.getPrice()));
+            roomService.changeStatus(roomIndex, RoomStatus.RENTED.name());
+            entityManager.getTransaction().commit();
+            LOGGER.info("Add order in list");
+        } catch (CreateQueryException e) {
+            entityManager.getTransaction().rollback();
+            LOGGER.warn("Error while creating order.", e);
+        } catch (ReadQueryException e) {
+            LOGGER.warn(new MessageFormatMessage("Room with index {0} or Guest with index: {1} don't exists.",
+                    guestIndex, roomIndex), e);
         }
-        entityManager.getTransaction().begin();
-        orderDao.create(new Order(guest, room, endDate, room.getPrice()));
-        roomService.changeStatus(roomIndex, RoomStatus.RENTED.name());
-        entityManager.getTransaction().commit();
     }
 
     @Override
@@ -64,35 +81,64 @@ public class OrderService implements IOrderService {
             orderDao.update(order);
             roomService.changeStatus(order.getRoom().getId(), RoomStatus.FREE.name());
             entityManager.getTransaction().commit();
-        } catch (ElementNotFoundException e) {
-            throw new ElementNotFoundException("Order with index: " + index + " don't exists.", e);
+            LOGGER.info("Delete order from list");
+        } catch (DeleteQueryException e) {
+            entityManager.getTransaction().rollback();
+            LOGGER.warn("Error while deleting order.", e);
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Order with index {} don't exists.", index, e);
         }
     }
 
     @Override
     public List<Order> getOrderList() {
-        return orderDao.readAll();
+        try {
+            return orderDao.readAll();
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read all orders.", e);
+        }
+        return Collections.emptyList();
     }
 
     @Override
     public List<Room> showGuestRoom(long index) {
-        return orderDao.readLastRoom(index, 3);
+        try {
+            List<Room> guestRooms = orderDao.readLastRoom(index, 3);
+            LOGGER.info("Show last 3 room's of guest");
+            return guestRooms;
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read all orders.", e);
+        }
+        return Collections.emptyList();
     }
 
     @Override
     public List<Room> showAfterDate(LocalDate date) {
-        final List<Room> roomList = roomDao.readAllFree();
-        roomList.addAll(orderDao.readAfterDate(date));
-        return roomList;
+        try {
+            final List<Room> rooms = roomDao.readAllFree();
+            rooms.addAll(orderDao.readAfterDate(date));
+            LOGGER.info("Show room will free after: {}", date);
+            return rooms;
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read all orders.", e);
+        }
+        return Collections.emptyList();
     }
 
     @Override
     public List<Attendance> showAttendance(long orderIndex) {
-        final List<Attendance> attendanceList = orderDao.read(orderIndex).getAttendances();
-        if (attendanceList == null) {
-            throw new EntityNotFoundException("Order with index: " + orderIndex + " don't have order.");
+        try {
+            final List<Attendance> attendances = orderDao.read(orderIndex).getAttendances();
+            if (attendances == null) {
+                LOGGER.info("Order with index: {} don't have attendance's.", orderIndex);
+                return Collections.emptyList();
+            }
+            LOGGER.info("Show guest attendance");
+            return attendances;
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read order - show attendances.", e);
         }
-        return attendanceList;
+        return Collections.emptyList();
     }
 
     @Override
@@ -100,39 +146,49 @@ public class OrderService implements IOrderService {
         try {
             final Order order = orderDao.read(orderIndex);
             final Attendance attendance = attendanceDao.read(attendanceIndex);
-            final List<Attendance> attendanceList = order.getAttendances();
-            attendanceList.add(attendance);
-            order.setAttendances(attendanceList);
+            final List<Attendance> attendances = order.getAttendances();
+            attendances.add(attendance);
+            order.setAttendances(attendances);
             order.setPrice(order.getPrice() + attendance.getPrice());
             entityManager.getTransaction().begin();
             orderDao.update(order);
             entityManager.getTransaction().commit();
-        } catch (ElementNotFoundException e) {
-            throw new ElementNotFoundException("Failed to add attendance", e);
+            LOGGER.info("Add attendance to order");
+        } catch (UpdateQueryException e) {
+            entityManager.getTransaction().rollback();
+            LOGGER.warn("Error while updating attendance - add order attendance.", e);
+        } catch (ReadQueryException e) {
+            LOGGER.warn(new MessageFormatMessage("Order with index {0} or Attendance with index: {1} don't exists.",
+                    orderIndex, attendanceIndex), e);
         }
     }
 
     @Override
     public List<Order> sort(String parameter) {
-        final List<Order> myList = orderDao.readAll();
+        final List<Order> orders = orderDao.readAll();
         switch (parameter) {
             case "date":
-                sortByDate(myList);
+                sortByDate(orders);
                 break;
             case "alphabet":
-                sortByAlphabet(myList);
+                sortByAlphabet(orders);
                 break;
             default:
+                sortById(orders);
                 break;
         }
-        return myList;
+        return orders;
     }
 
-    private void sortByDate(List<Order> myList) {
-        myList.sort(Comparator.comparing(Order::getEndDate));
+    private void sortByDate(List<Order> orders) {
+        orders.sort(Comparator.comparing(Order::getEndDate));
     }
 
-    private void sortByAlphabet(List<Order> myList) {
-        myList.sort(Comparator.comparing(i -> i.getGuest().getFirstName()));
+    private void sortByAlphabet(List<Order> orders) {
+        orders.sort(Comparator.comparing(i -> i.getGuest().getFirstName()));
+    }
+
+    private void sortById(List<Order> orders) {
+        orders.sort(Comparator.comparing(Order::getId));
     }
 }

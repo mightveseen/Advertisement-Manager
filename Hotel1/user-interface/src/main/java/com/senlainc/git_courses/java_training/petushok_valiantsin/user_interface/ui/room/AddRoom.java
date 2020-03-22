@@ -29,7 +29,6 @@ public class AddRoom implements IAction {
             System.out.print("Enter price(split cost - '.'): ");
             final double price = Double.parseDouble(scanner.nextLine());
             hotel.addRoom(number, classification, numberRoom, capacity, price);
-            LOGGER.info("Add room in list");
         } catch (NumberFormatException e) {
             throw new WrongEnteredDataException("Wrong entered data in: " + e.getMessage(), e);
         }

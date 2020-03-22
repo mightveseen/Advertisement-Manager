@@ -9,8 +9,12 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.RoomConfig;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotAvailableException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.CreateQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.DeleteQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.ReadQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.UpdateQueryException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import java.util.Comparator;
@@ -20,7 +24,7 @@ import java.util.List;
 @DependencyPrimary
 public class RoomService implements IRoomService {
 
-    private static final String ELEMENT_NOT_FOUND = "Room with index: %d don't exists.";
+    private static final Logger LOGGER = LogManager.getLogger(RoomService.class);
     @DependencyComponent
     private static RoomConfig roomConfig;
     private final EntityManager entityManager = CustomEntityManager.getEntityManager();
@@ -30,11 +34,18 @@ public class RoomService implements IRoomService {
     @Override
     public void add(int number, String classification, short roomNumber, short capacity, double price) {
         if (roomDao.readByNumber(number).equals(Boolean.TRUE)) {
-            throw new ElementNotFoundException("Room with number: " + number + " already exists.");
+            LOGGER.info("Room with number: {} already exists.", number);
+            return;
         }
-        entityManager.getTransaction().begin();
-        roomDao.create(new Room(number, classification, roomNumber, capacity, price));
-        entityManager.getTransaction().commit();
+        try {
+            entityManager.getTransaction().begin();
+            roomDao.create(new Room(number, classification, roomNumber, capacity, price));
+            entityManager.getTransaction().commit();
+            LOGGER.info("Add room in list");
+        } catch (CreateQueryException e) {
+            entityManager.getTransaction().rollback();
+            LOGGER.warn("Error while creating room", e);
+        }
     }
 
     @Override
@@ -43,8 +54,9 @@ public class RoomService implements IRoomService {
             entityManager.getTransaction().begin();
             roomDao.delete(index);
             entityManager.getTransaction().commit();
-        } catch (ElementNotFoundException e) {
-            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
+        } catch (DeleteQueryException e) {
+            entityManager.getTransaction().rollback();
+            LOGGER.warn("Error while deleting room", e);
         }
     }
 
@@ -67,31 +79,39 @@ public class RoomService implements IRoomService {
             entityManager.getTransaction().begin();
             final Room room = roomDao.read(index);
             room.setPrice(price);
+            entityManager.getTransaction().begin();
             roomDao.update(room);
             entityManager.getTransaction().commit();
-        } catch (ElementNotFoundException e) {
-            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
+        } catch (UpdateQueryException e) {
+            entityManager.getTransaction().rollback();
+            LOGGER.warn("Error while updating room - change price.", e);
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Room with index {} don't exists.", index, e);
         }
     }
 
     @Override
     public void changeStatus(long index, String status) {
         if (!roomConfig.getChangeStatus()) {
-            throw new EntityNotAvailableException("Property for change status is false");
+            LOGGER.info("Property for change status is false");
+            return;
         }
         try {
             final boolean transactionActivity = entityManager.getTransaction().isActive();
+            final Room room = roomDao.read(index);
+            room.setStatus(RoomStatus.valueOf(status));
             if (!transactionActivity) {
                 entityManager.getTransaction().begin();
             }
-            final Room room = roomDao.read(index);
-            room.setStatus(RoomStatus.valueOf(status));
             roomDao.update(room);
             if (!transactionActivity) {
                 entityManager.getTransaction().commit();
             }
-        } catch (ElementNotFoundException e) {
-            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
+        } catch (UpdateQueryException e) {
+            entityManager.getTransaction().rollback();
+            LOGGER.warn("Error while updating room - change status.", e);
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Room with index {} don't exists.", index, e);
         }
     }
 
@@ -102,32 +122,37 @@ public class RoomService implements IRoomService {
 
     @Override
     public List<Room> sort(String type, String parameter) {
-        final List<Room> myList = getRoomList(type);
+        final List<Room> rooms = getRoomList(type);
         switch (parameter) {
             case "price":
-                sortByPrice(myList);
+                sortByPrice(rooms);
                 break;
             case "classification":
-                sortByClassification(myList);
+                sortByClassification(rooms);
                 break;
             case "room number":
-                sortByRoomNumber(myList);
+                sortByRoomNumber(rooms);
                 break;
             default:
+                sortById(rooms);
                 break;
         }
-        return myList;
+        return rooms;
     }
 
-    private void sortByPrice(List<Room> myList) {
-        myList.sort(Comparator.comparing(Room::getPrice));
+    private void sortByPrice(List<Room> rooms) {
+        rooms.sort(Comparator.comparing(Room::getPrice));
     }
 
-    private void sortByClassification(List<Room> myList) {
-        myList.sort(Comparator.comparing(Room::getClassification));
+    private void sortByClassification(List<Room> rooms) {
+        rooms.sort(Comparator.comparing(Room::getClassification));
     }
 
-    private void sortByRoomNumber(List<Room> myList) {
-        myList.sort(Comparator.comparing(Room::getRoomNumber));
+    private void sortByRoomNumber(List<Room> rooms) {
+        rooms.sort(Comparator.comparing(Room::getRoomNumber));
+    }
+
+    private void sortById(List<Room> rooms) {
+        rooms.sort(Comparator.comparing(Room::getId));
     }
 }

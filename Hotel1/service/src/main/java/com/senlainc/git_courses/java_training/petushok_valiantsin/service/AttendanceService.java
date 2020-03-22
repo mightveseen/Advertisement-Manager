@@ -7,7 +7,12 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.inj
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.CreateQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.DeleteQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.ReadQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.UpdateQueryException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import java.util.Comparator;
@@ -17,36 +22,50 @@ import java.util.List;
 @DependencyPrimary
 public class AttendanceService implements IAttendanceService {
 
-    private static final String ELEMENT_NOT_FOUND = "Attendance with index: %d don't exists.";
+    private static final Logger LOGGER = LogManager.getLogger(AttendanceService.class);
     private final EntityManager entityManager = CustomEntityManager.getEntityManager();
     @DependencyComponent
     private IAttendanceDao attendanceDao;
 
     @Override
     public void add(String name, String section, double price) {
-        entityManager.getTransaction().begin();
-        attendanceDao.create(new Attendance(name, section, price));
-        entityManager.getTransaction().commit();
+        try {
+            entityManager.getTransaction().begin();
+            attendanceDao.create(new Attendance(name, section, price));
+            entityManager.getTransaction().commit();
+            LOGGER.info("Add attendance in list");
+        } catch (CreateQueryException e) {
+            entityManager.getTransaction().rollback();
+            LOGGER.warn("Error while creating attendance.", e);
+        }
     }
 
     @Override
     public void delete(long index) {
-        entityManager.getTransaction().begin();
-        attendanceDao.delete(index);
-        entityManager.getTransaction().commit();
+        try {
+            entityManager.getTransaction().begin();
+            attendanceDao.delete(index);
+            entityManager.getTransaction().commit();
+        } catch (DeleteQueryException e) {
+            entityManager.getTransaction().rollback();
+            LOGGER.warn("Error while deleting attendance.", e);
+        }
     }
 
     @Override
     public void changePrice(long index, double price) {
         try {
-            entityManager.getTransaction().begin();
             final Attendance attendance = attendanceDao.read(index);
             attendance.setPrice(price);
+            entityManager.getTransaction().begin();
             attendanceDao.update(attendance);
             entityManager.getTransaction().commit();
-        } catch (ElementNotFoundException e) {
+            LOGGER.info("Change attendance price");
+        } catch (UpdateQueryException e) {
             entityManager.getTransaction().rollback();
-            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
+            LOGGER.warn("Error while updating attendance - change price.", e);
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Attendance with index {} don't exists.", index, e);
         }
     }
 
@@ -57,25 +76,30 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     public List<Attendance> sort(String parameter) {
-        final List<Attendance> myList = attendanceDao.readAll();
+        final List<Attendance> attendances = attendanceDao.readAll();
         switch (parameter) {
             case "section":
-                sortBySection(myList);
+                sortBySection(attendances);
                 break;
             case "price":
-                sortByPrice(myList);
+                sortByPrice(attendances);
                 break;
             default:
+                sortById(attendances);
                 break;
         }
-        return myList;
+        return attendances;
     }
 
-    private void sortBySection(List<Attendance> myList) {
-        myList.sort(Comparator.comparing(Attendance::getSection));
+    private void sortBySection(List<Attendance> attendances) {
+        attendances.sort(Comparator.comparing(Attendance::getSection));
     }
 
-    private void sortByPrice(List<Attendance> myList) {
-        myList.sort(Comparator.comparing(Attendance::getPrice));
+    private void sortByPrice(List<Attendance> attendances) {
+        attendances.sort(Comparator.comparing(Attendance::getPrice));
+    }
+
+    private void sortById(List<Attendance> attendances) {
+        attendances.sort(Comparator.comparing(Attendance::getId));
     }
 }

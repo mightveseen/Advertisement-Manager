@@ -2,14 +2,13 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.repository;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IGuestDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.DaoException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.ReadQueryException;
 
+import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
 public class GuestDao extends AbstractDao<Guest, Long> implements IGuestDao {
-
-    private static final String ERROR = "Error during connection to Database. Check query.";
 
     @Override
     public Long readSize() {
@@ -19,8 +18,8 @@ public class GuestDao extends AbstractDao<Guest, Long> implements IGuestDao {
             return entityManager.createQuery(criteriaQuery
                     .select(criteriaBuilder.count(criteriaQuery.from(Guest.class))))
                     .getSingleResult();
-        } catch (Exception e) {
-            throw new DaoException(ERROR, e);
+        } catch (PersistenceException e) {
+            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
         }
     }
 }
