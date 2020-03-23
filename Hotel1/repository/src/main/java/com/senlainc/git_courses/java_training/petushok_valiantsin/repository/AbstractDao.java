@@ -72,19 +72,7 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
     }
 
     @Override
-    public List<T> readAll() {
-        try {
-            final CriteriaQuery<T> criteriaQuery = entityManager.getCriteriaBuilder().createQuery(this.clazz);
-            return entityManager.createQuery(criteriaQuery
-                    .select(criteriaQuery.from(this.clazz)))
-                    .getResultList();
-        } catch (PersistenceException e) {
-            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
-        }
-    }
-
-    @Override
-    public List<T> readAllPagination(int fistElement, int maxResult) {
+    public List<T> readAll(int fistElement, int maxResult) {
         try {
             if (fistElement < 0) {
                 fistElement = 0;
@@ -102,7 +90,7 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
     }
 
     @Override
-    public List<T> readAllPagination(int fistElement, int maxResult, String parameter) {
+    public List<T> readAll(int fistElement, int maxResult, String sortParameter) {
         try {
             if (fistElement < 0) {
                 fistElement = 0;
@@ -112,7 +100,7 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
             final Root<T> root = criteriaQuery.from(this.clazz);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
-                    .orderBy(criteriaBuilder.asc(root.get(parameter))))
+                    .orderBy(criteriaBuilder.asc(root.get(sortParameter))))
                     .setFirstResult(fistElement)
                     .setMaxResults(maxResult)
                     .getResultList();

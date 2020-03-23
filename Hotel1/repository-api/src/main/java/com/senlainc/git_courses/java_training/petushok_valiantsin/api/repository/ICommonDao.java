@@ -11,13 +11,11 @@ public interface ICommonDao<T, K extends Serializable> {
 
     void update(T object);
 
-    List<T> readAll();
-
     Long readSize();
 
-    List<T> readAllPagination(int firstElement, int maxResult);
+    List<T> readAll(int firstElement, int maxResult);
 
-    List<T> readAllPagination(int firstElement, int maxResult, String parameter);
+    List<T> readAll(int firstElement, int maxResult, String sortParameter);
 
     T read(K index);
 }

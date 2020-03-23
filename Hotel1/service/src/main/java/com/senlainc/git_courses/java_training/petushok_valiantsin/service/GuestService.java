@@ -78,7 +78,7 @@ public class GuestService implements IGuestService {
     public List<Guest> getGuestList() {
         final int maxResult = MaxResult.GUEST.getMaxResult();
         try {
-            return guestDao.readAllPagination(guestDao.readSize().intValue() - maxResult, maxResult);
+            return guestDao.readAll(guestDao.readSize().intValue() - maxResult, maxResult);
         } catch (ReadQueryException e) {
             LOGGER.warn("Error while read all guest's.", e);
         }

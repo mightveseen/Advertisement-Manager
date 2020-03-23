@@ -104,8 +104,9 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Room> showAfterDate(LocalDate date) {
+        final int maxResult = MaxResult.ROOM.getMaxResult();
         try {
-            final List<Room> rooms = roomDao.readAllFree();
+            final List<Room> rooms = roomDao.readAllFree(roomDao.readSize().intValue() - maxResult, maxResult);
             rooms.addAll(orderDao.readAfterDate(date));
             LOGGER.info("Show room's will be available after: {}", date);
             return rooms;
@@ -157,7 +158,7 @@ public class OrderService implements IOrderService {
     public List<Order> getOrderList() {
         final int maxResult = MaxResult.ORDER.getMaxResult();
         try {
-            return orderDao.readAllPagination(orderDao.readSize().intValue() - maxResult, maxResult);
+            return orderDao.readAll(orderDao.readSize().intValue() - maxResult, maxResult);
         } catch (ReadQueryException e) {
             LOGGER.warn("Error while read all order's.", e);
         }
@@ -171,7 +172,7 @@ public class OrderService implements IOrderService {
             if (parameter.equals("default")) {
                 return getOrderList();
             }
-            return orderDao.readAllPagination(orderDao.readSize().intValue() - maxResult, maxResult, parameter);
+            return orderDao.readAll(orderDao.readSize().intValue() - maxResult, maxResult, parameter);
         } catch (ReadQueryException e) {
             LOGGER.warn("Error while read all order's.", e);
         }

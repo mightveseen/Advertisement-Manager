@@ -75,7 +75,7 @@ public class AttendanceService implements IAttendanceService {
     public List<Attendance> getAttendanceList() {
         final int maxResult = MaxResult.ATTENDANCE.getMaxResult();
         try {
-            return attendanceDao.readAllPagination(attendanceDao.readSize().intValue() - maxResult, maxResult);
+            return attendanceDao.readAll(attendanceDao.readSize().intValue() - maxResult, maxResult);
         } catch (ReadQueryException e) {
             LOGGER.warn("Error while read attendance's.", e);
         }
@@ -89,7 +89,7 @@ public class AttendanceService implements IAttendanceService {
             if (parameter.equals("default")) {
                 return getAttendanceList();
             }
-            return attendanceDao.readAllPagination(attendanceDao.readSize().intValue() - maxResult, maxResult, parameter);
+            return attendanceDao.readAll(attendanceDao.readSize().intValue() - maxResult, maxResult, parameter);
         } catch (ReadQueryException e) {
             LOGGER.warn("Error while read attendance's.", e);
         }

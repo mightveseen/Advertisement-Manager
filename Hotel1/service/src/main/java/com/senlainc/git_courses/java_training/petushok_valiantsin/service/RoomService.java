@@ -122,9 +122,9 @@ public class RoomService implements IRoomService {
         final int maxResult = MaxResult.ROOM.getMaxResult();
         try {
             if (parameter.equals("free")) {
-                return roomDao.readAllFreePagination(roomDao.readSize().intValue() - maxResult, maxResult);
+                return roomDao.readAllFree(roomDao.readSize().intValue() - maxResult, maxResult);
             } else {
-                return roomDao.readAllPagination(roomDao.readSize().intValue() - maxResult, maxResult);
+                return roomDao.readAll(roomDao.readSize().intValue() - maxResult, maxResult);
             }
         } catch (ReadQueryException e) {
             LOGGER.warn("Error while read room's.", e);
@@ -140,9 +140,9 @@ public class RoomService implements IRoomService {
                 return getRoomList(type);
             }
             if (type.equals("free")) {
-                return roomDao.readAllFreePagination(roomDao.readSize().intValue() - maxResult, maxResult, parameter);
+                return roomDao.readAllFree(roomDao.readSize().intValue() - maxResult, maxResult, parameter);
             }
-            return roomDao.readAllPagination(roomDao.readSize().intValue() - maxResult, maxResult, parameter);
+            return roomDao.readAll(roomDao.readSize().intValue() - maxResult, maxResult, parameter);
         } catch (ReadQueryException e) {
             LOGGER.warn("Error while read room's.", e);
         }

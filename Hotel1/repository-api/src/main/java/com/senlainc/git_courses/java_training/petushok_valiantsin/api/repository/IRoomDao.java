@@ -7,11 +7,9 @@ import java.util.List;
 
 public interface IRoomDao extends ICommonDao<Room, Long> {
 
-    List<Room> readAllFree();
+    List<Room> readAllFree(int fistElement, int maxResult);
 
-    List<Room> readAllFreePagination(int fistElement, int maxResult);
-
-    List<Room> readAllFreePagination(int fistElement, int maxResult, String parameter);
+    List<Room> readAllFree(int fistElement, int maxResult, String parameter);
 
     Long readFreeSize();
 
