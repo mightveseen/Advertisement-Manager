@@ -48,7 +48,7 @@ public class ConfigService {
 
     private <T> Object customConverter(Class<T> clazz, String variable) {
         final Function<String, Object> converter;
-        switch (clazz.getSimpleName()) {
+        switch (clazz.getSimpleName().toLowerCase()) {
             case "byte":
                 converter = Byte::valueOf;
                 break;
