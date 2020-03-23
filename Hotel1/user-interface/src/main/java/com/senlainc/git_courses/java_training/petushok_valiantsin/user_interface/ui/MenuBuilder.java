@@ -101,7 +101,7 @@ public class MenuBuilder {
     private void orderSortMenuInit(Menu orderSort) {
         orderSort.addItem(new MenuItem("Default", new ShowOrder("default"), rootMenu));
         orderSort.addItem(new MenuItem("Sort by date", new ShowOrder("endDate"), rootMenu));
-        orderSort.addItem(new MenuItem("Sort by alphabet", new ShowOrder("guest"), rootMenu));
+        orderSort.addItem(new MenuItem("Sort by guest", new ShowOrder("guest"), rootMenu));
         orderSort.addItem(new MenuItem("Exit", rootMenu));
         menuNumeration(orderSort);
     }
