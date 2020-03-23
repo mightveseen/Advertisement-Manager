@@ -23,7 +23,6 @@ public class OrderDao extends AbstractDao<Order, Long> implements IOrderDao {
             final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
             final Root<Room> root = criteriaQuery.from(Room.class);
             final Join<Room, Order> join = root.join("order");
-//            final Fetch<Room, Order> fetch = root.fetch("order");
             final Predicate predicate = criteriaBuilder.equal(join.get("guest").get("id"), index);
             return entityManager.createQuery(criteriaQuery
                     .select(root)

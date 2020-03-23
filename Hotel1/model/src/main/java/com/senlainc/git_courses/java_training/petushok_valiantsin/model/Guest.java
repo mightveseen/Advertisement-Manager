@@ -37,6 +37,26 @@ public class Guest implements Cloneable {
         this.birthday = birthday;
     }
 
+    public long getId() {
+        return this.id;
+    }
+
+    public void setId(long index) {
+        this.id = index;
+    }
+
+    public String getFirstName() {
+        return this.firstName;
+    }
+
+    public String getSecondName() {
+        return this.secondName;
+    }
+
+    public LocalDate getBirthday() {
+        return this.birthday;
+    }
+
     @Override
     public Guest clone() throws CloneNotSupportedException {
         return (Guest) super.clone();
@@ -56,26 +76,6 @@ public class Guest implements Cloneable {
     @Override
     public int hashCode() {
         return Objects.hash(id, firstName, secondName, birthday);
-    }
-
-    public long getId() {
-        return this.id;
-    }
-
-    public void setId(long index) {
-        this.id = index;
-    }
-
-    public String getFirstName() {
-        return this.firstName;
-    }
-
-    public String getSecondName() {
-        return this.secondName;
-    }
-
-    public LocalDate getBirthday() {
-        return this.birthday;
     }
 
     @Override

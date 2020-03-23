@@ -83,7 +83,7 @@ public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
     }
 
     @Override
-    public Boolean readByNumber(int number) {
+    public boolean readByNumber(int number) {
         try {
             final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
@@ -93,9 +93,9 @@ public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
                     .select(root)
                     .where(predicate))
                     .getSingleResult();
-            return Boolean.TRUE;
+            return true;
         } catch (PersistenceException e) {
-            return Boolean.FALSE;
+            return false;
         }
     }
 }

@@ -65,32 +65,6 @@ public class Order implements Cloneable {
         this.price = price;
     }
 
-    @Override
-    public Order clone() throws CloneNotSupportedException {
-        return (Order) super.clone();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Order order = (Order) o;
-        return id == order.id &&
-                Double.compare(order.price, price) == 0 &&
-                Objects.equals(room, order.room) &&
-                Objects.equals(guest, order.guest) &&
-                Objects.equals(startDate, order.startDate) &&
-                Objects.equals(orderDate, order.orderDate) &&
-                Objects.equals(attendances, order.attendances) &&
-                Objects.equals(endDate, order.endDate) &&
-                status == order.status;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(room, guest, startDate, id, orderDate, attendances, endDate, status, price);
-    }
-
     public long getId() {
         return this.id;
     }
@@ -145,6 +119,32 @@ public class Order implements Cloneable {
 
     public void setAttendances(List<Attendance> attendances) {
         this.attendances = attendances;
+    }
+
+    @Override
+    public Order clone() throws CloneNotSupportedException {
+        return (Order) super.clone();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return id == order.id &&
+                Double.compare(order.price, price) == 0 &&
+                Objects.equals(room, order.room) &&
+                Objects.equals(guest, order.guest) &&
+                Objects.equals(startDate, order.startDate) &&
+                Objects.equals(orderDate, order.orderDate) &&
+                Objects.equals(attendances, order.attendances) &&
+                Objects.equals(endDate, order.endDate) &&
+                status == order.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(room, guest, startDate, id, orderDate, attendances, endDate, status, price);
     }
 
     public String toString() {

@@ -59,30 +59,6 @@ public class Room implements Cloneable {
         this.price = price;
     }
 
-    @Override
-    public Room clone() throws CloneNotSupportedException {
-        return (Room) super.clone();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Room room = (Room) o;
-        return id == room.id &&
-                number == room.number &&
-                roomNumber == room.roomNumber &&
-                capacity == room.capacity &&
-                Double.compare(room.price, price) == 0 &&
-                Objects.equals(classification, room.classification) &&
-                status == room.status;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, number, classification, roomNumber, capacity, status, price);
-    }
-
     public long getId() {
         return this.id;
     }
@@ -121,6 +97,30 @@ public class Room implements Cloneable {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    @Override
+    public Room clone() throws CloneNotSupportedException {
+        return (Room) super.clone();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Room room = (Room) o;
+        return id == room.id &&
+                number == room.number &&
+                roomNumber == room.roomNumber &&
+                capacity == room.capacity &&
+                Double.compare(room.price, price) == 0 &&
+                Objects.equals(classification, room.classification) &&
+                status == room.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, number, classification, roomNumber, capacity, status, price);
     }
 
     @Override

@@ -15,5 +15,5 @@ public interface IRoomDao extends ICommonDao<Room, Long> {
 
     RoomStatus readStatus(long index);
 
-    Boolean readByNumber(int number);
+    boolean readByNumber(int number);
 }
