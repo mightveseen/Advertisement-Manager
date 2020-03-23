@@ -89,14 +89,15 @@ public class AttendanceService implements IAttendanceService {
         switch (parameter) {
             case "section":
                 attendances.sort(sortBySection());
-                return attendances;
+                break;
             case "price":
                 attendances.sort(sortByPrice());
-                return attendances;
+                break;
             default:
                 attendances.sort(sortById());
-                return attendances;
+                break;
         }
+        return attendances;
     }
 
     private Comparator<Attendance> sortBySection() {

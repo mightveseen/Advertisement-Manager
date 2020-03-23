@@ -139,17 +139,18 @@ public class RoomService implements IRoomService {
         switch (parameter) {
             case "price":
                 rooms.sort(sortByPrice());
-                return rooms;
+                break;
             case "classification":
                 rooms.sort(sortByClassification());
-                return rooms;
+                break;
             case "room number":
                 rooms.sort(sortByRoomNumber());
-                return rooms;
+                break;
             default:
                 rooms.sort(sortById());
-                return rooms;
+                break;
         }
+        return rooms;
     }
 
     private Comparator<Room> sortByPrice() {

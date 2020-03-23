@@ -171,14 +171,15 @@ public class OrderService implements IOrderService {
         switch (parameter) {
             case "date":
                 orders.sort(sortByDate());
-                return orders;
+                break;
             case "alphabet":
                 orders.sort(sortByAlphabet());
-                return orders;
+                break;
             default:
                 orders.sort(sortById());
-                return orders;
+                break;
         }
+        return orders;
     }
 
     private Comparator<Order> sortByDate() {
