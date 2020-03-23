@@ -35,7 +35,7 @@ public class RoomService implements IRoomService {
 
     @Override
     public void add(int number, String classification, short roomNumber, short capacity, double price) {
-        if (roomDao.readByNumber(number).equals(Boolean.TRUE)) {
+        if (roomDao.readByNumber(number)) {
             LOGGER.info("Room with number: {} already exists.", number);
             return;
         }
