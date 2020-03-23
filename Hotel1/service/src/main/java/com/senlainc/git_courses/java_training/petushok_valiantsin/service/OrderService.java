@@ -28,7 +28,6 @@ import org.apache.logging.log4j.message.MessageFormatMessage;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @DependencyClass
@@ -89,17 +88,6 @@ public class OrderService implements IOrderService {
         } catch (ReadQueryException e) {
             LOGGER.warn("Order with index {} don't exists.", index, e);
         }
-    }
-
-    @Override
-    public List<Order> getOrderList() {
-        final int maxResult = MaxResult.ORDER.getMaxResult();
-        try {
-            return orderDao.readAllPagination(orderDao.readSize().intValue() - maxResult, maxResult);
-        } catch (ReadQueryException e) {
-            LOGGER.warn("Error while read all order's.", e);
-        }
-        return Collections.emptyList();
     }
 
     @Override
@@ -166,31 +154,27 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Order> sort(String parameter) {
-        final List<Order> orders = getOrderList();
-        switch (parameter) {
-            case "date":
-                orders.sort(sortByDate());
-                break;
-            case "alphabet":
-                orders.sort(sortByAlphabet());
-                break;
-            default:
-                orders.sort(sortById());
-                break;
+    public List<Order> getOrderList() {
+        final int maxResult = MaxResult.ORDER.getMaxResult();
+        try {
+            return orderDao.readAllPagination(orderDao.readSize().intValue() - maxResult, maxResult);
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read all order's.", e);
         }
-        return orders;
+        return Collections.emptyList();
     }
 
-    private Comparator<Order> sortByDate() {
-        return Comparator.comparing(Order::getEndDate);
-    }
-
-    private Comparator<Order> sortByAlphabet() {
-        return Comparator.comparing(i -> i.getGuest().getFirstName());
-    }
-
-    private Comparator<Order> sortById() {
-        return Comparator.comparing(Order::getId);
+    @Override
+    public List<Order> sort(String parameter) {
+        final int maxResult = MaxResult.ORDER.getMaxResult();
+        try {
+            if (parameter.equals("default")) {
+                return getOrderList();
+            }
+            return orderDao.readAllPagination(orderDao.readSize().intValue() - maxResult, maxResult, parameter);
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read all order's.", e);
+        }
+        return Collections.emptyList();
     }
 }

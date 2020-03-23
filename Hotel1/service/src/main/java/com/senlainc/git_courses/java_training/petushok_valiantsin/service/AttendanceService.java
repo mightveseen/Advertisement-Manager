@@ -17,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @DependencyClass
@@ -85,30 +84,15 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     public List<Attendance> sort(String parameter) {
-        final List<Attendance> attendances = getAttendanceList();
-        switch (parameter) {
-            case "section":
-                attendances.sort(sortBySection());
-                break;
-            case "price":
-                attendances.sort(sortByPrice());
-                break;
-            default:
-                attendances.sort(sortById());
-                break;
+        final int maxResult = MaxResult.ATTENDANCE.getMaxResult();
+        try {
+            if (parameter.equals("default")) {
+                return getAttendanceList();
+            }
+            return attendanceDao.readAllPagination(attendanceDao.readSize().intValue() - maxResult, maxResult, parameter);
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read attendance's.", e);
         }
-        return attendances;
-    }
-
-    private Comparator<Attendance> sortBySection() {
-        return Comparator.comparing(Attendance::getSection);
-    }
-
-    private Comparator<Attendance> sortByPrice() {
-        return Comparator.comparing(Attendance::getPrice);
-    }
-
-    private Comparator<Attendance> sortById() {
-        return Comparator.comparing(Attendance::getId);
+        return Collections.emptyList();
     }
 }

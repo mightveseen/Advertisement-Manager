@@ -11,6 +11,8 @@ public interface IRoomDao extends ICommonDao<Room, Long> {
 
     List<Room> readAllFreePagination(int fistElement, int maxResult);
 
+    List<Room> readAllFreePagination(int fistElement, int maxResult, String parameter);
+
     Long readFreeSize();
 
     RoomStatus readStatus(long index);

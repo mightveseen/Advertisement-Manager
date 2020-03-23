@@ -100,8 +100,8 @@ public class MenuBuilder {
 
     private void orderSortMenuInit(Menu orderSort) {
         orderSort.addItem(new MenuItem("Default", new ShowOrder("default"), rootMenu));
-        orderSort.addItem(new MenuItem("Sort by date", new ShowOrder("date"), rootMenu));
-        orderSort.addItem(new MenuItem("Sort by alphabet", new ShowOrder("alphabet"), rootMenu));
+        orderSort.addItem(new MenuItem("Sort by date", new ShowOrder("endDate"), rootMenu));
+        orderSort.addItem(new MenuItem("Sort by alphabet", new ShowOrder("guest"), rootMenu));
         orderSort.addItem(new MenuItem("Exit", rootMenu));
         menuNumeration(orderSort);
     }
@@ -110,7 +110,7 @@ public class MenuBuilder {
         roomSort.addItem(new MenuItem("Default", new ShowRoom(type, "default"), rootMenu));
         roomSort.addItem(new MenuItem("Sort by price", new ShowRoom(type, "price"), rootMenu));
         roomSort.addItem(new MenuItem("Sort by classification", new ShowRoom(type, "classification"), rootMenu));
-        roomSort.addItem(new MenuItem("Sort by room number", new ShowRoom(type, "room number"), rootMenu));
+        roomSort.addItem(new MenuItem("Sort by room number", new ShowRoom(type, "roomNumber"), rootMenu));
         roomSort.addItem(new MenuItem("Exit", rootMenu));
         menuNumeration(roomSort);
     }

@@ -19,7 +19,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @DependencyClass
@@ -61,21 +60,6 @@ public class RoomService implements IRoomService {
             entityManager.getTransaction().rollback();
             LOGGER.warn("Error while deleting room", e);
         }
-    }
-
-    @Override
-    public List<Room> getRoomList(String parameter) {
-        final int maxResult = MaxResult.ROOM.getMaxResult();
-        try {
-            if (parameter.equals("free")) {
-                return roomDao.readAllFreePagination(roomDao.readSize().intValue() - maxResult, maxResult);
-            } else {
-                return roomDao.readAllPagination(roomDao.readSize().intValue() - maxResult, maxResult);
-            }
-        } catch (ReadQueryException e) {
-            LOGGER.warn("Error while read room's.", e);
-        }
-        return Collections.emptyList();
     }
 
     @Override
@@ -134,38 +118,34 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public List<Room> sort(String type, String parameter) {
-        final List<Room> rooms = getRoomList(type);
-        switch (parameter) {
-            case "price":
-                rooms.sort(sortByPrice());
-                break;
-            case "classification":
-                rooms.sort(sortByClassification());
-                break;
-            case "room number":
-                rooms.sort(sortByRoomNumber());
-                break;
-            default:
-                rooms.sort(sortById());
-                break;
+    public List<Room> getRoomList(String parameter) {
+        final int maxResult = MaxResult.ROOM.getMaxResult();
+        try {
+            if (parameter.equals("free")) {
+                return roomDao.readAllFreePagination(roomDao.readSize().intValue() - maxResult, maxResult);
+            } else {
+                return roomDao.readAllPagination(roomDao.readSize().intValue() - maxResult, maxResult);
+            }
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read room's.", e);
         }
-        return rooms;
+        return Collections.emptyList();
     }
 
-    private Comparator<Room> sortByPrice() {
-        return Comparator.comparing(Room::getPrice);
-    }
-
-    private Comparator<Room> sortByClassification() {
-        return Comparator.comparing(Room::getClassification);
-    }
-
-    private Comparator<Room> sortByRoomNumber() {
-        return Comparator.comparing(Room::getRoomNumber);
-    }
-
-    private Comparator<Room> sortById() {
-        return Comparator.comparing(Room::getId);
+    @Override
+    public List<Room> sort(String type, String parameter) {
+        final int maxResult = MaxResult.ROOM.getMaxResult();
+        try {
+            if (parameter.equals("default")) {
+                return getRoomList(type);
+            }
+            if (type.equals("free")) {
+                return roomDao.readAllFreePagination(roomDao.readSize().intValue() - maxResult, maxResult, parameter);
+            }
+            return roomDao.readAllPagination(roomDao.readSize().intValue() - maxResult, maxResult, parameter);
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read room's.", e);
+        }
+        return Collections.emptyList();
     }
 }
