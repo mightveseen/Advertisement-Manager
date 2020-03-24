@@ -11,7 +11,7 @@ public interface IGuestService {
 
     void delete(int index);
 
-    int num();
+    Long num();
 
-    List<Guest> show();
+    List<Guest> getGuestList();
 }

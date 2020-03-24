@@ -8,9 +8,9 @@ public interface IAttendanceService {
 
     void add(String name, String section, double price);
 
-    void delete(int index);
+    void delete(long index);
 
-    void changePrice(int index, double price);
+    void changePrice(long index, double price);
 
     List<Attendance> getAttendanceList();
 

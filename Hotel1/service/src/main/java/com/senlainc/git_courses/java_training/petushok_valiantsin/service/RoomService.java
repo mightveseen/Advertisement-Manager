@@ -7,118 +7,144 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.inj
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.RoomConfig;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotAvailableException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data.MaxResult;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.CreateQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.DeleteQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.ReadQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.UpdateQueryException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.Comparator;
+import javax.persistence.EntityManager;
+import java.util.Collections;
 import java.util.List;
 
 @DependencyClass
 @DependencyPrimary
 public class RoomService implements IRoomService {
 
-    private static final String ELEMENT_NOT_FOUND = "Room with index: %d dont exists.";
+    private static final Logger LOGGER = LogManager.getLogger(RoomService.class);
     @DependencyComponent
     private static RoomConfig roomConfig;
+    private final EntityManager entityManager = CustomEntityManager.getEntityManager();
     @DependencyComponent
     private IRoomDao roomDao;
-    @DependencyComponent
-    private ConnectionManager connectionManager;
 
     @Override
     public void add(int number, String classification, short roomNumber, short capacity, double price) {
-        if (roomDao.readByNumber(number) != null) {
-            throw new EntityNotAvailableException(String.format("Room with number: %d already exists.", number));
+        if (roomDao.readByNumber(number)) {
+            LOGGER.info("Room with number: {} already exists.", number);
+            return;
         }
-        roomDao.create(new Room(number, classification, roomNumber, capacity, price));
-        connectionManager.commit();
-    }
-
-    @Override
-    public void delete(int index) {
         try {
-            roomDao.delete(index);
-            connectionManager.commit();
-        } catch (ElementNotFoundException e) {
-            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
+            entityManager.getTransaction().begin();
+            roomDao.create(new Room(number, classification, roomNumber, capacity, price));
+            entityManager.getTransaction().commit();
+            LOGGER.info("Add room in database");
+        } catch (CreateQueryException e) {
+            entityManager.getTransaction().rollback();
+            LOGGER.warn("Error while creating room", e);
         }
     }
 
     @Override
-    public List<Room> getRoomList() {
-        return roomDao.readAll();
+    public void delete(long index) {
+        try {
+            entityManager.getTransaction().begin();
+            roomDao.delete(index);
+            entityManager.getTransaction().commit();
+            LOGGER.info("Delete room with index: {} from database", index);
+        } catch (DeleteQueryException e) {
+            entityManager.getTransaction().rollback();
+            LOGGER.warn("Error while deleting room", e);
+        }
+    }
+
+    @Override
+    public void changePrice(long index, double price) {
+        try {
+            final Room room = roomDao.read(index);
+            room.setPrice(price);
+            entityManager.getTransaction().begin();
+            roomDao.update(room);
+            entityManager.getTransaction().commit();
+            LOGGER.info("Change room price");
+        } catch (UpdateQueryException e) {
+            entityManager.getTransaction().rollback();
+            LOGGER.warn("Error while updating room. Update operation: change price.", e);
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Room with index {} don't exists.", index, e);
+        }
+    }
+
+    @Override
+    public void changeStatus(long index, String status) {
+        if (!roomConfig.getChangeStatus()) {
+            LOGGER.info("Property for change status is false");
+            return;
+        }
+        try {
+            final boolean transactionActivity = entityManager.getTransaction().isActive();
+            final Room room = roomDao.read(index);
+            room.setStatus(RoomStatus.valueOf(status));
+            if (!transactionActivity) {
+                entityManager.getTransaction().begin();
+            }
+            roomDao.update(room);
+            if (!transactionActivity) {
+                entityManager.getTransaction().commit();
+            }
+            LOGGER.info("Change room status");
+        } catch (UpdateQueryException e) {
+            entityManager.getTransaction().rollback();
+            LOGGER.warn("Error while updating room. Update operation: change status.", e);
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Room with index {} don't exists.", index, e);
+        }
+    }
+
+    @Override
+    public Long numFreeRoom() {
+        try {
+            final long numFree = roomDao.readFreeSize();
+            LOGGER.info("Show umber of free room");
+            return numFree;
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read room's. Read operation: number of free room's.", e);
+        }
+        return null;
     }
 
     @Override
     public List<Room> getRoomList(String parameter) {
-        if (parameter.equals("free")) {
-            return roomDao.readAllFree();
-        }
-        return roomDao.readAll();
-    }
-
-    @Override
-    public void changePrice(int index, double price) {
+        final int maxResult = MaxResult.ROOM.getMaxResult();
         try {
-            final Room room = roomDao.read(index);
-            room.setPrice(price);
-            roomDao.update(room);
-            connectionManager.commit();
-        } catch (ElementNotFoundException e) {
-            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
+            if (parameter.equals("free")) {
+                return roomDao.readAllFree(roomDao.readSize().intValue() - maxResult, maxResult);
+            }
+            return roomDao.readAll(roomDao.readSize().intValue() - maxResult, maxResult);
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read room's.", e);
         }
-    }
-
-    @Override
-    public void changeStatus(int index, String status) {
-        if (!roomConfig.getChangeStatus()) {
-            throw new EntityNotAvailableException("Property for change status is false");
-        }
-        try {
-            final Room room = roomDao.read(index);
-            room.setStatus(RoomStatus.valueOf(status));
-            roomDao.update(room);
-            connectionManager.commit();
-        } catch (ElementNotFoundException e) {
-            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
-        }
-    }
-
-    @Override
-    public long numFreeRoom() {
-        return roomDao.readFreeSize();
+        return Collections.emptyList();
     }
 
     @Override
     public List<Room> sort(String type, String parameter) {
-        final List<Room> myList = getRoomList(type);
-        switch (parameter) {
-            case "price":
-                sortByPrice(myList);
-                break;
-            case "classification":
-                sortByClassification(myList);
-                break;
-            case "room number":
-                sortByRoomNumber(myList);
-                break;
-            default:
-                break;
+        final int maxResult = MaxResult.ROOM.getMaxResult();
+        try {
+            if (parameter.equals("default")) {
+                return getRoomList(type);
+            }
+            if (type.equals("free")) {
+                return roomDao.readAllFree(roomDao.readSize().intValue() - maxResult, maxResult, parameter);
+            }
+            return roomDao.readAll(roomDao.readSize().intValue() - maxResult, maxResult, parameter);
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read room's.", e);
         }
-        return myList;
-    }
-
-    private void sortByPrice(List<Room> myList) {
-        myList.sort(Comparator.comparing(Room::getPrice));
-    }
-
-    private void sortByClassification(List<Room> myList) {
-        myList.sort(Comparator.comparing(Room::getClassification));
-    }
-
-    private void sortByRoomNumber(List<Room> myList) {
-        myList.sort(Comparator.comparing(Room::getRoomNumber));
+        return Collections.emptyList();
     }
 }

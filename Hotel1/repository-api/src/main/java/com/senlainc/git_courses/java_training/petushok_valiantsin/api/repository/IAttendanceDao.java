@@ -2,6 +2,6 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.api.repositor
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 
-public interface IAttendanceDao extends ICommonDao<Attendance, Integer> {
+public interface IAttendanceDao extends ICommonDao<Attendance, Long> {
 
 }

@@ -4,14 +4,10 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hot
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.IAction;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.WrongEnteredDataException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.Scanner;
 
 public class ShowAttendanceOrder implements IAction {
-
-    private static final Logger LOGGER = LogManager.getLogger(ShowAttendanceOrder.class);
 
     @Override
     public void execute() {
@@ -20,9 +16,8 @@ public class ShowAttendanceOrder implements IAction {
             final Scanner scanner = new Scanner(System.in);
             hotel.showOrder().forEach(System.out::println);
             System.out.print("Enter order index: ");
-            final int index = Integer.parseInt(scanner.nextLine());
+            final long index = Long.parseLong(scanner.nextLine());
             hotel.showOrderAttendance(index).forEach(System.out::println);
-            LOGGER.info("Show guest attendance");
         } catch (NumberFormatException e) {
             throw new WrongEnteredDataException("Wrong entered data in: " + e.getMessage(), e);
         }

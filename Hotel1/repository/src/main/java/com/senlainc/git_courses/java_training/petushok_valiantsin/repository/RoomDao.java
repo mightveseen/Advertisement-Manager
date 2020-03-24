@@ -1,162 +1,106 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.repository;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IRoomDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyClass;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyComponent;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QueryDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.enumeration.QueryType;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.DaoException;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.ReadQueryException;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import javax.persistence.PersistenceException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
-@DependencyClass
-@DependencyPrimary
-public class RoomDao implements IRoomDao {
-
-    private static final String ERROR = "Error during connection to Database. Check query.";
-    @DependencyComponent
-    private ConnectionManager connectionManager;
+public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
 
     @Override
-    public void create(Room room) {
-        final String query = QueryDao.ROOM.getQuery(QueryType.CREATE);
-        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
-            statement.setInt(1, room.getNumber());
-            statement.setString(2, room.getClassification());
-            statement.setShort(3, room.getRoomNumber());
-            statement.setShort(4, room.getCapacity());
-            statement.setString(5, room.getStatus().name());
-            statement.setDouble(6, room.getPrice());
-            statement.execute();
-        } catch (SQLException e) {
-            throw new DaoException(ERROR, e);
-        }
-    }
-
-    @Override
-    public void delete(Integer index) {
-        final String query = QueryDao.ROOM.getQuery(QueryType.DELETE);
-        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
-            statement.setInt(1, index);
-            statement.execute();
-        } catch (SQLException e) {
-            throw new DaoException(ERROR, e);
-        }
-    }
-
-    @Override
-    public void update(Room room) {
-        final String query = QueryDao.ROOM.getQuery(QueryType.UPDATE);
-        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
-            statement.setInt(1, room.getNumber());
-            statement.setString(2, room.getClassification());
-            statement.setShort(3, room.getRoomNumber());
-            statement.setShort(4, room.getCapacity());
-            statement.setString(5, room.getStatus().name());
-            statement.setDouble(6, room.getPrice());
-            statement.setInt(7, room.getId());
-            statement.execute();
-        } catch (SQLException e) {
-            throw new DaoException(ERROR, e);
-        }
-    }
-
-    @Override
-    public List<Room> readAll() {
-        final String query = QueryDao.ROOM.getQuery(QueryType.READ_ALL);
-        final List<Room> roomList = new ArrayList<>();
-        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
-            final ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                roomList.add(createFromQuery(result));
+    public List<Room> readAllFree(int fistElement, int maxResult) {
+        try {
+            if (fistElement < 0) {
+                fistElement = 0;
             }
-            result.close();
-        } catch (SQLException e) {
-            throw new DaoException(ERROR, e);
-        }
-        return roomList;
-    }
-
-    @Override
-    public List<Room> readAllFree() {
-        final String query = QueryDao.ROOM.getQuery(QueryType.READ_ALL_FREE);
-        final List<Room> roomList = new ArrayList<>();
-        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
-            final ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                roomList.add(createFromQuery(result));
-            }
-            result.close();
-        } catch (SQLException e) {
-            throw new DaoException(ERROR, e);
-        }
-        return roomList;
-    }
-
-    @Override
-    public Integer readFreeSize() {
-        final String query = QueryDao.ROOM.getQuery(QueryType.FREE_SIZE);
-        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
-            final ResultSet result = statement.executeQuery();
-            if (result.next()) {
-                final Integer size = result.getInt(1);
-                result.close();
-                return size;
-            }
-            throw new ElementNotFoundException();
-        } catch (SQLException e) {
-            throw new DaoException(ERROR, e);
+            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
+            final Root<Room> root = criteriaQuery.from(Room.class);
+            final Predicate predicate = criteriaBuilder.equal(root.get("status"), RoomStatus.FREE);
+            return entityManager.createQuery(criteriaQuery
+                    .select(root)
+                    .where(predicate))
+                    .setFirstResult(fistElement)
+                    .getResultList();
+        } catch (PersistenceException e) {
+            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
         }
     }
 
     @Override
-    public Room read(Integer index) {
-        final String query = QueryDao.ROOM.getQuery(QueryType.READ);
-        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
-            statement.setInt(1, index);
-            final ResultSet result = statement.executeQuery();
-            if (result.next()) {
-                final Room room = createFromQuery(result);
-                result.close();
-                return room;
+    public List<Room> readAllFree(int fistElement, int maxResult, String parameter) {
+        try {
+            if (fistElement < 0) {
+                fistElement = 0;
             }
-            throw new ElementNotFoundException();
-        } catch (SQLException e) {
-            throw new DaoException(ERROR, e);
+            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
+            final Root<Room> root = criteriaQuery.from(Room.class);
+            final Predicate predicate = criteriaBuilder.equal(root.get("status"), RoomStatus.FREE);
+            return entityManager.createQuery(criteriaQuery
+                    .select(root)
+                    .where(predicate)
+                    .orderBy(criteriaBuilder.asc(root.get(parameter))))
+                    .setFirstResult(fistElement)
+                    .getResultList();
+        } catch (PersistenceException e) {
+            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
         }
     }
 
     @Override
-    public Room readByNumber(Integer number) {
-        final String query = QueryDao.ROOM.getQuery(QueryType.READ_BY_NUMBER);
-        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(query)) {
-            statement.setInt(1, number);
-            final ResultSet result = statement.executeQuery();
-            if (result.next()) {
-                final Room room = createFromQuery(result);
-                result.close();
-                return room;
-            }
-            return null;
-        } catch (SQLException e) {
-            throw new DaoException(ERROR, e);
+    public Long readFreeSize() {
+        try {
+            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            final CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+            final Root<Room> root = criteriaQuery.from(Room.class);
+            final Predicate predicate = criteriaBuilder.equal(root.get("status"), RoomStatus.FREE);
+            return entityManager.createQuery(criteriaQuery
+                    .select(criteriaBuilder.count(root))
+                    .where(predicate))
+                    .getSingleResult();
+        } catch (PersistenceException e) {
+            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
         }
     }
 
-    private Room createFromQuery(ResultSet result) throws SQLException {
-        final Room room = new Room(result.getInt("number"), result.getString("classification"),
-                result.getShort("room_number"), result.getShort("capacity"),
-                RoomStatus.valueOf(result.getString("status")), result.getDouble("price"));
-        room.setId(result.getInt("id"));
-        return room;
+    @Override
+    public RoomStatus readStatus(long index) {
+        try {
+            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            final CriteriaQuery<RoomStatus> criteriaQuery = criteriaBuilder.createQuery(RoomStatus.class);
+            final Root<Room> root = criteriaQuery.from(Room.class);
+            final Predicate predicate = criteriaBuilder.equal(root.get("id"), index);
+            return entityManager.createQuery(criteriaQuery
+                    .select(root.get("status"))
+                    .where(predicate))
+                    .getSingleResult();
+        } catch (PersistenceException e) {
+            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
+        }
+    }
+
+    @Override
+    public boolean readByNumber(int number) {
+        try {
+            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
+            final Root<Room> root = criteriaQuery.from(Room.class);
+            final Predicate predicate = criteriaBuilder.equal(root.get("number"), number);
+            entityManager.createQuery(criteriaQuery
+                    .select(root)
+                    .where(predicate))
+                    .getSingleResult();
+            return true;
+        } catch (PersistenceException e) {
+            return false;
+        }
     }
 }

@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ConfigService {
@@ -38,36 +39,44 @@ public class ConfigService {
         for (Field field : annotatedFields) {
             final Config config = new Config(field);
             final Properties properties = ConfigReader.getInstance().readConfig(configPath + config.getConfigName());
-            final Object value = customConverter(field, properties.getProperty(config.getPropertyName()));
+            final Object value = customConverter(field.getType(), properties.getProperty(config.getPropertyName()));
             config.getField().setAccessible(true);
             config.getField().set(configClass, value);
             config.getField().setAccessible(false);
         }
     }
 
-    private Object customConverter(Field field, String variable) {
-        final String variableType = field.getType().getSimpleName().toLowerCase();
-        switch (variableType) {
+    private <T> Object customConverter(Class<T> clazz, String variable) {
+        final Function<String, Object> converter;
+        switch (clazz.getSimpleName().toLowerCase()) {
             case "byte":
-                return Byte.parseByte(variable);
+                converter = Byte::valueOf;
+                break;
             case "short":
-                return Short.parseShort(variable);
+                converter = Short::valueOf;
+                break;
             case "int":
             case "integer":
-                return Integer.parseInt(variable);
+                converter = Integer::valueOf;
+                break;
             case "long":
-                return Long.parseLong(variable);
+                converter = Long::valueOf;
+                break;
             case "float":
-                return Float.parseFloat(variable);
+                converter = Float::valueOf;
+                break;
             case "double":
-                return Double.parseDouble(variable);
+                converter = Double::valueOf;
+                break;
             case "boolean":
-                return Boolean.parseBoolean(variable);
+                converter = Boolean::valueOf;
+                break;
             case "char":
             case "character":
                 return variable.charAt(0);
             default:
                 return variable;
         }
+        return converter.apply(variable);
     }
 }

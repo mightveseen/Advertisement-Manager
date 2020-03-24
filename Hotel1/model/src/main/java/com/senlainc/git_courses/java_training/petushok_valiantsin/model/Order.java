@@ -2,23 +2,58 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+@Entity
+@Table(name = "Orders")
 public class Order implements Cloneable {
 
-    private final LocalDateTime orderDate;
-    private final Guest guest;
-    private final Room room;
-    private final LocalDate startDate;
-    private int id;
-    private List<Attendance> attendanceIndex = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id", nullable = false)
+    private Room room;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "guest_id", nullable = false)
+    private Guest guest;
+    @Column(name = "start_date")
+    private LocalDate startDate;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column(name = "order_date")
+    private LocalDateTime orderDate;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "OrderAttendances",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "attendance_id"))
+    private List<Attendance> attendances;
+    @Column(name = "end_date")
     private LocalDate endDate;
+    @Column
+    @Enumerated(value = EnumType.STRING)
     private OrderStatus status;
+    @Column
     private double price;
+
+    public Order() {
+
+    }
 
     public Order(Guest guest, Room room, LocalDate endDate, double price) {
         this.orderDate = LocalDateTime.now();
@@ -30,26 +65,11 @@ public class Order implements Cloneable {
         this.price = price;
     }
 
-    public Order(LocalDateTime orderDate, Guest guest, Room room, LocalDate startDate, LocalDate endDate, OrderStatus status, double price) {
-        this.orderDate = orderDate;
-        this.guest = guest;
-        this.room = room;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.status = status;
-        this.price = price;
-    }
-
-    @Override
-    public Order clone() throws CloneNotSupportedException {
-        return (Order) super.clone();
-    }
-
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(int index) {
+    public void setId(long index) {
         this.id = index;
     }
 
@@ -93,12 +113,38 @@ public class Order implements Cloneable {
         this.status = status;
     }
 
-    public List<Attendance> getAttendanceIndex() {
-        return this.attendanceIndex;
+    public List<Attendance> getAttendances() {
+        return this.attendances;
     }
 
-    public void setAttendanceIndex(List<Attendance> attendanceIndex) {
-        this.attendanceIndex = attendanceIndex;
+    public void setAttendances(List<Attendance> attendances) {
+        this.attendances = attendances;
+    }
+
+    @Override
+    public Order clone() throws CloneNotSupportedException {
+        return (Order) super.clone();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return id == order.id &&
+                Double.compare(order.price, price) == 0 &&
+                Objects.equals(room, order.room) &&
+                Objects.equals(guest, order.guest) &&
+                Objects.equals(startDate, order.startDate) &&
+                Objects.equals(orderDate, order.orderDate) &&
+                Objects.equals(attendances, order.attendances) &&
+                Objects.equals(endDate, order.endDate) &&
+                status == order.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(room, guest, startDate, id, orderDate, attendances, endDate, status, price);
     }
 
     public String toString() {
@@ -109,6 +155,6 @@ public class Order implements Cloneable {
                 "Start date: " + this.startDate + "\t" +
                 "End date: " + this.endDate + "\n" +
                 "Total amount: " + this.price + "\t" +
-                "Status: " + this.status.toString();
+                "Status: " + this.status;
     }
 }

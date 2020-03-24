@@ -9,19 +9,19 @@ import java.util.List;
 
 public interface IOrderService {
 
-    void add(int guestIndex, int roomIndex, LocalDate endDate);
+    void add(long guestIndex, long roomIndex, LocalDate endDate);
 
-    void delete(int index);
+    void delete(long index);
 
     List<Order> getOrderList();
 
-    List<Room> showGuestRoom(int index);
+    List<Room> showGuestRoom(long index);
 
     List<Order> sort(String parameter);
 
-    void addAttendance(int orderIndex, int attendanceIndex);
+    void addAttendance(long orderIndex, long attendanceIndex);
 
-    List<Attendance> showAttendance(int orderIndex);
+    List<Attendance> showAttendance(long orderIndex);
 
     List<Room> showAfterDate(LocalDate date);
 }

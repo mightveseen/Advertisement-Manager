@@ -6,72 +6,93 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.inj
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data.MaxResult;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.CreateQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.DeleteQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.ReadQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.UpdateQueryException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.Comparator;
+import javax.persistence.EntityManager;
+import java.util.Collections;
 import java.util.List;
 
 @DependencyClass
 @DependencyPrimary
 public class AttendanceService implements IAttendanceService {
 
-    private static final String ELEMENT_NOT_FOUND = "Attendance with index: %d don't exists.";
+    private static final Logger LOGGER = LogManager.getLogger(AttendanceService.class);
+    private final EntityManager entityManager = CustomEntityManager.getEntityManager();
     @DependencyComponent
     private IAttendanceDao attendanceDao;
-    @DependencyComponent
-    private ConnectionManager connectionManager;
 
     @Override
     public void add(String name, String section, double price) {
-        attendanceDao.create(new Attendance(name, section, price));
-        connectionManager.commit();
+        try {
+            entityManager.getTransaction().begin();
+            attendanceDao.create(new Attendance(name, section, price));
+            entityManager.getTransaction().commit();
+            LOGGER.info("Add attendance in database");
+        } catch (CreateQueryException e) {
+            entityManager.getTransaction().rollback();
+            LOGGER.warn("Error while creating attendance.", e);
+        }
     }
 
     @Override
-    public void delete(int index) {
-        attendanceDao.delete(index);
-        connectionManager.commit();
+    public void delete(long index) {
+        try {
+            entityManager.getTransaction().begin();
+            attendanceDao.delete(index);
+            entityManager.getTransaction().commit();
+            LOGGER.info("Delete attendance with index: {} from database", index);
+        } catch (DeleteQueryException e) {
+            entityManager.getTransaction().rollback();
+            LOGGER.warn("Error while deleting attendance.", e);
+        }
     }
 
     @Override
-    public void changePrice(int index, double price) {
+    public void changePrice(long index, double price) {
         try {
             final Attendance attendance = attendanceDao.read(index);
             attendance.setPrice(price);
+            entityManager.getTransaction().begin();
             attendanceDao.update(attendance);
-            connectionManager.commit();
-        } catch (ElementNotFoundException e) {
-            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
+            entityManager.getTransaction().commit();
+            LOGGER.info("Change attendance price");
+        } catch (UpdateQueryException e) {
+            entityManager.getTransaction().rollback();
+            LOGGER.warn("Error while updating attendance. Update operation: change price.", e);
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Attendance with index {} don't exists.", index, e);
         }
     }
 
     @Override
     public List<Attendance> getAttendanceList() {
-        return attendanceDao.readAll();
+        final int maxResult = MaxResult.ATTENDANCE.getMaxResult();
+        try {
+            return attendanceDao.readAll(attendanceDao.readSize().intValue() - maxResult, maxResult);
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read attendance's.", e);
+        }
+        return Collections.emptyList();
     }
 
     @Override
     public List<Attendance> sort(String parameter) {
-        final List<Attendance> myList = attendanceDao.readAll();
-        switch (parameter) {
-            case "section":
-                sortBySection(myList);
-                break;
-            case "price":
-                sortByPrice(myList);
-                break;
-            default:
-                break;
+        final int maxResult = MaxResult.ATTENDANCE.getMaxResult();
+        try {
+            if (parameter.equals("default")) {
+                return getAttendanceList();
+            }
+            return attendanceDao.readAll(attendanceDao.readSize().intValue() - maxResult, maxResult, parameter);
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read attendance's.", e);
         }
-        return myList;
-    }
-
-    private void sortBySection(List<Attendance> myList) {
-        myList.sort(Comparator.comparing(Attendance::getSection));
-    }
-
-    private void sortByPrice(List<Attendance> myList) {
-        myList.sort(Comparator.comparing(Attendance::getPrice));
+        return Collections.emptyList();
     }
 }

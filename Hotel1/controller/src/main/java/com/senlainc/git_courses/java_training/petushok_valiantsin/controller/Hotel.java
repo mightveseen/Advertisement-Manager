@@ -34,7 +34,7 @@ public class Hotel {
         return createStringList(attendanceService.getAttendanceList());
     }
 
-    public void changePriceAttendance(int index, double price) {
+    public void changePriceAttendance(long index, double price) {
         attendanceService.changePrice(index, price);
     }
 
@@ -45,11 +45,11 @@ public class Hotel {
         roomService.add(number, classification, roomNumber, capacity, price);
     }
 
-    public void changePriceRoom(int index, double price) {
+    public void changePriceRoom(long index, double price) {
         roomService.changePrice(index, price);
     }
 
-    public void changeStatusRoom(int index, String status) {
+    public void changeStatusRoom(long index, String status) {
         roomService.changeStatus(index, status);
     }
 
@@ -77,17 +77,17 @@ public class Hotel {
     }
 
     public List<String> showGuest() {
-        return createStringList(guestService.show());
+        return createStringList(guestService.getGuestList());
     }
 
     /**
      * Order
      */
-    public void addOrder(int guestIndex, int roomIndex, LocalDate endDate) {
+    public void addOrder(long guestIndex, long roomIndex, LocalDate endDate) {
         orderService.add(guestIndex, roomIndex, endDate);
     }
 
-    public void deleteOrder(int orderIndex) {
+    public void deleteOrder(long orderIndex) {
         orderService.delete(orderIndex);
     }
 
@@ -103,15 +103,15 @@ public class Hotel {
         return createStringList(orderService.showAfterDate(freeDate));
     }
 
-    public List<String> showGuestRoom(int index) {
+    public List<String> showGuestRoom(long index) {
         return createStringList(orderService.showGuestRoom(index));
     }
 
-    public List<String> showOrderAttendance(int index) {
+    public List<String> showOrderAttendance(long index) {
         return createStringList(orderService.showAttendance(index));
     }
 
-    public void addOrderAttendance(int orderIndex, int attendanceIndex) {
+    public void addOrderAttendance(long orderIndex, long attendanceIndex) {
         orderService.addAttendance(orderIndex, attendanceIndex);
     }
 

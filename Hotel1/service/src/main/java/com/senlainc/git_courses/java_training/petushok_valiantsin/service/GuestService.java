@@ -6,53 +6,82 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.inj
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyComponent;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.ConnectionManager;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.configuration.GuestConfig;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.MaxElementsException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data.MaxResult;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.CreateQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.DeleteQueryException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.ReadQueryException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 @DependencyClass
 @DependencyPrimary
 public class GuestService implements IGuestService {
 
-    private static final String ELEMENT_NOT_FOUND = "Guest with index: %d don't exists.";
+    private static final Logger LOGGER = LogManager.getLogger(GuestService.class);
     @DependencyComponent
     private static GuestConfig guestConfig;
+    private final EntityManager entityManager = CustomEntityManager.getEntityManager();
     @DependencyComponent
     private IGuestDao guestDao;
-    @DependencyComponent
-    private ConnectionManager connectionManager;
 
     @Override
     public void add(String firstName, String lastName, LocalDate birthday) {
-        int guestLimit = guestConfig.getGuestLimit();
+        final int guestLimit = guestConfig.getGuestLimit();
         if (guestLimit < guestDao.readSize()) {
-            throw new MaxElementsException(String.format("The number of guests exceeds the specified limit: %d guests", guestLimit));
+            LOGGER.info("The number of guest's exceeds the specified limit: {} guest's", guestLimit);
+            return;
         }
-        guestDao.create(new Guest(firstName, lastName, birthday));
-        connectionManager.commit();
+        try {
+            entityManager.getTransaction().begin();
+            guestDao.create(new Guest(firstName, lastName, birthday));
+            entityManager.getTransaction().commit();
+            LOGGER.info("Add guest in database");
+        } catch (CreateQueryException e) {
+            entityManager.getTransaction().rollback();
+            LOGGER.warn("Error while creating guest", e);
+        }
     }
 
     @Override
     public void delete(int index) {
         try {
-            guestDao.delete(index);
-            connectionManager.commit();
-        } catch (ElementNotFoundException e) {
-            throw new ElementNotFoundException(String.format(ELEMENT_NOT_FOUND, index), e);
+            entityManager.getTransaction().begin();
+            guestDao.delete((long) index);
+            entityManager.getTransaction().commit();
+            LOGGER.info("Delete guest with index: {} from database", index);
+        } catch (DeleteQueryException e) {
+            entityManager.getTransaction().rollback();
+            LOGGER.warn("Error while deleting guest.", e);
         }
     }
 
     @Override
-    public int num() {
-        return guestDao.readSize();
+    public Long num() {
+        try {
+            final Long num = guestDao.readSize();
+            LOGGER.info("Show number of guest");
+            return num;
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read guest's. Read operation: number of guest's", e);
+        }
+        return null;
     }
 
     @Override
-    public List<Guest> show() {
-        return guestDao.readAll();
+    public List<Guest> getGuestList() {
+        final int maxResult = MaxResult.GUEST.getMaxResult();
+        try {
+            return guestDao.readAll(guestDao.readSize().intValue() - maxResult, maxResult);
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Error while read all guest's.", e);
+        }
+        return Collections.emptyList();
     }
 }

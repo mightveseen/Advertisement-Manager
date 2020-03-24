@@ -1,13 +1,34 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.model;
 
-import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import java.util.Objects;
+import java.util.Set;
 
-public class Attendance implements Cloneable, Serializable {
+@Entity
+@Table(name = "Attendances")
+public class Attendance implements Cloneable {
 
-    private final String name;
-    private final String section;
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column
+    private String name;
+    @Column
+    private String section;
+    @Column
     private double price;
+    @ManyToMany(mappedBy = "attendances")
+    private Set<Order> order;
+
+    public Attendance() {
+
+    }
 
     public Attendance(String name, String section, double price) {
         this.name = name;
@@ -15,12 +36,7 @@ public class Attendance implements Cloneable, Serializable {
         this.price = price;
     }
 
-    @Override
-    public Attendance clone() throws CloneNotSupportedException {
-        return (Attendance) super.clone();
-    }
-
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
@@ -42,6 +58,27 @@ public class Attendance implements Cloneable, Serializable {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    @Override
+    public Attendance clone() throws CloneNotSupportedException {
+        return (Attendance) super.clone();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Attendance that = (Attendance) o;
+        return id == that.id &&
+                Double.compare(that.price, price) == 0 &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(section, that.section);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, section, price);
     }
 
     @Override

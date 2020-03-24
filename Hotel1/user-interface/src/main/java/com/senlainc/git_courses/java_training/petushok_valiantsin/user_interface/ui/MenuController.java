@@ -1,10 +1,7 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.DaoException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotFoundException;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotAvailableException;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.EntityNotFoundException;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.MaxElementsException;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ExitException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.WrongEnteredDataException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,14 +27,19 @@ public class MenuController {
             System.out.print("Choose operation: ");
             final Integer index = Integer.parseInt(new Scanner(System.in).next());
             menuNavigator.navigate(index);
-        } catch (EntityNotFoundException | MaxElementsException | ElementNotFoundException | EntityNotAvailableException | WrongEnteredDataException | InterruptedException | DaoException e) {
+        } catch (ElementNotFoundException | WrongEnteredDataException | InterruptedException | NumberFormatException e) {
             LOGGER.warn(e.getMessage(), e);
         }
     }
 
     public void run() {
         while (true) {
-            showMenu();
+            try {
+                showMenu();
+            } catch (ExitException e) {
+                LOGGER.info(e.getMessage());
+                break;
+            }
         }
     }
 }
