@@ -23,6 +23,7 @@ public final class CustomEntityManager {
 
     public static void closeEntityManagerFactory() {
         if (entityManagerFactory.isOpen()) {
+            entityManager.close();
             entityManagerFactory.close();
             LOGGER.info("Close Database connection");
         }

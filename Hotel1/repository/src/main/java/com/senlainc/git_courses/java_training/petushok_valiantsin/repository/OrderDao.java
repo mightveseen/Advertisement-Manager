@@ -23,8 +23,8 @@ public class OrderDao extends AbstractDao<Order, Long> implements IOrderDao {
                 fistElement = 0;
             }
             final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-            final CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(Order.class);
-            final Root<Order> root = criteriaQuery.from(Order.class);
+            final CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(clazz);
+            final Root<Order> root = criteriaQuery.from(clazz);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
                     .orderBy(criteriaBuilder.asc(root.get(sortObject).get(sortParameter))))
