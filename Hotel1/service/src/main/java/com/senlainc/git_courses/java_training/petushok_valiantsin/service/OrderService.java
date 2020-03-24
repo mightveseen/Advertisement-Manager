@@ -106,7 +106,8 @@ public class OrderService implements IOrderService {
     public List<Room> showAfterDate(LocalDate date) {
         final int maxResult = MaxResult.ROOM.getMaxResult();
         try {
-            final List<Room> rooms = roomDao.readAllFree(roomDao.readSize().intValue() - maxResult, maxResult);
+            final List<Room> rooms = roomDao.readAllFree(roomDao.readSize().intValue() - maxResult,
+                    maxResult);
             rooms.addAll(orderDao.readAfterDate(date));
             LOGGER.info("Show room's will be available after: {}", date);
             return rooms;
@@ -149,8 +150,8 @@ public class OrderService implements IOrderService {
             entityManager.getTransaction().rollback();
             LOGGER.warn("Error while updating attendance. Update operation: add attendance to order.", e);
         } catch (ReadQueryException e) {
-            LOGGER.warn(new MessageFormatMessage("Order with index {0} or Attendance with index: {1} don't exists.",
-                    orderIndex, attendanceIndex), e);
+            LOGGER.warn(new MessageFormatMessage("Order with index {0} or Attendance with index: " +
+                    "{1} don't exists.", orderIndex, attendanceIndex), e);
         }
     }
 
@@ -171,6 +172,11 @@ public class OrderService implements IOrderService {
         try {
             if (parameter.equals("default")) {
                 return getOrderList();
+            }
+            if (parameter.contains("/")) {
+                final String[] parameterParse = parameter.split("/", 2);
+                return orderDao.readAll(orderDao.readSize().intValue() - maxResult, maxResult,
+                        parameterParse[0], parameterParse[1]);
             }
             return orderDao.readAll(orderDao.readSize().intValue() - maxResult, maxResult, parameter);
         } catch (ReadQueryException e) {

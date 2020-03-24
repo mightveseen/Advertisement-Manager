@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface IOrderDao extends ICommonDao<Order, Long> {
 
+    List<Order> readAll(int fistElement, int maxResult, String sortObject, String sortParameter);
+
     List<Room> readLastRoom(Long index, Integer limit);
 
     List<Room> readAfterDate(LocalDate date);

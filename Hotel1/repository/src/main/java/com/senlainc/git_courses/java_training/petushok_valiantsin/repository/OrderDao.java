@@ -17,6 +17,26 @@ import java.util.List;
 public class OrderDao extends AbstractDao<Order, Long> implements IOrderDao {
 
     @Override
+    public List<Order> readAll(int fistElement, int maxResult, String sortObject, String sortParameter) {
+        try {
+            if (fistElement < 0) {
+                fistElement = 0;
+            }
+            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            final CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(Order.class);
+            final Root<Order> root = criteriaQuery.from(Order.class);
+            return entityManager.createQuery(criteriaQuery
+                    .select(root)
+                    .orderBy(criteriaBuilder.asc(root.get(sortObject).get(sortParameter))))
+                    .setFirstResult(fistElement)
+                    .setMaxResults(maxResult)
+                    .getResultList();
+        } catch (PersistenceException e) {
+            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
+        }
+    }
+
+    @Override
     public List<Room> readLastRoom(Long index, Integer limit) {
         try {
             final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();

@@ -123,9 +123,8 @@ public class RoomService implements IRoomService {
         try {
             if (parameter.equals("free")) {
                 return roomDao.readAllFree(roomDao.readSize().intValue() - maxResult, maxResult);
-            } else {
-                return roomDao.readAll(roomDao.readSize().intValue() - maxResult, maxResult);
             }
+            return roomDao.readAll(roomDao.readSize().intValue() - maxResult, maxResult);
         } catch (ReadQueryException e) {
             LOGGER.warn("Error while read room's.", e);
         }
