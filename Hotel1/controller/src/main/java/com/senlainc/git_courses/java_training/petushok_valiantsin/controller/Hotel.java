@@ -4,24 +4,28 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IA
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyClass;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyComponent;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@DependencyClass
+@Controller
 public class Hotel {
 
-    @DependencyComponent
-    private IGuestService guestService;
-    @DependencyComponent
-    private IRoomService roomService;
-    @DependencyComponent
-    private IAttendanceService attendanceService;
-    @DependencyComponent
-    private IOrderService orderService;
+    private final IAttendanceService attendanceService;
+    private final IGuestService guestService;
+    private final IRoomService roomService;
+    private final IOrderService orderService;
+
+    @Autowired
+    public Hotel(IAttendanceService attendanceService, IGuestService guestService, IRoomService roomService, IOrderService orderService) {
+        this.attendanceService = attendanceService;
+        this.guestService = guestService;
+        this.roomService = roomService;
+        this.orderService = orderService;
+    }
 
     /**
      * Attendance

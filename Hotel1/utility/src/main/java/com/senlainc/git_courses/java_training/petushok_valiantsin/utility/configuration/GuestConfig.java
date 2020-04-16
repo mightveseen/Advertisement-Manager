@@ -11,11 +11,15 @@ public final class GuestConfig {
     @ConfigProperty(configName = "Guest")
     private static int GUEST_LIMIT_VALUE;
 
-    private GuestConfig() {
+    static {
         ConfigController.getInstance().setConfig(GuestConfig.class);
     }
 
-    public int getGuestLimit() {
+    private GuestConfig() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static int getGuestLimit() {
         if (String.valueOf(GUEST_LIMIT_VALUE).equals("null") || GUEST_LIMIT_VALUE == 0) {
             return GUEST_LIMIT_BASIC_VALUE;
         }

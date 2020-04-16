@@ -11,11 +11,15 @@ public final class RoomConfig {
     @ConfigProperty(configName = "Room")
     private static boolean CHANGE_STATUS_VALUE;
 
-    private RoomConfig() {
+    static {
         ConfigController.getInstance().setConfig(RoomConfig.class);
     }
 
-    public boolean getChangeStatus() {
+    private RoomConfig() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static boolean getChangeStatus() {
         if (String.valueOf(CHANGE_STATUS_VALUE).equals("true") || String.valueOf(CHANGE_STATUS_VALUE).equals("false")) {
             return CHANGE_STATUS_VALUE;
         }
