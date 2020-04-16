@@ -28,7 +28,7 @@ public class AttendanceService implements IAttendanceService {
     @Autowired
     public AttendanceService(IAttendanceDao attendanceDao) {
         this.attendanceDao = attendanceDao;
-        entityManager = CustomEntityManager.getEntityManager();
+        this.entityManager = CustomEntityManager.getEntityManager();
     }
 
     @Override

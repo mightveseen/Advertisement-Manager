@@ -33,7 +33,7 @@ import java.util.List;
 public class OrderService implements IOrderService {
 
     private static final Logger LOGGER = LogManager.getLogger(OrderService.class);
-    private final EntityManager entityManager = CustomEntityManager.getEntityManager();
+    private final EntityManager entityManager;
     private final IRoomDao roomDao;
     private final IGuestDao guestDao;
     private final IAttendanceDao attendanceDao;
@@ -47,6 +47,7 @@ public class OrderService implements IOrderService {
         this.attendanceDao = attendanceDao;
         this.orderDao = orderDao;
         this.roomService = roomService;
+        this.entityManager = CustomEntityManager.getEntityManager();
     }
 
     @Override

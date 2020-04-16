@@ -23,12 +23,13 @@ import java.util.List;
 public class GuestService implements IGuestService {
 
     private static final Logger LOGGER = LogManager.getLogger(GuestService.class);
-    private final EntityManager entityManager = CustomEntityManager.getEntityManager();
+    private final EntityManager entityManager;
     private final IGuestDao guestDao;
 
     @Autowired
     public GuestService(IGuestDao guestDao) {
         this.guestDao = guestDao;
+        this.entityManager = CustomEntityManager.getEntityManager();
     }
 
     @Override

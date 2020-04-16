@@ -1,8 +1,8 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.room;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.controller.Hotel;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.DependencyController;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.user_interface.ui.IAction;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.di.ApplicationContextHolder;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.WrongEnteredDataException;
 
 import java.time.LocalDate;
@@ -16,7 +16,7 @@ public class ShowDateRoom implements IAction {
     public void execute() {
         Scanner scanner = new Scanner(System.in);
         try {
-            final Hotel hotel = (Hotel) DependencyController.getInstance().getClazz(Hotel.class);
+            final Hotel hotel = (Hotel) ApplicationContextHolder.getBean(Hotel.class);
             System.out.print("Enter date(Format: YYYY-MM-DD): ");
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             final LocalDate date = LocalDate.parse(scanner.nextLine(), formatter);
