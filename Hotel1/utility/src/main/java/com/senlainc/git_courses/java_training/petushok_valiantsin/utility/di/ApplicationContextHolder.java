@@ -3,7 +3,7 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.di;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-public class ApplicationContextHolder {
+public final class ApplicationContextHolder {
 
     private static ApplicationContext applicationContext;
 
@@ -13,11 +13,11 @@ public class ApplicationContextHolder {
 
     public static void loadConfig() {
         if (applicationContext == null) {
-            applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);
+            applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
         }
     }
 
-    public static Object getBean(Class<?> clazz) {
+    public static <T> T getBean(Class<T> clazz) {
         return applicationContext.getBean(clazz);
     }
 }
