@@ -12,7 +12,7 @@ public class ChangePriceAttendance implements IAction {
     @Override
     public void execute() {
         try {
-            final Hotel hotel = (Hotel) ApplicationContextHolder.getBean(Hotel.class);
+            final Hotel hotel = ApplicationContextHolder.getBean(Hotel.class);
             final Scanner scanner = new Scanner(System.in);
             hotel.showAttendance().forEach(System.out::println);
             System.out.print("Enter attendance index: ");

@@ -19,7 +19,7 @@ public class ShowRoom implements IAction {
 
     @Override
     public void execute() {
-        final Hotel hotel = (Hotel) ApplicationContextHolder.getBean(Hotel.class);
+        final Hotel hotel = ApplicationContextHolder.getBean(Hotel.class);
         hotel.sortRoom(type, parameter).forEach(System.out::println);
         LOGGER.info("Show room list sorted by: {}", parameter);
     }

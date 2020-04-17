@@ -12,7 +12,7 @@ public class AddAttendance implements IAction {
     @Override
     public void execute() {
         try {
-            final Hotel hotel = (Hotel) ApplicationContextHolder.getBean(Hotel.class);
+            final Hotel hotel = ApplicationContextHolder.getBean(Hotel.class);
             final Scanner scanner = new Scanner(System.in);
             System.out.print("Enter attendance name: ");
             final String name = scanner.nextLine();

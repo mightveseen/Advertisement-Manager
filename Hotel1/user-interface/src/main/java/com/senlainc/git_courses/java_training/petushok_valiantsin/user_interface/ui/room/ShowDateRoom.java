@@ -16,7 +16,7 @@ public class ShowDateRoom implements IAction {
     public void execute() {
         Scanner scanner = new Scanner(System.in);
         try {
-            final Hotel hotel = (Hotel) ApplicationContextHolder.getBean(Hotel.class);
+            final Hotel hotel = ApplicationContextHolder.getBean(Hotel.class);
             System.out.print("Enter date(Format: YYYY-MM-DD): ");
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             final LocalDate date = LocalDate.parse(scanner.nextLine(), formatter);

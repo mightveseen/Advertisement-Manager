@@ -12,7 +12,7 @@ public class AddRoom implements IAction {
     @Override
     public void execute() {
         try {
-            final Hotel hotel = (Hotel) ApplicationContextHolder.getBean(Hotel.class);
+            final Hotel hotel = ApplicationContextHolder.getBean(Hotel.class);
             final Scanner scanner = new Scanner(System.in);
             System.out.print("Enter number: ");
             final int number = Integer.parseInt(scanner.nextLine());

@@ -9,7 +9,7 @@ public class ShowNumberFreeRoom implements IAction {
 
     @Override
     public void execute() {
-        final Hotel hotel = (Hotel) ApplicationContextHolder.getBean(Hotel.class);
+        final Hotel hotel = ApplicationContextHolder.getBean(Hotel.class);
         System.out.println(hotel.numFreeRoom());
     }
 }
