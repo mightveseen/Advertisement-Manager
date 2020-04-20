@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class RoomService implements IRoomService {
 
     private static final Logger LOGGER = LogManager.getLogger(RoomService.class);
     private final IRoomDao roomDao;
-    @PersistenceContext(unitName = "persistence", type = PersistenceContextType.EXTENDED)
+    @PersistenceContext(unitName = "persistence")
     private EntityManager entityManager;
     @Value("${ROOM_CONFIG.CHANGE_STATUS_VALUE:true}")
     private boolean changeStatusProperty;
