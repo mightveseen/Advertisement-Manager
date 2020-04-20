@@ -6,9 +6,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IRoomDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyClass;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyComponent;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
@@ -24,28 +21,34 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.except
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.message.MessageFormatMessage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
-@DependencyClass
-@DependencyPrimary
+@Service
 public class OrderService implements IOrderService {
 
     private static final Logger LOGGER = LogManager.getLogger(OrderService.class);
-    private final EntityManager entityManager = CustomEntityManager.getEntityManager();
-    @DependencyComponent
-    private IRoomDao roomDao;
-    @DependencyComponent
-    private IGuestDao guestDao;
-    @DependencyComponent
-    private IAttendanceDao attendanceDao;
-    @DependencyComponent
-    private IOrderDao orderDao;
-    @DependencyComponent
-    private IRoomService roomService;
+    private final EntityManager entityManager;
+    private final IRoomDao roomDao;
+    private final IGuestDao guestDao;
+    private final IAttendanceDao attendanceDao;
+    private final IOrderDao orderDao;
+    private final IRoomService roomService;
+
+    @Autowired
+    public OrderService(IRoomDao roomDao, IGuestDao guestDao, IAttendanceDao attendanceDao, IOrderDao orderDao, IRoomService roomService) {
+        this.roomDao = roomDao;
+        this.guestDao = guestDao;
+        this.attendanceDao = attendanceDao;
+        this.orderDao = orderDao;
+        this.roomService = roomService;
+        this.entityManager = CustomEntityManager.getEntityManager();
+    }
 
     @Override
     public void add(long guestIndex, long roomIndex, LocalDate endDate) {

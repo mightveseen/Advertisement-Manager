@@ -2,9 +2,6 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IAttendanceDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IAttendanceService;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyClass;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyComponent;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.dependency.injection.annotation.DependencyPrimary;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data.MaxResult;
@@ -14,19 +11,25 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.except
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.UpdateQueryException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
 
-@DependencyClass
-@DependencyPrimary
+@Service
 public class AttendanceService implements IAttendanceService {
 
     private static final Logger LOGGER = LogManager.getLogger(AttendanceService.class);
-    private final EntityManager entityManager = CustomEntityManager.getEntityManager();
-    @DependencyComponent
-    private IAttendanceDao attendanceDao;
+    private final EntityManager entityManager;
+    private final IAttendanceDao attendanceDao;
+
+    @Autowired
+    public AttendanceService(IAttendanceDao attendanceDao) {
+        this.attendanceDao = attendanceDao;
+        this.entityManager = CustomEntityManager.getEntityManager();
+    }
 
     @Override
     public void add(String name, String section, double price) {

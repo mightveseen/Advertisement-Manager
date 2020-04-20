@@ -16,7 +16,6 @@
         <module>controller</module>
         <module>utility</module>
         <module>user-interface</module>
-        <module>dependency-injection</module>
     </modules>
 
     <properties>
