@@ -3,7 +3,6 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IGuestDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data.MaxResult;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.CreateQueryException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.DeleteQueryException;
@@ -16,6 +15,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -25,15 +25,15 @@ import java.util.List;
 public class GuestService implements IGuestService {
 
     private static final Logger LOGGER = LogManager.getLogger(GuestService.class);
-    private final EntityManager entityManager;
     private final IGuestDao guestDao;
+    @PersistenceContext(unitName = "persistence")
+    private EntityManager entityManager;
     @Value(value = "${GUEST_CONFIG.GUEST_LIMIT_VALUE:100}")
     private int guestLimitProperty;
 
     @Autowired
     public GuestService(IGuestDao guestDao) {
         this.guestDao = guestDao;
-        this.entityManager = CustomEntityManager.getEntityManager();
     }
 
     @Override

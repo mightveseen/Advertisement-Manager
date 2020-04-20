@@ -12,7 +12,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.OrderStatus;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data.MaxResult;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.CreateQueryException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.DeleteQueryException;
@@ -25,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -33,12 +33,13 @@ import java.util.List;
 public class OrderService implements IOrderService {
 
     private static final Logger LOGGER = LogManager.getLogger(OrderService.class);
-    private final EntityManager entityManager;
     private final IRoomDao roomDao;
     private final IGuestDao guestDao;
     private final IAttendanceDao attendanceDao;
     private final IOrderDao orderDao;
     private final IRoomService roomService;
+    @PersistenceContext(unitName = "persistence")
+    private EntityManager entityManager;
 
     @Autowired
     public OrderService(IRoomDao roomDao, IGuestDao guestDao, IAttendanceDao attendanceDao, IOrderDao orderDao, IRoomService roomService) {
@@ -47,7 +48,6 @@ public class OrderService implements IOrderService {
         this.attendanceDao = attendanceDao;
         this.orderDao = orderDao;
         this.roomService = roomService;
-        this.entityManager = CustomEntityManager.getEntityManager();
     }
 
     @Override

@@ -1,13 +1,13 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.repository;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.ICommonDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.CreateQueryException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.DeleteQueryException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.ReadQueryException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.UpdateQueryException;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
@@ -21,12 +21,12 @@ import java.util.List;
 public abstract class AbstractDao<T, K extends Serializable> implements ICommonDao<T, K> {
 
     protected static final String ERROR = "Error during connection to Database with entity: ";
-    protected final EntityManager entityManager;
     protected final Class<T> clazz;
+    @PersistenceContext(unitName = "persistence")
+    protected EntityManager entityManager;
 
     public AbstractDao() {
         this.clazz = ((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
-        this.entityManager = CustomEntityManager.getEntityManager();
     }
 
     @Override

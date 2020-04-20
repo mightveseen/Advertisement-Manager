@@ -4,7 +4,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data.MaxResult;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.CreateQueryException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.DeleteQueryException;
@@ -16,8 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,30 +28,28 @@ import java.util.List;
 public class RoomService implements IRoomService {
 
     private static final Logger LOGGER = LogManager.getLogger(RoomService.class);
-    private final EntityManager entityManager;
     private final IRoomDao roomDao;
+    @PersistenceContext(unitName = "persistence", type = PersistenceContextType.EXTENDED)
+    private EntityManager entityManager;
     @Value("${ROOM_CONFIG.CHANGE_STATUS_VALUE:true}")
     private boolean changeStatusProperty;
 
     @Autowired
     public RoomService(IRoomDao roomDao) {
         this.roomDao = roomDao;
-        this.entityManager = CustomEntityManager.getEntityManager();
     }
 
     @Override
+    @Transactional
     public void add(int number, String classification, short roomNumber, short capacity, double price) {
         if (roomDao.readByNumber(number)) {
             LOGGER.info("Room with number: {} already exists.", number);
             return;
         }
         try {
-            entityManager.getTransaction().begin();
             roomDao.create(new Room(number, classification, roomNumber, capacity, price));
-            entityManager.getTransaction().commit();
             LOGGER.info("Add room in database");
         } catch (CreateQueryException e) {
-            entityManager.getTransaction().rollback();
             LOGGER.warn("Error while creating room", e);
         }
     }

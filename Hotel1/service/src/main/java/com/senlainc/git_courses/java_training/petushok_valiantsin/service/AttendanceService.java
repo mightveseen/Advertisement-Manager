@@ -3,7 +3,6 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IAttendanceDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IAttendanceService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.base_conection.CustomEntityManager;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data.MaxResult;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.CreateQueryException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.DeleteQueryException;
@@ -15,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,13 +22,13 @@ import java.util.List;
 public class AttendanceService implements IAttendanceService {
 
     private static final Logger LOGGER = LogManager.getLogger(AttendanceService.class);
-    private final EntityManager entityManager;
     private final IAttendanceDao attendanceDao;
+    @PersistenceContext(unitName = "persistence")
+    private EntityManager entityManager;
 
     @Autowired
     public AttendanceService(IAttendanceDao attendanceDao) {
         this.attendanceDao = attendanceDao;
-        this.entityManager = CustomEntityManager.getEntityManager();
     }
 
     @Override
