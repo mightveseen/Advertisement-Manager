@@ -25,6 +25,9 @@ import java.util.Objects;
 @Table(name = "Orders")
 public class Order implements Cloneable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
@@ -33,9 +36,6 @@ public class Order implements Cloneable {
     private Guest guest;
     @Column(name = "start_date")
     private LocalDate startDate;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
     @Column(name = "order_date")
     private LocalDateTime orderDate;
     @ManyToMany(fetch = FetchType.LAZY)
@@ -65,14 +65,6 @@ public class Order implements Cloneable {
         this.price = price;
     }
 
-    public long getId() {
-        return this.id;
-    }
-
-    public void setId(long index) {
-        this.id = index;
-    }
-
     public Guest getGuest() {
         return this.guest;
     }
@@ -87,18 +79,6 @@ public class Order implements Cloneable {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public LocalDateTime getOrderDate() {
-        return this.orderDate;
-    }
-
-    public LocalDate getStartDate() {
-        return this.startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return this.endDate;
     }
 
     public void setEndDate(LocalDate endDate) {

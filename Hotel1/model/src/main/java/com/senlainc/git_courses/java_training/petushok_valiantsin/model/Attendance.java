@@ -5,10 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "Attendances")
@@ -23,8 +21,6 @@ public class Attendance implements Cloneable {
     private String section;
     @Column
     private double price;
-    @ManyToMany(mappedBy = "attendances")
-    private Set<Order> order;
 
     public Attendance() {
 
@@ -36,20 +32,8 @@ public class Attendance implements Cloneable {
         this.price = price;
     }
 
-    public long getId() {
-        return this.id;
-    }
-
-    public void setId(int index) {
-        this.id = index;
-    }
-
     public String getName() {
         return this.name;
-    }
-
-    public String getSection() {
-        return this.section;
     }
 
     public double getPrice() {
