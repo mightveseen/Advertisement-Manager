@@ -8,6 +8,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.except
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
@@ -22,11 +23,11 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
 
     protected static final String ERROR = "Error during connection to Database with entity: ";
     protected final Class<T> clazz;
-    @PersistenceContext(unitName = "persistence")
+    @PersistenceContext(unitName = "persistence", type = PersistenceContextType.EXTENDED)
     protected EntityManager entityManager;
 
     public AbstractDao() {
-        this.clazz = ((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
+        this.clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
     @Override

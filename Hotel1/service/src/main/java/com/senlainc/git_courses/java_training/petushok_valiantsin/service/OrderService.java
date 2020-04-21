@@ -22,9 +22,8 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.message.MessageFormatMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -38,8 +37,6 @@ public class OrderService implements IOrderService {
     private final IAttendanceDao attendanceDao;
     private final IOrderDao orderDao;
     private final IRoomService roomService;
-    @PersistenceContext(unitName = "persistence")
-    private EntityManager entityManager;
 
     @Autowired
     public OrderService(IRoomDao roomDao, IGuestDao guestDao, IAttendanceDao attendanceDao, IOrderDao orderDao, IRoomService roomService) {
@@ -51,6 +48,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    @Transactional
     public void add(long guestIndex, long roomIndex, LocalDate endDate) {
         try {
             final RoomStatus roomStatus = roomDao.readStatus(roomIndex);
@@ -60,13 +58,10 @@ public class OrderService implements IOrderService {
             }
             final Room room = roomDao.read(roomIndex);
             final Guest guest = guestDao.read(guestIndex);
-            entityManager.getTransaction().begin();
             orderDao.create(new Order(guest, room, endDate, room.getPrice()));
             roomService.changeStatus(roomIndex, RoomStatus.RENTED.name());
-            entityManager.getTransaction().commit();
             LOGGER.info("Add order in database");
         } catch (CreateQueryException e) {
-            entityManager.getTransaction().rollback();
             LOGGER.warn("Error while creating order.", e);
         } catch (ReadQueryException e) {
             LOGGER.warn(new MessageFormatMessage("Room with index {0} or Guest with index: {1} don't exists.",
@@ -75,18 +70,16 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    @Transactional
     public void delete(long index) {
         try {
             final Order order = orderDao.read(index);
             order.setStatus(OrderStatus.DISABLED);
             order.setEndDate(LocalDate.now());
-            entityManager.getTransaction().begin();
             orderDao.update(order);
             roomService.changeStatus(order.getRoom().getId(), RoomStatus.FREE.name());
-            entityManager.getTransaction().commit();
             LOGGER.info("Delete order from database");
         } catch (DeleteQueryException e) {
-            entityManager.getTransaction().rollback();
             LOGGER.warn("Error while deleting order.", e);
         } catch (ReadQueryException e) {
             LOGGER.warn("Order with index {} don't exists.", index, e);
@@ -137,6 +130,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    @Transactional
     public void addAttendance(long orderIndex, long attendanceIndex) {
         try {
             final Order order = orderDao.read(orderIndex);
@@ -145,12 +139,9 @@ public class OrderService implements IOrderService {
             attendances.add(attendance);
             order.setAttendances(attendances);
             order.setPrice(order.getPrice() + attendance.getPrice());
-            entityManager.getTransaction().begin();
             orderDao.update(order);
-            entityManager.getTransaction().commit();
             LOGGER.info("Add attendance to order");
         } catch (UpdateQueryException e) {
-            entityManager.getTransaction().rollback();
             LOGGER.warn("Error while updating attendance. Update operation: add attendance to order.", e);
         } catch (ReadQueryException e) {
             LOGGER.warn(new MessageFormatMessage("Order with index {0} or Attendance with index: " +

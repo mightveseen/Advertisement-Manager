@@ -13,9 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -26,8 +25,6 @@ public class GuestService implements IGuestService {
 
     private static final Logger LOGGER = LogManager.getLogger(GuestService.class);
     private final IGuestDao guestDao;
-    @PersistenceContext(unitName = "persistence")
-    private EntityManager entityManager;
     @Value(value = "${GUEST_CONFIG.GUEST_LIMIT_VALUE:100}")
     private int guestLimitProperty;
 
@@ -37,15 +34,13 @@ public class GuestService implements IGuestService {
     }
 
     @Override
+    @Transactional
     public void add(String firstName, String lastName, LocalDate birthday) {
         if (guestLimitProperty > guestDao.readSize()) {
             try {
-                entityManager.getTransaction().begin();
                 guestDao.create(new Guest(firstName, lastName, birthday));
-                entityManager.getTransaction().commit();
                 LOGGER.info("Add guest in database");
             } catch (CreateQueryException e) {
-                entityManager.getTransaction().rollback();
                 LOGGER.warn("Error while creating guest", e);
             }
         } else {
@@ -54,14 +49,12 @@ public class GuestService implements IGuestService {
     }
 
     @Override
+    @Transactional
     public void delete(int index) {
         try {
-            entityManager.getTransaction().begin();
             guestDao.delete((long) index);
-            entityManager.getTransaction().commit();
             LOGGER.info("Delete guest with index: {} from database", index);
         } catch (DeleteQueryException e) {
-            entityManager.getTransaction().rollback();
             LOGGER.warn("Error while deleting guest.", e);
         }
     }

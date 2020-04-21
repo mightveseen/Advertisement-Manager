@@ -17,8 +17,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,8 +26,6 @@ public class RoomService implements IRoomService {
 
     private static final Logger LOGGER = LogManager.getLogger(RoomService.class);
     private final IRoomDao roomDao;
-    @PersistenceContext(unitName = "persistence")
-    private EntityManager entityManager;
     @Value("${ROOM_CONFIG.CHANGE_STATUS_VALUE:true}")
     private boolean changeStatusProperty;
 
@@ -54,29 +50,25 @@ public class RoomService implements IRoomService {
     }
 
     @Override
+    @Transactional
     public void delete(long index) {
         try {
-            entityManager.getTransaction().begin();
             roomDao.delete(index);
-            entityManager.getTransaction().commit();
             LOGGER.info("Delete room with index: {} from database", index);
         } catch (DeleteQueryException e) {
-            entityManager.getTransaction().rollback();
             LOGGER.warn("Error while deleting room", e);
         }
     }
 
     @Override
+    @Transactional
     public void changePrice(long index, double price) {
         try {
             final Room room = roomDao.read(index);
             room.setPrice(price);
-            entityManager.getTransaction().begin();
             roomDao.update(room);
-            entityManager.getTransaction().commit();
             LOGGER.info("Change room price");
         } catch (UpdateQueryException e) {
-            entityManager.getTransaction().rollback();
             LOGGER.warn("Error while updating room. Update operation: change price.", e);
         } catch (ReadQueryException e) {
             LOGGER.warn("Room with index {} don't exists.", index, e);
@@ -84,22 +76,15 @@ public class RoomService implements IRoomService {
     }
 
     @Override
+    @Transactional
     public void changeStatus(long index, String status) {
         if (changeStatusProperty) {
             try {
-                final boolean transactionActivity = entityManager.getTransaction().isActive();
                 final Room room = roomDao.read(index);
                 room.setStatus(RoomStatus.valueOf(status));
-                if (!transactionActivity) {
-                    entityManager.getTransaction().begin();
-                }
                 roomDao.update(room);
-                if (!transactionActivity) {
-                    entityManager.getTransaction().commit();
-                }
                 LOGGER.info("Change room status");
             } catch (UpdateQueryException e) {
-                entityManager.getTransaction().rollback();
                 LOGGER.warn("Error while updating room. Update operation: change status.", e);
             } catch (ReadQueryException e) {
                 LOGGER.warn("Room with index {} don't exists.", index, e);
