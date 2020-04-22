@@ -15,8 +15,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import java.util.Properties;
-
 @Configuration
 @ComponentScan(basePackages = {
         "com.senlainc.git_courses.java_training.petushok_valiantsin.repository",
@@ -34,15 +32,6 @@ public class AppConfig {
     private String basePassword;
     @Value("${DATA_BASE.PACKAGE}")
     private String[] packageToScan;
-
-    private static final Properties hibernateProperties;
-
-    static {
-        hibernateProperties = new Properties();
-        hibernateProperties.setProperty("hibernate.connection.charSet", "UTF-8");
-        hibernateProperties.setProperty("hibernate.connection.characterEncoding", "UTF-8");
-        hibernateProperties.setProperty("hibernate.connection.useUnicode", "true");
-    }
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
@@ -73,7 +62,6 @@ public class AppConfig {
         final LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(driverManagerDataSource());
         entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter());
-        entityManagerFactoryBean.setJpaProperties(hibernateProperties);
         entityManagerFactoryBean.setPersistenceUnitName("persistence");
         entityManagerFactoryBean.setPackagesToScan(packageToScan);
         return entityManagerFactoryBean;
