@@ -64,6 +64,18 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    @Transactional
+    public void addAttendance(long orderIndex, long attendanceIndex) {
+        final Order order = orderDao.read(orderIndex);
+        final Attendance attendance = attendanceDao.read(attendanceIndex);
+        final List<Attendance> attendances = order.getAttendances();
+        attendances.add(attendance);
+        order.setAttendances(attendances);
+        order.setPrice(order.getPrice() + attendance.getPrice());
+        orderDao.update(order);
+    }
+
+    @Override
     public List<Room> showGuestRoom(long index) {
         return orderDao.readLastRoom(index, 3);
     }
@@ -87,18 +99,6 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    @Transactional
-    public void addAttendance(long orderIndex, long attendanceIndex) {
-        final Order order = orderDao.read(orderIndex);
-        final Attendance attendance = attendanceDao.read(attendanceIndex);
-        final List<Attendance> attendances = order.getAttendances();
-        attendances.add(attendance);
-        order.setAttendances(attendances);
-        order.setPrice(order.getPrice() + attendance.getPrice());
-        orderDao.update(order);
-    }
-
-    @Override
     public List<Order> getOrderList() {
         final int maxResult = MaxResult.ORDER.getMaxResult();
         return orderDao.readAll(orderDao.readSize().intValue() - maxResult, maxResult);
@@ -107,14 +107,15 @@ public class OrderService implements IOrderService {
     @Override
     public List<Order> sort(String parameter) {
         final int maxResult = MaxResult.ORDER.getMaxResult();
+        final int firstElement = orderDao.readSize().intValue() - maxResult;
         if (parameter.equals("default")) {
             return getOrderList();
         }
         if (parameter.contains("/")) {
             final String[] parameterParse = parameter.split("/", 2);
-            return orderDao.readAll(orderDao.readSize().intValue() - maxResult, maxResult,
+            return orderDao.readAll(firstElement, maxResult,
                     parameterParse[0], parameterParse[1]);
         }
-        return orderDao.readAll(orderDao.readSize().intValue() - maxResult, maxResult, parameter);
+        return orderDao.readAll(firstElement, maxResult, parameter);
     }
 }

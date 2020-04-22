@@ -2,7 +2,7 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.excep
 
 public class UpdateQueryException extends RuntimeException {
 
-    public UpdateQueryException(String message, Throwable cause) {
-        super(message, cause);
+    public UpdateQueryException(Throwable cause) {
+        super(cause);
     }
 }

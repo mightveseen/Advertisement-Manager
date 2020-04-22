@@ -2,11 +2,11 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.excep
 
 public class ReadQueryException extends RuntimeException {
 
-    public ReadQueryException(String message, Throwable cause) {
-        super(message, cause);
+    public ReadQueryException(Throwable cause) {
+        super(cause);
     }
 
-    public ReadQueryException(String message) {
-        super(message);
+    public ReadQueryException() {
+        super();
     }
 }

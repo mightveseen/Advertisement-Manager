@@ -32,7 +32,7 @@ public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
                     .setFirstResult(fistElement)
                     .getResultList();
         } catch (PersistenceException e) {
-            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
+            throw new ReadQueryException(e);
         }
     }
 
@@ -53,7 +53,7 @@ public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
                     .setFirstResult(fistElement)
                     .getResultList();
         } catch (PersistenceException e) {
-            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
+            throw new ReadQueryException(e);
         }
     }
 
@@ -69,7 +69,7 @@ public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
                     .where(predicate))
                     .getSingleResult();
         } catch (PersistenceException e) {
-            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
+            throw new ReadQueryException(e);
         }
     }
 
@@ -85,7 +85,7 @@ public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
                     .where(predicate))
                     .getSingleResult();
         } catch (PersistenceException e) {
-            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
+            throw new ReadQueryException(e);
         }
     }
 

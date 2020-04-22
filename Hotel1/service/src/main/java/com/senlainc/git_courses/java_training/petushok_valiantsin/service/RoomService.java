@@ -69,28 +69,25 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public boolean isChangeStatusProperty() {
-        return this.changeStatusProperty;
-    }
-
-    @Override
     public List<Room> getRoomList(String parameter) {
         final int maxResult = MaxResult.ROOM.getMaxResult();
+        final int firstElement = roomDao.readSize().intValue() - maxResult;
         if (parameter.equals("free")) {
-            return roomDao.readAllFree(roomDao.readSize().intValue() - maxResult, maxResult);
+            return roomDao.readAllFree(firstElement, maxResult);
         }
-        return roomDao.readAll(roomDao.readSize().intValue() - maxResult, maxResult);
+        return roomDao.readAll(firstElement, maxResult);
     }
 
     @Override
     public List<Room> sort(String type, String parameter) {
         final int maxResult = MaxResult.ROOM.getMaxResult();
+        final int firstElement = roomDao.readSize().intValue() - maxResult;
         if (parameter.equals("default")) {
             return getRoomList(type);
         }
         if (type.equals("free")) {
-            return roomDao.readAllFree(roomDao.readSize().intValue() - maxResult, maxResult, parameter);
+            return roomDao.readAllFree(firstElement, maxResult, parameter);
         }
-        return roomDao.readAll(roomDao.readSize().intValue() - maxResult, maxResult, parameter);
+        return roomDao.readAll(firstElement, maxResult, parameter);
     }
 }

@@ -21,7 +21,6 @@ import java.util.List;
 
 public abstract class AbstractDao<T, K extends Serializable> implements ICommonDao<T, K> {
 
-    protected static final String ERROR = "Error during connection to Database with entity: ";
     protected final Class<T> clazz;
     @PersistenceContext(unitName = "persistence", type = PersistenceContextType.EXTENDED)
     protected EntityManager entityManager;
@@ -35,7 +34,7 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
         try {
             entityManager.persist(object);
         } catch (PersistenceException e) {
-            throw new CreateQueryException(ERROR + clazz.getSimpleName(), e);
+            throw new CreateQueryException(e);
         }
     }
 
@@ -50,7 +49,7 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
                     .where(predicate))
                     .executeUpdate();
         } catch (PersistenceException e) {
-            throw new DeleteQueryException(ERROR + clazz.getSimpleName(), e);
+            throw new DeleteQueryException(e);
         }
     }
 
@@ -59,7 +58,7 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
         try {
             entityManager.merge(object);
         } catch (PersistenceException e) {
-            throw new UpdateQueryException(ERROR + clazz.getSimpleName(), e);
+            throw new UpdateQueryException(e);
         }
     }
 
@@ -68,11 +67,11 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
         try {
             final T object = entityManager.find(this.clazz, index);
             if (object == null) {
-                throw new ReadQueryException(ERROR + clazz.getSimpleName());
+                throw new ReadQueryException();
             }
             return object;
         } catch (PersistenceException e) {
-            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
+            throw new ReadQueryException(e);
         }
     }
 
@@ -90,7 +89,7 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
                     .setMaxResults(maxResult)
                     .getResultList();
         } catch (PersistenceException e) {
-            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
+            throw new ReadQueryException(e);
         }
     }
 
@@ -110,7 +109,7 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
                     .setMaxResults(maxResult)
                     .getResultList();
         } catch (PersistenceException e) {
-            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
+            throw new ReadQueryException(e);
         }
     }
 
@@ -123,7 +122,7 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
                     .select(criteriaBuilder.count(criteriaQuery.from(this.clazz))))
                     .getSingleResult();
         } catch (PersistenceException e) {
-            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
+            throw new ReadQueryException(e);
         }
     }
 }

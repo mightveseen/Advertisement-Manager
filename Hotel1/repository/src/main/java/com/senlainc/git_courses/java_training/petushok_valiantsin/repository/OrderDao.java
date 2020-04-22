@@ -34,7 +34,7 @@ public class OrderDao extends AbstractDao<Order, Long> implements IOrderDao {
                     .setMaxResults(maxResult)
                     .getResultList();
         } catch (PersistenceException e) {
-            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
+            throw new ReadQueryException(e);
         }
     }
 
@@ -53,7 +53,7 @@ public class OrderDao extends AbstractDao<Order, Long> implements IOrderDao {
                     .setMaxResults(limit)
                     .getResultList();
         } catch (PersistenceException e) {
-            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
+            throw new ReadQueryException(e);
         }
     }
 
@@ -71,7 +71,7 @@ public class OrderDao extends AbstractDao<Order, Long> implements IOrderDao {
                     .where(predicate))
                     .getResultList();
         } catch (PersistenceException e) {
-            throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
+            throw new ReadQueryException(e);
         }
     }
 }

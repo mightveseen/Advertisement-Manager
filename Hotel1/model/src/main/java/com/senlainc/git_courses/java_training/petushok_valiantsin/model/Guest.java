@@ -5,9 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "Guests")
@@ -22,6 +24,8 @@ public class Guest implements Cloneable {
     private String secondName;
     @Column
     private LocalDate birthday;
+    @OneToMany(mappedBy = "guest")
+    private Set<Order> orders;
 
     public Guest() {
 
