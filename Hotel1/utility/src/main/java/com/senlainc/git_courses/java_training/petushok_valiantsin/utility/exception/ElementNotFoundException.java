@@ -2,7 +2,11 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.utility.excep
 
 public class ElementNotFoundException extends RuntimeException {
 
-    public ElementNotFoundException(String reason, Throwable stackTrace) {
-        super(reason, stackTrace);
+    public ElementNotFoundException(String message, Throwable stackTrace) {
+        super(message, stackTrace);
+    }
+
+    public ElementNotFoundException(String message) {
+        super(message);
     }
 }

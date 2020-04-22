@@ -9,7 +9,7 @@ public interface IGuestService {
 
     void add(String firstName, String lastName, LocalDate birthday);
 
-    void delete(int index);
+    void delete(long index);
 
     Long num();
 
