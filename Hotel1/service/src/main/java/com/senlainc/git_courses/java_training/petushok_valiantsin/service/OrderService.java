@@ -56,6 +56,10 @@ public class OrderService implements IOrderService {
                 LOGGER.info("Room with index: {} is not available now.", roomIndex);
                 return;
             }
+            if (!roomService.isChangeStatusProperty()) {
+                LOGGER.info("Add order not possible. Property for change status is false");
+                return;
+            }
             final Room room = roomDao.read(roomIndex);
             final Guest guest = guestDao.read(guestIndex);
             orderDao.create(new Order(guest, room, endDate, room.getPrice()));

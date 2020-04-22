@@ -27,8 +27,10 @@ public class MenuController {
             System.out.print("Choose operation: ");
             final Integer index = Integer.parseInt(new Scanner(System.in).next());
             menuNavigator.navigate(index);
-        } catch (ElementNotFoundException | WrongEnteredDataException | InterruptedException | NumberFormatException e) {
+        } catch (ElementNotFoundException | WrongEnteredDataException | NumberFormatException e) {
             LOGGER.warn(e.getMessage(), e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 

@@ -66,7 +66,11 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
     @Override
     public T read(K index) {
         try {
-            return entityManager.find(this.clazz, index);
+            final T object = entityManager.find(this.clazz, index);
+            if (object == null) {
+                throw new ReadQueryException(ERROR + clazz.getSimpleName());
+            }
+            return object;
         } catch (PersistenceException e) {
             throw new ReadQueryException(ERROR + clazz.getSimpleName(), e);
         }

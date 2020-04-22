@@ -107,6 +107,11 @@ public class RoomService implements IRoomService {
     }
 
     @Override
+    public boolean isChangeStatusProperty() {
+        return this.changeStatusProperty;
+    }
+
+    @Override
     public List<Room> getRoomList(String parameter) {
         final int maxResult = MaxResult.ROOM.getMaxResult();
         try {
