@@ -42,6 +42,7 @@ public class OrderService implements IOrderService {
 
     @Override
     @Transactional
+    // TODO Deadlock while add Order and update RoomStatus
     public void add(long guestIndex, long roomIndex, LocalDate endDate) {
         final RoomStatus roomStatus = roomDao.readStatus(roomIndex);
         if (roomStatus.equals(RoomStatus.RENTED) || roomStatus.equals(RoomStatus.SERVED)) {
