@@ -59,6 +59,50 @@ public class Room implements Cloneable {
         this.price = price;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public String getClassification() {
+        return classification;
+    }
+
+    public void setClassification(String classification) {
+        this.classification = classification;
+    }
+
+    public short getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(short roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public short getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(short capacity) {
+        this.capacity = capacity;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
+    }
+
     public long getId() {
         return this.id;
     }
