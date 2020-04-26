@@ -19,6 +19,6 @@ public class ShowOrder implements IAction {
     public void execute() {
         final Hotel hotel = ApplicationContextHolder.getBean(Hotel.class);
         hotel.sortOrder(parameter).forEach(System.out::println);
-        LOGGER.info(String.format("Show order list sorted by: %s", parameter));
+        LOGGER.info("Show order list sorted by: {}", parameter);
     }
 }
