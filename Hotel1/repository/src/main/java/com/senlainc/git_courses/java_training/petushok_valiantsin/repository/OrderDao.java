@@ -1,8 +1,11 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.repository;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IOrderDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest_;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Order_;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room_;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.ReadQueryException;
 import org.springframework.stereotype.Repository;
 
@@ -44,8 +47,8 @@ public class OrderDao extends AbstractDao<Order, Long> implements IOrderDao {
             final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
             final Root<Room> root = criteriaQuery.from(Room.class);
-            final Join<Room, Order> join = root.join("orders");
-            final Predicate predicate = criteriaBuilder.equal(join.get("guest").get("id"), index);
+            final Join<Room, Order> join = root.join(Room_.orders);
+            final Predicate predicate = criteriaBuilder.equal(join.get(Order_.guest).get(Guest_.id), index);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
                     .distinct(true)
@@ -63,8 +66,8 @@ public class OrderDao extends AbstractDao<Order, Long> implements IOrderDao {
             final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
             final Root<Room> root = criteriaQuery.from(Room.class);
-            final Join<Order, Room> join = root.join("orders");
-            final Predicate predicate = criteriaBuilder.lessThan(join.get("endDate"), date);
+            final Join<Room, Order> join = root.join(Room_.orders);
+            final Predicate predicate = criteriaBuilder.lessThan(join.get(Order_.endDate), date);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
                     .distinct(true)

@@ -29,7 +29,7 @@ public class AttendanceService implements IAttendanceService {
     @Override
     @Transactional
     public void delete(long index) {
-        attendanceDao.delete(index);
+        attendanceDao.delete(attendanceDao.read(index));
     }
 
     @Override

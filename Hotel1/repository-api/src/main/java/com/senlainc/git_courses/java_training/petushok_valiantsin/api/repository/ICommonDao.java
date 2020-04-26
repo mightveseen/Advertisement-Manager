@@ -7,7 +7,7 @@ public interface ICommonDao<T, K extends Serializable> {
 
     void create(T object);
 
-    void delete(K index);
+    void delete(T object);
 
     void update(T object);
 

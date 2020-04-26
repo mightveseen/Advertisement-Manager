@@ -40,7 +40,7 @@ public class GuestService implements IGuestService {
     @Override
     @Transactional
     public void delete(long index) {
-        guestDao.delete(index);
+        guestDao.delete(guestDao.read(index));
     }
 
     @Override

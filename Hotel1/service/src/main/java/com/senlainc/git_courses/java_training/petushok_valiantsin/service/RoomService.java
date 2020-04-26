@@ -40,7 +40,7 @@ public class RoomService implements IRoomService {
     @Override
     @Transactional
     public void delete(long index) {
-        roomDao.delete(index);
+        roomDao.delete(roomDao.read(index));
     }
 
     @Override

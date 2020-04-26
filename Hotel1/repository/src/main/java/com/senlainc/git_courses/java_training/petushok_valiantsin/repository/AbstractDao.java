@@ -11,9 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -39,15 +37,9 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
     }
 
     @Override
-    public void delete(K index) {
+    public void delete(T object) {
         try {
-            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-            final CriteriaDelete<T> criteriaDelete = criteriaBuilder.createCriteriaDelete(this.clazz);
-            final Root<T> root = criteriaDelete.from(this.clazz);
-            final Predicate predicate = criteriaBuilder.equal(root.get("id"), index);
-            entityManager.createQuery(criteriaDelete
-                    .where(predicate))
-                    .executeUpdate();
+            entityManager.remove(object);
         } catch (PersistenceException e) {
             throw new DeleteQueryException(e);
         }

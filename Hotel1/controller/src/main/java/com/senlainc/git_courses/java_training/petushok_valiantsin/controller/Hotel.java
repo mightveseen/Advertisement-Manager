@@ -57,6 +57,8 @@ public class Hotel {
             LOGGER.info("Delete attendance with index: {} from database", index);
         } catch (DeleteQueryException e) {
             LOGGER.warn("Error while deleting attendance.", e);
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Attendance with index: {} don't exists.", index, e);
         }
     }
 
@@ -100,6 +102,8 @@ public class Hotel {
             LOGGER.info("Delete room with index: {} from database", index);
         } catch (DeleteQueryException e) {
             LOGGER.warn("Error while deleting room", e);
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Room with index: {} don't exists.", index, e);
         }
     }
 
@@ -176,6 +180,8 @@ public class Hotel {
             LOGGER.info("Delete guest with index: {} from database", index);
         } catch (DeleteQueryException e) {
             LOGGER.warn("Error while deleting guest.", e);
+        } catch (ReadQueryException e) {
+            LOGGER.warn("Guest with index: {} don't exists.", index, e);
         }
     }
 
