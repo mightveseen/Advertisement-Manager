@@ -44,7 +44,7 @@ public class OrderDao extends AbstractDao<Order, Long> implements IOrderDao {
             final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
             final Root<Room> root = criteriaQuery.from(Room.class);
-            final Join<Room, Order> join = root.join("order");
+            final Join<Room, Order> join = root.join("orders");
             final Predicate predicate = criteriaBuilder.equal(join.get("guest").get("id"), index);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
@@ -63,7 +63,7 @@ public class OrderDao extends AbstractDao<Order, Long> implements IOrderDao {
             final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
             final Root<Room> root = criteriaQuery.from(Room.class);
-            final Join<Order, Room> join = root.join("order");
+            final Join<Order, Room> join = root.join("orders");
             final Predicate predicate = criteriaBuilder.lessThan(join.get("endDate"), date);
             return entityManager.createQuery(criteriaQuery
                     .select(root)

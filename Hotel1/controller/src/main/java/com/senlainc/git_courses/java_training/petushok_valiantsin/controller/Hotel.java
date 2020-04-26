@@ -291,6 +291,8 @@ public class Hotel {
         } catch (ReadQueryException e) {
             LOGGER.warn(new MessageFormatMessage("Order with index {0} or Attendance with index: " +
                     "{1} don't exists.", orderIndex, attendanceIndex), e);
+        } catch (ElementNotAvailableException e) {
+            LOGGER.warn(e.getMessage(), e);
         }
     }
 

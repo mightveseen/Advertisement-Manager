@@ -58,6 +58,9 @@ public class OrderService implements IOrderService {
     @Transactional
     public void delete(long index) {
         final Order order = orderDao.read(index);
+        if (order.getStatus().equals(OrderStatus.DISABLED)) {
+            throw new ElementNotAvailableException("Order with index: " + index + " already disabled.");
+        }
         order.setStatus(OrderStatus.DISABLED);
         order.setEndDate(LocalDate.now());
         orderDao.update(order);
@@ -68,6 +71,9 @@ public class OrderService implements IOrderService {
     @Transactional
     public void addAttendance(long orderIndex, long attendanceIndex) {
         final Order order = orderDao.read(orderIndex);
+        if (order.getStatus().equals(OrderStatus.DISABLED)) {
+            throw new ElementNotAvailableException("Order with index: " + orderIndex + " is disabled.");
+        }
         final Attendance attendance = attendanceDao.read(attendanceIndex);
         final List<Attendance> attendances = order.getAttendances();
         attendances.add(attendance);
