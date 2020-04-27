@@ -59,10 +59,6 @@ public class Room implements Cloneable {
         this.price = price;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public int getNumber() {
         return number;
     }
@@ -104,11 +100,15 @@ public class Room implements Cloneable {
     }
 
     public long getId() {
-        return this.id;
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public RoomStatus getStatus() {
-        return this.status;
+        return status;
     }
 
     public void setStatus(RoomStatus status) {
@@ -116,7 +116,7 @@ public class Room implements Cloneable {
     }
 
     public double getPrice() {
-        return this.price;
+        return price;
     }
 
     public void setPrice(double price) {

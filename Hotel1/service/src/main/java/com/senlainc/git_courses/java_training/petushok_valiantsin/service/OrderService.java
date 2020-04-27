@@ -50,7 +50,8 @@ public class OrderService implements IOrderService {
         }
         final Room room = roomDao.read(roomIndex);
         final Guest guest = guestDao.read(guestIndex);
-        orderDao.create(new Order(guest, room, endDate, room.getPrice()));
+        final Order order = new Order(guest, room, endDate, room.getPrice());
+        orderDao.create(order);
         roomService.changeStatus(roomIndex, RoomStatus.RENTED.name());
     }
 

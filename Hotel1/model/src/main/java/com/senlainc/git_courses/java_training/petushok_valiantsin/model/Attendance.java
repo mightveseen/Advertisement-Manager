@@ -40,10 +40,6 @@ public class Attendance implements Cloneable {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getSection() {
         return section;
     }
@@ -53,11 +49,15 @@ public class Attendance implements Cloneable {
     }
 
     public String getName() {
-        return this.name;
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public double getPrice() {
-        return this.price;
+        return price;
     }
 
     public void setPrice(double price) {

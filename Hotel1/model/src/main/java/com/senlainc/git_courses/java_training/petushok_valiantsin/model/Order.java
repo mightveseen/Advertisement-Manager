@@ -73,14 +73,6 @@ public class Order implements Cloneable {
         this.id = id;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
-    }
-
-    public void setGuest(Guest guest) {
-        this.guest = guest;
-    }
-
     public LocalDate getStartDate() {
         return startDate;
     }
@@ -101,28 +93,36 @@ public class Order implements Cloneable {
         return endDate;
     }
 
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
     public Guest getGuest() {
-        return this.guest;
+        return guest;
+    }
+
+    public void setGuest(Guest guest) {
+        this.guest = guest;
     }
 
     public Room getRoom() {
         return room;
     }
 
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
     public double getPrice() {
-        return this.price;
+        return price;
     }
 
     public void setPrice(double price) {
         this.price = price;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
     public OrderStatus getStatus() {
-        return this.status;
+        return status;
     }
 
     public void setStatus(OrderStatus status) {
@@ -130,7 +130,7 @@ public class Order implements Cloneable {
     }
 
     public List<Attendance> getAttendances() {
-        return this.attendances;
+        return attendances;
     }
 
     public void setAttendances(List<Attendance> attendances) {

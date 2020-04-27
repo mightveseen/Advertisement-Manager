@@ -15,6 +15,9 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.persistence.EntityManagerFactory;
+import java.util.Properties;
+
 @Configuration
 @ComponentScan(basePackages = {
         "com.senlainc.git_courses.java_training.petushok_valiantsin.repository",
@@ -36,6 +39,15 @@ public class AppConfig {
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    public Properties hibernateProperties() {
+        final Properties hibernateProperties = new Properties();
+        hibernateProperties.setProperty("hibernate.connection.useUnicode", "true");
+        hibernateProperties.setProperty("hibernate.connection.charSet", "UTF-8");
+        hibernateProperties.setProperty("hibernate.connection.characterEncoding", "UTF-8");
+        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        return hibernateProperties;
     }
 
     @Bean
@@ -62,15 +74,16 @@ public class AppConfig {
         final LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(driverManagerDataSource());
         entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter());
+        entityManagerFactoryBean.setJpaProperties(hibernateProperties());
         entityManagerFactoryBean.setPersistenceUnitName("persistence");
         entityManagerFactoryBean.setPackagesToScan(packageToScan);
         return entityManagerFactoryBean;
     }
 
     @Bean
-    public PlatformTransactionManager platformTransactionManager() {
+    public PlatformTransactionManager platformTransactionManager(EntityManagerFactory emf) {
         final JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
+        transactionManager.setEntityManagerFactory(emf);
         return transactionManager;
     }
 }
