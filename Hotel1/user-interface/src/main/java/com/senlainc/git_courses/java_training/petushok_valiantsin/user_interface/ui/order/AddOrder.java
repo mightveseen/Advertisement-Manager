@@ -26,7 +26,7 @@ public class AddOrder implements IAction {
             System.out.print("Enter end date(Format: YYYY-MM-DD): ");
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             final LocalDate endDate = LocalDate.parse(scanner.nextLine(), formatter);
-            hotel.addOrder(guestIndex, roomIndex, endDate);
+            hotel.createOrder(guestIndex, roomIndex, endDate);
         } catch (DateTimeParseException | NumberFormatException e) {
             throw new WrongEnteredDataException("Wrong entered data in: " + e.getMessage(), e);
         }

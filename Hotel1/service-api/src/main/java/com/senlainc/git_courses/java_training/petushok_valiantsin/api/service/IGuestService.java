@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IGuestService {
 
-    void add(String firstName, String lastName, LocalDate birthday);
+    void create(String firstName, String lastName, LocalDate birthday);
 
     void delete(long index);
 

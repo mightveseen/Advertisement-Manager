@@ -24,7 +24,7 @@ public class AddGuest implements IAction {
             System.out.print("Enter birthday(Format: YYYY-MM-DD): ");
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             final LocalDate birthday = LocalDate.parse(scanner.nextLine(), formatter);
-            hotel.addGuest(firstName, lastName, birthday);
+            hotel.createGuest(firstName, lastName, birthday);
         } catch (DateTimeParseException | NumberFormatException e) {
             throw new WrongEnteredDataException("Wrong entered data in: " + e.getMessage(), e);
         }

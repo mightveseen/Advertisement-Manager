@@ -42,8 +42,8 @@ public class OrderService implements IOrderService {
 
     @Override
     @Transactional
-    // FIXME: Deadlock while add Order and update RoomStatus
-    public void add(long guestIndex, long roomIndex, LocalDate endDate) {
+    // FIXME: Deadlock while create Order and update RoomStatus
+    public void create(long guestIndex, long roomIndex, LocalDate endDate) {
         final RoomStatus roomStatus = roomDao.readStatus(roomIndex);
         if (roomStatus.equals(RoomStatus.RENTED) || roomStatus.equals(RoomStatus.SERVED)) {
             throw new ElementNotAvailableException("Room with index: " + roomIndex + " is not available now.");
@@ -64,7 +64,7 @@ public class OrderService implements IOrderService {
         }
         order.setStatus(OrderStatus.DISABLED);
         order.setEndDate(LocalDate.now());
-        orderDao.update(order);
+        orderDao.delete(order);
         roomService.changeStatus(order.getRoom().getId(), RoomStatus.FREE.name());
     }
 

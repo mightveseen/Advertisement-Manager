@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IRoomService {
 
-    void add(int number, String classification, short roomNumber, short capacity, double price);
+    void create(int number, String classification, short roomNumber, short capacity, double price);
 
     void delete(long index);
 

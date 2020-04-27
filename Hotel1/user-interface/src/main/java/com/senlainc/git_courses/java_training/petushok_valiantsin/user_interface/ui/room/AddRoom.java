@@ -24,7 +24,7 @@ public class AddRoom implements IAction {
             final short capacity = Short.parseShort(scanner.nextLine());
             System.out.print("Enter price(split cost - '.'): ");
             final double price = Double.parseDouble(scanner.nextLine());
-            hotel.addRoom(number, classification, numberRoom, capacity, price);
+            hotel.createRoom(number, classification, numberRoom, capacity, price);
         } catch (NumberFormatException e) {
             throw new WrongEnteredDataException("Wrong entered data in: " + e.getMessage(), e);
         }

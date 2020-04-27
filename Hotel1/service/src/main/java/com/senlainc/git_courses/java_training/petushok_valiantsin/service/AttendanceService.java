@@ -22,7 +22,7 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     @Transactional
-    public void add(String name, String section, double price) {
+    public void create(String name, String section, double price) {
         attendanceDao.create(new Attendance(name, section, price));
     }
 

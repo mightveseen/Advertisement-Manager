@@ -20,7 +20,7 @@ public class AddAttendance implements IAction {
             final String section = scanner.nextLine();
             System.out.print("Enter attendance price: ");
             final double price = Double.parseDouble(scanner.nextLine());
-            hotel.addAttendance(name, section, price);
+            hotel.createAttendance(name, section, price);
         } catch (NumberFormatException e) {
             throw new WrongEnteredDataException("Wrong entered data in: " + e.getMessage(), e);
         }

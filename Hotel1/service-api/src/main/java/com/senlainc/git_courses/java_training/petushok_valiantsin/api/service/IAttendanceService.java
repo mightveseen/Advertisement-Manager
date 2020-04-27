@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IAttendanceService {
 
-    void add(String name, String section, double price);
+    void create(String name, String section, double price);
 
     void delete(long index);
 

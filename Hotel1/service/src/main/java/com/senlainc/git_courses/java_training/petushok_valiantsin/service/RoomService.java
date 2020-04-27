@@ -30,7 +30,7 @@ public class RoomService implements IRoomService {
 
     @Override
     @Transactional
-    public void add(int number, String classification, short roomNumber, short capacity, double price) {
+    public void create(int number, String classification, short roomNumber, short capacity, double price) {
         if (roomDao.readByNumber(number)) {
             throw new ElementAlreadyExistsException("Room with number: " + number + " already exists.");
         }

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface IOrderService {
 
-    void add(long guestIndex, long roomIndex, LocalDate endDate);
+    void create(long guestIndex, long roomIndex, LocalDate endDate);
 
     void delete(long index);
 

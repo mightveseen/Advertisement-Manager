@@ -42,9 +42,9 @@ public class Hotel {
     /**
      * Attendance
      */
-    public void addAttendance(String name, String section, double price) {
+    public void createAttendance(String name, String section, double price) {
         try {
-            attendanceService.add(name, section, price);
+            attendanceService.create(name, section, price);
             LOGGER.info("Add attendance in database");
         } catch (CreateQueryException e) {
             LOGGER.warn("Error while creating attendance.", e);
@@ -85,9 +85,9 @@ public class Hotel {
     /**
      * Room
      */
-    public void addRoom(int number, String classification, short roomNumber, short capacity, double price) {
+    public void createRoom(int number, String classification, short roomNumber, short capacity, double price) {
         try {
-            roomService.add(number, classification, roomNumber, capacity, price);
+            roomService.create(number, classification, roomNumber, capacity, price);
             LOGGER.info("Add room in database");
         } catch (CreateQueryException e) {
             LOGGER.warn("Error while creating room", e);
@@ -163,9 +163,9 @@ public class Hotel {
     /**
      * Guest
      */
-    public void addGuest(String firstName, String lastName, LocalDate birthday) {
+    public void createGuest(String firstName, String lastName, LocalDate birthday) {
         try {
-            guestService.add(firstName, lastName, birthday);
+            guestService.create(firstName, lastName, birthday);
             LOGGER.info("Add guest in database");
         } catch (CreateQueryException e) {
             LOGGER.warn("Error while creating guest", e);
@@ -208,9 +208,9 @@ public class Hotel {
     /**
      * Order
      */
-    public void addOrder(long guestIndex, long roomIndex, LocalDate endDate) {
+    public void createOrder(long guestIndex, long roomIndex, LocalDate endDate) {
         try {
-            orderService.add(guestIndex, roomIndex, endDate);
+            orderService.create(guestIndex, roomIndex, endDate);
             LOGGER.info("Add order in database");
         } catch (CreateQueryException e) {
             LOGGER.warn("Error while creating order.", e);

@@ -29,7 +29,7 @@ public class GuestService implements IGuestService {
 
     @Override
     @Transactional
-    public void add(String firstName, String lastName, LocalDate birthday) {
+    public void create(String firstName, String lastName, LocalDate birthday) {
         if (guestLimitProperty > guestDao.readSize()) {
             guestDao.create(new Guest(firstName, lastName, birthday));
         } else {
