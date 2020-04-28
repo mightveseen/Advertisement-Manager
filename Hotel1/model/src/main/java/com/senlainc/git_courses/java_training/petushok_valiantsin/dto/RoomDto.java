@@ -1,31 +1,32 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.dto;
 
-import java.util.Set;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
 
-public class RoomDto {
+import java.io.Serializable;
 
-    private String id;
-    private String number;
+public class RoomDto implements Serializable {
+
+    private long id;
+    private int number;
     private String classification;
-    private String roomNumber;
-    private String capacity;
-    private String status;
-    private String price;
-    private Set<String> orders;
+    private short roomNumber;
+    private short capacity;
+    private RoomStatus status;
+    private double price;
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public String getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 
@@ -37,43 +38,35 @@ public class RoomDto {
         this.classification = classification;
     }
 
-    public String getRoomNumber() {
+    public short getRoomNumber() {
         return roomNumber;
     }
 
-    public void setRoomNumber(String roomNumber) {
+    public void setRoomNumber(short roomNumber) {
         this.roomNumber = roomNumber;
     }
 
-    public String getCapacity() {
+    public short getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(String capacity) {
+    public void setCapacity(short capacity) {
         this.capacity = capacity;
     }
 
-    public String getStatus() {
+    public RoomStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(RoomStatus status) {
         this.status = status;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
-    }
-
-    public Set<String> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Set<String> orders) {
-        this.orders = orders;
     }
 }

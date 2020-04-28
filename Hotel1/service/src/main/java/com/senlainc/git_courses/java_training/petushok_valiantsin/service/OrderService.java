@@ -67,7 +67,7 @@ public class OrderService implements IOrderService {
 
     @Override
     @Transactional
-    public void addOrderAttendance(long orderIndex, long attendanceIndex) {
+    public void addAttendance(long orderIndex, long attendanceIndex) {
         final Order order = orderDao.read(orderIndex);
         if (order.getStatus().equals(OrderStatus.DISABLED)) {
             throw new ElementNotAvailableException("Order with index: " + orderIndex + " is disabled.");
@@ -93,7 +93,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Attendance> getOrderAttendances(long orderIndex) {
+    public List<Attendance> getAttendances(long orderIndex) {
         final List<Attendance> attendances = orderDao.read(orderIndex).getAttendances();
         if (attendances == null) {
             throw new ElementNotFoundException("Order with index: " + orderIndex + " don't have attendance's.");

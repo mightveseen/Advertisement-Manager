@@ -273,7 +273,7 @@ public class Hotel {
 
     public List<String> showOrderAttendance(long index) {
         try {
-            final List<String> result = createStringList(orderService.getOrderAttendances(index));
+            final List<String> result = createStringList(orderService.getAttendances(index));
             LOGGER.info("Show guest attendance's");
             return result;
         } catch (ReadQueryException e) {
@@ -286,7 +286,7 @@ public class Hotel {
 
     public void addOrderAttendance(long orderIndex, long attendanceIndex) {
         try {
-            orderService.addOrderAttendance(orderIndex, attendanceIndex);
+            orderService.addAttendance(orderIndex, attendanceIndex);
             LOGGER.info("Add attendance to order");
         } catch (UpdateQueryException e) {
             LOGGER.warn("Error while updating attendance. Update operation: add attendance to order.", e);

@@ -15,9 +15,9 @@ public interface IOrderService {
 
     List<Room> getGuestRooms(long index);
 
-    void addOrderAttendance(long orderIndex, long attendanceIndex);
+    void addAttendance(long orderIndex, long attendanceIndex);
 
-    List<Attendance> getOrderAttendances(long orderIndex);
+    List<Attendance> getAttendances(long orderIndex);
 
     List<Room> getRoomsAfterDate(LocalDate date);
 
