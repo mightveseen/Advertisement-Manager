@@ -44,12 +44,17 @@ public class GuestService implements IGuestService {
     }
 
     @Override
-    public Long num() {
+    public Long getNum() {
         return guestDao.readSize();
     }
 
     @Override
-    public List<Guest> getGuestList() {
+    public Guest getGuest(long index) {
+        return guestDao.read(index);
+    }
+
+    @Override
+    public List<Guest> getGuests() {
         final int maxResult = MaxResult.GUEST.getMaxResult();
         return guestDao.readAll(guestDao.readSize().intValue() - maxResult, maxResult);
     }

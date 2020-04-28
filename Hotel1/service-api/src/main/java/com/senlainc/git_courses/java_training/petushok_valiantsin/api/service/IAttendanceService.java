@@ -12,7 +12,9 @@ public interface IAttendanceService {
 
     void changePrice(long index, double price);
 
-    List<Attendance> getAttendanceList();
+    Attendance getAttendance(long index);
 
-    List<Attendance> sort(String parameter);
+    List<Attendance> getAttendances();
+
+    List<Attendance> getSortedAttendances(String parameter);
 }

@@ -14,7 +14,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.except
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.message.MessageFormatMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,7 +28,6 @@ public class Hotel {
     private final IRoomService roomService;
     private final IOrderService orderService;
 
-    @Autowired
     public Hotel(IAttendanceService attendanceService, IGuestService guestService, IRoomService roomService, IOrderService orderService) {
         this.attendanceService = attendanceService;
         this.guestService = guestService;
@@ -62,7 +60,7 @@ public class Hotel {
 
     public List<String> showAttendance() {
         try {
-            return createStringList(attendanceService.getAttendanceList());
+            return createStringList(attendanceService.getAttendances());
         } catch (ReadQueryException e) {
             LOGGER.warn("Error while read attendance's.", e);
         }
@@ -131,7 +129,7 @@ public class Hotel {
 
     public List<String> sortRoom(String type, String parameter) {
         try {
-            return createStringList(roomService.sort(type, parameter));
+            return createStringList(roomService.getSortedRooms(type, parameter));
         } catch (ReadQueryException e) {
             LOGGER.warn("Error while read room's.", e);
         }
@@ -140,7 +138,7 @@ public class Hotel {
 
     public List<String> showRoom(String parameter) {
         try {
-            return createStringList(roomService.getRoomList(parameter));
+            return createStringList(roomService.getRooms(parameter));
         } catch (ReadQueryException e) {
             LOGGER.warn("Error while read room's.", e);
         }
@@ -149,7 +147,7 @@ public class Hotel {
 
     public String numFreeRoom() {
         try {
-            final String result = "Number of free room: " + roomService.numFreeRoom();
+            final String result = "Number of free room: " + roomService.getNumFree();
             LOGGER.info("Show umber of free room");
             return result;
         } catch (ReadQueryException e) {
@@ -185,7 +183,7 @@ public class Hotel {
 
     public String numGuest() {
         try {
-            final String result = "Number of guest: " + guestService.num();
+            final String result = "Number of guest: " + guestService.getNum();
             LOGGER.info("Show number of guest");
             return result;
         } catch (ReadQueryException e) {
@@ -196,7 +194,7 @@ public class Hotel {
 
     public List<String> showGuest() {
         try {
-            return createStringList(guestService.getGuestList());
+            return createStringList(guestService.getGuests());
         } catch (ReadQueryException e) {
             LOGGER.warn("Error while read all guest's.", e);
         }
@@ -235,7 +233,7 @@ public class Hotel {
 
     public List<String> sortOrder(String parameter) {
         try {
-            return createStringList(orderService.sort(parameter));
+            return createStringList(orderService.getSortedOrders(parameter));
         } catch (ReadQueryException e) {
             LOGGER.warn("Error while read all order's.", e);
         }
@@ -244,7 +242,7 @@ public class Hotel {
 
     public List<String> showOrder() {
         try {
-            return createStringList(orderService.getOrderList());
+            return createStringList(orderService.getOrders());
         } catch (ReadQueryException e) {
             LOGGER.warn("Error while read all order's.", e);
         }
@@ -253,7 +251,7 @@ public class Hotel {
 
     public List<String> showAfterDate(LocalDate freeDate) {
         try {
-            final List<String> result = createStringList(orderService.showAfterDate(freeDate));
+            final List<String> result = createStringList(orderService.getRoomsAfterDate(freeDate));
             LOGGER.info("Show room's will be available after: {}", freeDate);
             return result;
         } catch (ReadQueryException e) {
@@ -264,7 +262,7 @@ public class Hotel {
 
     public List<String> showGuestRoom(long index) {
         try {
-            final List<String> result = createStringList(orderService.showGuestRoom(index));
+            final List<String> result = createStringList(orderService.getGuestRooms(index));
             LOGGER.info("Show last 3 room's of guest");
             return result;
         } catch (ReadQueryException e) {
@@ -275,7 +273,7 @@ public class Hotel {
 
     public List<String> showOrderAttendance(long index) {
         try {
-            final List<String> result = createStringList(orderService.showAttendance(index));
+            final List<String> result = createStringList(orderService.getOrderAttendances(index));
             LOGGER.info("Show guest attendance's");
             return result;
         } catch (ReadQueryException e) {
@@ -288,7 +286,7 @@ public class Hotel {
 
     public void addOrderAttendance(long orderIndex, long attendanceIndex) {
         try {
-            orderService.addAttendance(orderIndex, attendanceIndex);
+            orderService.addOrderAttendance(orderIndex, attendanceIndex);
             LOGGER.info("Add attendance to order");
         } catch (UpdateQueryException e) {
             LOGGER.warn("Error while updating attendance. Update operation: add attendance to order.", e);

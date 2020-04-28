@@ -41,16 +41,21 @@ public class AttendanceService implements IAttendanceService {
     }
 
     @Override
-    public List<Attendance> getAttendanceList() {
+    public Attendance getAttendance(long index) {
+        return attendanceDao.read(index);
+    }
+
+    @Override
+    public List<Attendance> getAttendances() {
         final int maxResult = MaxResult.ATTENDANCE.getMaxResult();
         return attendanceDao.readAll(attendanceDao.readSize().intValue() - maxResult, maxResult);
     }
 
     @Override
-    public List<Attendance> sort(String parameter) {
+    public List<Attendance> getSortedAttendances(String parameter) {
         final int maxResult = MaxResult.ATTENDANCE.getMaxResult();
         if (parameter.equals("default")) {
-            return getAttendanceList();
+            return getAttendances();
         }
         return attendanceDao.readAll(attendanceDao.readSize().intValue() - maxResult, maxResult, parameter);
     }

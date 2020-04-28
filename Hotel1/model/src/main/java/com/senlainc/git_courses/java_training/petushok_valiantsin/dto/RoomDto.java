@@ -68,4 +68,12 @@ public class RoomDto {
     public void setPrice(String price) {
         this.price = price;
     }
+
+    public Set<String> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<String> orders) {
+        this.orders = orders;
+    }
 }

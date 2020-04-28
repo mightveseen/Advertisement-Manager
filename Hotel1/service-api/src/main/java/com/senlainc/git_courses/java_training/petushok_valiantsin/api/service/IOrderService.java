@@ -13,15 +13,17 @@ public interface IOrderService {
 
     void delete(long index);
 
-    List<Order> getOrderList();
+    List<Room> getGuestRooms(long index);
 
-    List<Room> showGuestRoom(long index);
+    void addOrderAttendance(long orderIndex, long attendanceIndex);
 
-    List<Order> sort(String parameter);
+    List<Attendance> getOrderAttendances(long orderIndex);
 
-    void addAttendance(long orderIndex, long attendanceIndex);
+    List<Room> getRoomsAfterDate(LocalDate date);
 
-    List<Attendance> showAttendance(long orderIndex);
+    Order getOrder(long index);
 
-    List<Room> showAfterDate(LocalDate date);
+    List<Order> getOrders();
+
+    List<Order> getSortedOrders(String parameter);
 }

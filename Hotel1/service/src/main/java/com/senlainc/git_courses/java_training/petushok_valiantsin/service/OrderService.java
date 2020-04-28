@@ -1,9 +1,8 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IAttendanceDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IGuestDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IOrderDao;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IRoomDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IAttendanceService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
@@ -25,18 +24,16 @@ import java.util.List;
 @Service
 public class OrderService implements IOrderService {
 
-    private final IRoomDao roomDao;
-    private final IGuestDao guestDao;
-    private final IAttendanceDao attendanceDao;
     private final IOrderDao orderDao;
+    private final IAttendanceService attendanceService;
+    private final IGuestService guestService;
     private final IRoomService roomService;
 
     @Autowired
-    public OrderService(IRoomDao roomDao, IGuestDao guestDao, IAttendanceDao attendanceDao, IOrderDao orderDao, IRoomService roomService) {
-        this.roomDao = roomDao;
-        this.guestDao = guestDao;
-        this.attendanceDao = attendanceDao;
+    public OrderService(IOrderDao orderDao, IGuestService guestService, IAttendanceService attendanceService, IRoomService roomService) {
         this.orderDao = orderDao;
+        this.guestService = guestService;
+        this.attendanceService = attendanceService;
         this.roomService = roomService;
     }
 
@@ -44,12 +41,12 @@ public class OrderService implements IOrderService {
     @Transactional
     // FIXME: Deadlock while create Order and update RoomStatus
     public void create(long guestIndex, long roomIndex, LocalDate endDate) {
-        final RoomStatus roomStatus = roomDao.readStatus(roomIndex);
+        final RoomStatus roomStatus = roomService.getRoomStatus(roomIndex);
         if (roomStatus.equals(RoomStatus.RENTED) || roomStatus.equals(RoomStatus.SERVED)) {
             throw new ElementNotAvailableException("Room with index: " + roomIndex + " is not available now.");
         }
-        final Room room = roomDao.read(roomIndex);
-        final Guest guest = guestDao.read(guestIndex);
+        final Room room = roomService.getRoom(roomIndex);
+        final Guest guest = guestService.getGuest(guestIndex);
         final Order order = new Order(guest, room, endDate, room.getPrice());
         orderDao.create(order);
         roomService.changeStatus(roomIndex, RoomStatus.RENTED.name());
@@ -70,12 +67,12 @@ public class OrderService implements IOrderService {
 
     @Override
     @Transactional
-    public void addAttendance(long orderIndex, long attendanceIndex) {
+    public void addOrderAttendance(long orderIndex, long attendanceIndex) {
         final Order order = orderDao.read(orderIndex);
         if (order.getStatus().equals(OrderStatus.DISABLED)) {
             throw new ElementNotAvailableException("Order with index: " + orderIndex + " is disabled.");
         }
-        final Attendance attendance = attendanceDao.read(attendanceIndex);
+        final Attendance attendance = attendanceService.getAttendance(attendanceIndex);
         final List<Attendance> attendances = order.getAttendances();
         attendances.add(attendance);
         order.setAttendances(attendances);
@@ -84,21 +81,19 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Room> showGuestRoom(long index) {
+    public List<Room> getGuestRooms(long index) {
         return orderDao.readLastRoom(index, 3);
     }
 
     @Override
-    public List<Room> showAfterDate(LocalDate date) {
-        final int maxResult = MaxResult.ROOM.getMaxResult();
-        final List<Room> rooms = roomDao.readAllFree(roomDao.readSize().intValue() - maxResult,
-                maxResult);
+    public List<Room> getRoomsAfterDate(LocalDate date) {
+        final List<Room> rooms = roomService.getRooms("free");
         rooms.addAll(orderDao.readAfterDate(date));
         return rooms;
     }
 
     @Override
-    public List<Attendance> showAttendance(long orderIndex) {
+    public List<Attendance> getOrderAttendances(long orderIndex) {
         final List<Attendance> attendances = orderDao.read(orderIndex).getAttendances();
         if (attendances == null) {
             throw new ElementNotFoundException("Order with index: " + orderIndex + " don't have attendance's.");
@@ -107,17 +102,22 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Order> getOrderList() {
+    public Order getOrder(long index) {
+        return orderDao.read(index);
+    }
+
+    @Override
+    public List<Order> getOrders() {
         final int maxResult = MaxResult.ORDER.getMaxResult();
         return orderDao.readAll(orderDao.readSize().intValue() - maxResult, maxResult);
     }
 
     @Override
-    public List<Order> sort(String parameter) {
+    public List<Order> getSortedOrders(String parameter) {
         final int maxResult = MaxResult.ORDER.getMaxResult();
         final int firstElement = orderDao.readSize().intValue() - maxResult;
         if (parameter.equals("default")) {
-            return getOrderList();
+            return getOrders();
         }
         if (parameter.contains("/")) {
             final String[] parameterParse = parameter.split("/", 2);

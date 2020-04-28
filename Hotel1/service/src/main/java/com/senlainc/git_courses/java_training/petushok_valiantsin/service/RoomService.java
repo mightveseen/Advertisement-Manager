@@ -64,8 +64,13 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public Long numFreeRoom() {
+    public Long getNumFree() {
         return roomDao.readFreeSize();
+    }
+
+    @Override
+    public RoomStatus getRoomStatus(long index) {
+        return roomDao.readStatus(index);
     }
 
     @Override
@@ -74,7 +79,7 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public List<Room> getRoomList(String parameter) {
+    public List<Room> getRooms(String parameter) {
         final int maxResult = MaxResult.ROOM.getMaxResult();
         final int firstElement = roomDao.readSize().intValue() - maxResult;
         if (parameter.equals("free")) {
@@ -84,11 +89,11 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public List<Room> sort(String type, String parameter) {
+    public List<Room> getSortedRooms(String type, String parameter) {
         final int maxResult = MaxResult.ROOM.getMaxResult();
         final int firstElement = roomDao.readSize().intValue() - maxResult;
         if (parameter.equals("default")) {
-            return getRoomList(type);
+            return getRooms(type);
         }
         if (type.equals("free")) {
             return roomDao.readAllFree(firstElement, maxResult, parameter);
