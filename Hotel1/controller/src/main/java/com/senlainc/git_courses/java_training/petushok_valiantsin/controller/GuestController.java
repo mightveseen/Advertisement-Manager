@@ -1,7 +1,9 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.controller;
 
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dto.GuestDto;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.dto.RoomDto;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotAvailableException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.mapper.IMapper;
@@ -26,11 +28,13 @@ import java.util.List;
 public class GuestController {
 
     private final IGuestService guestService;
+    private final IOrderService orderService;
     private final IMapper mapperDto;
 
     @Autowired
-    public GuestController(IGuestService guestService, IMapper mapperDto) {
+    public GuestController(IGuestService guestService, IOrderService orderService, IMapper mapperDto) {
         this.guestService = guestService;
+        this.orderService = orderService;
         this.mapperDto = mapperDto;
     }
 
@@ -50,7 +54,13 @@ public class GuestController {
         guestService.delete(index);
     }
 
+    @GetMapping(value = "/{id}/last-rooms")
+    public List<RoomDto> showLastRooms(@PathVariable(value = "id") @Positive long index) {
+        return mapperDto.mapAll(orderService.getGuestRooms(index), RoomDto.class);
+    }
+
     @PutMapping(value = "/{id}")
+    //FIXME : Error with LocalDate
     public void updateGuest(@PathVariable(value = "id") @Positive long index,
                             @RequestBody @Validated(GuestDto.class) GuestDto object) {
         if (index != object.getId()) {
@@ -60,6 +70,7 @@ public class GuestController {
     }
 
     @PostMapping(value = "/")
+    //FIXME : Error with LocalDate
     public void createGuest(@RequestBody @Validated(GuestDto.class) GuestDto object) {
         guestService.create(mapperDto.map(object, Guest.class));
     }

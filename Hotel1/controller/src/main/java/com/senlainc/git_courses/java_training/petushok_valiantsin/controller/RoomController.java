@@ -1,5 +1,6 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.controller;
 
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IOrderService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.dto.RoomDto;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -26,47 +28,56 @@ import java.util.List;
 public class RoomController {
 
     private final IRoomService roomService;
+    private final IOrderService orderService;
     private final IMapper mapperDto;
 
     @Autowired
-    public RoomController(IRoomService roomService, IMapper mapperDto) {
+    public RoomController(IRoomService roomService, IOrderService orderService, IMapper mapperDto) {
         this.roomService = roomService;
+        this.orderService = orderService;
         this.mapperDto = mapperDto;
     }
 
     @GetMapping(value = "/")
-    public List<RoomDto> showGuests(@RequestParam(value = "ds", defaultValue = "all") String parameter,
-                                    @RequestParam(value = "fr", defaultValue = "0") @PositiveOrZero int firstElement,
-                                    @RequestParam(value = "mx", defaultValue = "15") @PositiveOrZero int maxResult) {
+    public List<RoomDto> showRooms(@RequestParam(value = "ds", defaultValue = "all") String parameter,
+                                   @RequestParam(value = "fr", defaultValue = "0") @PositiveOrZero int firstElement,
+                                   @RequestParam(value = "mx", defaultValue = "15") @PositiveOrZero int maxResult) {
         return mapperDto.mapAll(roomService.readAll(parameter, firstElement, maxResult), RoomDto.class);
     }
 
     @GetMapping(value = "/sorted")
-    public List<RoomDto> showGuests(@RequestParam(value = "ds", defaultValue = "all") String displayParameter,
-                                    @RequestParam(value = "sr", defaultValue = "default") String sortParameter,
-                                    @RequestParam(value = "fr", defaultValue = "0") @PositiveOrZero int firstElement,
-                                    @RequestParam(value = "mx", defaultValue = "15") @PositiveOrZero int maxResult) {
+    public List<RoomDto> showRooms(@RequestParam(value = "ds", defaultValue = "all") String displayParameter,
+                                   @RequestParam(value = "sr", defaultValue = "default") String sortParameter,
+                                   @RequestParam(value = "fr", defaultValue = "0") @PositiveOrZero int firstElement,
+                                   @RequestParam(value = "mx", defaultValue = "15") @PositiveOrZero int maxResult) {
         return mapperDto.mapAll(roomService.readAllSorted(displayParameter, firstElement, maxResult, sortParameter), RoomDto.class);
     }
 
     @GetMapping(value = "/{id}")
-    public RoomDto showGuest(@PathVariable(value = "id") @Positive long index) {
+    public RoomDto showRoom(@PathVariable(value = "id") @Positive long index) {
         return mapperDto.map(roomService.read(index), RoomDto.class);
     }
 
     @GetMapping(value = "/num-free")
-    public Long numFreeRoom() {
+    public Long showNumFree() {
         return roomService.getNumFree();
     }
 
+    @GetMapping(value = "/after-date")
+    public List<RoomDto> showAfterDate(@RequestParam("ld") LocalDate date,
+                                       @RequestParam(value = "fr", defaultValue = "0") @PositiveOrZero int firstElement,
+                                       @RequestParam(value = "mx", defaultValue = "15") @PositiveOrZero int maxResult) {
+        return mapperDto.mapAll(orderService.getRoomsAfterDate(date, firstElement, maxResult), RoomDto.class);
+    }
+
     @DeleteMapping(value = "/{id}")
-    public void deleteGuest(@PathVariable(value = "id") @Positive long index) {
+    public void deleteRoom(@PathVariable(value = "id") @Positive long index) {
         roomService.delete(index);
     }
 
     @PutMapping(value = "/{id}")
-    public void updateGuest(@PathVariable(value = "id") @Positive long index,
-                            @RequestBody @Validated(RoomDto.class) RoomDto object) {
+    public void updateRoom(@PathVariable(value = "id") @Positive long index,
+                           @RequestBody @Validated(RoomDto.class) RoomDto object) {
         if (index != object.getId()) {
             throw new ElementNotAvailableException("Page index: " + index + " not matched object index: " + object.getId());
         }
@@ -74,7 +85,7 @@ public class RoomController {
     }
 
     @PostMapping(value = "/")
-    public void createGuest(@RequestBody @Validated(RoomDto.class) RoomDto object) {
+    public void createRoom(@RequestBody @Validated(RoomDto.class) RoomDto object) {
         roomService.create(mapperDto.map(object, Room.class));
     }
 }
