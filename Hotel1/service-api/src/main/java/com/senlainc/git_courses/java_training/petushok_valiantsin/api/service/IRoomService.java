@@ -14,6 +14,8 @@ public interface IRoomService {
 
     void changeStatus(long index, String status);
 
+    Room getRoom(long index);
+
     List<Room> getRoomList(String parameter);
 
     Long numFreeRoom();

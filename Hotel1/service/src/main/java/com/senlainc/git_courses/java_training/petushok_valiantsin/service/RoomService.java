@@ -69,6 +69,11 @@ public class RoomService implements IRoomService {
     }
 
     @Override
+    public Room getRoom(long index) {
+        return roomDao.read(index);
+    }
+
+    @Override
     public List<Room> getRoomList(String parameter) {
         final int maxResult = MaxResult.ROOM.getMaxResult();
         final int firstElement = roomDao.readSize().intValue() - maxResult;
