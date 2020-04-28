@@ -8,7 +8,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.except
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.PersistenceException;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -23,10 +22,6 @@ public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
     @Override
     public List<Room> readAllFree(int fistElement, int maxResult) {
         try {
-            if (fistElement < 0) {
-                fistElement = 0;
-            }
-            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
             final Root<Room> root = criteriaQuery.from(Room.class);
             final Predicate predicate = criteriaBuilder.equal(root.get(STATUS_SINGULAR_ATTRIBUTE), RoomStatus.FREE);
@@ -43,10 +38,6 @@ public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
     @Override
     public List<Room> readAllFree(int fistElement, int maxResult, String parameter) {
         try {
-            if (fistElement < 0) {
-                fistElement = 0;
-            }
-            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
             final Root<Room> root = criteriaQuery.from(Room.class);
             final Predicate predicate = criteriaBuilder.equal(root.get(STATUS_SINGULAR_ATTRIBUTE), RoomStatus.FREE);
@@ -64,7 +55,6 @@ public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
     @Override
     public Long readFreeSize() {
         try {
-            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
             final Root<Room> root = criteriaQuery.from(Room.class);
             final Predicate predicate = criteriaBuilder.equal(root.get(STATUS_SINGULAR_ATTRIBUTE), RoomStatus.FREE);
@@ -80,7 +70,6 @@ public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
     @Override
     public RoomStatus readStatus(long index) {
         try {
-            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<RoomStatus> criteriaQuery = criteriaBuilder.createQuery(RoomStatus.class);
             final Root<Room> root = criteriaQuery.from(Room.class);
             final Predicate predicate = criteriaBuilder.equal(root.get(Room_.id), index);
@@ -96,7 +85,6 @@ public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
     @Override
     public boolean readByNumber(int number) {
         try {
-            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
             final Root<Room> root = criteriaQuery.from(Room.class);
             final Predicate predicate = criteriaBuilder.equal(root.get(Room_.number), number);

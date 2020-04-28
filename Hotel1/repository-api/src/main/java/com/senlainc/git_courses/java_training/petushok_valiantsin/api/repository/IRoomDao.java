@@ -5,7 +5,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.R
 
 import java.util.List;
 
-public interface IRoomDao extends ICommonDao<Room, Long> {
+public interface IRoomDao extends IGenericDao<Room, Long> {
 
     List<Room> readAllFree(int fistElement, int maxResult);
 

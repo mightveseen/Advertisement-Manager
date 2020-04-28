@@ -3,7 +3,6 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IGuestDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IGuestService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Guest;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data.MaxResult;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotAvailableException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +10,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -29,9 +27,9 @@ public class GuestService implements IGuestService {
 
     @Override
     @Transactional
-    public void create(String firstName, String lastName, LocalDate birthday) {
+    public void create(Guest object) {
         if (guestLimitProperty > guestDao.readSize()) {
-            guestDao.create(new Guest(firstName, lastName, birthday));
+            guestDao.create(object);
         } else {
             throw new ElementNotAvailableException("The number of guest's exceeds the specified limit: " + guestLimitProperty + " guest's");
         }
@@ -39,8 +37,14 @@ public class GuestService implements IGuestService {
 
     @Override
     @Transactional
-    public void delete(long index) {
+    public void delete(Long index) {
         guestDao.delete(guestDao.read(index));
+    }
+
+    @Override
+    @Transactional
+    public void update(Guest object) {
+        guestDao.update(object);
     }
 
     @Override
@@ -49,13 +53,12 @@ public class GuestService implements IGuestService {
     }
 
     @Override
-    public Guest getGuest(long index) {
+    public Guest read(Long index) {
         return guestDao.read(index);
     }
 
     @Override
-    public List<Guest> getGuests() {
-        final int maxResult = MaxResult.GUEST.getMaxResult();
-        return guestDao.readAll(guestDao.readSize().intValue() - maxResult, maxResult);
+    public List<Guest> readAll(int firstElement, int maxResult) {
+        return guestDao.readAll(firstElement, maxResult);
     }
 }

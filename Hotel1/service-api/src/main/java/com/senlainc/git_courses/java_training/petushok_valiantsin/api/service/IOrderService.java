@@ -7,23 +7,15 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface IOrderService {
-
-    void create(long guestIndex, long roomIndex, LocalDate endDate);
-
-    void delete(long index);
-
-    List<Room> getGuestRooms(long index);
+public interface IOrderService extends IGenericService<Order, Long> {
 
     void addAttendance(long orderIndex, long attendanceIndex);
 
     List<Attendance> getAttendances(long orderIndex);
 
-    List<Room> getRoomsAfterDate(LocalDate date);
+    List<Room> getGuestRooms(long index);
 
-    Order getOrder(long index);
+    List<Room> getRoomsAfterDate(LocalDate date, int firstElement, int maxResult);
 
-    List<Order> getOrders();
-
-    List<Order> getSortedOrders(String parameter);
+    List<Order> readAllSorted(String parameter, int firstElement, int maxResult);
 }

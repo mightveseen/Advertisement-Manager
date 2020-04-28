@@ -1,10 +1,11 @@
 package com.senlainc.git_courses.java_training.petushok_valiantsin.repository;
 
-import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.ICommonDao;
+import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IGenericDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.CreateQueryException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.DeleteQueryException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.ReadQueryException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.dao.UpdateQueryException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,9 +18,11 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
-public abstract class AbstractDao<T, K extends Serializable> implements ICommonDao<T, K> {
+public abstract class AbstractDao<T, K extends Serializable> implements IGenericDao<T, K> {
 
     protected final Class<T> clazz;
+    @Autowired
+    protected CriteriaBuilder criteriaBuilder;
     @PersistenceContext(unitName = "persistence", type = PersistenceContextType.EXTENDED)
     protected EntityManager entityManager;
 
@@ -73,7 +76,6 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
             if (fistElement < 0) {
                 fistElement = 0;
             }
-            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(this.clazz);
             return entityManager.createQuery(criteriaQuery
                     .select(criteriaQuery.from(this.clazz)))
@@ -91,7 +93,6 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
             if (fistElement < 0) {
                 fistElement = 0;
             }
-            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(this.clazz);
             final Root<T> root = criteriaQuery.from(this.clazz);
             return entityManager.createQuery(criteriaQuery
@@ -108,7 +109,6 @@ public abstract class AbstractDao<T, K extends Serializable> implements ICommonD
     @Override
     public Long readSize() {
         try {
-            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
             return entityManager.createQuery(criteriaQuery
                     .select(criteriaBuilder.count(criteriaQuery.from(this.clazz))))

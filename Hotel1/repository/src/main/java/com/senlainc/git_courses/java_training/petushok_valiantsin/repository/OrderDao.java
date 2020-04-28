@@ -10,7 +10,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.except
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.PersistenceException;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
@@ -24,10 +23,6 @@ public class OrderDao extends AbstractDao<Order, Long> implements IOrderDao {
     @Override
     public List<Order> readAll(int fistElement, int maxResult, String sortObject, String sortParameter) {
         try {
-            if (fistElement < 0) {
-                fistElement = 0;
-            }
-            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(clazz);
             final Root<Order> root = criteriaQuery.from(clazz);
             return entityManager.createQuery(criteriaQuery
@@ -44,7 +39,6 @@ public class OrderDao extends AbstractDao<Order, Long> implements IOrderDao {
     @Override
     public List<Room> readLastRoom(Long index, Integer limit) {
         try {
-            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
             final Root<Room> root = criteriaQuery.from(Room.class);
             final Join<Room, Order> join = root.join(Room_.orders);
@@ -63,7 +57,6 @@ public class OrderDao extends AbstractDao<Order, Long> implements IOrderDao {
     @Override
     public List<Room> readAfterDate(LocalDate date) {
         try {
-            final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
             final Root<Room> root = criteriaQuery.from(Room.class);
             final Join<Room, Order> join = root.join(Room_.orders);

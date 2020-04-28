@@ -4,17 +4,9 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendan
 
 import java.util.List;
 
-public interface IAttendanceService {
-
-    void create(String name, String section, double price);
-
-    void delete(long index);
+public interface IAttendanceService extends IGenericService<Attendance, Long> {
 
     void changePrice(long index, double price);
 
-    Attendance getAttendance(long index);
-
-    List<Attendance> getAttendances();
-
-    List<Attendance> getSortedAttendances(String parameter);
+    List<Attendance> readAllSorted(String parameter, int firstElement, int maxResult);
 }

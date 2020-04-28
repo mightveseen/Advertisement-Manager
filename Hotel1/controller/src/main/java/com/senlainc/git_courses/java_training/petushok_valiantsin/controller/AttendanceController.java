@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
@@ -27,13 +29,14 @@ public class AttendanceController {
     }
 
     @GetMapping(value = "/")
-    public List<AttendanceDto> showGuests() {
-        return mapper.mapAll(attendanceService.getAttendances(), AttendanceDto.class);
+    public List<AttendanceDto> showGuests(@RequestParam(value = "fr", defaultValue = "0") @PositiveOrZero int firstElement,
+                                          @RequestParam(value = "mx", defaultValue = "15") @PositiveOrZero int maxResult) {
+        return mapper.mapAll(attendanceService.readAll(firstElement, maxResult), AttendanceDto.class);
     }
 
     @GetMapping(value = "/{id}")
     public AttendanceDto showGuest(@PathVariable(value = "id") @Positive long index) {
-        return mapper.map(attendanceService.getAttendance(index), AttendanceDto.class);
+        return mapper.map(attendanceService.read(index), AttendanceDto.class);
     }
 
     @DeleteMapping(value = "/{id}/delete")

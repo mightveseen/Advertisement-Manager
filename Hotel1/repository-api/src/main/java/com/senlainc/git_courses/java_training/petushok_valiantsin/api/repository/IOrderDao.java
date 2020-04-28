@@ -6,7 +6,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface IOrderDao extends ICommonDao<Order, Long> {
+public interface IOrderDao extends IGenericDao<Order, Long> {
 
     List<Order> readAll(int fistElement, int maxResult, String sortObject, String sortParameter);
 

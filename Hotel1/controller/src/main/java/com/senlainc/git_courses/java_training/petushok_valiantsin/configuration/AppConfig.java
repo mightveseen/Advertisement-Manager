@@ -18,6 +18,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Properties;
 
 import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
@@ -90,6 +91,11 @@ public class AppConfig {
         final JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(emf);
         return transactionManager;
+    }
+
+    @Bean
+    public CriteriaBuilder criteriaBuilder(EntityManagerFactory emf) {
+        return emf.getCriteriaBuilder();
     }
 
     @Bean

@@ -5,13 +5,7 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.R
 
 import java.util.List;
 
-public interface IRoomService {
-
-    void create(int number, String classification, short roomNumber, short capacity, double price);
-
-    void delete(long index);
-
-    void changePrice(long index, double price);
+public interface IRoomService extends IGenericService<Room, Long> {
 
     void changeStatus(long index, String status);
 
@@ -19,9 +13,7 @@ public interface IRoomService {
 
     RoomStatus getRoomStatus(long index);
 
-    Room getRoom(long index);
+    List<Room> readAll(String type, int firstElement, int maxResult);
 
-    List<Room> getRooms(String parameter);
-
-    List<Room> getSortedRooms(String type, String parameter);
+    List<Room> readAllSorted(String type, int firstElement, int maxResult, String parameter);
 }

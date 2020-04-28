@@ -28,12 +28,12 @@ public class OrderController {
 
     @GetMapping(value = "/")
     public List<OrderDto> showOrders() {
-        return mapper.mapAll(orderService.getOrders(), OrderDto.class);
+        return mapper.mapAll(orderService.readAll(0, 5), OrderDto.class);
     }
 
     @GetMapping(value = "/{id}")
     public String showGuest(@PathVariable(value = "id") @Positive long index) {
-        return orderService.getOrder(index).toString();
+        return orderService.read(index).toString();
     }
 
     @DeleteMapping(value = "/{id}/delete")

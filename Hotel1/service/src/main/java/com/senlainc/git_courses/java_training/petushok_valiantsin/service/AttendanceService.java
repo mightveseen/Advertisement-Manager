@@ -3,7 +3,6 @@ package com.senlainc.git_courses.java_training.petushok_valiantsin.service;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository.IAttendanceDao;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IAttendanceService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Attendance;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data.MaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,14 +21,20 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     @Transactional
-    public void create(String name, String section, double price) {
-        attendanceDao.create(new Attendance(name, section, price));
+    public void create(Attendance object) {
+        attendanceDao.create(object);
     }
 
     @Override
     @Transactional
-    public void delete(long index) {
+    public void delete(Long index) {
         attendanceDao.delete(attendanceDao.read(index));
+    }
+
+    @Override
+    @Transactional
+    public void update(Attendance object) {
+        attendanceDao.update(object);
     }
 
     @Override
@@ -41,22 +46,20 @@ public class AttendanceService implements IAttendanceService {
     }
 
     @Override
-    public Attendance getAttendance(long index) {
+    public Attendance read(Long index) {
         return attendanceDao.read(index);
     }
 
     @Override
-    public List<Attendance> getAttendances() {
-        final int maxResult = MaxResult.ATTENDANCE.getMaxResult();
-        return attendanceDao.readAll(attendanceDao.readSize().intValue() - maxResult, maxResult);
+    public List<Attendance> readAll(int firstElement, int maxResult) {
+        return attendanceDao.readAll(firstElement, maxResult);
     }
 
     @Override
-    public List<Attendance> getSortedAttendances(String parameter) {
-        final int maxResult = MaxResult.ATTENDANCE.getMaxResult();
+    public List<Attendance> readAllSorted(String parameter, int firstElement, int maxResult) {
         if (parameter.equals("default")) {
-            return getAttendances();
+            return readAll(firstElement, maxResult);
         }
-        return attendanceDao.readAll(attendanceDao.readSize().intValue() - maxResult, maxResult, parameter);
+        return attendanceDao.readAll(firstElement, maxResult, parameter);
     }
 }

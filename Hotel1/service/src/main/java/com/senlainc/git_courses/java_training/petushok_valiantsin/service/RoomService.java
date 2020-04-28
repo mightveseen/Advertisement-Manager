@@ -4,7 +4,6 @@ import com.senlainc.git_courses.java_training.petushok_valiantsin.api.repository
 import com.senlainc.git_courses.java_training.petushok_valiantsin.api.service.IRoomService;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.Room;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.model.status.RoomStatus;
-import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.data.MaxResult;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementAlreadyExistsException;
 import com.senlainc.git_courses.java_training.petushok_valiantsin.utility.exception.ElementNotAvailableException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,25 +29,23 @@ public class RoomService implements IRoomService {
 
     @Override
     @Transactional
-    public void create(int number, String classification, short roomNumber, short capacity, double price) {
-        if (roomDao.readByNumber(number)) {
-            throw new ElementAlreadyExistsException("Room with number: " + number + " already exists.");
+    public void create(Room object) {
+        if (roomDao.readByNumber(object.getNumber())) {
+            throw new ElementAlreadyExistsException("Room with number: " + object.getNumber() + " already exists.");
         }
-        roomDao.create(new Room(number, classification, roomNumber, capacity, price));
+        roomDao.create(object);
     }
 
     @Override
     @Transactional
-    public void delete(long index) {
+    public void delete(Long index) {
         roomDao.delete(roomDao.read(index));
     }
 
     @Override
     @Transactional
-    public void changePrice(long index, double price) {
-        final Room room = roomDao.read(index);
-        room.setPrice(price);
-        roomDao.update(room);
+    public void update(Room object) {
+        roomDao.update(object);
     }
 
     @Override
@@ -74,14 +71,17 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public Room getRoom(long index) {
+    public Room read(Long index) {
         return roomDao.read(index);
     }
 
     @Override
-    public List<Room> getRooms(String parameter) {
-        final int maxResult = MaxResult.ROOM.getMaxResult();
-        final int firstElement = roomDao.readSize().intValue() - maxResult;
+    public List<Room> readAll(int firstElement, int maxResult) {
+        return roomDao.readAll(firstElement, maxResult);
+    }
+
+    @Override
+    public List<Room> readAll(String parameter, int firstElement, int maxResult) {
         if (parameter.equals("free")) {
             return roomDao.readAllFree(firstElement, maxResult);
         }
@@ -89,11 +89,9 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public List<Room> getSortedRooms(String type, String parameter) {
-        final int maxResult = MaxResult.ROOM.getMaxResult();
-        final int firstElement = roomDao.readSize().intValue() - maxResult;
+    public List<Room> readAllSorted(String type, int firstElement, int maxResult, String parameter) {
         if (parameter.equals("default")) {
-            return getRooms(type);
+            return readAll(type, firstElement, maxResult);
         }
         if (type.equals("free")) {
             return roomDao.readAllFree(firstElement, maxResult, parameter);
