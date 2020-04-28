@@ -13,9 +13,9 @@ public interface IGenericDao<E, K extends Serializable> {
 
     Long readSize();
 
+    E read(K index);
+
     List<E> readAll(int firstElement, int maxResult);
 
     List<E> readAll(int firstElement, int maxResult, String sortParameter);
-
-    E read(K index);
 }

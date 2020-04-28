@@ -55,13 +55,13 @@ public class Order implements Cloneable {
 
     }
 
-    public Order(Guest guest, Room room, LocalDate endDate, double price) {
-        this.orderDate = LocalDateTime.now();
-        this.guest = guest;
+    public Order(Room room, Guest guest, LocalDate startDate, LocalDateTime orderDate, LocalDate endDate, OrderStatus status, double price) {
         this.room = room;
-        this.startDate = LocalDate.now();
+        this.guest = guest;
+        this.startDate = startDate;
+        this.orderDate = orderDate;
         this.endDate = endDate;
-        this.status = OrderStatus.ACTIVE;
+        this.status = status;
         this.price = price;
     }
 

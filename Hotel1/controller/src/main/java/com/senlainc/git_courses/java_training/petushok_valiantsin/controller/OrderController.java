@@ -18,17 +18,17 @@ import java.util.List;
 public class OrderController {
 
     private final IOrderService orderService;
-    private final IMapper mapper;
+    private final IMapper mapperDto;
 
     @Autowired
-    public OrderController(IOrderService orderService, IMapper mapper) {
+    public OrderController(IOrderService orderService, IMapper mapperDto) {
         this.orderService = orderService;
-        this.mapper = mapper;
+        this.mapperDto = mapperDto;
     }
 
     @GetMapping(value = "/")
     public List<OrderDto> showOrders() {
-        return mapper.mapAll(orderService.readAll(0, 5), OrderDto.class);
+        return mapperDto.mapAll(orderService.readAll(0, 5), OrderDto.class);
     }
 
     @GetMapping(value = "/{id}")
@@ -36,7 +36,7 @@ public class OrderController {
         return orderService.read(index).toString();
     }
 
-    @DeleteMapping(value = "/{id}/delete")
+    @DeleteMapping(value = "/{id}")
     public void deleteGuest(@PathVariable(value = "id") @Positive long index) {
         orderService.delete(index);
     }

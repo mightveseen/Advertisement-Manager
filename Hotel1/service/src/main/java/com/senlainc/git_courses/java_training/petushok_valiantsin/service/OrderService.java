@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -40,6 +41,9 @@ public class OrderService implements IOrderService {
         if (roomStatus.equals(RoomStatus.RENTED) || roomStatus.equals(RoomStatus.SERVED)) {
             throw new ElementNotAvailableException("Room with index: " + object.getRoom().getId() + " is not available now.");
         }
+        object.setOrderDate(LocalDateTime.now());
+        object.setStartDate(LocalDate.now());
+        object.setStatus(OrderStatus.ACTIVE);
         orderDao.create(object);
         roomService.changeStatus(object.getRoom().getId(), RoomStatus.RENTED.name());
     }

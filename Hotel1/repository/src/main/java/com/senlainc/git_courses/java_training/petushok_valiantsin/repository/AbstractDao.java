@@ -73,9 +73,6 @@ public abstract class AbstractDao<T, K extends Serializable> implements IGeneric
     @Override
     public List<T> readAll(int fistElement, int maxResult) {
         try {
-            if (fistElement < 0) {
-                fistElement = 0;
-            }
             final CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(this.clazz);
             return entityManager.createQuery(criteriaQuery
                     .select(criteriaQuery.from(this.clazz)))
@@ -90,9 +87,6 @@ public abstract class AbstractDao<T, K extends Serializable> implements IGeneric
     @Override
     public List<T> readAll(int fistElement, int maxResult, String sortParameter) {
         try {
-            if (fistElement < 0) {
-                fistElement = 0;
-            }
             final CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(this.clazz);
             final Root<T> root = criteriaQuery.from(this.clazz);
             return entityManager.createQuery(criteriaQuery

@@ -33,6 +33,7 @@ public class RoomService implements IRoomService {
         if (roomDao.readByNumber(object.getNumber())) {
             throw new ElementAlreadyExistsException("Room with number: " + object.getNumber() + " already exists.");
         }
+        object.setStatus(RoomStatus.FREE);
         roomDao.create(object);
     }
 

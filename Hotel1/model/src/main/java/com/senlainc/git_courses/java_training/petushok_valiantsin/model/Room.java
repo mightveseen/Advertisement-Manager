@@ -41,15 +41,6 @@ public class Room implements Cloneable {
 
     }
 
-    public Room(int number, String classification, short roomNumber, short capacity, double price) {
-        this.number = number;
-        this.classification = classification;
-        this.roomNumber = roomNumber;
-        this.capacity = capacity;
-        this.status = RoomStatus.FREE;
-        this.price = price;
-    }
-
     public Room(int number, String classification, short roomNumber, short capacity, RoomStatus status, double price) {
         this.number = number;
         this.classification = classification;

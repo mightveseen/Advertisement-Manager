@@ -20,23 +20,30 @@ import java.util.List;
 public class AttendanceController {
 
     private final IAttendanceService attendanceService;
-    private final IMapper mapper;
+    private final IMapper mapperDto;
 
     @Autowired
-    public AttendanceController(IAttendanceService attendanceService, IMapper mapper) {
+    public AttendanceController(IAttendanceService attendanceService, IMapper mapperDto) {
         this.attendanceService = attendanceService;
-        this.mapper = mapper;
+        this.mapperDto = mapperDto;
     }
 
     @GetMapping(value = "/")
     public List<AttendanceDto> showGuests(@RequestParam(value = "fr", defaultValue = "0") @PositiveOrZero int firstElement,
                                           @RequestParam(value = "mx", defaultValue = "15") @PositiveOrZero int maxResult) {
-        return mapper.mapAll(attendanceService.readAll(firstElement, maxResult), AttendanceDto.class);
+        return mapperDto.mapAll(attendanceService.readAll(firstElement, maxResult), AttendanceDto.class);
+    }
+
+    @GetMapping(value = "/sorted")
+    public List<AttendanceDto> showGuests(@RequestParam(value = "sr", defaultValue = "default") String parameter,
+                                          @RequestParam(value = "fr", defaultValue = "0") @PositiveOrZero int firstElement,
+                                          @RequestParam(value = "mx", defaultValue = "15") @PositiveOrZero int maxResult) {
+        return mapperDto.mapAll(attendanceService.readAllSorted(parameter, firstElement, maxResult), AttendanceDto.class);
     }
 
     @GetMapping(value = "/{id}")
     public AttendanceDto showGuest(@PathVariable(value = "id") @Positive long index) {
-        return mapper.map(attendanceService.read(index), AttendanceDto.class);
+        return mapperDto.map(attendanceService.read(index), AttendanceDto.class);
     }
 
     @DeleteMapping(value = "/{id}/delete")
