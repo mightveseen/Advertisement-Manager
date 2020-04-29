@@ -165,7 +165,7 @@ public class Order implements Cloneable {
 
     public String toString() {
         return "Order index: " + this.id + "\n" +
-                "Order date: " + this.orderDate.format(DateTimeFormatter.ofPattern("HH:mm/yyyy-MM-dd")) + "\n" +
+                "Order date: " + this.orderDate.format(DateTimeFormatter.ofPattern("HH:mm+dd-MM-yyyy")) + "\n" +
                 "Guest: " + this.guest + "\n" +
                 "Room: " + this.room + "\n" +
                 "Start date: " + this.startDate + "\t" +

@@ -62,7 +62,7 @@ public abstract class AbstractDao<T, K extends Serializable> implements IGeneric
         try {
             final T object = entityManager.find(this.clazz, index);
             if (object == null) {
-                throw new ReadQueryException();
+                throw new ReadQueryException("Entity " + this.clazz.getSimpleName() + " with index: " + index + " don't exists");
             }
             return object;
         } catch (PersistenceException e) {

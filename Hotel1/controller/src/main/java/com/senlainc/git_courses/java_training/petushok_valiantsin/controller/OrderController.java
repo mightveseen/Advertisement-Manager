@@ -35,17 +35,17 @@ public class OrderController {
         this.mapperDto = mapperDto;
     }
 
-    @GetMapping(value = "/")
-    public List<OrderDto> showOrders(@RequestParam(value = "fr", defaultValue = "0") @PositiveOrZero int firstElement,
-                                     @RequestParam(value = "mx", defaultValue = "15") @PositiveOrZero int maxResult) {
+    @GetMapping
+    public List<OrderDto> showOrders(@RequestParam(value = "fe", defaultValue = "0") @PositiveOrZero int firstElement,
+                                     @RequestParam(value = "mr", defaultValue = "15") @PositiveOrZero int maxResult) {
         return mapperDto.mapAll(orderService.readAll(firstElement, maxResult), OrderDto.class);
     }
 
-    @GetMapping(value = "/sorted")
-    public List<OrderDto> showOrders(@RequestParam(value = "ds", defaultValue = "default") String parameter,
-                                     @RequestParam(value = "fr", defaultValue = "0") @PositiveOrZero int firstElement,
-                                     @RequestParam(value = "mx", defaultValue = "15") @PositiveOrZero int maxResult) {
-        return mapperDto.mapAll(orderService.readAllSorted(parameter, firstElement, maxResult), OrderDto.class);
+    @GetMapping(value = "/sorted-orders")
+    public List<OrderDto> showOrders(@RequestParam(value = "sr", defaultValue = "default") String sort,
+                                     @RequestParam(value = "fe", defaultValue = "0") @PositiveOrZero int firstElement,
+                                     @RequestParam(value = "mr", defaultValue = "15") @PositiveOrZero int maxResult) {
+        return mapperDto.mapAll(orderService.readAllSorted(sort, firstElement, maxResult), OrderDto.class);
     }
 
     @GetMapping(value = "/{id}")
@@ -70,7 +70,6 @@ public class OrderController {
     }
 
     @PutMapping(value = "/{id}")
-    //FIXME : Fix update with LocalDate
     public void updateOrder(@PathVariable(value = "id") @Positive long index,
                             @RequestBody @Validated(OrderDto.class) OrderDto object) {
         if (index != object.getId()) {
@@ -79,8 +78,7 @@ public class OrderController {
         orderService.update(mapperDto.map(object, Order.class));
     }
 
-    @PostMapping(value = "/")
-    //FIXME : Fix update with LocalDate
+    @PostMapping
     public void createOrder(@RequestBody @Validated(OrderDto.class) OrderDto object) {
         orderService.create(mapperDto.map(object, Order.class));
     }

@@ -9,4 +9,8 @@ public class ReadQueryException extends RuntimeException {
     public ReadQueryException() {
         super();
     }
+
+    public ReadQueryException(String message) {
+        super(message);
+    }
 }

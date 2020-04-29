@@ -38,9 +38,9 @@ public class GuestController {
         this.mapperDto = mapperDto;
     }
 
-    @GetMapping(value = "/")
-    public List<GuestDto> showGuests(@RequestParam(value = "fr", defaultValue = "0") @PositiveOrZero int firstElement,
-                                     @RequestParam(value = "mx", defaultValue = "15") @PositiveOrZero int maxResult) {
+    @GetMapping
+    public List<GuestDto> showGuests(@RequestParam(value = "fe", defaultValue = "0") @PositiveOrZero int firstElement,
+                                     @RequestParam(value = "mr", defaultValue = "15") @PositiveOrZero int maxResult) {
         return mapperDto.mapAll(guestService.readAll(firstElement, maxResult), GuestDto.class);
     }
 
@@ -55,12 +55,12 @@ public class GuestController {
     }
 
     @GetMapping(value = "/{id}/last-rooms")
-    public List<RoomDto> showLastRooms(@PathVariable(value = "id") @Positive long index) {
-        return mapperDto.mapAll(orderService.getGuestRooms(index), RoomDto.class);
+    public List<RoomDto> showLastRooms(@PathVariable(value = "id") @Positive long index,
+                                       @RequestParam(value = "lm", defaultValue = "3") @Positive int limit) {
+        return mapperDto.mapAll(orderService.getGuestRooms(index, limit), RoomDto.class);
     }
 
     @PutMapping(value = "/{id}")
-    //FIXME : Error with LocalDate
     public void updateGuest(@PathVariable(value = "id") @Positive long index,
                             @RequestBody @Validated(GuestDto.class) GuestDto object) {
         if (index != object.getId()) {
@@ -69,8 +69,7 @@ public class GuestController {
         guestService.update(mapperDto.map(object, Guest.class));
     }
 
-    @PostMapping(value = "/")
-    //FIXME : Error with LocalDate
+    @PostMapping
     public void createGuest(@RequestBody @Validated(GuestDto.class) GuestDto object) {
         guestService.create(mapperDto.map(object, Guest.class));
     }

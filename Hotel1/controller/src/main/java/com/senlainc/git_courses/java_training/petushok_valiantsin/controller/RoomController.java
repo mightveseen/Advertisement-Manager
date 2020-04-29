@@ -29,33 +29,33 @@ public class RoomController {
 
     private final IRoomService roomService;
     private final IOrderService orderService;
-    private final IMapper mapperDto;
+    private final IMapper mapper;
 
     @Autowired
-    public RoomController(IRoomService roomService, IOrderService orderService, IMapper mapperDto) {
+    public RoomController(IRoomService roomService, IOrderService orderService, IMapper mapper) {
         this.roomService = roomService;
         this.orderService = orderService;
-        this.mapperDto = mapperDto;
+        this.mapper = mapper;
     }
 
-    @GetMapping(value = "/")
-    public List<RoomDto> showRooms(@RequestParam(value = "ds", defaultValue = "all") String parameter,
-                                   @RequestParam(value = "fr", defaultValue = "0") @PositiveOrZero int firstElement,
-                                   @RequestParam(value = "mx", defaultValue = "15") @PositiveOrZero int maxResult) {
-        return mapperDto.mapAll(roomService.readAll(parameter, firstElement, maxResult), RoomDto.class);
+    @GetMapping
+    public List<RoomDto> showRooms(@RequestParam(value = "dp", defaultValue = "all") String display,
+                                   @RequestParam(value = "fe", defaultValue = "0") @PositiveOrZero int firstElement,
+                                   @RequestParam(value = "mr", defaultValue = "15") @PositiveOrZero int maxResult) {
+        return mapper.mapAll(roomService.readAll(display, firstElement, maxResult), RoomDto.class);
     }
 
-    @GetMapping(value = "/sorted")
-    public List<RoomDto> showRooms(@RequestParam(value = "ds", defaultValue = "all") String displayParameter,
-                                   @RequestParam(value = "sr", defaultValue = "default") String sortParameter,
-                                   @RequestParam(value = "fr", defaultValue = "0") @PositiveOrZero int firstElement,
-                                   @RequestParam(value = "mx", defaultValue = "15") @PositiveOrZero int maxResult) {
-        return mapperDto.mapAll(roomService.readAllSorted(displayParameter, firstElement, maxResult, sortParameter), RoomDto.class);
+    @GetMapping(value = "/sorted-rooms")
+    public List<RoomDto> showRooms(@RequestParam(value = "dp", defaultValue = "all") String display,
+                                   @RequestParam(value = "sr", defaultValue = "default") String sort,
+                                   @RequestParam(value = "fe", defaultValue = "0") @PositiveOrZero int firstElement,
+                                   @RequestParam(value = "mr", defaultValue = "15") @PositiveOrZero int maxResult) {
+        return mapper.mapAll(roomService.readAllSorted(display, firstElement, maxResult, sort), RoomDto.class);
     }
 
     @GetMapping(value = "/{id}")
     public RoomDto showRoom(@PathVariable(value = "id") @Positive long index) {
-        return mapperDto.map(roomService.read(index), RoomDto.class);
+        return mapper.map(roomService.read(index), RoomDto.class);
     }
 
     @GetMapping(value = "/num-free")
@@ -67,7 +67,7 @@ public class RoomController {
     public List<RoomDto> showAfterDate(@RequestParam("ld") LocalDate date,
                                        @RequestParam(value = "fr", defaultValue = "0") @PositiveOrZero int firstElement,
                                        @RequestParam(value = "mx", defaultValue = "15") @PositiveOrZero int maxResult) {
-        return mapperDto.mapAll(orderService.getRoomsAfterDate(date, firstElement, maxResult), RoomDto.class);
+        return mapper.mapAll(orderService.getRoomsAfterDate(date, firstElement, maxResult), RoomDto.class);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -81,11 +81,11 @@ public class RoomController {
         if (index != object.getId()) {
             throw new ElementNotAvailableException("Page index: " + index + " not matched object index: " + object.getId());
         }
-        roomService.update(mapperDto.map(object, Room.class));
+        roomService.update(mapper.map(object, Room.class));
     }
 
-    @PostMapping(value = "/")
+    @PostMapping
     public void createRoom(@RequestBody @Validated(RoomDto.class) RoomDto object) {
-        roomService.create(mapperDto.map(object, Room.class));
+        roomService.create(mapper.map(object, Room.class));
     }
 }

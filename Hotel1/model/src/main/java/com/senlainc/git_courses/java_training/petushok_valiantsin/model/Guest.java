@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Set;
 
@@ -101,6 +102,6 @@ public class Guest implements Cloneable {
     @Override
     public String toString() {
         return this.id + ")" + this.firstName + ", "
-                + this.secondName + ", " + this.birthday;
+                + this.secondName + ", " + this.birthday.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
     }
 }

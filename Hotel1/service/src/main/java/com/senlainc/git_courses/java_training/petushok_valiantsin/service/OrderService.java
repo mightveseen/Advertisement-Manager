@@ -83,8 +83,8 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Room> getGuestRooms(long index) {
-        return orderDao.readLastRoom(index, 3);
+    public List<Room> getGuestRooms(long index, int limit) {
+        return orderDao.readLastRoom(index, limit);
     }
 
     @Override
@@ -95,7 +95,6 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    //FIXME : Make pagination
     public List<Attendance> getAttendances(long orderIndex) {
         final List<Attendance> attendances = orderDao.read(orderIndex).getAttendances();
         if (attendances == null) {
@@ -119,8 +118,8 @@ public class OrderService implements IOrderService {
         if (parameter.equals("default")) {
             return readAll(firstElement, maxResult);
         }
-        if (parameter.contains("/")) {
-            final String[] parameterParse = parameter.split("/", 2);
+        if (parameter.contains("-")) {
+            final String[] parameterParse = parameter.split("-", 2);
             return orderDao.readAll(firstElement, maxResult,
                     parameterParse[0], parameterParse[1]);
         }

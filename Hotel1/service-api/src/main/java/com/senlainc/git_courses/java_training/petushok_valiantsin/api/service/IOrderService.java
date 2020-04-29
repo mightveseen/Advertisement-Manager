@@ -13,7 +13,7 @@ public interface IOrderService extends IGenericService<Order, Long> {
 
     List<Attendance> getAttendances(long orderIndex);
 
-    List<Room> getGuestRooms(long index);
+    List<Room> getGuestRooms(long index, int limit);
 
     List<Room> getRoomsAfterDate(LocalDate date, int firstElement, int maxResult);
 

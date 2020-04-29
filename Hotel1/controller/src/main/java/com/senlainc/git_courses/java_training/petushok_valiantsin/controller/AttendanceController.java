@@ -34,17 +34,17 @@ public class AttendanceController {
         this.mapperDto = mapperDto;
     }
 
-    @GetMapping(value = "/")
-    public List<AttendanceDto> showAttendances(@RequestParam(value = "fr", defaultValue = "0") @PositiveOrZero int firstElement,
-                                               @RequestParam(value = "mx", defaultValue = "15") @PositiveOrZero int maxResult) {
+    @GetMapping
+    public List<AttendanceDto> showAttendances(@RequestParam(value = "fe", defaultValue = "0") @PositiveOrZero int firstElement,
+                                               @RequestParam(value = "mr", defaultValue = "15") @PositiveOrZero int maxResult) {
         return mapperDto.mapAll(attendanceService.readAll(firstElement, maxResult), AttendanceDto.class);
     }
 
-    @GetMapping(value = "/sorted")
-    public List<AttendanceDto> showAttendances(@RequestParam(value = "sr", defaultValue = "default") String parameter,
-                                               @RequestParam(value = "fr", defaultValue = "0") @PositiveOrZero int firstElement,
-                                               @RequestParam(value = "mx", defaultValue = "15") @PositiveOrZero int maxResult) {
-        return mapperDto.mapAll(attendanceService.readAllSorted(parameter, firstElement, maxResult), AttendanceDto.class);
+    @GetMapping(value = "/sorted-attendances")
+    public List<AttendanceDto> showAttendances(@RequestParam(value = "sr", defaultValue = "default") String sort,
+                                               @RequestParam(value = "fe", defaultValue = "0") @PositiveOrZero int firstElement,
+                                               @RequestParam(value = "mr", defaultValue = "15") @PositiveOrZero int maxResult) {
+        return mapperDto.mapAll(attendanceService.readAllSorted(sort, firstElement, maxResult), AttendanceDto.class);
     }
 
     @GetMapping(value = "/{id}")
@@ -66,7 +66,7 @@ public class AttendanceController {
         attendanceService.update(mapperDto.map(object, Attendance.class));
     }
 
-    @PostMapping(value = "/")
+    @PostMapping
     public void createAttendance(@RequestBody @Validated(AttendanceDto.class) AttendanceDto object) {
         attendanceService.create(mapperDto.map(object, Attendance.class));
     }
