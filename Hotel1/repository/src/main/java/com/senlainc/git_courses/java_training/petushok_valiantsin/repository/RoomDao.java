@@ -83,6 +83,21 @@ public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
     }
 
     @Override
+    public Double readPrice(long index) {
+        try {
+            final CriteriaQuery<Double> criteriaQuery = criteriaBuilder.createQuery(Double.class);
+            final Root<Room> root = criteriaQuery.from(Room.class);
+            final Predicate predicate = criteriaBuilder.equal(root.get(Room_.id), index);
+            return entityManager.createQuery(criteriaQuery
+                    .select(root.get(Room_.price))
+                    .where(predicate))
+                    .getSingleResult();
+        } catch (PersistenceException e) {
+            throw new ReadQueryException(e);
+        }
+    }
+
+    @Override
     public boolean readByNumber(int number) {
         try {
             final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);

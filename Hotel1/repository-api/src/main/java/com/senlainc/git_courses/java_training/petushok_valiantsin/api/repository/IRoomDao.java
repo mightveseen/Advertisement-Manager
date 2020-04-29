@@ -15,5 +15,7 @@ public interface IRoomDao extends IGenericDao<Room, Long> {
 
     RoomStatus readStatus(long index);
 
+    Double readPrice(long index);
+
     boolean readByNumber(int number);
 }

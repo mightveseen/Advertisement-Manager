@@ -37,6 +37,7 @@ public class OrderDao extends AbstractDao<Order, Long> implements IOrderDao {
     }
 
     @Override
+    //TODO : Make sort
     public List<Room> readLastRoom(Long index, Integer limit) {
         try {
             final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);

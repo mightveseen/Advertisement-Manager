@@ -13,6 +13,8 @@ public interface IRoomService extends IGenericService<Room, Long> {
 
     RoomStatus getRoomStatus(long index);
 
+    Double gerRoomPrice(long index);
+
     List<Room> readAll(String type, int firstElement, int maxResult);
 
     List<Room> readAllSorted(String type, int firstElement, int maxResult, String parameter);

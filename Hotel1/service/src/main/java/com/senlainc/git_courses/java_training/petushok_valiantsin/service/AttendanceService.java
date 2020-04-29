@@ -46,16 +46,19 @@ public class AttendanceService implements IAttendanceService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Attendance read(Long index) {
         return attendanceDao.read(index);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Attendance> readAll(int firstElement, int maxResult) {
         return attendanceDao.readAll(firstElement, maxResult);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Attendance> readAllSorted(String parameter, int firstElement, int maxResult) {
         if (parameter.equals("default")) {
             return readAll(firstElement, maxResult);

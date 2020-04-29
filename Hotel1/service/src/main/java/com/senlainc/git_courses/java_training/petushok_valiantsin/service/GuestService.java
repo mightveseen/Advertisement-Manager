@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -48,16 +49,19 @@ public class GuestService implements IGuestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Long getNum() {
         return guestDao.readSize();
     }
 
     @Override
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public Guest read(Long index) {
         return guestDao.read(index);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Guest> readAll(int firstElement, int maxResult) {
         return guestDao.readAll(firstElement, maxResult);
     }

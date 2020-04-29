@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -62,26 +63,37 @@ public class RoomService implements IRoomService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Long getNumFree() {
         return roomDao.readFreeSize();
     }
 
     @Override
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public RoomStatus getRoomStatus(long index) {
         return roomDao.readStatus(index);
     }
 
     @Override
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
+    public Double gerRoomPrice(long index) {
+        return roomDao.readPrice(index);
+    }
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public Room read(Long index) {
         return roomDao.read(index);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Room> readAll(int firstElement, int maxResult) {
         return roomDao.readAll(firstElement, maxResult);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Room> readAll(String parameter, int firstElement, int maxResult) {
         if (parameter.equals("free")) {
             return roomDao.readAllFree(firstElement, maxResult);
@@ -90,6 +102,7 @@ public class RoomService implements IRoomService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Room> readAllSorted(String type, int firstElement, int maxResult, String parameter) {
         if (parameter.equals("default")) {
             return readAll(type, firstElement, maxResult);

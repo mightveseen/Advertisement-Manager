@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -63,6 +64,7 @@ public class Order implements Cloneable {
         this.endDate = endDate;
         this.status = status;
         this.price = price;
+        this.attendances = new ArrayList<>();
     }
 
     public long getId() {
