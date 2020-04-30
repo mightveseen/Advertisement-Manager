@@ -3,7 +3,11 @@ package com.senlainc.gitcourses.javatraining.petushokvaliantsin.exceptionhandler
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementAlreadyExistsException;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementNotAvailableException;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementNotFoundException;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.NoMatchException;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.dao.CreateQueryException;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.dao.DeleteQueryException;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.dao.ReadQueryException;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.dao.UpdateQueryException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,26 +18,32 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ElementNotFoundException.class)
-    public ResponseEntity<Object> elementNotFound(ElementNotFoundException e) {
+    public ResponseEntity<Object> elementNotFoundResponse(ElementNotFoundException e) {
         logger.info(e);
-        return new ResponseEntity<>(new ExceptionTemplate(e.getMessage(), e.getStackTrace()[0]), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ExceptionTemplate(e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ElementNotAvailableException.class)
-    public ResponseEntity<Object> elementNotAvailable(ElementNotAvailableException e) {
+    public ResponseEntity<Object> elementNotAvailableResponse(ElementNotAvailableException e) {
         logger.info(e);
-        return new ResponseEntity<>(new ExceptionTemplate(e.getMessage(), e.getStackTrace()[0]), HttpStatus.LOCKED);
+        return new ResponseEntity<>(new ExceptionTemplate(e.getMessage()), HttpStatus.LOCKED);
     }
 
     @ExceptionHandler(ElementAlreadyExistsException.class)
-    public ResponseEntity<Object> elementAlreadyExists(ElementAlreadyExistsException e) {
+    public ResponseEntity<Object> elementAlreadyExistsResponse(ElementAlreadyExistsException e) {
         logger.info(e);
-        return new ResponseEntity<>(new ExceptionTemplate(e.getMessage(), e.getStackTrace()[0]), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(new ExceptionTemplate(e.getMessage()), HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(ReadQueryException.class)
-    public ResponseEntity<Object> queryException(ReadQueryException e) {
+    @ExceptionHandler({ReadQueryException.class, CreateQueryException.class, UpdateQueryException.class, DeleteQueryException.class})
+    public ResponseEntity<Object> failedQueryResponse(RuntimeException e) {
+        logger.warn(e);
+        return new ResponseEntity<>(new ExceptionTemplate(e.getMessage()), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(NoMatchException.class)
+    public ResponseEntity<Object> noMathResponse(NoMatchException e) {
         logger.info(e);
-        return new ResponseEntity<>(new ExceptionTemplate(e.getMessage(), e.getStackTrace()[0]), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(new ExceptionTemplate(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }

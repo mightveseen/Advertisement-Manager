@@ -17,11 +17,9 @@ public class ExceptionTemplate {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss+dd-MM-yyyy")
     private LocalDateTime time;
     private String message;
-    private StackTraceElement mainClass;
 
-    public ExceptionTemplate(String message, StackTraceElement mainClass) {
+    public ExceptionTemplate(String message) {
         this.message = message;
-        this.mainClass = mainClass;
         this.time = LocalDateTime.now();
     }
 
@@ -31,14 +29,6 @@ public class ExceptionTemplate {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public StackTraceElement getMainClass() {
-        return mainClass;
-    }
-
-    public void setMainClass(StackTraceElement mainClass) {
-        this.mainClass = mainClass;
     }
 
     public LocalDateTime getTime() {

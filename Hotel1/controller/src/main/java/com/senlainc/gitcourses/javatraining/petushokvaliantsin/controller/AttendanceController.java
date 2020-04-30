@@ -61,7 +61,7 @@ public class AttendanceController {
     public void updateAttendance(@PathVariable(value = "id") @Positive long index,
                                  @RequestBody @Validated(AttendanceDto.class) AttendanceDto object) {
         if (index != object.getId()) {
-            throw new NoMatchException("Page index [" + index + "] not matched object index: [" + object.getId() + "].");
+            throw new NoMatchException("Page index [" + index + "] not matched object index [" + object.getId() + "].");
         }
         attendanceService.update(mapperDto.map(object, Attendance.class));
     }

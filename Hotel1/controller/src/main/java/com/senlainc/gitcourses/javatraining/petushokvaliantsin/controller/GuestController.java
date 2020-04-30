@@ -64,7 +64,7 @@ public class GuestController {
     public void updateGuest(@PathVariable(value = "id") @Positive long index,
                             @RequestBody @Validated(GuestDto.class) GuestDto object) {
         if (index != object.getId()) {
-            throw new NoMatchException("Page index [" + index + "] not matched object index: [" + object.getId() + "].");
+            throw new NoMatchException("Page index [" + index + "] not matched object index [" + object.getId() + "].");
         }
         guestService.update(mapperDto.map(object, Guest.class));
     }

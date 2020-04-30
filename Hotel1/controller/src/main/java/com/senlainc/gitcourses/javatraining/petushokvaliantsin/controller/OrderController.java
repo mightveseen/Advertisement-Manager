@@ -73,7 +73,7 @@ public class OrderController {
     public void updateOrder(@PathVariable(value = "id") @Positive long index,
                             @RequestBody @Validated(OrderDto.class) OrderDto object) {
         if (index != object.getId()) {
-            throw new NoMatchException("Page index [" + index + "] not matched object index: [" + object.getId() + "].");
+            throw new NoMatchException("Page index [" + index + "] not matched object index [" + object.getId() + "].");
         }
         orderService.update(mapperDto.map(object, Order.class));
     }

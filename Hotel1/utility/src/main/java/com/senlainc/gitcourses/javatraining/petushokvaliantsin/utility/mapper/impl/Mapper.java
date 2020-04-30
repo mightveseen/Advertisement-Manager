@@ -2,20 +2,26 @@ package com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.i
 
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.IMapper;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 
 @Component
 public class Mapper implements IMapper {
 
     private final ModelMapper modelMapper;
 
-    @Autowired
-    public Mapper(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
+    public Mapper() {
+        this.modelMapper = new ModelMapper();
+        modelMapper.getConfiguration()
+                .setMatchingStrategy(MatchingStrategies.STRICT)
+                .setFieldMatchingEnabled(true)
+                .setSkipNullEnabled(true)
+                .setFieldAccessLevel(PRIVATE);
     }
 
     @Override

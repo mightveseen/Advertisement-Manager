@@ -1,7 +1,5 @@
 package com.senlainc.gitcourses.javatraining.petushokvaliantsin.configuration;
 
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,8 +18,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Properties;
-
-import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 
 @Configuration
 @ComponentScan(basePackages = {
@@ -96,16 +92,5 @@ public class AppConfig {
     @Bean
     public CriteriaBuilder criteriaBuilder(EntityManagerFactory emf) {
         return emf.getCriteriaBuilder();
-    }
-
-    @Bean
-    public ModelMapper modelMapper() {
-        final ModelMapper mapper = new ModelMapper();
-        mapper.getConfiguration()
-                .setMatchingStrategy(MatchingStrategies.STRICT)
-                .setFieldMatchingEnabled(true)
-                .setSkipNullEnabled(true)
-                .setFieldAccessLevel(PRIVATE);
-        return mapper;
     }
 }

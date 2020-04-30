@@ -80,7 +80,7 @@ public class RoomController extends AppExceptionHandler {
     public void updateRoom(@PathVariable(value = "id") @Positive long index,
                            @RequestBody @Validated(RoomDto.class) RoomDto object) {
         if (index != object.getId()) {
-            throw new NoMatchException("Page index [" + index + "] not matched object index: [" + object.getId() + "].");
+            throw new NoMatchException("Page index [" + index + "] not matched object index [" + object.getId() + "].");
         }
         roomService.update(mapper.map(object, Room.class));
     }
