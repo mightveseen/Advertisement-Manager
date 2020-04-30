@@ -3,7 +3,7 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.senlainc.git_courses.java_training.petushok_valiantsin</groupId>
+    <groupId>com.senlainc.gitcourses.javatraining.petushokvaliantsin</groupId>
     <artifactId>Hotel</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
