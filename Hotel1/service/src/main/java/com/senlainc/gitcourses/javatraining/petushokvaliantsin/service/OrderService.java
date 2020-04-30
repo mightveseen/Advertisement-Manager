@@ -43,7 +43,8 @@ public class OrderService implements IOrderService {
     public void create(Order order) {
         final RoomStatus roomStatus = roomService.getRoomStatus(order.getRoom().getId());
         if (roomStatus.equals(RoomStatus.RENTED) || roomStatus.equals(RoomStatus.SERVED)) {
-            throw new ElementNotAvailableException("Room with index [" + order.getRoom().getId() + "] is not available now.");
+            throw new ElementNotAvailableException("Room with index [" + order.getRoom().getId() + "] is not available. " +
+                    "Room status [" + roomStatus + "].");
         }
         final Room room = roomService.read(order.getRoom().getId());
         final Guest guest = guestService.read(order.getGuest().getId());
@@ -52,7 +53,6 @@ public class OrderService implements IOrderService {
         order.setStatus(OrderStatus.ACTIVE);
         order.setRoom(room);
         order.setGuest(guest);
-        order.setAttendances(new ArrayList<>());
         order.setPrice(room.getPrice());
         orderDao.create(order);
         roomService.changeStatus(order.getRoom().getId(), RoomStatus.RENTED.name());
@@ -85,7 +85,12 @@ public class OrderService implements IOrderService {
             throw new ElementNotAvailableException("Order with index [" + orderIndex + "] is disabled.");
         }
         final Attendance attendance = attendanceService.read(attendanceIndex);
-        final List<Attendance> attendances = order.getAttendances();
+        final List<Attendance> attendances;
+        if (order.getAttendances() == null) {
+            attendances = new ArrayList<>();
+        } else {
+            attendances = order.getAttendances();
+        }
         attendances.add(attendance);
         order.setAttendances(attendances);
         order.setPrice(order.getPrice() + attendance.getPrice());

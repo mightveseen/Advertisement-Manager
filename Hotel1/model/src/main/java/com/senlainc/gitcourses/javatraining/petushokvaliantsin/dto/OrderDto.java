@@ -1,6 +1,7 @@
 package com.senlainc.gitcourses.javatraining.petushokvaliantsin.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -27,6 +28,7 @@ public class OrderDto implements Serializable {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm+dd-MM-yyyy")
     private LocalDateTime orderDate;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<AttendanceDto> attendances;
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
