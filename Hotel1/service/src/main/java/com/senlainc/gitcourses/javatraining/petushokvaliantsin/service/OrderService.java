@@ -164,14 +164,6 @@ public class OrderService implements IOrderService {
             orderDao.readAll(firstElement, maxResult, singularMapper.getSingularAttribute(parameterParse[0]),
                     singularMapper.getSingularAttribute(parameterParse[1]));
         }
-        return orderDao.readAll(firstElement, maxResult, Order_.guest, Guest_.firstName);
-//        if (sortParameter.equals("default")) {
-//            return readAll(firstElement, maxResult);
-//        }
-//        if (sortParameter.contains("-")) {
-//            final String[] parameterParse = sortParameter.split("-", 2);
-//            return orderDao.readAll(firstElement, maxResult, Order_.guest, Guest_.firstName);
-//        }
-//        return orderDao.readAll(firstElement, maxResult);
+        return orderDao.readAll(firstElement, maxResult);
     }
 }
