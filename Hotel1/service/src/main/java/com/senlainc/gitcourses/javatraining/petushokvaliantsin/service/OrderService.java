@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -40,7 +41,7 @@ public class OrderService implements IOrderService {
 
     @Override
     @Transactional
-    public void create(Order order) {
+    public boolean create(Order order) {
         final RoomStatus roomStatus = roomService.getRoomStatus(order.getRoom().getId());
         if (roomStatus.equals(RoomStatus.RENTED) || roomStatus.equals(RoomStatus.SERVED)) {
             throw new ElementNotAvailableException("Room with index [" + order.getRoom().getId() + "] is not available. " +
@@ -56,11 +57,12 @@ public class OrderService implements IOrderService {
         order.setPrice(room.getPrice());
         orderDao.create(order);
         roomService.changeStatus(order.getRoom().getId(), RoomStatus.RENTED.name());
+        return true;
     }
 
     @Override
     @Transactional
-    public void delete(Long index) {
+    public boolean delete(Long index) {
         final Order order = orderDao.read(index);
         if (order.getStatus().equals(OrderStatus.DISABLED)) {
             throw new ElementNotAvailableException("Order with index [" + index + "] already disabled.");
@@ -69,12 +71,14 @@ public class OrderService implements IOrderService {
         order.setEndDate(LocalDate.now());
         orderDao.update(order);
         roomService.changeStatus(order.getRoom().getId(), RoomStatus.FREE.name());
+        return true;
     }
 
     @Override
     @Transactional
-    public void update(Order order) {
+    public boolean update(Order order) {
         orderDao.update(order);
+        return true;
     }
 
     @Override
@@ -100,7 +104,11 @@ public class OrderService implements IOrderService {
     @Override
     @Transactional(readOnly = true)
     public List<Room> getGuestRooms(long index, int limit) {
-        return orderDao.readLastRoom(index, limit);
+        final List<Room> rooms = orderDao.readLastRoom(index, limit);
+        if (rooms == null) {
+            return Collections.emptyList();
+        }
+        return rooms;
     }
 
     @Override

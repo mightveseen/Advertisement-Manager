@@ -41,6 +41,12 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new ExceptionTemplate(e.getMessage()), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Object> illegalArgument(IllegalArgumentException e) {
+        logger.warn(e);
+        return new ResponseEntity<>(new ExceptionTemplate(e.getMessage()), HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(NoMatchException.class)
     public ResponseEntity<Object> noMathResponse(NoMatchException e) {
         logger.info(e);

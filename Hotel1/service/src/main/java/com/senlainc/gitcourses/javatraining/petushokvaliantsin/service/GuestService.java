@@ -28,24 +28,27 @@ public class GuestService implements IGuestService {
 
     @Override
     @Transactional
-    public void create(Guest object) {
+    public boolean create(Guest object) {
         if (guestLimitProperty > guestDao.readSize()) {
             guestDao.create(object);
         } else {
             throw new ElementNotAvailableException("The number of guest's exceeds the specified limit [" + guestLimitProperty + "] guest's");
         }
+        return true;
     }
 
     @Override
     @Transactional
-    public void delete(Long index) {
+    public boolean delete(Long index) {
         guestDao.delete(guestDao.read(index));
+        return true;
     }
 
     @Override
     @Transactional
-    public void update(Guest object) {
+    public boolean update(Guest object) {
         guestDao.update(object);
+        return true;
     }
 
     @Override

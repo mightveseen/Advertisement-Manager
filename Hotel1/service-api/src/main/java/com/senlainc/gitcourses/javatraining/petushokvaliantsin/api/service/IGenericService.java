@@ -5,11 +5,11 @@ import java.util.List;
 
 public interface IGenericService<E, K extends Serializable> {
 
-    void create(E object);
+    boolean create(E object);
 
-    void delete(K index);
+    boolean delete(K index);
 
-    void update(E object);
+    boolean update(E object);
 
     E read(K index);
 

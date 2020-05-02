@@ -21,20 +21,23 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     @Transactional
-    public void create(Attendance object) {
+    public boolean create(Attendance object) {
         attendanceDao.create(object);
+        return true;
     }
 
     @Override
     @Transactional
-    public void delete(Long index) {
+    public boolean delete(Long index) {
         attendanceDao.delete(attendanceDao.read(index));
+        return true;
     }
 
     @Override
     @Transactional
-    public void update(Attendance object) {
+    public boolean update(Attendance object) {
         attendanceDao.update(object);
+        return true;
     }
 
     @Override

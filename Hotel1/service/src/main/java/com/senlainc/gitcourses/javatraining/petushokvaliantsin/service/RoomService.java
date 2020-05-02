@@ -30,24 +30,27 @@ public class RoomService implements IRoomService {
 
     @Override
     @Transactional
-    public void create(Room object) {
+    public boolean create(Room object) {
         if (roomDao.readByNumber(object.getNumber())) {
             throw new ElementAlreadyExistsException("Room with number [" + object.getNumber() + "] already exists.");
         }
         object.setStatus(RoomStatus.FREE);
         roomDao.create(object);
+        return true;
     }
 
     @Override
     @Transactional
-    public void delete(Long index) {
+    public boolean delete(Long index) {
         roomDao.delete(roomDao.read(index));
+        return true;
     }
 
     @Override
     @Transactional
-    public void update(Room object) {
+    public boolean update(Room object) {
         roomDao.update(object);
+        return true;
     }
 
     @Override
@@ -94,8 +97,8 @@ public class RoomService implements IRoomService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Room> readAll(String parameter, int firstElement, int maxResult) {
-        if (parameter.equals("free")) {
+    public List<Room> readAll(String type, int firstElement, int maxResult) {
+        if (type.equals("free")) {
             return roomDao.readAllFree(firstElement, maxResult);
         }
         return roomDao.readAll(firstElement, maxResult);
