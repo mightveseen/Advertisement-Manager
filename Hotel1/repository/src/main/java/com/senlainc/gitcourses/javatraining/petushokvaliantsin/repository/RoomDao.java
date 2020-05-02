@@ -20,39 +20,6 @@ public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
     private static final SingularAttribute<Room, RoomStatus> STATUS_SINGULAR_ATTRIBUTE = Room_.status;
 
     @Override
-    public List<Room> readAllFree(int fistElement, int maxResult) {
-        try {
-            final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
-            final Root<Room> root = criteriaQuery.from(Room.class);
-            final Predicate predicate = criteriaBuilder.equal(root.get(STATUS_SINGULAR_ATTRIBUTE), RoomStatus.FREE);
-            return entityManager.createQuery(criteriaQuery
-                    .select(root)
-                    .where(predicate))
-                    .setFirstResult(fistElement)
-                    .getResultList();
-        } catch (PersistenceException e) {
-            throw new ReadQueryException(e);
-        }
-    }
-
-    @Override
-    public List<Room> readAllFree(int fistElement, int maxResult, String parameter) {
-        try {
-            final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
-            final Root<Room> root = criteriaQuery.from(Room.class);
-            final Predicate predicate = criteriaBuilder.equal(root.get(STATUS_SINGULAR_ATTRIBUTE), RoomStatus.FREE);
-            return entityManager.createQuery(criteriaQuery
-                    .select(root)
-                    .where(predicate)
-                    .orderBy(criteriaBuilder.asc(root.get(parameter))))
-                    .setFirstResult(fistElement)
-                    .getResultList();
-        } catch (PersistenceException e) {
-            throw new ReadQueryException(e);
-        }
-    }
-
-    @Override
     public Long readFreeSize() {
         try {
             final CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
@@ -110,6 +77,42 @@ public class RoomDao extends AbstractDao<Room, Long> implements IRoomDao {
             return true;
         } catch (PersistenceException e) {
             return false;
+        }
+    }
+
+    @Override
+    public <E> List<Room> readAll(SingularAttribute<Room, E> field, E criteria, int fistElement, int maxResult) {
+        try {
+            final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
+            final Root<Room> root = criteriaQuery.from(Room.class);
+            final Predicate predicate = criteriaBuilder.equal(root.get(field), criteria);
+            return entityManager.createQuery(criteriaQuery
+                    .select(root)
+                    .where(predicate))
+                    .setFirstResult(fistElement)
+                    .setMaxResults(maxResult)
+                    .getResultList();
+        } catch (PersistenceException e) {
+            throw new ReadQueryException(e);
+        }
+    }
+
+    @Override
+    public <E, T> List<Room> readAll(SingularAttribute<Room, E> field, E criteria, int fistElement, int maxResult,
+                                     SingularAttribute<Room, T> sortParameter) {
+        try {
+            final CriteriaQuery<Room> criteriaQuery = criteriaBuilder.createQuery(Room.class);
+            final Root<Room> root = criteriaQuery.from(Room.class);
+            final Predicate predicate = criteriaBuilder.equal(root.get(field), criteria);
+            return entityManager.createQuery(criteriaQuery
+                    .select(root)
+                    .where(predicate)
+                    .orderBy(criteriaBuilder.asc(root.get(sortParameter))))
+                    .setFirstResult(fistElement)
+                    .setMaxResults(maxResult)
+                    .getResultList();
+        } catch (PersistenceException e) {
+            throw new ReadQueryException(e);
         }
     }
 }

@@ -3,6 +3,7 @@ package com.senlainc.gitcourses.javatraining.petushokvaliantsin.service;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.repository.IRoomDao;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.service.IRoomService;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Room;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Room_;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.status.RoomStatus;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementAlreadyExistsException;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementNotAvailableException;
@@ -92,27 +93,27 @@ public class RoomService implements IRoomService {
     @Override
     @Transactional(readOnly = true)
     public List<Room> readAll(int firstElement, int maxResult) {
+        return roomDao.readAll(firstElement, maxResult, Room_.id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Room> readAll(String criteria, int firstElement, int maxResult) {
+        if (criteria.equals("free")) {
+            return roomDao.readAll(Room_.status, RoomStatus.FREE, firstElement, maxResult);
+        }
         return roomDao.readAll(firstElement, maxResult);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Room> readAll(String type, int firstElement, int maxResult) {
-        if (type.equals("free")) {
-            return roomDao.readAllFree(firstElement, maxResult);
+    public List<Room> readAll(String criteria, int firstElement, int maxResult, String sortParameter) {
+        if (sortParameter.equals("default")) {
+            return readAll(criteria, firstElement, maxResult);
         }
-        return roomDao.readAll(firstElement, maxResult);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<Room> readAllSorted(String type, int firstElement, int maxResult, String parameter) {
-        if (parameter.equals("default")) {
-            return readAll(type, firstElement, maxResult);
+        if (criteria.equals("free")) {
+            return roomDao.readAll(Room_.status, RoomStatus.FREE, firstElement, maxResult, Room_.classification);
         }
-        if (type.equals("free")) {
-            return roomDao.readAllFree(firstElement, maxResult, parameter);
-        }
-        return roomDao.readAll(firstElement, maxResult, parameter);
+        return roomDao.readAll(firstElement, maxResult, Room_.classification);
     }
 }

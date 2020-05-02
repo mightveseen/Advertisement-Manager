@@ -3,8 +3,7 @@ package com.senlainc.gitcourses.javatraining.petushokvaliantsin.controller;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.service.IAttendanceService;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.dto.AttendanceDto;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Attendance;
-import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.NoMatchException;
-import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.IMapper;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.dto.IDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,30 +25,30 @@ import java.util.List;
 public class AttendanceController {
 
     private final IAttendanceService attendanceService;
-    private final IMapper mapperDto;
+    private final IDtoMapper dtoMapper;
 
     @Autowired
-    public AttendanceController(IAttendanceService attendanceService, IMapper mapperDto) {
+    public AttendanceController(IAttendanceService attendanceService, IDtoMapper dtoMapper) {
         this.attendanceService = attendanceService;
-        this.mapperDto = mapperDto;
+        this.dtoMapper = dtoMapper;
     }
 
     @GetMapping
-    public List<AttendanceDto> showAttendances(@RequestParam(value = "fe", defaultValue = "0") @PositiveOrZero int firstElement,
-                                               @RequestParam(value = "mr", defaultValue = "15") @PositiveOrZero int maxResult) {
-        return mapperDto.mapAll(attendanceService.readAll(firstElement, maxResult), AttendanceDto.class);
+    public List<AttendanceDto> showAttendances(@RequestParam(value = "start", defaultValue = "0") @PositiveOrZero int firstElement,
+                                               @RequestParam(value = "limit", defaultValue = "15") @PositiveOrZero int maxResult) {
+        return dtoMapper.mapAll(attendanceService.readAll(firstElement, maxResult), AttendanceDto.class);
     }
 
     @GetMapping(value = "/sorted-attendances")
-    public List<AttendanceDto> showAttendances(@RequestParam(value = "sr", defaultValue = "default") String sort,
-                                               @RequestParam(value = "fe", defaultValue = "0") @PositiveOrZero int firstElement,
-                                               @RequestParam(value = "mr", defaultValue = "15") @PositiveOrZero int maxResult) {
-        return mapperDto.mapAll(attendanceService.readAllSorted(sort, firstElement, maxResult), AttendanceDto.class);
+    public List<AttendanceDto> showAttendances(@RequestParam(value = "sort", defaultValue = "default") String sort,
+                                               @RequestParam(value = "start", defaultValue = "0") @PositiveOrZero int firstElement,
+                                               @RequestParam(value = "limit", defaultValue = "15") @PositiveOrZero int maxResult) {
+        return dtoMapper.mapAll(attendanceService.readAll(firstElement, maxResult, sort), AttendanceDto.class);
     }
 
     @GetMapping(value = "/{id}")
     public AttendanceDto showAttendance(@PathVariable(value = "id") @Positive long index) {
-        return mapperDto.map(attendanceService.read(index), AttendanceDto.class);
+        return dtoMapper.map(attendanceService.read(index), AttendanceDto.class);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -57,17 +56,13 @@ public class AttendanceController {
         attendanceService.delete(index);
     }
 
-    @PutMapping(value = "/{id}")
-    public void updateAttendance(@PathVariable(value = "id") @Positive long index,
-                                 @RequestBody @Validated(AttendanceDto.class) AttendanceDto object) {
-        if (index != object.getId()) {
-            throw new NoMatchException("Page index [" + index + "] not matched object index [" + object.getId() + "].");
-        }
-        attendanceService.update(mapperDto.map(object, Attendance.class));
+    @PutMapping
+    public void updateAttendance(@RequestBody @Validated AttendanceDto request) {
+        attendanceService.update(dtoMapper.map(request, Attendance.class));
     }
 
     @PostMapping
-    public void createAttendance(@RequestBody @Validated(AttendanceDto.class) AttendanceDto object) {
-        attendanceService.create(mapperDto.map(object, Attendance.class));
+    public void createAttendance(@RequestBody @Validated AttendanceDto request) {
+        attendanceService.create(dtoMapper.map(request, Attendance.class));
     }
 }

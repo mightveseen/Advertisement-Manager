@@ -1,6 +1,6 @@
-package com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.impl;
+package com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.dto.impl;
 
-import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.IMapper;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.dto.IDtoMapper;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Component;
@@ -11,11 +11,11 @@ import java.util.stream.Collectors;
 import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 
 @Component
-public class Mapper implements IMapper {
+public class DtoMapper implements IDtoMapper {
 
     private final ModelMapper modelMapper;
 
-    public Mapper() {
+    public DtoMapper() {
         this.modelMapper = new ModelMapper();
         modelMapper.getConfiguration()
                 .setMatchingStrategy(MatchingStrategies.STRICT)

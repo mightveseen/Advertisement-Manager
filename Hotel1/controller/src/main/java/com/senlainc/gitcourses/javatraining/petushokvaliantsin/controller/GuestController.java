@@ -5,8 +5,7 @@ import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.service.IOrde
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.dto.GuestDto;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.dto.RoomDto;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Guest;
-import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.NoMatchException;
-import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.IMapper;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.dto.IDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,24 +28,24 @@ public class GuestController {
 
     private final IGuestService guestService;
     private final IOrderService orderService;
-    private final IMapper mapperDto;
+    private final IDtoMapper dtoMapper;
 
     @Autowired
-    public GuestController(IGuestService guestService, IOrderService orderService, IMapper mapperDto) {
+    public GuestController(IGuestService guestService, IOrderService orderService, IDtoMapper dtoMapper) {
         this.guestService = guestService;
         this.orderService = orderService;
-        this.mapperDto = mapperDto;
+        this.dtoMapper = dtoMapper;
     }
 
     @GetMapping
-    public List<GuestDto> showGuests(@RequestParam(value = "fe", defaultValue = "0") @PositiveOrZero int firstElement,
-                                     @RequestParam(value = "mr", defaultValue = "15") @PositiveOrZero int maxResult) {
-        return mapperDto.mapAll(guestService.readAll(firstElement, maxResult), GuestDto.class);
+    public List<GuestDto> showGuests(@RequestParam(value = "start", defaultValue = "0") @PositiveOrZero int firstElement,
+                                     @RequestParam(value = "limit", defaultValue = "15") @PositiveOrZero int maxResult) {
+        return dtoMapper.mapAll(guestService.readAll(firstElement, maxResult), GuestDto.class);
     }
 
     @GetMapping(value = "/{id}")
     public GuestDto showGuest(@PathVariable(value = "id") @Positive long index) {
-        return mapperDto.map(guestService.read(index), GuestDto.class);
+        return dtoMapper.map(guestService.read(index), GuestDto.class);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -57,20 +56,16 @@ public class GuestController {
     @GetMapping(value = "/{id}/last-rooms")
     public List<RoomDto> showLastRooms(@PathVariable(value = "id") @Positive long index,
                                        @RequestParam(value = "lm", defaultValue = "3") @Positive int limit) {
-        return mapperDto.mapAll(orderService.getGuestRooms(index, limit), RoomDto.class);
+        return dtoMapper.mapAll(orderService.getGuestRooms(index, limit), RoomDto.class);
     }
 
-    @PutMapping(value = "/{id}")
-    public void updateGuest(@PathVariable(value = "id") @Positive long index,
-                            @RequestBody @Validated(GuestDto.class) GuestDto object) {
-        if (index != object.getId()) {
-            throw new NoMatchException("Page index [" + index + "] not matched object index [" + object.getId() + "].");
-        }
-        guestService.update(mapperDto.map(object, Guest.class));
+    @PutMapping
+    public void updateGuest(@RequestBody @Validated GuestDto request) {
+        guestService.update(dtoMapper.map(request, Guest.class));
     }
 
     @PostMapping
-    public void createGuest(@RequestBody @Validated(GuestDto.class) GuestDto object) {
-        guestService.create(mapperDto.map(object, Guest.class));
+    public void createGuest(@RequestBody @Validated GuestDto request) {
+        guestService.create(dtoMapper.map(request, Guest.class));
     }
 }

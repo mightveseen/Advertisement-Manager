@@ -3,6 +3,7 @@ package com.senlainc.gitcourses.javatraining.petushokvaliantsin.service;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.repository.IAttendanceDao;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.service.IAttendanceService;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Attendance;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Attendance_;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,10 +63,11 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Attendance> readAllSorted(String parameter, int firstElement, int maxResult) {
-        if (parameter.equals("default")) {
-            return readAll(firstElement, maxResult);
+    // TODO : Fix sort parameter
+    public List<Attendance> readAll(int firstElement, int maxResult, String sortParameter) {
+        if (sortParameter.equals("default")) {
+            return attendanceDao.readAll(firstElement, maxResult);
         }
-        return attendanceDao.readAll(firstElement, maxResult, parameter);
+        return attendanceDao.readAll(firstElement, maxResult, Attendance_.section);
     }
 }

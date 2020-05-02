@@ -7,12 +7,17 @@ import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.service.IOrde
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.service.IRoomService;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Attendance;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Guest;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Guest_;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Order;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Order_;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Room;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Room_;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.status.OrderStatus;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.status.RoomStatus;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementNotAvailableException;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementNotFoundException;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.singularattribute.ISingularMapper;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.singularattribute.annotations.SingularClasses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,13 +35,16 @@ public class OrderService implements IOrderService {
     private final IAttendanceService attendanceService;
     private final IRoomService roomService;
     private final IGuestService guestService;
+    private final ISingularMapper singularMapper;
 
     @Autowired
-    public OrderService(IOrderDao orderDao, IAttendanceService attendanceService, IRoomService roomService, IGuestService guestService) {
+    public OrderService(IOrderDao orderDao, IAttendanceService attendanceService, IRoomService roomService,
+                        IGuestService guestService, ISingularMapper singularMapper) {
         this.orderDao = orderDao;
         this.attendanceService = attendanceService;
         this.roomService = roomService;
         this.guestService = guestService;
+        this.singularMapper = singularMapper;
     }
 
     @Override
@@ -138,20 +146,32 @@ public class OrderService implements IOrderService {
     @Override
     @Transactional(readOnly = true)
     public List<Order> readAll(int firstElement, int maxResult) {
-        return orderDao.readAll(firstElement, maxResult);
+        return orderDao.readAll(firstElement, maxResult, Order_.id);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Order> readAllSorted(String parameter, int firstElement, int maxResult) {
-        if (parameter.equals("default")) {
-            return readAll(firstElement, maxResult);
+    @SingularClasses(metaModels = {Order_.class, Guest_.class, Room_.class})
+    // TODO : Fix it
+    public List<Order> readAll(int firstElement, int maxResult, String sortParameter) {
+        try {
+            singularMapper.setMethod(this.getClass().getDeclaredMethod("readAll", int.class, int.class, String.class));
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
         }
-        if (parameter.contains("-")) {
-            final String[] parameterParse = parameter.split("-", 2);
-            return orderDao.readAll(firstElement, maxResult,
-                    parameterParse[0], parameterParse[1]);
+        if (sortParameter.contains("-")) {
+            final String[] parameterParse = sortParameter.split("-", 2);
+            orderDao.readAll(firstElement, maxResult, singularMapper.getSingularAttribute(parameterParse[0]),
+                    singularMapper.getSingularAttribute(parameterParse[1]));
         }
-        return orderDao.readAll(firstElement, maxResult, parameter);
+        return orderDao.readAll(firstElement, maxResult, Order_.guest, Guest_.firstName);
+//        if (sortParameter.equals("default")) {
+//            return readAll(firstElement, maxResult);
+//        }
+//        if (sortParameter.contains("-")) {
+//            final String[] parameterParse = sortParameter.split("-", 2);
+//            return orderDao.readAll(firstElement, maxResult, Order_.guest, Guest_.firstName);
+//        }
+//        return orderDao.readAll(firstElement, maxResult);
     }
 }

@@ -1,7 +1,6 @@
 package com.senlainc.gitcourses.javatraining.petushokvaliantsin.test;
 
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.service.IOrderService;
-import com.senlainc.gitcourses.javatraining.petushokvaliantsin.configuration.AppConfig;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Guest;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Order;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Room;
@@ -13,7 +12,6 @@ import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -21,10 +19,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {AppConfig.class})
+@ContextConfiguration
 public class OrderServiceTest {
 
-    @Autowired
     private IOrderService orderService;
 
     @Test
@@ -80,6 +77,6 @@ public class OrderServiceTest {
 
     @Test
     public void testReadSortedWithWrongParameter() {
-        Assert.assertThrows(IllegalArgumentException.class, () -> orderService.readAllSorted("fffff", 0, 15));
+        Assert.assertThrows(IllegalArgumentException.class, () -> orderService.readAll(0, 15, "fffff"));
     }
 }

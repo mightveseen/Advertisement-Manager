@@ -14,27 +14,12 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.SingularAttribute;
 import java.time.LocalDate;
 import java.util.List;
 
 @Repository
 public class OrderDao extends AbstractDao<Order, Long> implements IOrderDao {
-
-    @Override
-    public List<Order> readAll(int fistElement, int maxResult, String sortObject, String sortParameter) {
-        try {
-            final CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(clazz);
-            final Root<Order> root = criteriaQuery.from(clazz);
-            return entityManager.createQuery(criteriaQuery
-                    .select(root)
-                    .orderBy(criteriaBuilder.asc(root.get(sortObject).get(sortParameter))))
-                    .setFirstResult(fistElement)
-                    .setMaxResults(maxResult)
-                    .getResultList();
-        } catch (PersistenceException e) {
-            throw new ReadQueryException(e);
-        }
-    }
 
     @Override
     //TODO : Make sort
@@ -66,6 +51,24 @@ public class OrderDao extends AbstractDao<Order, Long> implements IOrderDao {
                     .select(root)
                     .distinct(true)
                     .where(predicate))
+                    .getResultList();
+        } catch (PersistenceException e) {
+            throw new ReadQueryException(e);
+        }
+    }
+
+    @Override
+    // TODO : Don't forget about this trash
+    public <E, T> List<Order> readAll(int fistElement, int maxResult, SingularAttribute<Order, E> sortObject,
+                                      SingularAttribute<E, T> fieldSortObject) {
+        try {
+            final CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(clazz);
+            final Root<Order> root = criteriaQuery.from(clazz);
+            return entityManager.createQuery(criteriaQuery
+                    .select(root)
+                    .orderBy(criteriaBuilder.asc(root.get(sortObject).get(fieldSortObject))))
+                    .setFirstResult(fistElement)
+                    .setMaxResults(maxResult)
                     .getResultList();
         } catch (PersistenceException e) {
             throw new ReadQueryException(e);

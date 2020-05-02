@@ -5,8 +5,7 @@ import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.service.IRoom
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.dto.RoomDto;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.exceptionhandler.AppExceptionHandler;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Room;
-import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.NoMatchException;
-import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.IMapper;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.dto.IDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,33 +29,33 @@ public class RoomController extends AppExceptionHandler {
 
     private final IRoomService roomService;
     private final IOrderService orderService;
-    private final IMapper mapper;
+    private final IDtoMapper dtoMapper;
 
     @Autowired
-    public RoomController(IRoomService roomService, IOrderService orderService, IMapper mapper) {
+    public RoomController(IRoomService roomService, IOrderService orderService, IDtoMapper dtoMapper) {
         this.roomService = roomService;
         this.orderService = orderService;
-        this.mapper = mapper;
+        this.dtoMapper = dtoMapper;
     }
 
     @GetMapping
-    public List<RoomDto> showRooms(@RequestParam(value = "dp", defaultValue = "all") String display,
-                                   @RequestParam(value = "fe", defaultValue = "0") @PositiveOrZero int firstElement,
-                                   @RequestParam(value = "mr", defaultValue = "15") @PositiveOrZero int maxResult) {
-        return mapper.mapAll(roomService.readAll(display, firstElement, maxResult), RoomDto.class);
+    public List<RoomDto> showRooms(@RequestParam(value = "crit", defaultValue = "all") String criteria,
+                                   @RequestParam(value = "start", defaultValue = "0") @PositiveOrZero int firstElement,
+                                   @RequestParam(value = "limit", defaultValue = "15") @PositiveOrZero int maxResult) {
+        return dtoMapper.mapAll(roomService.readAll(criteria, firstElement, maxResult), RoomDto.class);
     }
 
     @GetMapping(value = "/sorted-rooms")
-    public List<RoomDto> showRooms(@RequestParam(value = "dp", defaultValue = "all") String display,
-                                   @RequestParam(value = "sr", defaultValue = "default") String sort,
-                                   @RequestParam(value = "fe", defaultValue = "0") @PositiveOrZero int firstElement,
-                                   @RequestParam(value = "mr", defaultValue = "15") @PositiveOrZero int maxResult) {
-        return mapper.mapAll(roomService.readAllSorted(display, firstElement, maxResult, sort), RoomDto.class);
+    public List<RoomDto> showRooms(@RequestParam(value = "crit", defaultValue = "all") String criteria,
+                                   @RequestParam(value = "sort", defaultValue = "default") String sort,
+                                   @RequestParam(value = "start", defaultValue = "0") @PositiveOrZero int firstElement,
+                                   @RequestParam(value = "limit", defaultValue = "15") @PositiveOrZero int maxResult) {
+        return dtoMapper.mapAll(roomService.readAll(criteria, firstElement, maxResult, sort), RoomDto.class);
     }
 
     @GetMapping(value = "/{id}")
     public RoomDto showRoom(@PathVariable(value = "id") @Positive long index) {
-        return mapper.map(roomService.read(index), RoomDto.class);
+        return dtoMapper.map(roomService.read(index), RoomDto.class);
     }
 
     @GetMapping(value = "/num-free")
@@ -65,10 +64,10 @@ public class RoomController extends AppExceptionHandler {
     }
 
     @GetMapping(value = "/after-date")
-    public List<RoomDto> showAfterDate(@RequestParam("ld") LocalDate date,
-                                       @RequestParam(value = "fr", defaultValue = "0") @PositiveOrZero int firstElement,
-                                       @RequestParam(value = "mx", defaultValue = "15") @PositiveOrZero int maxResult) {
-        return mapper.mapAll(orderService.getRoomsAfterDate(date, firstElement, maxResult), RoomDto.class);
+    public List<RoomDto> showAfterDate(@RequestParam("date") LocalDate date,
+                                       @RequestParam(value = "start", defaultValue = "0") @PositiveOrZero int firstElement,
+                                       @RequestParam(value = "limit", defaultValue = "15") @PositiveOrZero int maxResult) {
+        return dtoMapper.mapAll(orderService.getRoomsAfterDate(date, firstElement, maxResult), RoomDto.class);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -76,17 +75,13 @@ public class RoomController extends AppExceptionHandler {
         roomService.delete(index);
     }
 
-    @PutMapping(value = "/{id}")
-    public void updateRoom(@PathVariable(value = "id") @Positive long index,
-                           @RequestBody @Validated(RoomDto.class) RoomDto object) {
-        if (index != object.getId()) {
-            throw new NoMatchException("Page index [" + index + "] not matched object index [" + object.getId() + "].");
-        }
-        roomService.update(mapper.map(object, Room.class));
+    @PutMapping
+    public void updateRoom(@RequestBody @Validated RoomDto request) {
+        roomService.update(dtoMapper.map(request, Room.class));
     }
 
     @PostMapping
-    public void createRoom(@RequestBody @Validated(RoomDto.class) RoomDto object) {
-        roomService.create(mapper.map(object, Room.class));
+    public void createRoom(@RequestBody @Validated RoomDto request) {
+        roomService.create(dtoMapper.map(request, Room.class));
     }
 }

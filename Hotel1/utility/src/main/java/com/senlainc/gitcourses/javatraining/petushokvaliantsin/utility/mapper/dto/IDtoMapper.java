@@ -1,8 +1,8 @@
-package com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper;
+package com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.dto;
 
 import java.util.List;
 
-public interface IMapper {
+public interface IDtoMapper {
 
     <D, T> D map(T entity, Class<D> outClazz);
 

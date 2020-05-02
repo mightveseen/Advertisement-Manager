@@ -8,5 +8,5 @@ public interface IAttendanceService extends IGenericService<Attendance, Long> {
 
     void changePrice(long index, double price);
 
-    List<Attendance> readAllSorted(String parameter, int firstElement, int maxResult);
+    List<Attendance> readAll(int firstElement, int maxResult, String sortParameter);
 }

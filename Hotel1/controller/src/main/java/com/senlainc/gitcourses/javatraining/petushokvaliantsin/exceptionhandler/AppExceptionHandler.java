@@ -3,6 +3,7 @@ package com.senlainc.gitcourses.javatraining.petushokvaliantsin.exceptionhandler
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementAlreadyExistsException;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementNotAvailableException;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementNotFoundException;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.IncorrectDataException;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.NoMatchException;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.dao.CreateQueryException;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.dao.DeleteQueryException;
@@ -50,6 +51,12 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NoMatchException.class)
     public ResponseEntity<Object> noMathResponse(NoMatchException e) {
         logger.info(e);
+        return new ResponseEntity<>(new ExceptionTemplate(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IncorrectDataException.class)
+    public ResponseEntity<Object> illegalArgument(IncorrectDataException e) {
+        logger.warn(e);
         return new ResponseEntity<>(new ExceptionTemplate(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }

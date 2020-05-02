@@ -17,5 +17,5 @@ public interface IOrderService extends IGenericService<Order, Long> {
 
     List<Room> getRoomsAfterDate(LocalDate date, int firstElement, int maxResult);
 
-    List<Order> readAllSorted(String parameter, int firstElement, int maxResult);
+    List<Order> readAll(int firstElement, int maxResult, String sortParameter);
 }

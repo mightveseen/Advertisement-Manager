@@ -4,8 +4,7 @@ import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.service.IOrde
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.dto.AttendanceDto;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.dto.OrderDto;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Order;
-import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.NoMatchException;
-import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.IMapper;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.dto.IDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,35 +26,35 @@ import java.util.List;
 public class OrderController {
 
     private final IOrderService orderService;
-    private final IMapper mapperDto;
+    private final IDtoMapper dtoMapper;
 
     @Autowired
-    public OrderController(IOrderService orderService, IMapper mapperDto) {
+    public OrderController(IOrderService orderService, IDtoMapper dtoMapper) {
         this.orderService = orderService;
-        this.mapperDto = mapperDto;
+        this.dtoMapper = dtoMapper;
     }
 
     @GetMapping
-    public List<OrderDto> showOrders(@RequestParam(value = "fe", defaultValue = "0") @PositiveOrZero int firstElement,
-                                     @RequestParam(value = "mr", defaultValue = "15") @PositiveOrZero int maxResult) {
-        return mapperDto.mapAll(orderService.readAll(firstElement, maxResult), OrderDto.class);
+    public List<OrderDto> showOrders(@RequestParam(value = "start", defaultValue = "0") @PositiveOrZero int firstElement,
+                                     @RequestParam(value = "limit", defaultValue = "15") @PositiveOrZero int maxResult) {
+        return dtoMapper.mapAll(orderService.readAll(firstElement, maxResult), OrderDto.class);
     }
 
     @GetMapping(value = "/sorted-orders")
-    public List<OrderDto> showOrders(@RequestParam(value = "sr", defaultValue = "default") String sort,
-                                     @RequestParam(value = "fe", defaultValue = "0") @PositiveOrZero int firstElement,
-                                     @RequestParam(value = "mr", defaultValue = "15") @PositiveOrZero int maxResult) {
-        return mapperDto.mapAll(orderService.readAllSorted(sort, firstElement, maxResult), OrderDto.class);
+    public List<OrderDto> showOrders(@RequestParam(value = "sort", defaultValue = "default") String sort,
+                                     @RequestParam(value = "start", defaultValue = "0") @PositiveOrZero int firstElement,
+                                     @RequestParam(value = "limit", defaultValue = "15") @PositiveOrZero int maxResult) {
+        return dtoMapper.mapAll(orderService.readAll(firstElement, maxResult, sort), OrderDto.class);
     }
 
     @GetMapping(value = "/{id}")
     public OrderDto showOrder(@PathVariable(value = "id") @Positive long index) {
-        return mapperDto.map(orderService.read(index), OrderDto.class);
+        return dtoMapper.map(orderService.read(index), OrderDto.class);
     }
 
     @GetMapping(value = "/{id}/attendances")
     public List<AttendanceDto> showAttendances(@PathVariable(value = "id") @Positive long index) {
-        return mapperDto.mapAll(orderService.getAttendances(index), AttendanceDto.class);
+        return dtoMapper.mapAll(orderService.getAttendances(index), AttendanceDto.class);
     }
 
     @PutMapping(value = "/{id}/attendances/{id2}")
@@ -69,17 +68,13 @@ public class OrderController {
         orderService.delete(index);
     }
 
-    @PutMapping(value = "/{id}")
-    public void updateOrder(@PathVariable(value = "id") @Positive long index,
-                            @RequestBody @Validated(OrderDto.class) OrderDto object) {
-        if (index != object.getId()) {
-            throw new NoMatchException("Page index [" + index + "] not matched object index [" + object.getId() + "].");
-        }
-        orderService.update(mapperDto.map(object, Order.class));
+    @PutMapping
+    public void updateOrder(@RequestBody @Validated OrderDto request) {
+        orderService.update(dtoMapper.map(request, Order.class));
     }
 
     @PostMapping
-    public void createOrder(@RequestBody @Validated(OrderDto.class) OrderDto object) {
-        orderService.create(mapperDto.map(object, Order.class));
+    public void createOrder(@RequestBody @Validated OrderDto request) {
+        orderService.create(dtoMapper.map(request, Order.class));
     }
 }
