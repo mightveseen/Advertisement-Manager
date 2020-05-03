@@ -17,7 +17,7 @@ public class GuestDto implements Serializable {
 
     @Null(groups = Create.class)
     @NotNull(groups = {Update.class, OrderDto.Create.class, OrderDto.Update.class})
-    @Positive(groups = {Create.class, Update.class, OrderDto.Create.class, OrderDto.Update.class})
+    @Positive(groups = {Update.class, OrderDto.Create.class, OrderDto.Update.class})
     private Long id;
     @NotNull(groups = {Create.class, Update.class})
     private String firstName;
