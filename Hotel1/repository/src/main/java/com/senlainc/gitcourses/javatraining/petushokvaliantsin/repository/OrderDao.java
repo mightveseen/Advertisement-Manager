@@ -58,7 +58,6 @@ public class OrderDao extends AbstractDao<Order, Long> implements IOrderDao {
     }
 
     @Override
-    // TODO : Don't forget about this trash
     public <E, T> List<Order> readAll(int fistElement, int maxResult, SingularAttribute<Order, E> sortObject,
                                       SingularAttribute<E, T> fieldSortObject) {
         try {

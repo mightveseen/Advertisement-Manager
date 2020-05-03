@@ -107,6 +107,7 @@ public class RoomService implements IRoomService {
 
     @Override
     @Transactional(readOnly = true)
+    // TODO : Fix sort parameter
     public List<Room> readAll(String criteria, int firstElement, int maxResult, String sortParameter) {
         if (sortParameter.equals("default")) {
             return readAll(criteria, firstElement, maxResult);
