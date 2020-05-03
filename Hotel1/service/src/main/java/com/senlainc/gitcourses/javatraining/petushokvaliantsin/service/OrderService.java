@@ -161,7 +161,7 @@ public class OrderService implements IOrderService {
         }
         if (sortParameter.contains("-")) {
             final String[] parameterParse = sortParameter.split("-", 2);
-            orderDao.readAll(firstElement, maxResult, singularMapper.getSingularAttribute(parameterParse[0]),
+            return orderDao.readAll(firstElement, maxResult, singularMapper.getSingularAttribute(parameterParse[0]),
                     singularMapper.getSingularAttribute(parameterParse[1]));
         }
         return orderDao.readAll(firstElement, maxResult);
