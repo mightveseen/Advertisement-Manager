@@ -5,6 +5,7 @@ import com.senlainc.gitcourses.javatraining.petushokvaliantsin.dto.AttendanceDto
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Attendance;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.dto.IDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,13 +57,13 @@ public class AttendanceController {
         attendanceService.delete(index);
     }
 
-    @PutMapping
-    public void updateAttendance(@RequestBody @Validated AttendanceDto request) {
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void updateAttendance(@RequestBody @Validated(AttendanceDto.Update.class) AttendanceDto request) {
         attendanceService.update(dtoMapper.map(request, Attendance.class));
     }
 
-    @PostMapping
-    public void createAttendance(@RequestBody @Validated AttendanceDto request) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void createAttendance(@RequestBody @Validated(AttendanceDto.Create.class) AttendanceDto request) {
         attendanceService.create(dtoMapper.map(request, Attendance.class));
     }
 }

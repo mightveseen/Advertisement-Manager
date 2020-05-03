@@ -1,19 +1,30 @@
 package com.senlainc.gitcourses.javatraining.petushokvaliantsin.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
 
 public class AttendanceDto implements Serializable {
 
-    private long id;
+    @Null(groups = Create.class)
+    @NotNull(groups = {Update.class, OrderDto.Create.class, OrderDto.Update.class})
+    @Positive(groups = {Create.class, Update.class, OrderDto.Create.class, OrderDto.Update.class})
+    private Long id;
+    @NotNull(groups = {Create.class, Update.class})
     private String name;
+    @NotNull(groups = {Create.class, Update.class})
     private String section;
-    private double price;
+    @NotNull(groups = {Create.class, Update.class})
+    @PositiveOrZero(groups = {Create.class, Update.class})
+    private Double price;
 
     public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -33,11 +44,19 @@ public class AttendanceDto implements Serializable {
         this.section = section;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public interface Update {
+
+    }
+
+    public interface Create {
+
     }
 }

@@ -7,6 +7,7 @@ import com.senlainc.gitcourses.javatraining.petushokvaliantsin.exceptionhandler.
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Room;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.dto.IDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,14 +40,14 @@ public class RoomController extends AppExceptionHandler {
     }
 
     @GetMapping
-    public List<RoomDto> showRooms(@RequestParam(value = "crit", defaultValue = "all") String criteria,
+    public List<RoomDto> showRooms(@RequestParam(value = "criteria", defaultValue = "all") String criteria,
                                    @RequestParam(value = "start", defaultValue = "0") @PositiveOrZero int firstElement,
                                    @RequestParam(value = "limit", defaultValue = "15") @PositiveOrZero int maxResult) {
         return dtoMapper.mapAll(roomService.readAll(criteria, firstElement, maxResult), RoomDto.class);
     }
 
     @GetMapping(value = "/sorted-rooms")
-    public List<RoomDto> showRooms(@RequestParam(value = "crit", defaultValue = "all") String criteria,
+    public List<RoomDto> showRooms(@RequestParam(value = "criteria", defaultValue = "all") String criteria,
                                    @RequestParam(value = "sort", defaultValue = "default") String sort,
                                    @RequestParam(value = "start", defaultValue = "0") @PositiveOrZero int firstElement,
                                    @RequestParam(value = "limit", defaultValue = "15") @PositiveOrZero int maxResult) {
@@ -75,13 +76,13 @@ public class RoomController extends AppExceptionHandler {
         roomService.delete(index);
     }
 
-    @PutMapping
-    public void updateRoom(@RequestBody @Validated RoomDto request) {
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void updateRoom(@RequestBody @Validated(RoomDto.Update.class) RoomDto request) {
         roomService.update(dtoMapper.map(request, Room.class));
     }
 
-    @PostMapping
-    public void createRoom(@RequestBody @Validated RoomDto request) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void createRoom(@RequestBody @Validated(RoomDto.Create.class) RoomDto request) {
         roomService.create(dtoMapper.map(request, Room.class));
     }
 }

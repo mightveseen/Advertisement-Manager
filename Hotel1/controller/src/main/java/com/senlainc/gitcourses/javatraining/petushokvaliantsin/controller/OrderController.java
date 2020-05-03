@@ -6,6 +6,7 @@ import com.senlainc.gitcourses.javatraining.petushokvaliantsin.dto.OrderDto;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Order;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.dto.IDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -68,13 +69,13 @@ public class OrderController {
         orderService.delete(index);
     }
 
-    @PutMapping
-    public void updateOrder(@RequestBody @Validated OrderDto request) {
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void updateOrder(@RequestBody @Validated(OrderDto.Update.class) OrderDto request) {
         orderService.update(dtoMapper.map(request, Order.class));
     }
 
-    @PostMapping
-    public void createOrder(@RequestBody @Validated OrderDto request) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void createOrder(@RequestBody @Validated(OrderDto.Create.class) OrderDto request) {
         orderService.create(dtoMapper.map(request, Order.class));
     }
 }

@@ -2,31 +2,46 @@ package com.senlainc.gitcourses.javatraining.petushokvaliantsin.dto;
 
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.status.RoomStatus;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
 
 public class RoomDto implements Serializable {
 
-    private long id;
-    private int number;
+    @Null(groups = Create.class)
+    @NotNull(groups = {Update.class, OrderDto.Create.class, OrderDto.Update.class})
+    @Positive(groups = {Create.class, Update.class, OrderDto.Create.class, OrderDto.Update.class})
+    private Long id;
+    @NotNull(groups = {Create.class, Update.class})
+    private Integer number;
+    @NotNull(groups = {Create.class, Update.class})
     private String classification;
-    private short roomNumber;
-    private short capacity;
+    @NotNull(groups = {Create.class, Update.class})
+    private Short roomNumber;
+    @NotNull(groups = {Create.class, Update.class})
+    private Short capacity;
+    @Null(groups = Create.class)
+    @NotNull(groups = Update.class)
     private RoomStatus status;
-    private double price;
+    @NotNull(groups = {Create.class, Update.class})
+    @PositiveOrZero(groups = {Create.class, Update.class})
+    private Double price;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
 
@@ -38,19 +53,19 @@ public class RoomDto implements Serializable {
         this.classification = classification;
     }
 
-    public short getRoomNumber() {
+    public Short getRoomNumber() {
         return roomNumber;
     }
 
-    public void setRoomNumber(short roomNumber) {
+    public void setRoomNumber(Short roomNumber) {
         this.roomNumber = roomNumber;
     }
 
-    public short getCapacity() {
+    public Short getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(short capacity) {
+    public void setCapacity(Short capacity) {
         this.capacity = capacity;
     }
 
@@ -62,11 +77,19 @@ public class RoomDto implements Serializable {
         this.status = status;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public interface Update {
+
+    }
+
+    public interface Create {
+
     }
 }

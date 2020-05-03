@@ -7,6 +7,7 @@ import com.senlainc.gitcourses.javatraining.petushokvaliantsin.dto.RoomDto;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Guest;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.dto.IDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,13 +60,13 @@ public class GuestController {
         return dtoMapper.mapAll(orderService.getGuestRooms(index, limit), RoomDto.class);
     }
 
-    @PutMapping
-    public void updateGuest(@RequestBody @Validated GuestDto request) {
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void updateGuest(@RequestBody @Validated(GuestDto.Update.class) GuestDto request) {
         guestService.update(dtoMapper.map(request, Guest.class));
     }
 
-    @PostMapping
-    public void createGuest(@RequestBody @Validated GuestDto request) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void createGuest(@RequestBody @Validated(GuestDto.Create.class) GuestDto request) {
         guestService.create(dtoMapper.map(request, Guest.class));
     }
 }

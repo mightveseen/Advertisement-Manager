@@ -1,7 +1,6 @@
 package com.senlainc.gitcourses.javatraining.petushokvaliantsin.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -10,6 +9,11 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.status.OrderStatus;
 
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,31 +21,47 @@ import java.util.List;
 
 public class OrderDto implements Serializable {
 
-    private long id;
+    @Null(groups = Create.class)
+    @NotNull(groups = Update.class)
+    @Positive(groups = {Create.class, Update.class})
+    private Long id;
+    @NotNull(groups = {Create.class, Update.class})
     private RoomDto room;
+    @NotNull(groups = {Create.class, Update.class})
     private GuestDto guest;
+    @Null(groups = Create.class)
+    @NotNull(groups = Update.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate startDate;
+    @Null(groups = Create.class)
+    @NotNull(groups = Update.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm+dd-MM-yyyy")
     private LocalDateTime orderDate;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @NotNull(groups = Update.class)
     private List<AttendanceDto> attendances;
-    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @Future(groups = {Create.class})
+    @NotNull(groups = {Create.class, Update.class})
     @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate endDate;
+    @Null(groups = Create.class)
+    @NotNull(groups = Update.class)
     private OrderStatus status;
-    private double price;
+    @Null(groups = Create.class)
+    @NotNull(groups = Update.class)
+    @PositiveOrZero(groups = {Create.class, Update.class})
+    private Double price;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -101,11 +121,19 @@ public class OrderDto implements Serializable {
         this.status = status;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public interface Create {
+
+    }
+
+    public interface Update {
+
     }
 }
