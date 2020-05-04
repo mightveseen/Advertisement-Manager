@@ -15,34 +15,31 @@ import java.util.HashMap;
 public class SingularMapper implements ISingularMapper {
 
     private final HashMap<String, Field> fields;
-    private SingularClasses annotation;
 
     public SingularMapper() {
-        fields = new HashMap<>();
-        Method[] fff = SingularClasses.class.getDeclaredMethods();
+        this.fields = new HashMap<>();
     }
 
-    public void setMethod(Method method) {
-        this.annotation = method.getAnnotation(SingularClasses.class);
+    public void setClass(Class<?> clazz) {
+        for (Method method : clazz.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(SingularClasses.class)) {
+                final SingularClasses annotation = method.getAnnotation(SingularClasses.class);
+                Arrays.asList(annotation.metaModels()).forEach(i -> {
+                    for (Field field : i.getDeclaredFields()) {
+                        if (field.getType().equals(SingularAttribute.class)) {
+                            fields.put(field.getName().toLowerCase(), field);
+                        }
+                    }
+                });
+            }
+        }
     }
 
     public <T, E> SingularAttribute<T, E> getSingularAttribute(String parameter) {
-        Arrays.asList(annotation.metaModels()).forEach(i -> {
-            for (Field field : i.getDeclaredFields()) {
-                if (field.getType().equals(SingularAttribute.class)) {
-                    fields.put(field.getName().toLowerCase(), field);
-                }
-            }
-        });
         try {
-            final SingularAttribute<T, E> attribute = (SingularAttribute) fields.get(parameter.toLowerCase()).get(null);
-            if (attribute == null) {
-                throw new IncorrectDataException("Chosen parameter [" + parameter + "] does not match any field");
-            }
-            return attribute;
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            return SingularAttribute.class.cast(fields.get(parameter.toLowerCase()).get(null));
+        } catch (NullPointerException | IllegalAccessException e) {
+            throw new IncorrectDataException("Chosen parameter [" + parameter + "] does not match any field");
         }
-        return null;
     }
 }

@@ -7,6 +7,7 @@ import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Room_;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.status.RoomStatus;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementAlreadyExistsException;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementNotAvailableException;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.singularattribute.ISingularMapper;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.singularattribute.annotations.SingularClasses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,12 +23,14 @@ import java.util.List;
 public class RoomService implements IRoomService {
 
     private final IRoomDao roomDao;
+    private final ISingularMapper singularMapper;
     @Value("${ROOM_CONFIG.CHANGE_STATUS_VALUE:true}")
     private boolean changeStatusProperty;
 
     @Autowired
-    public RoomService(IRoomDao roomDao) {
+    public RoomService(IRoomDao roomDao, ISingularMapper singularMapper) {
         this.roomDao = roomDao;
+        this.singularMapper = singularMapper;
     }
 
     @Override
@@ -109,14 +112,14 @@ public class RoomService implements IRoomService {
     @Override
     @Transactional(readOnly = true)
     @SingularClasses(metaModels = Room_.class)
-    // TODO : Fix sort parameter
     public List<Room> readAll(String criteria, int firstElement, int maxResult, String sortParameter) {
         if (sortParameter.equals("default")) {
             return readAll(criteria, firstElement, maxResult);
         }
+        singularMapper.setClass(RoomService.class);
         if (criteria.equals("free")) {
-            return roomDao.readAll(Room_.status, RoomStatus.FREE, firstElement, maxResult, Room_.classification);
+            return roomDao.readAll(Room_.status, RoomStatus.FREE, firstElement, maxResult, singularMapper.getSingularAttribute(sortParameter));
         }
-        return roomDao.readAll(firstElement, maxResult, Room_.classification);
+        return roomDao.readAll(firstElement, maxResult, singularMapper.getSingularAttribute(sortParameter));
     }
 }

@@ -146,24 +146,22 @@ public class OrderService implements IOrderService {
     @Override
     @Transactional(readOnly = true)
     public List<Order> readAll(int firstElement, int maxResult) {
-        return orderDao.readAll(firstElement, maxResult, Order_.id);
+        return orderDao.readAll(firstElement, maxResult);
     }
 
     @Override
     @Transactional(readOnly = true)
     @SingularClasses(metaModels = {Order_.class, Guest_.class, Room_.class})
-    // TODO : Fix it
     public List<Order> readAll(int firstElement, int maxResult, String sortParameter) {
-        try {
-            singularMapper.setMethod(this.getClass().getDeclaredMethod("readAll", int.class, int.class, String.class));
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+        if (sortParameter.equals("default")) {
+            return readAll(firstElement, maxResult);
         }
+        singularMapper.setClass(OrderService.class);
         if (sortParameter.contains("-")) {
             final String[] parameterParse = sortParameter.split("-", 2);
             return orderDao.readAll(firstElement, maxResult, singularMapper.getSingularAttribute(parameterParse[0]),
                     singularMapper.getSingularAttribute(parameterParse[1]));
         }
-        return orderDao.readAll(firstElement, maxResult);
+        return orderDao.readAll(firstElement, maxResult, singularMapper.getSingularAttribute(sortParameter));
     }
 }
