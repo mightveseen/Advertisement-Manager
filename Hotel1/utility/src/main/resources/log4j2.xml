@@ -14,10 +14,11 @@
     </Appenders>
     <Loggers>
         <Logger name="org.apache.log4j.xml" level="info"/>
-        <logger name="org.hibernate" level="warn"/>
-        <Root level="INFO">
-            <AppenderRef ref="LogConsole"/>
+        <logger name="org.springframework.transaction" level="info"/>
+<!--        <logger name="org.apache.jasper.servlet" level="info"/>-->
+        <Root level="info">
             <AppenderRef ref="LogFile"/>
+            <AppenderRef ref="LogConsole"/>
         </Root>
     </Loggers>
 </Configuration>
