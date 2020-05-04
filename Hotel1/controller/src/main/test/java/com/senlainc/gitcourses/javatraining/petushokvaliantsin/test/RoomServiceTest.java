@@ -1,6 +1,7 @@
 package com.senlainc.gitcourses.javatraining.petushokvaliantsin.test;
 
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.service.IRoomService;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.configuration.AppConfig;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Room;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.status.RoomStatus;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementAlreadyExistsException;
@@ -13,7 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration
+@ContextConfiguration(classes = AppConfig.class)
 public class RoomServiceTest {
 
     private IRoomService roomService;

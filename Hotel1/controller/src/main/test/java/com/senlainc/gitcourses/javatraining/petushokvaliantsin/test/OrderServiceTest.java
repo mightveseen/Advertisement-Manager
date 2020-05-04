@@ -1,6 +1,7 @@
 package com.senlainc.gitcourses.javatraining.petushokvaliantsin.test;
 
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.service.IOrderService;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.configuration.AppConfig;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Guest;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Order;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Room;
@@ -19,7 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration
+@ContextConfiguration(classes = AppConfig.class)
 public class OrderServiceTest {
 
     private IOrderService orderService;

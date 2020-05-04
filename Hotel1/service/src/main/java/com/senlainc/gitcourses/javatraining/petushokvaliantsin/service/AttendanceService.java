@@ -4,6 +4,7 @@ import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.repository.IA
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.service.IAttendanceService;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Attendance;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Attendance_;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.singularattribute.annotations.SingularClasses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,6 +64,7 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     @Transactional(readOnly = true)
+    @SingularClasses(metaModels = Attendance_.class)
     // TODO : Fix sort parameter
     public List<Attendance> readAll(int firstElement, int maxResult, String sortParameter) {
         if (sortParameter.equals("default")) {

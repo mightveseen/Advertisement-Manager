@@ -19,6 +19,7 @@ public class SingularMapper implements ISingularMapper {
 
     public SingularMapper() {
         fields = new HashMap<>();
+        Method[] fff = SingularClasses.class.getDeclaredMethods();
     }
 
     public void setMethod(Method method) {

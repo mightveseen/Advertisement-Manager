@@ -7,6 +7,7 @@ import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Room_;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.status.RoomStatus;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementAlreadyExistsException;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementNotAvailableException;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.singularattribute.annotations.SingularClasses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -107,6 +108,7 @@ public class RoomService implements IRoomService {
 
     @Override
     @Transactional(readOnly = true)
+    @SingularClasses(metaModels = Room_.class)
     // TODO : Fix sort parameter
     public List<Room> readAll(String criteria, int firstElement, int maxResult, String sortParameter) {
         if (sortParameter.equals("default")) {
