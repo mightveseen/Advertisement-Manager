@@ -15,7 +15,7 @@
     <Loggers>
         <Logger name="org.apache.log4j.xml" level="info"/>
         <logger name="org.springframework.transaction" level="info"/>
-<!--        <logger name="org.apache.jasper.servlet" level="info"/>-->
+        <!--        <logger name="org.apache.jasper.servlet" level="info"/>-->
         <Root level="info">
             <AppenderRef ref="LogFile"/>
             <AppenderRef ref="LogConsole"/>

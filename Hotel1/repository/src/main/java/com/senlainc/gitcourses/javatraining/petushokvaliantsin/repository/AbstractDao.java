@@ -23,13 +23,21 @@ import java.util.List;
 public abstract class AbstractDao<E, K extends Serializable> implements IGenericDao<E, K> {
 
     protected final Class<E> clazz;
-    @Autowired
     protected CriteriaBuilder criteriaBuilder;
-    @PersistenceContext(unitName = "persistence", type = PersistenceContextType.EXTENDED)
     protected EntityManager entityManager;
 
     public AbstractDao() {
         this.clazz = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    }
+
+    @Autowired
+    public void setCriteriaBuilder(CriteriaBuilder criteriaBuilder) {
+        this.criteriaBuilder = criteriaBuilder;
+    }
+
+    @PersistenceContext(unitName = "persistence", type = PersistenceContextType.EXTENDED)
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     @Override

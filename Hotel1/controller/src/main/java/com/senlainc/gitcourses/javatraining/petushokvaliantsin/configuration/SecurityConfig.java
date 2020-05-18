@@ -1,0 +1,67 @@
+package com.senlainc.gitcourses.javatraining.petushokvaliantsin.configuration;
+
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.configuration.filter.AuthenticationFilter;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.configuration.filter.AuthorizationFilter;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.configuration.filter.TokenMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)
+@PropertySource(value = "classpath:/properties/security.properties", ignoreResourceNotFound = true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final UserDetailsService userDetailsService;
+    @Value("${SECURITY_CONFIG.TOKEN_HEADER:Authorization}")
+    private String tokenHeader;
+    @Value("${SECURITY_CONFIG.TOKEN_PREFIX:Bearer}")
+    private String tokenPrefix;
+    @Value("${SECURITY_CONFIG.KEY:key}")
+    private String secretKey;
+
+    @Autowired
+    public SecurityConfig(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable();
+        http.authorizeRequests()
+                .antMatchers("/login", "/sign-up").anonymous()
+                .anyRequest().authenticated();
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        final TokenMapper tokenMapper = new TokenMapper(tokenPrefix, secretKey);
+        http.addFilter(new AuthenticationFilter(authenticationManager(), tokenHeader, tokenMapper));
+        http.addFilter(new AuthorizationFilter(authenticationManager(), tokenHeader, tokenMapper));
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManager() {
+        final DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(authenticationProvider);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12);
+    }
+}

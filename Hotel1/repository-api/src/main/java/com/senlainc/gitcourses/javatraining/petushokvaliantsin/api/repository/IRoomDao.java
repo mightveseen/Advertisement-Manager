@@ -1,7 +1,7 @@
 package com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.repository;
 
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Room;
-import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.status.RoomStatus;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.enumeration.RoomStatus;
 
 import javax.persistence.metamodel.SingularAttribute;
 import java.util.List;

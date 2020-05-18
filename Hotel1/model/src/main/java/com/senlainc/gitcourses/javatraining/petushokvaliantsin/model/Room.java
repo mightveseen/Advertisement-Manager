@@ -1,6 +1,6 @@
 package com.senlainc.gitcourses.javatraining.petushokvaliantsin.model;
 
-import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.status.RoomStatus;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.enumeration.RoomStatus;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

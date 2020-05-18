@@ -3,7 +3,7 @@ package com.senlainc.gitcourses.javatraining.petushokvaliantsin.test;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.service.IRoomService;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.configuration.AppConfig;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Room;
-import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.status.RoomStatus;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.enumeration.RoomStatus;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementAlreadyExistsException;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementNotFoundException;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.dao.ReadQueryException;

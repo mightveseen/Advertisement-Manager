@@ -1,7 +1,7 @@
 package com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.service;
 
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Room;
-import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.status.RoomStatus;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.enumeration.RoomStatus;
 
 import java.util.List;
 

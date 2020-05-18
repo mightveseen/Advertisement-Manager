@@ -1,6 +1,6 @@
 package com.senlainc.gitcourses.javatraining.petushokvaliantsin.dto;
 
-import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.status.RoomStatus;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.enumeration.RoomStatus;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
