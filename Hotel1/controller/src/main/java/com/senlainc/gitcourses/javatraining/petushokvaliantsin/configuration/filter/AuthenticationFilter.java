@@ -38,8 +38,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         try {
             final StringBuilder requestBody = new StringBuilder();
             final List<String> requestBodies = request.getReader().lines().collect(Collectors.toList());
-            for (String str : requestBodies) {
-                requestBody.append(str);
+            for (String body : requestBodies) {
+                requestBody.append(body);
             }
             final SystemUserDto userDto = new ObjectMapper().readValue(requestBody.toString(), SystemUserDto.class);
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getUsername(),

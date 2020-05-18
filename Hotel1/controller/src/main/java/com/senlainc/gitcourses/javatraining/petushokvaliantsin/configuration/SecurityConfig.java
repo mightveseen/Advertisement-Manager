@@ -46,9 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login", "/sign-up").anonymous()
                 .anyRequest().authenticated();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        final TokenMapper tokenMapper = new TokenMapper(tokenPrefix, secretKey);
-        http.addFilter(new AuthenticationFilter(authenticationManager(), tokenHeader, tokenMapper));
-        http.addFilter(new AuthorizationFilter(authenticationManager(), tokenHeader, tokenMapper));
+        http.addFilter(new AuthenticationFilter(authenticationManager(), tokenHeader, tokenMapper()));
+        http.addFilter(new AuthorizationFilter(authenticationManager(), tokenHeader, tokenMapper()));
     }
 
     @Bean
@@ -63,5 +62,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
+    }
+
+    @Bean
+    public TokenMapper tokenMapper() {
+        return new TokenMapper(tokenPrefix, secretKey);
     }
 }

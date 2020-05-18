@@ -14,8 +14,8 @@ public class TokenMapper {
     private final String secretKey;
 
     public TokenMapper(String tokenPrefix, String secretKey) {
-        this.secretKey = secretKey;
         this.tokenPrefix = tokenPrefix;
+        this.secretKey = secretKey;
     }
 
     public SystemUserDto parseToken(String token) {
@@ -27,10 +27,8 @@ public class TokenMapper {
                     .build()
                     .verify(token)
                     .getSubject();
-            return new ObjectMapper()
-                    .readValue(decodedToken, SystemUserDto.class);
+            return new ObjectMapper().readValue(decodedToken, SystemUserDto.class);
         } catch (Exception exc) {
-            System.out.println(exc.getMessage());
             return null;
         }
     }
