@@ -20,12 +20,9 @@ public class TokenMapper {
 
     public SystemUserDto parseToken(String token) {
         try {
-            if (tokenPrefix != null) {
-                token = token.replace(tokenPrefix, "");
-            }
             final String decodedToken = JWT.require(HMAC512(secretKey.getBytes()))
                     .build()
-                    .verify(token)
+                    .verify(token.substring(tokenPrefix.length() + 1))
                     .getSubject();
             return new ObjectMapper().readValue(decodedToken, SystemUserDto.class);
         } catch (Exception exc) {
@@ -35,21 +32,19 @@ public class TokenMapper {
 
     public String generateToken(Authentication authentication) {
         final User user = ((User) authentication.getPrincipal());
-        final String userName = user.getUsername();
-        final String password = authentication.getCredentials().toString();
         final StringBuilder subjectBuilder = new StringBuilder();
-        subjectBuilder.append("{\"username\":\"").append(userName)
-                .append("\", \"password\":\"").append(password).append("\"");
-        if (user.getAuthorities().isEmpty()) {
-            subjectBuilder.append(", \"role\" : \"").append(user.getAuthorities().toArray()[0]).append("\"");
+        subjectBuilder
+                .append("{\"username\":\"").append(user.getUsername())
+                .append("\", \"password\":\"").append(authentication.getCredentials().toString())
+                .append("\"");
+        if (!user.getAuthorities().isEmpty()) {
+            subjectBuilder
+                    .append(", \"role\" : \"").append(user.getAuthorities().toArray()[0])
+                    .append("\"");
         }
         subjectBuilder.append("}");
-        String token = JWT.create()
+        return JWT.create()
                 .withSubject(subjectBuilder.toString())
                 .sign(HMAC512(secretKey.getBytes()));
-        if (tokenPrefix != null) {
-            token = tokenPrefix + token;
-        }
-        return token;
     }
 }
