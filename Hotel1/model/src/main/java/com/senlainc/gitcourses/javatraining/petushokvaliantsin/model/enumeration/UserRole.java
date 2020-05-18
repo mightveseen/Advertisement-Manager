@@ -2,6 +2,6 @@ package com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.enumeratio
 
 public enum UserRole {
 
-    ROLE_ADMIN,
-    ROLE_GUEST
+    ADMIN,
+    GUEST
 }
