@@ -17,7 +17,8 @@ public class SystemUserDto implements Serializable {
     private String username;
     @NotNull(groups = {Create.class, Update.class})
     private String password;
-    @NotNull(groups = {Create.class, Update.class})
+    @Null(groups = Create.class)
+    @NotNull(groups = Update.class)
     private UserRole role;
 
     public Long getId() {

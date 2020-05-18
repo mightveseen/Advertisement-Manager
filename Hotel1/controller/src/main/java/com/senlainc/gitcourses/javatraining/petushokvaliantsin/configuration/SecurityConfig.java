@@ -3,11 +3,13 @@ package com.senlainc.gitcourses.javatraining.petushokvaliantsin.configuration;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.configuration.filter.AuthenticationFilter;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.configuration.filter.AuthorizationFilter;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.configuration.filter.TokenMapper;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.enumeration.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -44,7 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests()
                 .antMatchers("/login", "/sign-up").anonymous()
-                .anyRequest().authenticated();
+                .antMatchers(HttpMethod.GET, "/orders/{id}").hasAnyRole(UserRole.GUEST.name(), UserRole.ADMIN.name())
+                .antMatchers(HttpMethod.PUT, "/orders/{id}/attendances/{id}").hasAnyRole(UserRole.GUEST.name(), UserRole.ADMIN.name())
+                .anyRequest().hasRole(UserRole.ADMIN.name());
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilter(new AuthenticationFilter(authenticationManager(), tokenMapper()));
         http.addFilter(new AuthorizationFilter(authenticationManager(), tokenMapper()));
@@ -68,6 +72,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public TokenMapper tokenMapper() {
-        return new TokenMapper(tokenPrefix, secretKey, tokenHeader);
+        return new TokenMapper(userDetailsService, tokenPrefix, secretKey, tokenHeader);
     }
 }

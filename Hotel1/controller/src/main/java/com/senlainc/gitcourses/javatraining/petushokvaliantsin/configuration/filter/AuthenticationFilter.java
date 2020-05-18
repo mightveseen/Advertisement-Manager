@@ -12,7 +12,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -35,10 +34,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
         try {
             final StringBuilder requestBody = new StringBuilder();
-            final List<String> requestBodies = request.getReader().lines().collect(Collectors.toList());
-            for (String body : requestBodies) {
-                requestBody.append(body);
-            }
+            request.getReader().lines().collect(Collectors.toList()).forEach(requestBody::append);
             final SystemUserDto userDto = new ObjectMapper().readValue(requestBody.toString(), SystemUserDto.class);
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getUsername(),
                     userDto.getPassword(), null));

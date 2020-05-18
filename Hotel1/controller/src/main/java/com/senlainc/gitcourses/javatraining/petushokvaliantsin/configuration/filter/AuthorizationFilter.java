@@ -1,10 +1,9 @@
 package com.senlainc.gitcourses.javatraining.petushokvaliantsin.configuration.filter;
 
-import com.senlainc.gitcourses.javatraining.petushokvaliantsin.dto.SystemUserDto;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -12,8 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AuthorizationFilter extends BasicAuthenticationFilter {
 
@@ -37,9 +34,8 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(String token) {
-        final SystemUserDto userDto = tokenMapper.parseToken(token);
-        final List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(userDto.getRole().name()));
-        return new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword(), grantedAuthorities);
+        final UserDetails userDto = tokenMapper.parseToken(token);
+        return new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword(),
+                userDto.getAuthorities());
     }
 }

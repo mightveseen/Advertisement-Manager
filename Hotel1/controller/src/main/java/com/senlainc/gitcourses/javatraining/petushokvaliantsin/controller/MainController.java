@@ -14,21 +14,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/sign-up")
-public class UserController {
+@RequestMapping
+public class MainController {
 
     private final PasswordEncoder passwordEncoder;
     private final IDtoMapper dtoMapper;
     private final ISystemUserService systemUserService;
 
     @Autowired
-    public UserController(PasswordEncoder passwordEncoder, IDtoMapper dtoMapper, ISystemUserService systemUserService) {
+    public MainController(PasswordEncoder passwordEncoder, IDtoMapper dtoMapper, ISystemUserService systemUserService) {
         this.passwordEncoder = passwordEncoder;
         this.dtoMapper = dtoMapper;
         this.systemUserService = systemUserService;
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/sign-up", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void createUser(@RequestBody @Validated(SystemUserDto.Create.class) SystemUserDto systemUserDto) {
         systemUserDto.setPassword(passwordEncoder.encode(systemUserDto.getPassword()));
         systemUserService.create(dtoMapper.map(systemUserDto, SystemUser.class));
