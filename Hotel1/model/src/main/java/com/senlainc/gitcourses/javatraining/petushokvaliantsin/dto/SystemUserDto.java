@@ -20,17 +20,6 @@ public class SystemUserDto implements Serializable {
     @NotNull(groups = {Create.class, Update.class})
     private UserRole role;
 
-    public SystemUserDto() {
-
-    }
-
-    public SystemUserDto(Long id, String username, String password, UserRole role) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.role = role;
-    }
-
     public Long getId() {
         return id;
     }

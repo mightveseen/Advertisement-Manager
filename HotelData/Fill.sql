@@ -27,9 +27,3 @@ VALUES
     (1, 4),
     (1, 2),
     (2, 4);
--- INSERT INTO `Users`(`username`, `password`, `role`)
--- VALUES
--- 	('admin', ),
---     (1, 4),
---     (1, 2),
---     (2, 4);
