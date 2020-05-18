@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class AuthorizationFilter extends BasicAuthenticationFilter {
@@ -46,8 +45,8 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
         if (token != null) {
             final SystemUserDto userDto = tokenMapper.parseToken(token);
             final List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
-//            grantedAuthorities.add(new SimpleGrantedAuthority(userDto.getRole().name()));
-            return new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword(), Collections.emptyList());
+            grantedAuthorities.add(new SimpleGrantedAuthority(userDto.getRole().name()));
+            return new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword(), grantedAuthorities);
         }
         return null;
     }
