@@ -18,19 +18,17 @@ import java.util.stream.Collectors;
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-    private final String tokenHeader;
     private final TokenMapper tokenMapper;
 
-    public AuthenticationFilter(AuthenticationManager authenticationManager, String tokenHeader, TokenMapper tokenMapper) {
+    public AuthenticationFilter(AuthenticationManager authenticationManager, TokenMapper tokenMapper) {
         this.authenticationManager = authenticationManager;
-        this.tokenHeader = tokenHeader;
         this.tokenMapper = tokenMapper;
     }
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) {
         final String token = tokenMapper.generateToken(authResult);
-        response.setHeader(tokenHeader, token);
+        response.setHeader(tokenMapper.getTokenHeader(), token);
     }
 
     @Override

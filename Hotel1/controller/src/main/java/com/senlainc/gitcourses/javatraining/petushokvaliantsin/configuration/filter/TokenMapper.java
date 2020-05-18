@@ -12,10 +12,24 @@ public class TokenMapper {
 
     private final String tokenPrefix;
     private final String secretKey;
+    private final String tokenHeader;
 
-    public TokenMapper(String tokenPrefix, String secretKey) {
+    public TokenMapper(String tokenPrefix, String secretKey, String tokenHeader) {
         this.tokenPrefix = tokenPrefix;
         this.secretKey = secretKey;
+        this.tokenHeader = tokenHeader;
+    }
+
+    public String getTokenHeader() {
+        return tokenHeader;
+    }
+
+    public String getTokenPrefix() {
+        return tokenPrefix;
+    }
+
+    public String getSecretKey() {
+        return secretKey;
     }
 
     public SystemUserDto parseToken(String token) {
