@@ -31,21 +31,15 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
             chain.doFilter(request, response);
             return;
         }
-        final UsernamePasswordAuthenticationToken authenticationToken = getAuthentication(request);
-        if (authenticationToken != null) {
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        }
+        final UsernamePasswordAuthenticationToken authenticationToken = getAuthentication(token);
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         chain.doFilter(request, response);
     }
 
-    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        final String token = request.getHeader(tokenMapper.getTokenHeader());
-        if (token != null) {
-            final SystemUserDto userDto = tokenMapper.parseToken(token);
-            final List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
-            grantedAuthorities.add(new SimpleGrantedAuthority(userDto.getRole().name()));
-            return new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword(), grantedAuthorities);
-        }
-        return null;
+    private UsernamePasswordAuthenticationToken getAuthentication(String token) {
+        final SystemUserDto userDto = tokenMapper.parseToken(token);
+        final List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority(userDto.getRole().name()));
+        return new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword(), grantedAuthorities);
     }
 }
