@@ -54,12 +54,12 @@ public class TokenMapper {
         final User user = ((User) authentication.getPrincipal());
         return JWT.create()
                 .withIssuedAt(new Date(System.currentTimeMillis()))
-                .withSubject(subject(user))
+                .withSubject(getSubject(user))
                 .withClaim("\"role\":\"", user.getAuthorities().toString())
                 .sign(HMAC512(secretKey.getBytes()));
     }
 
-    private String subject(User user) {
+    private String getSubject(User user) {
         return "{\"username\":\"" + user.getUsername() + "\"" + "}";
     }
 }

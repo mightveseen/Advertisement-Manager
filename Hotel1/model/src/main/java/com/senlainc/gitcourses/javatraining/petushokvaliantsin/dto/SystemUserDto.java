@@ -9,15 +9,15 @@ import java.io.Serializable;
 
 public class SystemUserDto implements Serializable {
 
-    @Null(groups = Create.class)
+    @Null(groups = {Create.class, Login.class})
     @NotNull(groups = Update.class)
     @Positive(groups = Update.class)
     private Long id;
-    @NotNull(groups = {Create.class, Update.class})
+    @NotNull(groups = {Create.class, Update.class, Login.class})
     private String username;
-    @NotNull(groups = {Create.class, Update.class})
+    @NotNull(groups = {Create.class, Update.class, Login.class})
     private String password;
-    @Null(groups = Create.class)
+    @Null(groups = {Create.class, Login.class})
     @NotNull(groups = Update.class)
     private UserRole role;
 
@@ -58,6 +58,10 @@ public class SystemUserDto implements Serializable {
     }
 
     public interface Update {
+
+    }
+
+    public interface Login {
 
     }
 }
