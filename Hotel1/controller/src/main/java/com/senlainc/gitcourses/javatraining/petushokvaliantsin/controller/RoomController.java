@@ -3,7 +3,6 @@ package com.senlainc.gitcourses.javatraining.petushokvaliantsin.controller;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.service.IOrderService;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.service.IRoomService;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.dto.RoomDto;
-import com.senlainc.gitcourses.javatraining.petushokvaliantsin.exceptionhandler.AppExceptionHandler;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Room;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.dto.IDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "rooms")
-public class RoomController extends AppExceptionHandler {
+public class RoomController {
 
     private final IRoomService roomService;
     private final IOrderService orderService;

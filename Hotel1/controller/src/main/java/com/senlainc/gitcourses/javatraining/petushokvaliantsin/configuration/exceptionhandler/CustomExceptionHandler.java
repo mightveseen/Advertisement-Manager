@@ -1,4 +1,4 @@
-package com.senlainc.gitcourses.javatraining.petushokvaliantsin.exceptionhandler;
+package com.senlainc.gitcourses.javatraining.petushokvaliantsin.configuration.exceptionhandler;
 
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementAlreadyExistsException;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementNotAvailableException;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class AppExceptionHandler extends ResponseEntityExceptionHandler {
+public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ElementNotFoundException.class)
     public ResponseEntity<Object> elementNotFoundResponse(ElementNotFoundException e) {

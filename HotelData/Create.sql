@@ -40,5 +40,11 @@ CREATE TABLE IF NOT EXISTS `OrderAttendances` (
 	FOREIGN KEY (`attendance_id`) REFERENCES `Attendances`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (`order_id`) REFERENCES `Orders`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
 );
+CREATE TABLE IF NOT EXISTS `Users` (
+	`id` INT AUTO_INCREMENT PRIMARY KEY,
+    `username` VARCHAR(50),
+	`password` VARCHAR(120),
+    `role` VARCHAR(20)
+);
 
 	

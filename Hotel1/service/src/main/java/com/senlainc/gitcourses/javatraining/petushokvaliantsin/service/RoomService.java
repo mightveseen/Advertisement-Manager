@@ -4,7 +4,7 @@ import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.repository.IR
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.service.IRoomService;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Room;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Room_;
-import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.status.RoomStatus;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.enumeration.RoomStatus;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementAlreadyExistsException;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.ElementNotAvailableException;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.mapper.singularattribute.ISingularMapper;

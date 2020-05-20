@@ -3,7 +3,7 @@ package com.senlainc.gitcourses.javatraining.petushokvaliantsin.repository;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.api.repository.IRoomDao;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Room;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.Room_;
-import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.status.RoomStatus;
+import com.senlainc.gitcourses.javatraining.petushokvaliantsin.model.enumeration.RoomStatus;
 import com.senlainc.gitcourses.javatraining.petushokvaliantsin.utility.exception.dao.ReadQueryException;
 import org.springframework.stereotype.Repository;
 

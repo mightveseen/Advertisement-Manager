@@ -1,4 +1,4 @@
-package com.senlainc.gitcourses.javatraining.petushokvaliantsin.exceptionhandler;
+package com.senlainc.gitcourses.javatraining.petushokvaliantsin.configuration.exceptionhandler;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
