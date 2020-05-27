@@ -58,6 +58,10 @@ CREATE TABLE IF NOT EXISTS `Payment_types` (
 `payment_type_duration` INT NOT NULL,
 `payment_type_price` DOUBLE NOT NULL
 );
+CREATE TABLE IF NOT EXISTS `Payment_states` (
+`state_id` INT AUTO_INCREMENT PRIMARY KEY,
+`state_description` VARCHAR(50) NOT NULL
+);
 CREATE TABLE IF NOT EXISTS `Payments` (
 `payment_id` INT AUTO_INCREMENT PRIMARY KEY,
 `payment_advertisement` INT,
@@ -65,8 +69,10 @@ CREATE TABLE IF NOT EXISTS `Payments` (
 `payment_start_date` DATE NOT NULL,
 `payment_end_date` DATE NOT NULL,
 `payment_price` DOUBLE NOT NULL,
-FOREIGN KEY (`payment_advertisement`) REFERENCES `Advertisements`(`advertisement_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-FOREIGN KEY (`payment_type`) REFERENCES `Payment_types`(`payment_type_id`) ON DELETE SET NULL ON UPDATE CASCADE
+`payment_state` INT,
+FOREIGN KEY (`payment_advertisement`) REFERENCES `Advertisements`(`advertisement_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (`payment_type`) REFERENCES `Payment_types`(`payment_type_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+FOREIGN KEY (`payment_state`) REFERENCES `Payment_states`(`state_id`) ON DELETE SET NULL ON UPDATE CASCADE
 );
 CREATE TABLE IF NOT EXISTS `Chats` (
 `chat_id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -80,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `Messages` (
 `message_text` VARCHAR(500) NOT NULL,
 `message_date` DATE NOT NULL,
 FOREIGN KEY (`message_user`) REFERENCES `Users`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-FOREIGN KEY (`message_chat`) REFERENCES `Chats`(`chat_id`) ON DELETE SET NULL ON UPDATE CASCADE
+FOREIGN KEY (`message_chat`) REFERENCES `Chats`(`chat_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE TABLE IF NOT EXISTS `Chat_users` (
 `chat_id` INT,
