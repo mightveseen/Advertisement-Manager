@@ -13,13 +13,13 @@ CREATE TABLE IF NOT EXISTS `Users` (
 `user_email` VARCHAR(50) NOT NULL,
 `user_phone` INT NOT NULL,
 `user_registration_date` DATE NOT NULL,
-`user_raiting` FLOAT NOT NULL,
+`user_rating` FLOAT NOT NULL,
 `user_role` VARCHAR(40) NOT NULL,
 FOREIGN KEY (`user_id`) REFERENCES `User_data`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE TABLE IF NOT EXISTS `Advertisement_categories` (
-`cathegory_id` INT AUTO_INCREMENT PRIMARY KEY,
-`cathegory_description` VARCHAR(50) NOT NULL
+`category_id` INT AUTO_INCREMENT PRIMARY KEY,
+`category_description` VARCHAR(50) NOT NULL
 );
 CREATE TABLE IF NOT EXISTS `Advertisement_states` (
 `state_id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -30,11 +30,11 @@ CREATE TABLE IF NOT EXISTS `Advertisements`(
 `advertisement_header` VARCHAR(50) NOT NULL,
 `advertisement_user` INT,
 `advertisement_description` VARCHAR(500),
-`advertisement_cathegory` INT,
+`advertisement_category` INT,
 `advertisement_date` DATE NOT NULL,
 `advertisement_state` INT,
 FOREIGN KEY (`advertisement_user`) REFERENCES `Users`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-FOREIGN KEY (`advertisement_cathegory`) REFERENCES `Advertisement_categories`(`cathegory_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+FOREIGN KEY (`advertisement_category`) REFERENCES `Advertisement_categories`(`category_id`) ON DELETE SET NULL ON UPDATE CASCADE,
 FOREIGN KEY (`advertisement_state`) REFERENCES `Advertisement_states`(`state_id`) ON DELETE SET NULL ON UPDATE CASCADE
 );
 CREATE TABLE IF NOT EXISTS `Advertisement_photos` (
@@ -53,10 +53,10 @@ FOREIGN KEY (`comment_user`) REFERENCES `Users`(`user_id`) ON DELETE SET NULL ON
 FOREIGN KEY (`comment_advertisement`) REFERENCES `Advertisements`(`advertisement_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE TABLE IF NOT EXISTS `Payment_types` (
-`payment_type_id` INT AUTO_INCREMENT PRIMARY KEY,
-`payment_type_description` VARCHAR(100) NOT NULL, 
-`payment_type_duration` INT NOT NULL,
-`payment_type_price` DOUBLE NOT NULL
+`type_id` INT AUTO_INCREMENT PRIMARY KEY,
+`type_description` VARCHAR(100) NOT NULL, 
+`type_duration` INT NOT NULL,
+`type_price` DOUBLE NOT NULL
 );
 CREATE TABLE IF NOT EXISTS `Payment_states` (
 `state_id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `Payments` (
 `payment_price` DOUBLE NOT NULL,
 `payment_state` INT,
 FOREIGN KEY (`payment_advertisement`) REFERENCES `Advertisements`(`advertisement_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-FOREIGN KEY (`payment_type`) REFERENCES `Payment_types`(`payment_type_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+FOREIGN KEY (`payment_type`) REFERENCES `Payment_types`(`type_id`) ON DELETE SET NULL ON UPDATE CASCADE,
 FOREIGN KEY (`payment_state`) REFERENCES `Payment_states`(`state_id`) ON DELETE SET NULL ON UPDATE CASCADE
 );
 CREATE TABLE IF NOT EXISTS `Chats` (
