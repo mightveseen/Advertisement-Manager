@@ -14,15 +14,16 @@ public interface IGenericDao<E, K extends Serializable> {
 
     E read(K index);
 
-    <F> E read(SingularAttribute<E, F> field);
-
     <F> F read(K index, SingularAttribute<E, F> field);
 
     List<E> readAll(int firstElement, int maxResult);
 
     <F> List<E> readAll(int firstElement, int maxResult, SingularAttribute<E, F> sortField);
 
-    <F> List<E> readAll(int firstElement, int maxResult, SingularAttribute<E, F> sortField, F parameter);
+    <F> List<E> readAll(int firstElement, int maxResult, SingularAttribute<E, F> field, F value);
+
+    <F, C> List<E> readAll(int firstElement, int maxResult, SingularAttribute<E, F> firstSortField,
+                           SingularAttribute<F, C> secondSortField);
 
     K readSize();
 }
