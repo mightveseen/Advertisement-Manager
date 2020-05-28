@@ -15,7 +15,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
 import javax.persistence.metamodel.SingularAttribute;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -24,13 +23,11 @@ import java.util.List;
 public abstract class AbstractDao<E, K extends Serializable> implements IGenericDao<E, K> {
 
     protected final Class<E> entityClazz;
-    protected final Class<K> keyClazz;
     protected EntityManager entityManager;
     protected CriteriaBuilder criteriaBuilder;
 
     public AbstractDao() {
         this.entityClazz = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        this.keyClazz = (Class<K>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
     }
 
     @PersistenceContext(name = "mainPersistence", type = PersistenceContextType.EXTENDED)
@@ -159,12 +156,12 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
     }
 
     @Override
-    public K readSize() {
+    public Long readSize() {
         try {
-            final CriteriaQuery<K> criteriaQuery = criteriaBuilder.createQuery(keyClazz);
+            final CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
             final Root<E> root = criteriaQuery.from(entityClazz);
             return entityManager.createQuery(criteriaQuery
-                    .select((Selection<? extends K>) criteriaBuilder.count(root)))
+                    .select(criteriaBuilder.count(root)))
                     .getSingleResult();
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);

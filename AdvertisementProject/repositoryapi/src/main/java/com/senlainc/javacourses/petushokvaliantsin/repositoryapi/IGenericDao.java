@@ -25,5 +25,5 @@ public interface IGenericDao<E, K extends Serializable> {
     <F, C> List<E> readAll(int firstElement, int maxResult, SingularAttribute<E, F> firstSortField,
                            SingularAttribute<F, C> secondSortField);
 
-    K readSize();
+    Long readSize();
 }
