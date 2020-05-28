@@ -1,12 +1,12 @@
 DROP DATABASE IF EXISTS AdvertisementManager;
 CREATE DATABASE IF NOT EXISTS AdvertisementManager;
 USE AdvertisementManager;
-CREATE TABLE IF NOT EXISTS `User_data` (
+CREATE TABLE IF NOT EXISTS `user_data` (
 `user_id` INT AUTO_INCREMENT PRIMARY KEY,
 `user_login` VARCHAR(50) NOT NULL,
 `user_password` VARCHAR(120) NOT NULL
 );
-CREATE TABLE IF NOT EXISTS `Users` (
+CREATE TABLE IF NOT EXISTS `users` (
 `user_id` INT PRIMARY KEY,
 `user_first_name` VARCHAR(50) NOT NULL, 
 `user_last_name` VARCHAR(50) NOT NULL,
@@ -15,84 +15,80 @@ CREATE TABLE IF NOT EXISTS `Users` (
 `user_registration_date` DATE NOT NULL,
 `user_rating` FLOAT NOT NULL,
 `user_role` VARCHAR(40) NOT NULL,
-FOREIGN KEY (`user_id`) REFERENCES `User_data`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+FOREIGN KEY (`user_id`) REFERENCES `user_data`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
-CREATE TABLE IF NOT EXISTS `Advertisement_categories` (
+CREATE TABLE IF NOT EXISTS `advertisement_categories` (
 `category_id` INT AUTO_INCREMENT PRIMARY KEY,
 `category_description` VARCHAR(50) NOT NULL
 );
-CREATE TABLE IF NOT EXISTS `Advertisement_states` (
+CREATE TABLE IF NOT EXISTS `states` (
 `state_id` INT AUTO_INCREMENT PRIMARY KEY,
 `state_description` VARCHAR(50) NOT NULL
 );
-CREATE TABLE IF NOT EXISTS `Advertisements`(
+CREATE TABLE IF NOT EXISTS `advertisements`(
 `advertisement_id` INT AUTO_INCREMENT PRIMARY KEY,
 `advertisement_header` VARCHAR(50) NOT NULL,
-`advertisement_user` INT,
+`user_id` INT,
 `advertisement_description` VARCHAR(500),
-`advertisement_category` INT,
+`category_id` INT,
 `advertisement_date` DATE NOT NULL,
-`advertisement_state` INT,
-FOREIGN KEY (`advertisement_user`) REFERENCES `Users`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-FOREIGN KEY (`advertisement_category`) REFERENCES `Advertisement_categories`(`category_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-FOREIGN KEY (`advertisement_state`) REFERENCES `Advertisement_states`(`state_id`) ON DELETE SET NULL ON UPDATE CASCADE
+`state_id` INT,
+FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (`category_id`) REFERENCES `advertisement_categories`(`category_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+FOREIGN KEY (`state_id`) REFERENCES `states`(`state_id`) ON DELETE SET NULL ON UPDATE CASCADE
 );
-CREATE TABLE IF NOT EXISTS `Advertisement_photos` (
+CREATE TABLE IF NOT EXISTS `advertisement_photos` (
 `photo_id` INT AUTO_INCREMENT PRIMARY KEY,
-`photo_advertisement` INT,
+`advertisement_id` INT,
 `photo_url` VARCHAR(260) NOT NULL,
-FOREIGN KEY (`photo_advertisement`) REFERENCES `Advertisements`(`advertisement_id`) ON DELETE CASCADE ON UPDATE CASCADE
+FOREIGN KEY (`advertisement_id`) REFERENCES `advertisements`(`advertisement_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
-CREATE TABLE IF NOT EXISTS `Advertisement_comments` (
+CREATE TABLE IF NOT EXISTS `advertisement_comments` (
 `comment_id` INT AUTO_INCREMENT PRIMARY KEY,
-`comment_user` INT,
-`comment_advertisement` INT,
+`user_id` INT,
+`advertisement_id` INT,
 `comment_message` VARCHAR(500) NOT NULL,
 `comment_date` DATE NOT NULL,
-FOREIGN KEY (`comment_user`) REFERENCES `Users`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-FOREIGN KEY (`comment_advertisement`) REFERENCES `Advertisements`(`advertisement_id`) ON DELETE CASCADE ON UPDATE CASCADE
+FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+FOREIGN KEY (`advertisement_id`) REFERENCES `advertisements`(`advertisement_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
-CREATE TABLE IF NOT EXISTS `Payment_types` (
+CREATE TABLE IF NOT EXISTS `payment_types` (
 `type_id` INT AUTO_INCREMENT PRIMARY KEY,
 `type_description` VARCHAR(100) NOT NULL, 
 `type_duration` INT NOT NULL,
 `type_price` DOUBLE NOT NULL
 );
-CREATE TABLE IF NOT EXISTS `Payment_states` (
-`state_id` INT AUTO_INCREMENT PRIMARY KEY,
-`state_description` VARCHAR(50) NOT NULL
-);
-CREATE TABLE IF NOT EXISTS `Payments` (
+CREATE TABLE IF NOT EXISTS `payments` (
 `payment_id` INT AUTO_INCREMENT PRIMARY KEY,
-`payment_advertisement` INT,
-`payment_type` INT,
+`advertisement_id` INT,
+`type_id` INT,
 `payment_start_date` DATE NOT NULL,
 `payment_end_date` DATE NOT NULL,
 `payment_price` DOUBLE NOT NULL,
-`payment_state` INT,
-FOREIGN KEY (`payment_advertisement`) REFERENCES `Advertisements`(`advertisement_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-FOREIGN KEY (`payment_type`) REFERENCES `Payment_types`(`type_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-FOREIGN KEY (`payment_state`) REFERENCES `Payment_states`(`state_id`) ON DELETE SET NULL ON UPDATE CASCADE
+`state_id` INT,
+FOREIGN KEY (`advertisement_id`) REFERENCES `advertisements`(`advertisement_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (`type_id`) REFERENCES `payment_types`(`type_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+FOREIGN KEY (`state_id`) REFERENCES `states`(`state_id`) ON DELETE SET NULL ON UPDATE CASCADE
 );
-CREATE TABLE IF NOT EXISTS `Chats` (
+CREATE TABLE IF NOT EXISTS `chats` (
 `chat_id` INT AUTO_INCREMENT PRIMARY KEY,
 `chat_name` VARCHAR(50) NOT NULL,
-`chat_top_message` VARCHAR(100) NOT NULL
+`chat_last_message` VARCHAR(100) NOT NULL
 );
-CREATE TABLE IF NOT EXISTS `Messages` (
+CREATE TABLE IF NOT EXISTS `messages` (
 `message_id` INT AUTO_INCREMENT PRIMARY KEY,
-`message_user` INT,
-`message_chat` INT, 
+`user_id` INT,
+`chat_id` INT, 
 `message_text` VARCHAR(500) NOT NULL,
 `message_date` DATE NOT NULL,
-FOREIGN KEY (`message_user`) REFERENCES `Users`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-FOREIGN KEY (`message_chat`) REFERENCES `Chats`(`chat_id`) ON DELETE CASCADE ON UPDATE CASCADE
+FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+FOREIGN KEY (`chat_id`) REFERENCES `chats`(`chat_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
-CREATE TABLE IF NOT EXISTS `Chat_users` (
+CREATE TABLE IF NOT EXISTS `сhat_users` (
 `chat_id` INT,
 `chat_user` INT,
-FOREIGN KEY (`chat_user`) REFERENCES `Users`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-FOREIGN KEY (`chat_id`) REFERENCES `Chats`(`chat_id`) ON DELETE SET NULL ON UPDATE CASCADE
+FOREIGN KEY (`chat_user`) REFERENCES `users`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+FOREIGN KEY (`chat_id`) REFERENCES `chats`(`chat_id`) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 
