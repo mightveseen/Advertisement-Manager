@@ -23,11 +23,11 @@ public class Payment {
     @Column(name = "payment_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long index;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "advertisement_id", nullable = false)
     private Advertisement advertisement;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "type_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "type_id")
     private PaymentType type;
     @Column(name = "payment_start_date")
     private LocalDate startDate;
@@ -35,15 +35,14 @@ public class Payment {
     private LocalDate endDate;
     @Column(name = "payment_price")
     private Double price;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "state_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "state_id")
     private State state;
 
     public Payment() {
     }
 
-    public Payment(Long index, Advertisement advertisement, PaymentType type, LocalDate startDate, LocalDate endDate, Double price, State state) {
-        this.index = index;
+    public Payment(Advertisement advertisement, PaymentType type, LocalDate startDate, LocalDate endDate, Double price, State state) {
         this.advertisement = advertisement;
         this.type = type;
         this.startDate = startDate;

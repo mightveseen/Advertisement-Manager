@@ -11,5 +11,16 @@
 
     <artifactId>repository</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.senlainc.javacourses.petushokvaliantsin</groupId>
+            <artifactId>repositoryapi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.senlainc.javacourses.petushokvaliantsin</groupId>
+            <artifactId>utility</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `states` (
 CREATE TABLE IF NOT EXISTS `advertisements`(
 `advertisement_id` INT AUTO_INCREMENT PRIMARY KEY,
 `advertisement_header` VARCHAR(50) NOT NULL,
-`user_id` INT,
+`user_id` INT NOT NULL,
 `advertisement_description` VARCHAR(500),
 `category_id` INT,
 `advertisement_date` DATE NOT NULL,
@@ -39,14 +39,14 @@ FOREIGN KEY (`state_id`) REFERENCES `states`(`state_id`) ON DELETE SET NULL ON U
 );
 CREATE TABLE IF NOT EXISTS `advertisement_photos` (
 `photo_id` INT AUTO_INCREMENT PRIMARY KEY,
-`advertisement_id` INT,
+`advertisement_id` INT NOT NULL,
 `photo_url` VARCHAR(260) NOT NULL,
 FOREIGN KEY (`advertisement_id`) REFERENCES `advertisements`(`advertisement_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE TABLE IF NOT EXISTS `advertisement_comments` (
 `comment_id` INT AUTO_INCREMENT PRIMARY KEY,
 `user_id` INT,
-`advertisement_id` INT,
+`advertisement_id` INT NOT NULL,
 `comment_message` VARCHAR(500) NOT NULL,
 `comment_date` DATE NOT NULL,
 FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `payment_types` (
 );
 CREATE TABLE IF NOT EXISTS `payments` (
 `payment_id` INT AUTO_INCREMENT PRIMARY KEY,
-`advertisement_id` INT,
+`advertisement_id` INT NOT NULL,
 `type_id` INT,
 `payment_start_date` DATE NOT NULL,
 `payment_end_date` DATE NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `chats` (
 CREATE TABLE IF NOT EXISTS `messages` (
 `message_id` INT AUTO_INCREMENT PRIMARY KEY,
 `user_id` INT,
-`chat_id` INT, 
+`chat_id` INT NOT NULL, 
 `message_text` VARCHAR(500) NOT NULL,
 `message_date` DATE NOT NULL,
 FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE,

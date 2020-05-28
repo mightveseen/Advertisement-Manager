@@ -1,5 +1,8 @@
 package com.senlainc.javacourses.petushokvaliantsin.model;
 
+import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
+import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,16 +23,16 @@ public class State {
     private Long index;
     @Column(name = "state_description")
     private String description;
-    @OneToMany(mappedBy = "state", fetch = FetchType.EAGER)
-    private Set<Object> objects;
+    @OneToMany(mappedBy = "state", fetch = FetchType.LAZY)
+    private Set<Payment> payments;
+    @OneToMany(mappedBy = "state", fetch = FetchType.LAZY)
+    private Set<Advertisement> advertisements;
 
     public State() {
     }
 
-    public State(Long index, String description, Set<Object> objects) {
-        this.index = index;
+    public State(String description) {
         this.description = description;
-        this.objects = objects;
     }
 
     public Long getIndex() {
@@ -48,12 +51,20 @@ public class State {
         this.description = description;
     }
 
-    public Set<Object> getObjects() {
-        return objects;
+    public Set<Payment> getPayments() {
+        return payments;
     }
 
-    public void setObjects(Set<Object> objects) {
-        this.objects = objects;
+    public void setPayments(Set<Payment> payments) {
+        this.payments = payments;
+    }
+
+    public Set<Advertisement> getAdvertisements() {
+        return advertisements;
+    }
+
+    public void setAdvertisements(Set<Advertisement> advertisements) {
+        this.advertisements = advertisements;
     }
 
     @Override
@@ -63,12 +74,13 @@ public class State {
         State state = (State) o;
         return index.equals(state.index) &&
                 description.equals(state.description) &&
-                objects.equals(state.objects);
+                Objects.equals(payments, state.payments) &&
+                Objects.equals(advertisements, state.advertisements);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(index, description, objects);
+        return Objects.hash(index, description, payments, advertisements);
     }
 
     @Override
@@ -76,7 +88,8 @@ public class State {
         return "State{" +
                 "index=" + index +
                 ", description='" + description + '\'' +
-                ", objects=" + objects +
+                ", payments=" + payments +
+                ", advertisements=" + advertisements +
                 '}';
     }
 }
