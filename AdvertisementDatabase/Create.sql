@@ -1,10 +1,16 @@
 DROP DATABASE IF EXISTS AdvertisementManager;
 CREATE DATABASE IF NOT EXISTS AdvertisementManager;
 USE AdvertisementManager;
+CREATE TABLE IF NOT EXISTS `user_roles` (
+`role_id` INT AUTO_INCREMENT PRIMARY KEY,
+`role_description` VARCHAR(50) NOT NULL
+);
 CREATE TABLE IF NOT EXISTS `user_data` (
 `user_id` INT AUTO_INCREMENT PRIMARY KEY,
 `user_login` VARCHAR(50) NOT NULL,
-`user_password` VARCHAR(120) NOT NULL
+`user_password` VARCHAR(120) NOT NULL,
+`role_id` INT,
+FOREIGN KEY (`role_id`) REFERENCES `user_roles`(`role_id`) ON DELETE SET NULL ON UPDATE CASCADE
 );
 CREATE TABLE IF NOT EXISTS `users` (
 `user_id` INT PRIMARY KEY,
@@ -14,7 +20,6 @@ CREATE TABLE IF NOT EXISTS `users` (
 `user_phone` INT NOT NULL,
 `user_registration_date` DATE NOT NULL,
 `user_rating` FLOAT NOT NULL,
-`user_role` VARCHAR(40) NOT NULL,
 FOREIGN KEY (`user_id`) REFERENCES `user_data`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE TABLE IF NOT EXISTS `advertisement_categories` (
