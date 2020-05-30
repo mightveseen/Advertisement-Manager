@@ -1,5 +1,7 @@
 package com.senlainc.javacourses.petushokvaliantsin.configuration;
 
+import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.ISingularMapper;
+import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.implementation.SingularMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -85,5 +87,10 @@ public class AppConfig {
         final JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory);
         return transactionManager;
+    }
+
+    @Bean
+    public ISingularMapper singularMapper() {
+        return new SingularMapper("com.senlainc.javacourses.petushokvaliantsin.service");
     }
 }

@@ -2,42 +2,42 @@ package com.senlainc.javacourses.petushokvaliantsin.utility.mapper.implementatio
 
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.IncorrectCastException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.ISingularMapper;
+import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularClass;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularModel;
-import org.springframework.stereotype.Component;
+import org.reflections.Reflections;
 
 import javax.persistence.metamodel.SingularAttribute;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Set;
 
-@Component
 public class SingularMapper implements ISingularMapper {
 
     private final HashMap<String, Field> fields;
 
-    public SingularMapper() {
+    public SingularMapper(String packageScan) {
         this.fields = new HashMap<>();
+        setClass(new Reflections(packageScan).getTypesAnnotatedWith(SingularClass.class));
     }
 
-    public void setClass(Class<?> clazz) {
-        for (Method method : clazz.getDeclaredMethods()) {
-            if (method.isAnnotationPresent(SingularModel.class)) {
-                final SingularModel annotation = method.getAnnotation(SingularModel.class);
-                Arrays.asList(annotation.metamodels()).forEach(i -> {
-                    for (Field field : i.getDeclaredFields()) {
+    private void setClass(Set<Class<?>> clazz) {
+        clazz.forEach(i -> Arrays.stream(i.getDeclaredMethods()).forEach(j -> {
+            if (j.isAnnotationPresent(SingularModel.class)) {
+                Arrays.stream(j.getAnnotation(SingularModel.class).metamodels()).forEach(f -> {
+                    for (Field field : f.getDeclaredFields()) {
                         if (field.getType().equals(SingularAttribute.class)) {
                             fields.put(field.getName().toLowerCase(), field);
                         }
                     }
                 });
             }
-        }
+        }));
     }
 
-    public <E, F> SingularAttribute<E, F> getSingularAttribute(String parameter) {
+    public SingularAttribute getSingularAttribute(String parameter) {
         try {
-            return (SingularAttribute) fields.get(parameter.toLowerCase()).get(null);
+            return SingularAttribute.class.cast(fields.get(parameter.toLowerCase()).get(null));
         } catch (NullPointerException | IllegalAccessException e) {
             throw new IncorrectCastException("Chosen parameter [" + parameter + "] does not match any field");
         }
