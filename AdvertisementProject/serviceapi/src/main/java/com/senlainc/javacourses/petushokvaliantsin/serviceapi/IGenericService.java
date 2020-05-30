@@ -1,6 +1,5 @@
 package com.senlainc.javacourses.petushokvaliantsin.serviceapi;
 
-import javax.persistence.metamodel.SingularAttribute;
 import java.io.Serializable;
 import java.util.List;
 
@@ -16,5 +15,5 @@ public interface IGenericService<E, K extends Serializable> {
 
     List<E> readAll(int firstElement, int maxResult);
 
-    <C> List<E> readAll(int firstElement, int maxResult, SingularAttribute<E, C> sortField);
+    List<E> readAll(int firstElement, int maxResult, String sortField);
 }

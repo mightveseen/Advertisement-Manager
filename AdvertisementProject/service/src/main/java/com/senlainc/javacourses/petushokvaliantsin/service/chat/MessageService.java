@@ -1,14 +1,14 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.chat;
 
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Message;
+import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IMessageService;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.metamodel.SingularAttribute;
 import java.util.List;
 
 @Service
-public class MessageService implements IMessageService {
+public class MessageService extends AbstractService<Message, Long> implements IMessageService {
     @Override
     public boolean create(Message object) {
         return false;
@@ -35,7 +35,7 @@ public class MessageService implements IMessageService {
     }
 
     @Override
-    public <C> List<Message> readAll(int firstElement, int maxResult, SingularAttribute<Message, C> sortField) {
+    public List<Message> readAll(int firstElement, int maxResult, String sortField) {
         return null;
     }
 }

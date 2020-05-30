@@ -1,14 +1,14 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.chat;
 
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
+import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IChatService;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.metamodel.SingularAttribute;
 import java.util.List;
 
 @Service
-public class ChatService implements IChatService {
+public class ChatService extends AbstractService<Chat, Long> implements IChatService {
     @Override
     public boolean create(Chat object) {
         return false;
@@ -35,7 +35,7 @@ public class ChatService implements IChatService {
     }
 
     @Override
-    public <C> List<Chat> readAll(int firstElement, int maxResult, SingularAttribute<Chat, C> sortField) {
+    public List<Chat> readAll(int firstElement, int maxResult, String sortField) {
         return null;
     }
 }

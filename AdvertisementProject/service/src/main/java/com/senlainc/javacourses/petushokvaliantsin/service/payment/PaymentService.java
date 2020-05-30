@@ -1,14 +1,14 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.payment;
 
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment;
+import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.payment.IPaymentService;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.metamodel.SingularAttribute;
 import java.util.List;
 
 @Service
-public class PaymentService implements IPaymentService {
+public class PaymentService extends AbstractService<Payment, Long> implements IPaymentService {
     @Override
     public boolean create(Payment object) {
         return false;
@@ -35,7 +35,7 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
-    public <C> List<Payment> readAll(int firstElement, int maxResult, SingularAttribute<Payment, C> sortField) {
+    public List<Payment> readAll(int firstElement, int maxResult, String sortField) {
         return null;
     }
 }

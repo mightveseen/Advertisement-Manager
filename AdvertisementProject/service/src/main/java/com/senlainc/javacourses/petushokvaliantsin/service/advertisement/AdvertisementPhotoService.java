@@ -1,14 +1,14 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.advertisement;
 
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementPhoto;
+import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementPhotoService;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.metamodel.SingularAttribute;
 import java.util.List;
 
 @Service
-public class AdvertisementPhotoService implements IAdvertisementPhotoService {
+public class AdvertisementPhotoService extends AbstractService<AdvertisementPhoto, Long> implements IAdvertisementPhotoService {
 
     @Override
     public boolean create(AdvertisementPhoto object) {
@@ -36,7 +36,7 @@ public class AdvertisementPhotoService implements IAdvertisementPhotoService {
     }
 
     @Override
-    public <C> List<AdvertisementPhoto> readAll(int firstElement, int maxResult, SingularAttribute<AdvertisementPhoto, C> sortField) {
+    public List<AdvertisementPhoto> readAll(int firstElement, int maxResult, String sortField) {
         return null;
     }
 }

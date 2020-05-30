@@ -26,7 +26,11 @@ public class AdvertisementController {
 
     @GetMapping
     public List<AdvertisementDto> getAdvertisements(@RequestParam(name = "first", defaultValue = "0") int firstElement,
-                                                    @RequestParam(name = "max", defaultValue = "15") int maxResult) {
-        return dtoMapper.mapAll(advertisementService.readAll(firstElement, maxResult), AdvertisementDto.class);
+                                                    @RequestParam(name = "max", defaultValue = "15") int maxResult,
+                                                    @RequestParam(name = "sort", defaultValue = "default") String sort) {
+        if (sort.equals("default")) {
+            return dtoMapper.mapAll(advertisementService.readAll(firstElement, maxResult), AdvertisementDto.class);
+        }
+        return dtoMapper.mapAll(advertisementService.readAll(firstElement, maxResult, sort), AdvertisementDto.class);
     }
 }

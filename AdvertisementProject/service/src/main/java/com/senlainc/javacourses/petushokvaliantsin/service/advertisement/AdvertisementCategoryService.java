@@ -1,14 +1,14 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.advertisement;
 
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementCategory;
+import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementCategoryService;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.metamodel.SingularAttribute;
 import java.util.List;
 
 @Service
-public class AdvertisementCategoryService implements IAdvertisementCategoryService {
+public class AdvertisementCategoryService extends AbstractService<AdvertisementCategory, Long> implements IAdvertisementCategoryService {
 
     @Override
     public boolean create(AdvertisementCategory object) {
@@ -36,7 +36,7 @@ public class AdvertisementCategoryService implements IAdvertisementCategoryServi
     }
 
     @Override
-    public <C> List<AdvertisementCategory> readAll(int firstElement, int maxResult, SingularAttribute<AdvertisementCategory, C> sortField) {
+    public List<AdvertisementCategory> readAll(int firstElement, int maxResult, String sortField) {
         return null;
     }
 }

@@ -1,17 +1,19 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.advertisement;
 
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
+import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement_;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementDao;
+import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementService;
+import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.metamodel.SingularAttribute;
 import java.util.List;
 
 @Service
-public class AdvertisementService implements IAdvertisementService {
+public class AdvertisementService extends AbstractService<Advertisement, Long> implements IAdvertisementService {
 
     private final IAdvertisementDao advertisementDao;
 
@@ -47,7 +49,10 @@ public class AdvertisementService implements IAdvertisementService {
     }
 
     @Override
-    public <C> List<Advertisement> readAll(int firstElement, int maxResult, SingularAttribute<Advertisement, C> sortField) {
-        return null;
+    @Transactional(readOnly = true)
+    @SingularModel(metamodels = Advertisement_.class)
+    public List<Advertisement> readAll(int firstElement, int maxResult, String sortField) {
+        singularMapper.setClass(this.getClass());
+        return advertisementDao.readAll(firstElement, maxResult, singularMapper.getSingularAttribute(sortField));
     }
 }
