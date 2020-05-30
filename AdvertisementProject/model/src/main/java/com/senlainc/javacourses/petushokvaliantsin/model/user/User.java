@@ -4,12 +4,10 @@ import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertise
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementComment;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Message;
-import com.senlainc.javacourses.petushokvaliantsin.model.enumeration.UserRole;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -27,8 +25,11 @@ import java.util.Set;
 public class User {
 
     @Id
-    @Column(name = "user_id")
+    @Column(name = "user_id", unique = true, updatable = false, nullable = false)
     private Long index;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "user_id")
+    private UserCred userCred;
     @Column(name = "user_first_name")
     private String firstName;
     @Column(name = "user_last_name")
@@ -41,9 +42,6 @@ public class User {
     private LocalDate registrationDate;
     @Column(name = "user_rating")
     private Float rating;
-    @Column(name = "user_role")
-    @Enumerated(value = EnumType.STRING)
-    private UserRole role;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Message> messages;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -54,21 +52,18 @@ public class User {
     @JoinTable(name = "chat_users", joinColumns = @JoinColumn(name = "chat_user"),
             inverseJoinColumns = @JoinColumn(name = "chat_id"))
     private Set<Chat> chats;
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-    private UserData userData;
 
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, Integer phone, LocalDate registrationDate, Float rating, UserRole role, UserData userData) {
+    public User(String firstName, String lastName, String email, Integer phone, LocalDate registrationDate, Float rating, UserCred userCred) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
         this.registrationDate = registrationDate;
         this.rating = rating;
-        this.role = role;
-        this.userData = userData;
+        this.userCred = userCred;
     }
 
     public Long getIndex() {
@@ -127,14 +122,6 @@ public class User {
         this.rating = rating;
     }
 
-    public UserRole getRole() {
-        return role;
-    }
-
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
-
     public Set<Message> getMessages() {
         return messages;
     }
@@ -167,12 +154,12 @@ public class User {
         this.chats = chats;
     }
 
-    public UserData getUserData() {
-        return userData;
+    public UserCred getUserCred() {
+        return userCred;
     }
 
-    public void setUserData(UserData userData) {
-        this.userData = userData;
+    public void setUserCred(UserCred userCred) {
+        this.userCred = userCred;
     }
 
     @Override
@@ -187,17 +174,16 @@ public class User {
                 phone.equals(user.phone) &&
                 registrationDate.equals(user.registrationDate) &&
                 rating.equals(user.rating) &&
-                role == user.role &&
                 Objects.equals(messages, user.messages) &&
                 Objects.equals(comments, user.comments) &&
                 Objects.equals(advertisements, user.advertisements) &&
                 Objects.equals(chats, user.chats) &&
-                userData.equals(user.userData);
+                userCred.equals(user.userCred);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(index, firstName, lastName, email, phone, registrationDate, rating, role, messages, comments, advertisements, chats, userData);
+        return Objects.hash(index, firstName, lastName, email, phone, registrationDate, rating, messages, comments, advertisements, chats, userCred);
     }
 
     @Override
@@ -210,12 +196,6 @@ public class User {
                 ", phone=" + phone +
                 ", registrationDate=" + registrationDate +
                 ", rating=" + rating +
-                ", role=" + role +
-                ", messages=" + messages +
-                ", comments=" + comments +
-                ", advertisements=" + advertisements +
-                ", chats=" + chats +
-                ", userData=" + userData +
                 '}';
     }
 }

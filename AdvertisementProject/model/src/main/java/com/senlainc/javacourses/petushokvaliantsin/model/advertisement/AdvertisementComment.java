@@ -23,7 +23,7 @@ public class AdvertisementComment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long index;
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "advertisement_id", nullable = false)

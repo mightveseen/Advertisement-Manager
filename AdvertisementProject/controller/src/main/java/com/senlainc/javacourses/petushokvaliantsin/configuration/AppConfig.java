@@ -21,7 +21,8 @@ import java.util.Properties;
 @Configuration
 @ComponentScan(basePackages = {"com.senlainc.javacourses.petushokvaliantsin.repository",
         "com.senlainc.javacourses.petushokvaliantsin.service",
-        "com.senlainc.javacourses.petushokvaliantsin.controller"})
+        "com.senlainc.javacourses.petushokvaliantsin.controller",
+        "com.senlainc.javacourses.petushokvaliantsin.utility"})
 @PropertySource(value = "classpath:/properties/base.properties")
 @EnableTransactionManagement
 public class AppConfig {

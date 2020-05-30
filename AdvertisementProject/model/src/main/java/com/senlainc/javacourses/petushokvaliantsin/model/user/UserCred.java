@@ -1,18 +1,21 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.user;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
 @Table(name = "user_data")
-public class UserData {
+public class UserCred {
 
     @Id
     @Column(name = "user_id")
@@ -22,13 +25,16 @@ public class UserData {
     private String login;
     @Column(name = "user_password")
     private String password;
-    @OneToOne(mappedBy = "userData", fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
+    private UserRole userRole;
+    @OneToOne(mappedBy = "userCred", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User user;
 
-    public UserData() {
+    public UserCred() {
     }
 
-    public UserData(String login, String password) {
+    public UserCred(String login, String password) {
         this.login = login;
         this.password = password;
     }
@@ -69,11 +75,11 @@ public class UserData {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserData userData = (UserData) o;
-        return index.equals(userData.index) &&
-                login.equals(userData.login) &&
-                password.equals(userData.password) &&
-                Objects.equals(user, userData.user);
+        UserCred userCred = (UserCred) o;
+        return index.equals(userCred.index) &&
+                login.equals(userCred.login) &&
+                password.equals(userCred.password) &&
+                Objects.equals(user, userCred.user);
     }
 
     @Override
@@ -87,7 +93,6 @@ public class UserData {
                 "index=" + index +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", user=" + user +
                 '}';
     }
 }
