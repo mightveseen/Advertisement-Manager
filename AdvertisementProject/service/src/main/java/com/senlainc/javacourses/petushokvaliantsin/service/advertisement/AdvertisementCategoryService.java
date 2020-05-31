@@ -36,7 +36,7 @@ public class AdvertisementCategoryService extends AbstractService<AdvertisementC
     }
 
     @Override
-    public List<AdvertisementCategory> readAll(int firstElement, int maxResult, String sortField) {
+    public List<AdvertisementCategory> readAll(int firstElement, int maxResult, String direction, String sortField) {
         return null;
     }
 }

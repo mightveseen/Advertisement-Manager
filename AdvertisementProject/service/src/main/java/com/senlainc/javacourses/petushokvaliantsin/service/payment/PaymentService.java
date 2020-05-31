@@ -35,7 +35,7 @@ public class PaymentService extends AbstractService<Payment, Long> implements IP
     }
 
     @Override
-    public List<Payment> readAll(int firstElement, int maxResult, String sortField) {
+    public List<Payment> readAll(int firstElement, int maxResult, String direction, String sortField) {
         return null;
     }
 }

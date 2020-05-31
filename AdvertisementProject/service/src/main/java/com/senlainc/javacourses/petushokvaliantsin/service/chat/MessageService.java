@@ -35,7 +35,7 @@ public class MessageService extends AbstractService<Message, Long> implements IM
     }
 
     @Override
-    public List<Message> readAll(int firstElement, int maxResult, String sortField) {
+    public List<Message> readAll(int firstElement, int maxResult, String direction, String sortField) {
         return null;
     }
 }

@@ -7,6 +7,7 @@ import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularClass;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularModel;
+import com.senlainc.javacourses.petushokvaliantsin.utility.sort.implementation.PageParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,13 +48,13 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     @Override
     @Transactional(readOnly = true)
     public List<Advertisement> readAll(int firstElement, int maxResult) {
-        return advertisementDao.readAll(firstElement, maxResult);
+        return advertisementDao.readAll(PageParameter.of(firstElement, maxResult));
     }
 
     @Override
     @Transactional(readOnly = true)
     @SingularModel(metamodels = Advertisement_.class)
-    public List<Advertisement> readAll(int firstElement, int maxResult, String sortField) {
-        return advertisementDao.readAll(firstElement, maxResult, singularMapper.getSingularAttribute(sortField));
+    public List<Advertisement> readAll(int firstElement, int maxResult, String direction, String sortField) {
+        return advertisementDao.readAll(PageParameter.of(firstElement, maxResult, direction, singularMapper.getSingularAttribute(sortField)));
     }
 }

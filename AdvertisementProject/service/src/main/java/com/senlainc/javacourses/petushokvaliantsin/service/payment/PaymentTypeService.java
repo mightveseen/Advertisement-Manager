@@ -35,7 +35,7 @@ public class PaymentTypeService extends AbstractService<PaymentType, Long> imple
     }
 
     @Override
-    public List<PaymentType> readAll(int firstElement, int maxResult, String sortField) {
+    public List<PaymentType> readAll(int firstElement, int maxResult, String direction, String sortField) {
         return null;
     }
 }

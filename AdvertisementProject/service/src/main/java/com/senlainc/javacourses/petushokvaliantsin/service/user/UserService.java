@@ -35,7 +35,7 @@ public class UserService extends AbstractService<User, Long> implements IUserSer
     }
 
     @Override
-    public List<User> readAll(int firstElement, int maxResult, String sortField) {
+    public List<User> readAll(int firstElement, int maxResult, String direction, String sortField) {
         return null;
     }
 }

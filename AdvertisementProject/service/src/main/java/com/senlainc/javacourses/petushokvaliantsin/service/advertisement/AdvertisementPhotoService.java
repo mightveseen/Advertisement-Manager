@@ -36,7 +36,7 @@ public class AdvertisementPhotoService extends AbstractService<AdvertisementPhot
     }
 
     @Override
-    public List<AdvertisementPhoto> readAll(int firstElement, int maxResult, String sortField) {
+    public List<AdvertisementPhoto> readAll(int firstElement, int maxResult, String direction, String sortField) {
         return null;
     }
 }

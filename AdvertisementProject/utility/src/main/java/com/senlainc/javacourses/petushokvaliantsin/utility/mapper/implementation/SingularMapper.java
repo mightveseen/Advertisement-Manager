@@ -35,7 +35,7 @@ public class SingularMapper implements ISingularMapper {
         }));
     }
 
-    public SingularAttribute getSingularAttribute(String parameter) {
+    public <T, E> SingularAttribute<T, E> getSingularAttribute(String parameter) {
         try {
             return SingularAttribute.class.cast(fields.get(parameter.toLowerCase()).get(null));
         } catch (NullPointerException | IllegalAccessException e) {

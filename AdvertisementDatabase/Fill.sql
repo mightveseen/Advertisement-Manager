@@ -37,5 +37,5 @@ VALUES
 ('FINISHED');
 INSERT INTO `advertisements`(`advertisement_header`, `user_id`, `advertisement_description`, `category_id`, `advertisement_date`, `state_id`)
 VALUES
-('Audi R8 2010', 4, 'Cool car (starring in Iron Man), but i bought new', 2, '2020-02-02', 1),
+('Audi R8 2010', 4, 'Cool car (starring in Iron Man), but i bought new', 2, '2020-08-02', 1),
 ('Sony Z1 Ultra', 3, 'With this COVID-19 and 5G towers I decided buy Nokia 6300', 7, '2020-05-28', 4);

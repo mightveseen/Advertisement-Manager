@@ -35,7 +35,7 @@ public class ChatService extends AbstractService<Chat, Long> implements IChatSer
     }
 
     @Override
-    public List<Chat> readAll(int firstElement, int maxResult, String sortField) {
+    public List<Chat> readAll(int firstElement, int maxResult, String direction, String sortField) {
         return null;
     }
 }

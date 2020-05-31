@@ -36,7 +36,7 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
     }
 
     @Override
-    public List<AdvertisementComment> readAll(int firstElement, int maxResult, String sortField) {
+    public List<AdvertisementComment> readAll(int firstElement, int maxResult, String direction, String sortField) {
         return null;
     }
 }

@@ -5,6 +5,7 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.CreateQ
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.DeleteQueryException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.ReadQueryException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.UpdateQueryException;
+import com.senlainc.javacourses.petushokvaliantsin.utility.sort.IPageParameter;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -72,49 +73,16 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
         }
     }
 
-    //TODO : Fix index
     @Override
-    public <F> F read(K index, SingularAttribute<E, F> field) {
+    public <F> F read(SingularAttribute<E, K> indexName, K index, SingularAttribute<E, F> field) {
         try {
             final CriteriaQuery<F> criteriaQuery = criteriaBuilder.createQuery(field.getJavaType());
             final Root<F> root = criteriaQuery.from(field.getJavaType());
-            final Predicate predicate = criteriaBuilder.equal(root.get("index"), index);
+            final Predicate predicate = criteriaBuilder.equal(root.get(indexName.toString()), index);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
                     .where(predicate))
                     .getSingleResult();
-        } catch (PersistenceException exc) {
-            throw new ReadQueryException(exc);
-        }
-    }
-
-    @Override
-    public List<E> readAll(int firstElement, int maxResult) {
-        try {
-            final CriteriaQuery<E> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
-            final Root<E> root = criteriaQuery.from(entityClazz);
-            return entityManager.createQuery(criteriaQuery
-                    .select(root))
-                    .setFirstResult(firstElement)
-                    .setMaxResults(maxResult)
-                    .getResultList();
-        } catch (PersistenceException exc) {
-            throw new ReadQueryException(exc);
-        }
-    }
-
-    @Override
-    public <F> List<E> readAll(int firstElement, int maxResult, SingularAttribute<E, F> sortField) {
-        try {
-            final CriteriaQuery<E> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
-            final Root<E> root = criteriaQuery.from(entityClazz);
-            final Order order = criteriaBuilder.asc(root.get(sortField));
-            return entityManager.createQuery(criteriaQuery
-                    .select(root)
-                    .orderBy(order))
-                    .setFirstResult(firstElement)
-                    .setMaxResults(maxResult)
-                    .getResultList();
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);
         }
@@ -131,6 +99,24 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
                     .where(predicate))
                     .setFirstResult(firstElement)
                     .setMaxResults(maxResult)
+                    .getResultList();
+        } catch (PersistenceException exc) {
+            throw new ReadQueryException(exc);
+        }
+    }
+
+    @Override
+    public List<E> readAll(IPageParameter pageParameter) {
+        try {
+            final CriteriaQuery<E> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
+            final Root<E> root = criteriaQuery.from(entityClazz);
+            criteriaQuery.select(root);
+            if (pageParameter.hasSort()) {
+                criteriaQuery.orderBy(pageParameter.getSort(criteriaBuilder, root));
+            }
+            return entityManager.createQuery(criteriaQuery)
+                    .setFirstResult(pageParameter.getFirstElement())
+                    .setMaxResults(pageParameter.getMaxResult())
                     .getResultList();
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);
