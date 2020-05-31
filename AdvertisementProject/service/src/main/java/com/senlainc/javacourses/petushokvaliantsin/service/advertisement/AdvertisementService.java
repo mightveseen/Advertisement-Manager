@@ -27,22 +27,25 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
 
     @Override
     public boolean create(Advertisement object) {
-        return false;
+        advertisementDao.create(object);
+        return true;
     }
 
     @Override
     public boolean delete(Long index) {
-        return false;
+        advertisementDao.delete(advertisementDao.read(index));
+        return true;
     }
 
     @Override
     public boolean update(Advertisement object) {
-        return false;
+        advertisementDao.update(object);
+        return true;
     }
 
     @Override
     public Advertisement read(Long index) {
-        return null;
+        return advertisementDao.read(index);
     }
 
     @Override
