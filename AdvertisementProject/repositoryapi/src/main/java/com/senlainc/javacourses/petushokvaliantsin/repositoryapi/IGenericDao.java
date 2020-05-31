@@ -20,10 +20,7 @@ public interface IGenericDao<E, K extends Serializable> {
 
     List<E> readAll(IPageParameter pageParameter);
 
-    <F> List<E> readAll(int firstElement, int maxResult, SingularAttribute<E, F> field, F value);
-
-    <F, C> List<E> readAll(int firstElement, int maxResult, SingularAttribute<E, F> firstSortField,
-                           SingularAttribute<F, C> secondSortField);
+    <F> List<E> readAll(IPageParameter pageParameter, F value);
 
     Long readSize();
 }

@@ -1,41 +1,50 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.user;
 
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
+import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserService;
+import com.senlainc.javacourses.petushokvaliantsin.utility.sort.implementation.PageParameter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UserService extends AbstractService<User, Long> implements IUserService {
-    @Override
-    public boolean create(User object) {
-        return false;
+
+    private final IUserDao userDao;
+
+    @Autowired
+    public UserService(IUserDao userDao) {
+        this.userDao = userDao;
     }
 
     @Override
-    public boolean remove(Long index) {
-        return false;
+    public boolean create(User object) {
+        userDao.create(object);
+        return true;
+    }
+
+    @Override
+    public boolean delete(Long index) {
+        userDao.create(userDao.read(index));
+        return true;
     }
 
     @Override
     public boolean update(User object) {
-        return false;
+        userDao.update(object);
+        return true;
     }
 
     @Override
     public User read(Long index) {
-        return null;
+        return userDao.read(index);
     }
 
     @Override
-    public List<User> readAll(int firstElement, int maxResult) {
-        return null;
-    }
-
-    @Override
-    public List<User> readAll(int firstElement, int maxResult, String direction, String sortField) {
-        return null;
+    public List<User> readAll(int firstElement, int maxResult, String direction) {
+        return userDao.readAll(PageParameter.of(firstElement, maxResult, direction));
     }
 }

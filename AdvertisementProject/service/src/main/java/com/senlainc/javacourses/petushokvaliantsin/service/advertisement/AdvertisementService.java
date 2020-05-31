@@ -31,7 +31,7 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     }
 
     @Override
-    public boolean remove(Long index) {
+    public boolean delete(Long index) {
         return false;
     }
 
@@ -47,8 +47,8 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
 
     @Override
     @Transactional(readOnly = true)
-    public List<Advertisement> readAll(int firstElement, int maxResult) {
-        return advertisementDao.readAll(PageParameter.of(firstElement, maxResult));
+    public List<Advertisement> readAll(int firstElement, int maxResult, String direction) {
+        return advertisementDao.readAll(PageParameter.of(firstElement, maxResult, direction));
     }
 
     @Override

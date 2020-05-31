@@ -13,7 +13,6 @@ import javax.persistence.PersistenceContextType;
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
@@ -89,16 +88,16 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
     }
 
     @Override
-    public <F> List<E> readAll(int firstElement, int maxResult, SingularAttribute<E, F> field, F value) {
+    public <F> List<E> readAll(IPageParameter pageParameter, F value) {
         try {
             final CriteriaQuery<E> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
             final Root<E> root = criteriaQuery.from(entityClazz);
-            final Predicate predicate = criteriaBuilder.equal(root.get(field), value);
+            final Predicate predicate = criteriaBuilder.equal(root.get(pageParameter.getSingularAttribute()), value);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
                     .where(predicate))
-                    .setFirstResult(firstElement)
-                    .setMaxResults(maxResult)
+                    .setFirstResult(pageParameter.getFirstElement())
+                    .setMaxResults(pageParameter.getMaxResult())
                     .getResultList();
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);
@@ -110,31 +109,11 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
         try {
             final CriteriaQuery<E> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
             final Root<E> root = criteriaQuery.from(entityClazz);
-            criteriaQuery.select(root);
-            if (pageParameter.hasSort()) {
-                criteriaQuery.orderBy(pageParameter.getSort(criteriaBuilder, root));
-            }
-            return entityManager.createQuery(criteriaQuery)
-                    .setFirstResult(pageParameter.getFirstElement())
-                    .setMaxResults(pageParameter.getMaxResult())
-                    .getResultList();
-        } catch (PersistenceException exc) {
-            throw new ReadQueryException(exc);
-        }
-    }
-
-    @Override
-    public <F, C> List<E> readAll(int firstElement, int maxResult, SingularAttribute<E, F> firstSortField,
-                                  SingularAttribute<F, C> secondSortField) {
-        try {
-            final CriteriaQuery<E> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
-            final Root<E> root = criteriaQuery.from(entityClazz);
-            final Order order = criteriaBuilder.asc(root.get(firstSortField).get(secondSortField));
             return entityManager.createQuery(criteriaQuery
                     .select(root)
-                    .orderBy(order))
-                    .setFirstResult(firstElement)
-                    .setMaxResults(maxResult)
+                    .orderBy(pageParameter.getSort(criteriaBuilder, root)))
+                    .setFirstResult(pageParameter.getFirstElement())
+                    .setMaxResults(pageParameter.getMaxResult())
                     .getResultList();
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);

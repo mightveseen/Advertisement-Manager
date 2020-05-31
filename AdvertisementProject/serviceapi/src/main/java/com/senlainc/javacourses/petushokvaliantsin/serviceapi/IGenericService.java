@@ -7,13 +7,11 @@ public interface IGenericService<E, K extends Serializable> {
 
     boolean create(E object);
 
-    boolean remove(K index);
+    boolean delete(K index);
 
     boolean update(E object);
 
     E read(K index);
 
-    List<E> readAll(int firstElement, int maxResult);
-
-    List<E> readAll(int firstElement, int maxResult, String direction, String sortField);
+    List<E> readAll(int firstElement, int maxResult, String direction);
 }

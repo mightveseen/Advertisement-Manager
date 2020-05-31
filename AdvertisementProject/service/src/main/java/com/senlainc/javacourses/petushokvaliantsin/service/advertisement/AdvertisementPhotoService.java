@@ -1,8 +1,11 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.advertisement;
 
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementPhoto;
+import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementPhotoDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementPhotoService;
+import com.senlainc.javacourses.petushokvaliantsin.utility.sort.implementation.PageParameter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,33 +13,38 @@ import java.util.List;
 @Service
 public class AdvertisementPhotoService extends AbstractService<AdvertisementPhoto, Long> implements IAdvertisementPhotoService {
 
-    @Override
-    public boolean create(AdvertisementPhoto object) {
-        return false;
+    private final IAdvertisementPhotoDao advertisementPhotoDao;
+
+    @Autowired
+    public AdvertisementPhotoService(IAdvertisementPhotoDao advertisementPhotoDao) {
+        this.advertisementPhotoDao = advertisementPhotoDao;
     }
 
     @Override
-    public boolean remove(Long index) {
-        return false;
+    public boolean create(AdvertisementPhoto object) {
+        advertisementPhotoDao.create(object);
+        return true;
+    }
+
+    @Override
+    public boolean delete(Long index) {
+        advertisementPhotoDao.delete(advertisementPhotoDao.read(index));
+        return true;
     }
 
     @Override
     public boolean update(AdvertisementPhoto object) {
-        return false;
+        advertisementPhotoDao.update(object);
+        return true;
     }
 
     @Override
     public AdvertisementPhoto read(Long index) {
-        return null;
+        return advertisementPhotoDao.read(index);
     }
 
     @Override
-    public List<AdvertisementPhoto> readAll(int firstElement, int maxResult) {
-        return null;
-    }
-
-    @Override
-    public List<AdvertisementPhoto> readAll(int firstElement, int maxResult, String direction, String sortField) {
-        return null;
+    public List<AdvertisementPhoto> readAll(int firstElement, int maxResult, String direction) {
+        return advertisementPhotoDao.readAll(PageParameter.of(firstElement, maxResult, direction));
     }
 }

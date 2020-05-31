@@ -1,41 +1,50 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.chat;
 
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Message;
+import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.chat.IMessageDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IMessageService;
+import com.senlainc.javacourses.petushokvaliantsin.utility.sort.implementation.PageParameter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class MessageService extends AbstractService<Message, Long> implements IMessageService {
-    @Override
-    public boolean create(Message object) {
-        return false;
+
+    private final IMessageDao messageDao;
+
+    @Autowired
+    public MessageService(IMessageDao messageDao) {
+        this.messageDao = messageDao;
     }
 
     @Override
-    public boolean remove(Long index) {
-        return false;
+    public boolean create(Message object) {
+        messageDao.create(object);
+        return true;
+    }
+
+    @Override
+    public boolean delete(Long index) {
+        messageDao.delete(messageDao.read(index));
+        return true;
     }
 
     @Override
     public boolean update(Message object) {
-        return false;
+        messageDao.update(object);
+        return true;
     }
 
     @Override
     public Message read(Long index) {
-        return null;
+        return messageDao.read(index);
     }
 
     @Override
-    public List<Message> readAll(int firstElement, int maxResult) {
-        return null;
-    }
-
-    @Override
-    public List<Message> readAll(int firstElement, int maxResult, String direction, String sortField) {
-        return null;
+    public List<Message> readAll(int firstElement, int maxResult, String direction) {
+        return messageDao.readAll(PageParameter.of(firstElement, maxResult, direction));
     }
 }

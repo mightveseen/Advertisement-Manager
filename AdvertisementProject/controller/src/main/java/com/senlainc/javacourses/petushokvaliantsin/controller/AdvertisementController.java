@@ -30,7 +30,7 @@ public class AdvertisementController {
                                                     @RequestParam(name = "direction", defaultValue = "asc") String direction,
                                                     @RequestParam(name = "sort", defaultValue = "default") String sort) {
         if (sort.equals("default")) {
-            return dtoMapper.mapAll(advertisementService.readAll(firstElement, maxResult), AdvertisementDto.class);
+            return dtoMapper.mapAll(advertisementService.readAll(firstElement, maxResult, direction), AdvertisementDto.class);
         }
         return dtoMapper.mapAll(advertisementService.readAll(firstElement, maxResult, direction, sort), AdvertisementDto.class);
     }

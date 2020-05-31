@@ -61,6 +61,11 @@ public class PageParameter implements IPageParameter {
     }
 
     @Override
+    public <E, F> SingularAttribute<E, F> getSingularAttribute() {
+        return sortField;
+    }
+
+    @Override
     public <E> Order getSort(CriteriaBuilder criteriaBuilder, Root<E> root) {
         if (sortField != null) {
             if (sort.isDescending()) {
