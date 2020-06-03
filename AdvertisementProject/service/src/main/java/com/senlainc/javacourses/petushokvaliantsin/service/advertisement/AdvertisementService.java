@@ -4,6 +4,7 @@ import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertise
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement_;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
+import com.senlainc.javacourses.petushokvaliantsin.serviceapi.IStateService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularClass;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularModel;
@@ -19,31 +20,38 @@ import java.util.List;
 public class AdvertisementService extends AbstractService<Advertisement, Long> implements IAdvertisementService {
 
     private final IAdvertisementDao advertisementDao;
+    private final IStateService stateService;
 
     @Autowired
-    public AdvertisementService(IAdvertisementDao advertisementDao) {
+    public AdvertisementService(IAdvertisementDao advertisementDao, IStateService stateService) {
         this.advertisementDao = advertisementDao;
+        this.stateService = stateService;
     }
 
     @Override
+    @Transactional
     public boolean create(Advertisement object) {
         advertisementDao.create(object);
         return true;
     }
 
     @Override
+    @Transactional
     public boolean delete(Long index) {
-        advertisementDao.delete(advertisementDao.read(index));
+        final Advertisement advertisement = advertisementDao.read(index);
+        advertisement.setState(stateService.read("DISABLED"));
         return true;
     }
 
     @Override
+    @Transactional
     public boolean update(Advertisement object) {
         advertisementDao.update(object);
         return true;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Advertisement read(Long index) {
         return advertisementDao.read(index);
     }
@@ -58,6 +66,9 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     @Transactional(readOnly = true)
     @SingularModel(metamodels = Advertisement_.class)
     public List<Advertisement> readAll(int firstElement, int maxResult, String direction, String sortField) {
+        if (sortField.equals("default")) {
+            return advertisementDao.readAll(PageParameter.of(firstElement, maxResult, direction));
+        }
         return advertisementDao.readAll(PageParameter.of(firstElement, maxResult, direction, singularMapper.getSingularAttribute(sortField)));
     }
 }

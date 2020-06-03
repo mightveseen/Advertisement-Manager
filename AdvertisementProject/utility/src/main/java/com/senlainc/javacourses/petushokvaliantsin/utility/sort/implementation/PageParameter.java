@@ -12,12 +12,13 @@ public class PageParameter implements IPageParameter {
 
     private final int firstElement;
     private final int maxResult;
-    private Sort.Direction sort;
-    private SingularAttribute sortField;
+    private final Sort.Direction sort;
+    private SingularAttribute criteriaField;
 
     private PageParameter(int firstElement, int maxResult) {
         this.firstElement = firstElement;
         this.maxResult = maxResult;
+        this.sort = Sort.Direction.ASC;
     }
 
     private PageParameter(int fistElement, int maxResult, String direction) {
@@ -26,11 +27,11 @@ public class PageParameter implements IPageParameter {
         this.sort = getDirection(direction);
     }
 
-    private <E, F> PageParameter(int firstElement, int maxResult, String direction, SingularAttribute<E, F> sortField) {
+    private <E, F> PageParameter(int firstElement, int maxResult, String direction, SingularAttribute<E, F> criteriaField) {
         this.firstElement = firstElement;
         this.maxResult = maxResult;
         this.sort = getDirection(direction);
-        this.sortField = sortField;
+        this.criteriaField = criteriaField;
     }
 
     public static PageParameter of(int firstElement, int maxResult) {
@@ -41,8 +42,8 @@ public class PageParameter implements IPageParameter {
         return new PageParameter(firstElement, maxResult, direction);
     }
 
-    public static <E, F> PageParameter of(int firstElement, int maxResult, String direction, SingularAttribute<E, F> sortField) {
-        return new PageParameter(firstElement, maxResult, direction, sortField);
+    public static <E, F> PageParameter of(int firstElement, int maxResult, String direction, SingularAttribute<E, F> criteriaField) {
+        return new PageParameter(firstElement, maxResult, direction, criteriaField);
     }
 
     @Override
@@ -61,22 +62,20 @@ public class PageParameter implements IPageParameter {
     }
 
     @Override
-    public <E, F> SingularAttribute<E, F> getSingularAttribute() {
-        return sortField;
+    public <E, F> SingularAttribute<E, F> getCriteriaField() {
+        return criteriaField;
     }
 
     @Override
-    public <E> Order getSort(CriteriaBuilder criteriaBuilder, Root<E> root) {
-        if (sortField != null) {
-            if (sort.isDescending()) {
-                return criteriaBuilder.desc(root.get(sortField));
-            }
-            return criteriaBuilder.asc(root.get(sortField));
+    public <E> Order getOrder(CriteriaBuilder criteriaBuilder, Root<E> root) {
+        switch (sort) {
+            case ASC:
+                return criteriaField != null ? criteriaBuilder.asc(root.get(criteriaField)) : criteriaBuilder.asc(root);
+            case DESC:
+                return criteriaField != null ? criteriaBuilder.desc(root.get(criteriaField)) : criteriaBuilder.desc(root);
+            default:
+                return criteriaBuilder.asc(root);
         }
-        if (sort.isDescending()) {
-            return criteriaBuilder.desc(root);
-        }
-        return criteriaBuilder.asc(root);
     }
 
     private Sort.Direction getDirection(String direction) {

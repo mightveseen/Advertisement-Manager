@@ -13,7 +13,7 @@ public interface IPageParameter {
 
     int getMaxResult();
 
-    <E> Order getSort(CriteriaBuilder criteriaBuilder, Root<E> root);
+    <E> Order getOrder(CriteriaBuilder criteriaBuilder, Root<E> root);
 
-    <E, F> SingularAttribute<E, F> getSingularAttribute();
+    <E, F> SingularAttribute<E, F> getCriteriaField();
 }

@@ -92,9 +92,10 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
         try {
             final CriteriaQuery<E> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
             final Root<E> root = criteriaQuery.from(entityClazz);
-            final Predicate predicate = criteriaBuilder.equal(root.get(pageParameter.getSingularAttribute()), value);
+            final Predicate predicate = criteriaBuilder.equal(root.get(pageParameter.getCriteriaField()), value);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
+                    .orderBy(pageParameter.getOrder(criteriaBuilder, root))
                     .where(predicate))
                     .setFirstResult(pageParameter.getFirstElement())
                     .setMaxResults(pageParameter.getMaxResult())
@@ -111,7 +112,7 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
             final Root<E> root = criteriaQuery.from(entityClazz);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
-                    .orderBy(pageParameter.getSort(criteriaBuilder, root)))
+                    .orderBy(pageParameter.getOrder(criteriaBuilder, root)))
                     .setFirstResult(pageParameter.getFirstElement())
                     .setMaxResults(pageParameter.getMaxResult())
                     .getResultList();
