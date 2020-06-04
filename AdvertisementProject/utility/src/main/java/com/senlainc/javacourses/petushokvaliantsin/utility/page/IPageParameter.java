@@ -1,4 +1,4 @@
-package com.senlainc.javacourses.petushokvaliantsin.utility.sort;
+package com.senlainc.javacourses.petushokvaliantsin.utility.page;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Order;

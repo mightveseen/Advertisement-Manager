@@ -4,4 +4,8 @@ import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertise
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.IGenericService;
 
 public interface IAdvertisementCategoryService extends IGenericService<AdvertisementCategory, Long> {
+
+    boolean create(AdvertisementCategory object);
+
+    boolean delete(Long index);
 }

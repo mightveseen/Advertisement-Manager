@@ -4,7 +4,7 @@ import com.senlainc.javacourses.petushokvaliantsin.model.payment.PaymentType;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.payment.IPaymentTypeDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.payment.IPaymentTypeService;
-import com.senlainc.javacourses.petushokvaliantsin.utility.sort.implementation.PageParameter;
+import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +41,7 @@ public class PaymentTypeService extends AbstractService<PaymentType, Long> imple
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PaymentType read(Long index) {
         return paymentTypeDao.read(index);
     }

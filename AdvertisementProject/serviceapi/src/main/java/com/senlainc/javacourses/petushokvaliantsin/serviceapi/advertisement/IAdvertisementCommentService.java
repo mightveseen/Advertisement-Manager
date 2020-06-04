@@ -9,5 +9,9 @@ public interface IAdvertisementCommentService extends IGenericService<Advertisem
 
     boolean create(Long advertisementIndex, AdvertisementComment object);
 
-    List<AdvertisementComment> readAllComments(Long index, int firstElement, int maxResult, String direction, String sortField);
+    boolean delete(Long index);
+
+    boolean update(AdvertisementComment object);
+
+    List<AdvertisementComment> readAll(Long index, int firstElement, int maxResult, String direction, String sortField);
 }

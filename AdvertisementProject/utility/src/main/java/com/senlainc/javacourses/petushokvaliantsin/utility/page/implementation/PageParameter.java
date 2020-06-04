@@ -1,6 +1,6 @@
-package com.senlainc.javacourses.petushokvaliantsin.utility.sort.implementation;
+package com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation;
 
-import com.senlainc.javacourses.petushokvaliantsin.utility.sort.IPageParameter;
+import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
 import org.springframework.data.domain.Sort;
 
 import javax.persistence.criteria.CriteriaBuilder;

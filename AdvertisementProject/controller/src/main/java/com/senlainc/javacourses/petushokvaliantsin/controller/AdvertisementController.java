@@ -42,7 +42,9 @@ public class AdvertisementController {
     public List<AdvertisementDto> getAdvertisements(@RequestParam(name = "first", defaultValue = "0") int firstElement,
                                                     @RequestParam(name = "max", defaultValue = "15") int maxResult,
                                                     @RequestParam(name = "direction", defaultValue = "asc") String direction,
-                                                    @RequestParam(name = "sort", defaultValue = "default") String sort) {
+                                                    @RequestParam(name = "sort", defaultValue = "default") String sort,
+                                                    @RequestParam(name = "cat", defaultValue = "all") String category,
+                                                    @RequestParam(name = "search", defaultValue = "none") String search) {
         return dtoMapper.mapAll(advertisementService.readAll(firstElement, maxResult, direction, sort), AdvertisementDto.class);
     }
 
@@ -57,7 +59,7 @@ public class AdvertisementController {
                                                                   @RequestParam(name = "max", defaultValue = "15") int maxResult,
                                                                   @RequestParam(name = "direction", defaultValue = "asc") String direction,
                                                                   @RequestParam(name = "sort", defaultValue = "default") String sort) {
-        return dtoMapper.mapAll(advertisementCommentService.readAllComments(index, firstElement, maxResult, direction, sort), AdvertisementCommentDto.class);
+        return dtoMapper.mapAll(advertisementCommentService.readAll(index, firstElement, maxResult, direction, sort), AdvertisementCommentDto.class);
     }
 
     @PostMapping(value = "/{id}/comments")

@@ -4,13 +4,15 @@ import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserService;
-import com.senlainc.javacourses.petushokvaliantsin.utility.sort.implementation.PageParameter;
+import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class UserService extends AbstractService<User, Long> implements IUserService {
 
     private final IUserDao userDao;
@@ -39,11 +41,13 @@ public class UserService extends AbstractService<User, Long> implements IUserSer
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User read(Long index) {
         return userDao.read(index);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> readAll(int firstElement, int maxResult) {
         return userDao.readAll(PageParameter.of(firstElement, maxResult));
     }

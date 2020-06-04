@@ -7,5 +7,11 @@ import java.util.List;
 
 public interface IAdvertisementService extends IGenericService<Advertisement, Long> {
 
+    boolean create(Advertisement object);
+
+    boolean delete(Long index);
+
+    boolean update(Advertisement object);
+
     List<Advertisement> readAll(int firstElement, int maxResult, String direction, String sortField);
 }

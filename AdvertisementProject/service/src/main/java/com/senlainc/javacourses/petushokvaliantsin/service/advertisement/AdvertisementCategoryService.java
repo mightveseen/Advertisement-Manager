@@ -4,13 +4,15 @@ import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertise
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementCategoryDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementCategoryService;
-import com.senlainc.javacourses.petushokvaliantsin.utility.sort.implementation.PageParameter;
+import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class AdvertisementCategoryService extends AbstractService<AdvertisementCategory, Long> implements IAdvertisementCategoryService {
 
     private final IAdvertisementCategoryDao advertisementCategoryDao;
@@ -33,17 +35,13 @@ public class AdvertisementCategoryService extends AbstractService<AdvertisementC
     }
 
     @Override
-    public boolean update(AdvertisementCategory object) {
-        advertisementCategoryDao.update(object);
-        return true;
-    }
-
-    @Override
+    @Transactional(readOnly = true)
     public AdvertisementCategory read(Long index) {
         return advertisementCategoryDao.read(index);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<AdvertisementCategory> readAll(int firstElement, int maxResult) {
         return advertisementCategoryDao.readAll(PageParameter.of(firstElement, maxResult));
     }

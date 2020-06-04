@@ -5,7 +5,7 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.CreateQ
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.DeleteQueryException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.ReadQueryException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.UpdateQueryException;
-import com.senlainc.javacourses.petushokvaliantsin.utility.sort.IPageParameter;
+import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

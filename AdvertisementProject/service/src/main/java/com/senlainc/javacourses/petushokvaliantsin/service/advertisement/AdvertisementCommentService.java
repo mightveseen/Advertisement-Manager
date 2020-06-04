@@ -9,7 +9,7 @@ import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdv
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularClass;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularModel;
-import com.senlainc.javacourses.petushokvaliantsin.utility.sort.implementation.PageParameter;
+import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +19,7 @@ import java.util.List;
 
 @Service
 @SingularClass
+@Transactional
 public class AdvertisementCommentService extends AbstractService<AdvertisementComment, Long> implements IAdvertisementCommentService {
 
     private final IAdvertisementCommentDao advertisementCommentDao;
@@ -34,18 +35,12 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
     }
 
     @Override
-    @Transactional
     public boolean create(Long advertisementIndex, AdvertisementComment object) {
         object.setAdvertisement(advertisementService.read(advertisementIndex));
         object.setUser(userService.read(object.getUser().getIndex()));
         object.setDateTime(LocalDateTime.now());
         advertisementCommentDao.create(object);
         return true;
-    }
-
-    @Override
-    public boolean create(AdvertisementComment object) {
-        return false;
     }
 
     @Override
@@ -61,11 +56,13 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
     }
 
     @Override
+    @Transactional(readOnly = true)
     public AdvertisementComment read(Long index) {
         return advertisementCommentDao.read(index);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<AdvertisementComment> readAll(int firstElement, int maxResult) {
         return advertisementCommentDao.readAll(PageParameter.of(firstElement, maxResult));
     }
@@ -73,7 +70,7 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
     @Override
     @Transactional(readOnly = true)
     @SingularModel(metamodels = AdvertisementComment_.class)
-    public List<AdvertisementComment> readAllComments(Long index, int firstElement, int maxResult, String direction, String sortField) {
+    public List<AdvertisementComment> readAll(Long index, int firstElement, int maxResult, String direction, String sortField) {
         if (sortField.equals("default")) {
             return advertisementCommentDao.readAll(PageParameter.of(firstElement, maxResult, direction),
                     AdvertisementComment_.advertisement, advertisementService.read(index));

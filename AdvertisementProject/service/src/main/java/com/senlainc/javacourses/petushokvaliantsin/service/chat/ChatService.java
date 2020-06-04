@@ -4,13 +4,15 @@ import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.chat.IChatDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IChatService;
-import com.senlainc.javacourses.petushokvaliantsin.utility.sort.implementation.PageParameter;
+import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class ChatService extends AbstractService<Chat, Long> implements IChatService {
 
     private final IChatDao chatDao;
@@ -39,11 +41,13 @@ public class ChatService extends AbstractService<Chat, Long> implements IChatSer
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Chat read(Long index) {
         return chatDao.read(index);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Chat> readAll(int firstElement, int maxResult) {
         return chatDao.readAll(PageParameter.of(firstElement, maxResult));
     }

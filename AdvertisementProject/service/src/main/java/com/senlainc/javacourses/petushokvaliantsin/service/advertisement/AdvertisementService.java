@@ -8,7 +8,7 @@ import com.senlainc.javacourses.petushokvaliantsin.serviceapi.IStateService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularClass;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularModel;
-import com.senlainc.javacourses.petushokvaliantsin.utility.sort.implementation.PageParameter;
+import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +17,7 @@ import java.util.List;
 
 @Service
 @SingularClass
+@Transactional
 public class AdvertisementService extends AbstractService<Advertisement, Long> implements IAdvertisementService {
 
     private final IAdvertisementDao advertisementDao;
@@ -29,14 +30,12 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     }
 
     @Override
-    @Transactional
     public boolean create(Advertisement object) {
         advertisementDao.create(object);
         return true;
     }
 
     @Override
-    @Transactional
     public boolean delete(Long index) {
         final Advertisement advertisement = advertisementDao.read(index);
         advertisement.setState(stateService.read("DISABLED"));
@@ -45,7 +44,6 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     }
 
     @Override
-    @Transactional
     public boolean update(Advertisement object) {
         advertisementDao.update(object);
         return true;
@@ -58,6 +56,7 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Advertisement> readAll(int firstElement, int maxResult) {
         return advertisementDao.readAll(PageParameter.of(firstElement, maxResult));
     }

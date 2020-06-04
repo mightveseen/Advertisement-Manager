@@ -1,6 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.repositoryapi;
 
-import com.senlainc.javacourses.petushokvaliantsin.utility.sort.IPageParameter;
+import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
 
 import javax.persistence.metamodel.SingularAttribute;
 import java.io.Serializable;
