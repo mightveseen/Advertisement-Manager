@@ -3,6 +3,7 @@ package com.senlainc.javacourses.petushokvaliantsin.controller;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementCommentDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
+import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementComment;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementCommentService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.IDtoMapper;
@@ -57,6 +58,12 @@ public class AdvertisementController {
                                                                   @RequestParam(name = "direction", defaultValue = "asc") String direction,
                                                                   @RequestParam(name = "sort", defaultValue = "default") String sort) {
         return dtoMapper.mapAll(advertisementCommentService.readAllComments(index, firstElement, maxResult, direction, sort), AdvertisementCommentDto.class);
+    }
+
+    @PostMapping(value = "/{id}/comments")
+    public boolean createAdvertisementComment(@PathVariable(name = "id") @Positive Long index,
+                                              @RequestBody @Validated(AdvertisementCommentDto.class) AdvertisementCommentDto object) {
+        return advertisementCommentService.create(index, dtoMapper.map(object, AdvertisementComment.class));
     }
 
     @DeleteMapping(value = "/{id}")

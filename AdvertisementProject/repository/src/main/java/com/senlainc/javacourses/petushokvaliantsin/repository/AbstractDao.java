@@ -93,7 +93,8 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
             final CriteriaQuery<E> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
             final Root<E> root = criteriaQuery.from(entityClazz);
             return entityManager.createQuery(criteriaQuery
-                    .select(root))
+                    .select(root)
+                    .orderBy(pageParameter.getOrder(criteriaBuilder, root)))
                     .setFirstResult(pageParameter.getFirstElement())
                     .setMaxResults(pageParameter.getMaxResult())
                     .getResultList();

@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface IAdvertisementCommentService extends IGenericService<AdvertisementComment, Long> {
 
+    boolean create(Long advertisementIndex, AdvertisementComment object);
+
     List<AdvertisementComment> readAllComments(Long index, int firstElement, int maxResult, String direction, String sortField);
 }

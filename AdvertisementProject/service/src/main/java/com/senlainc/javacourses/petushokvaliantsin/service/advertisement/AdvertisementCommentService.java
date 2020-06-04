@@ -6,29 +6,46 @@ import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.I
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementCommentService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementService;
+import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserService;
+import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularClass;
+import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularModel;
 import com.senlainc.javacourses.petushokvaliantsin.utility.sort.implementation.PageParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@SingularClass
 public class AdvertisementCommentService extends AbstractService<AdvertisementComment, Long> implements IAdvertisementCommentService {
 
     private final IAdvertisementCommentDao advertisementCommentDao;
     private final IAdvertisementService advertisementService;
+    private final IUserService userService;
 
     @Autowired
-    public AdvertisementCommentService(IAdvertisementCommentDao advertisementCommentDao, IAdvertisementService advertisementService) {
+    public AdvertisementCommentService(IAdvertisementCommentDao advertisementCommentDao, IUserService userService,
+                                       IAdvertisementService advertisementService) {
         this.advertisementCommentDao = advertisementCommentDao;
+        this.userService = userService;
         this.advertisementService = advertisementService;
     }
 
     @Override
-    public boolean create(AdvertisementComment object) {
+    @Transactional
+    public boolean create(Long advertisementIndex, AdvertisementComment object) {
+        object.setAdvertisement(advertisementService.read(advertisementIndex));
+        object.setUser(userService.read(object.getUser().getIndex()));
+        object.setDateTime(LocalDateTime.now());
         advertisementCommentDao.create(object);
         return true;
+    }
+
+    @Override
+    public boolean create(AdvertisementComment object) {
+        return false;
     }
 
     @Override
@@ -55,6 +72,7 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
 
     @Override
     @Transactional(readOnly = true)
+    @SingularModel(metamodels = AdvertisementComment_.class)
     public List<AdvertisementComment> readAllComments(Long index, int firstElement, int maxResult, String direction, String sortField) {
         if (sortField.equals("default")) {
             return advertisementCommentDao.readAll(PageParameter.of(firstElement, maxResult, direction),
