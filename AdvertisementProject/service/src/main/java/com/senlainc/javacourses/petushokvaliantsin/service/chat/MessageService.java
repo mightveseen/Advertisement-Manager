@@ -44,7 +44,7 @@ public class MessageService extends AbstractService<Message, Long> implements IM
     }
 
     @Override
-    public List<Message> readAll(int firstElement, int maxResult, String direction) {
-        return messageDao.readAll(PageParameter.of(firstElement, maxResult, direction));
+    public List<Message> readAll(int firstElement, int maxResult) {
+        return messageDao.readAll(PageParameter.of(firstElement, maxResult));
     }
 }

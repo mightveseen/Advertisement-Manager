@@ -44,7 +44,7 @@ public class UserService extends AbstractService<User, Long> implements IUserSer
     }
 
     @Override
-    public List<User> readAll(int firstElement, int maxResult, String direction) {
-        return userDao.readAll(PageParameter.of(firstElement, maxResult, direction));
+    public List<User> readAll(int firstElement, int maxResult) {
+        return userDao.readAll(PageParameter.of(firstElement, maxResult));
     }
 }

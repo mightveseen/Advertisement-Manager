@@ -73,33 +73,15 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
     }
 
     @Override
-    public <F> F read(SingularAttribute<E, K> indexName, K index, SingularAttribute<E, F> field) {
+    public <F> F read(String indexName, K index, SingularAttribute<E, F> field) {
         try {
             final CriteriaQuery<F> criteriaQuery = criteriaBuilder.createQuery(field.getJavaType());
             final Root<F> root = criteriaQuery.from(field.getJavaType());
-            final Predicate predicate = criteriaBuilder.equal(root.get(indexName.toString()), index);
+            final Predicate predicate = criteriaBuilder.equal(root.get(indexName), index);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
                     .where(predicate))
                     .getSingleResult();
-        } catch (PersistenceException exc) {
-            throw new ReadQueryException(exc);
-        }
-    }
-
-    @Override
-    public <F> List<E> readAll(IPageParameter pageParameter, F value) {
-        try {
-            final CriteriaQuery<E> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
-            final Root<E> root = criteriaQuery.from(entityClazz);
-            final Predicate predicate = criteriaBuilder.equal(root.get(pageParameter.getCriteriaField()), value);
-            return entityManager.createQuery(criteriaQuery
-                    .select(root)
-                    .orderBy(pageParameter.getOrder(criteriaBuilder, root))
-                    .where(predicate))
-                    .setFirstResult(pageParameter.getFirstElement())
-                    .setMaxResults(pageParameter.getMaxResult())
-                    .getResultList();
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);
         }
@@ -111,8 +93,25 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
             final CriteriaQuery<E> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
             final Root<E> root = criteriaQuery.from(entityClazz);
             return entityManager.createQuery(criteriaQuery
+                    .select(root))
+                    .setFirstResult(pageParameter.getFirstElement())
+                    .setMaxResults(pageParameter.getMaxResult())
+                    .getResultList();
+        } catch (PersistenceException exc) {
+            throw new ReadQueryException(exc);
+        }
+    }
+
+    @Override
+    public <F> List<E> readAll(IPageParameter pageParameter, SingularAttribute<E, F> field, F value) {
+        try {
+            final CriteriaQuery<E> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
+            final Root<E> root = criteriaQuery.from(entityClazz);
+            final Predicate predicate = criteriaBuilder.equal(root.get(field), value);
+            return entityManager.createQuery(criteriaQuery
                     .select(root)
-                    .orderBy(pageParameter.getOrder(criteriaBuilder, root)))
+                    .orderBy(pageParameter.getOrder(criteriaBuilder, root))
+                    .where(predicate))
                     .setFirstResult(pageParameter.getFirstElement())
                     .setMaxResults(pageParameter.getMaxResult())
                     .getResultList();

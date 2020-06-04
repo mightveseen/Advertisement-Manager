@@ -44,7 +44,7 @@ public class PaymentService extends AbstractService<Payment, Long> implements IP
     }
 
     @Override
-    public List<Payment> readAll(int firstElement, int maxResult, String direction) {
-        return paymentDao.readAll(PageParameter.of(firstElement, maxResult, direction));
+    public List<Payment> readAll(int firstElement, int maxResult) {
+        return paymentDao.readAll(PageParameter.of(firstElement, maxResult));
     }
 }

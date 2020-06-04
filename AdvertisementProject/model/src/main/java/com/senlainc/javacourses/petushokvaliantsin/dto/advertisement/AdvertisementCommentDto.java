@@ -14,7 +14,6 @@ public class AdvertisementCommentDto implements Serializable {
 
     private Long index;
     private UserDto user;
-    private AdvertisementDto advertisement;
     private String message;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
@@ -35,14 +34,6 @@ public class AdvertisementCommentDto implements Serializable {
 
     public void setUser(UserDto user) {
         this.user = user;
-    }
-
-    public AdvertisementDto getAdvertisement() {
-        return advertisement;
-    }
-
-    public void setAdvertisement(AdvertisementDto advertisement) {
-        this.advertisement = advertisement;
     }
 
     public String getMessage() {

@@ -44,7 +44,7 @@ public class AdvertisementCategoryService extends AbstractService<AdvertisementC
     }
 
     @Override
-    public List<AdvertisementCategory> readAll(int firstElement, int maxResult, String direction) {
-        return advertisementCategoryDao.readAll(PageParameter.of(firstElement, maxResult, direction));
+    public List<AdvertisementCategory> readAll(int firstElement, int maxResult) {
+        return advertisementCategoryDao.readAll(PageParameter.of(firstElement, maxResult));
     }
 }

@@ -16,11 +16,11 @@ public interface IGenericDao<E, K extends Serializable> {
 
     E read(K index);
 
-    <F> F read(SingularAttribute<E, K> indexName, K index, SingularAttribute<E, F> field);
+    <F> F read(String indexName, K index, SingularAttribute<E, F> field);
 
     List<E> readAll(IPageParameter pageParameter);
 
-    <F> List<E> readAll(IPageParameter pageParameter, F value);
+    <F> List<E> readAll(IPageParameter pageParameter, SingularAttribute<E, F> field, F value);
 
     Long readSize();
 }

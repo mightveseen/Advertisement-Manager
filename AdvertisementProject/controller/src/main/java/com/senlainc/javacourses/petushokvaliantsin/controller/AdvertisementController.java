@@ -1,7 +1,9 @@
 package com.senlainc.javacourses.petushokvaliantsin.controller;
 
+import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementCommentDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
+import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementCommentService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.IDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +26,14 @@ import java.util.List;
 public class AdvertisementController {
 
     private final IAdvertisementService advertisementService;
+    private final IAdvertisementCommentService advertisementCommentService;
     private final IDtoMapper dtoMapper;
 
     @Autowired
-    public AdvertisementController(IAdvertisementService advertisementService, IDtoMapper dtoMapper) {
+    public AdvertisementController(IAdvertisementService advertisementService, IAdvertisementCommentService advertisementCommentService,
+                                   IDtoMapper dtoMapper) {
         this.advertisementService = advertisementService;
+        this.advertisementCommentService = advertisementCommentService;
         this.dtoMapper = dtoMapper;
     }
 
@@ -43,6 +48,15 @@ public class AdvertisementController {
     @GetMapping(value = "/{id}")
     public AdvertisementDto getAdvertisement(@PathVariable(name = "id") @Positive Long index) {
         return dtoMapper.map(advertisementService.read(index), AdvertisementDto.class);
+    }
+
+    @GetMapping(value = "/{id}/comments")
+    public List<AdvertisementCommentDto> getAdvertisementComments(@PathVariable(name = "id") @Positive Long index,
+                                                                  @RequestParam(name = "first", defaultValue = "0") int firstElement,
+                                                                  @RequestParam(name = "max", defaultValue = "15") int maxResult,
+                                                                  @RequestParam(name = "direction", defaultValue = "asc") String direction,
+                                                                  @RequestParam(name = "sort", defaultValue = "default") String sort) {
+        return dtoMapper.mapAll(advertisementCommentService.readAllComments(index, firstElement, maxResult, direction, sort), AdvertisementCommentDto.class);
     }
 
     @DeleteMapping(value = "/{id}")

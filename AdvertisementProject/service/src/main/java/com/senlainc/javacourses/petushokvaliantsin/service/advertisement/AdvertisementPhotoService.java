@@ -44,7 +44,7 @@ public class AdvertisementPhotoService extends AbstractService<AdvertisementPhot
     }
 
     @Override
-    public List<AdvertisementPhoto> readAll(int firstElement, int maxResult, String direction) {
-        return advertisementPhotoDao.readAll(PageParameter.of(firstElement, maxResult, direction));
+    public List<AdvertisementPhoto> readAll(int firstElement, int maxResult) {
+        return advertisementPhotoDao.readAll(PageParameter.of(firstElement, maxResult));
     }
 }

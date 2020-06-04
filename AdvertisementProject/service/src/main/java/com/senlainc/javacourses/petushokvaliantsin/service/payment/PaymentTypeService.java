@@ -47,7 +47,7 @@ public class PaymentTypeService extends AbstractService<PaymentType, Long> imple
 
     @Override
     @Transactional(readOnly = true)
-    public List<PaymentType> readAll(int firstElement, int maxResult, String direction) {
-        return paymentTypeDao.readAll(PageParameter.of(firstElement, maxResult, direction));
+    public List<PaymentType> readAll(int firstElement, int maxResult) {
+        return paymentTypeDao.readAll(PageParameter.of(firstElement, maxResult));
     }
 }

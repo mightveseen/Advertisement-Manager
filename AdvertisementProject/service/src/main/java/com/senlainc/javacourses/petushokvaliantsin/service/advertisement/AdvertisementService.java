@@ -40,6 +40,7 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     public boolean delete(Long index) {
         final Advertisement advertisement = advertisementDao.read(index);
         advertisement.setState(stateService.read("DISABLED"));
+        advertisementDao.update(advertisement);
         return true;
     }
 
@@ -57,9 +58,8 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Advertisement> readAll(int firstElement, int maxResult, String direction) {
-        return advertisementDao.readAll(PageParameter.of(firstElement, maxResult, direction));
+    public List<Advertisement> readAll(int firstElement, int maxResult) {
+        return advertisementDao.readAll(PageParameter.of(firstElement, maxResult));
     }
 
     @Override

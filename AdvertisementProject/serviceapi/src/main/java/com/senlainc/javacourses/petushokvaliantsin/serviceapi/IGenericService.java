@@ -13,5 +13,5 @@ public interface IGenericService<E, K extends Serializable> {
 
     E read(K index);
 
-    List<E> readAll(int firstElement, int maxResult, String direction);
+    List<E> readAll(int firstElement, int maxResult);
 }
