@@ -44,3 +44,12 @@ INSERT INTO `advertisement_comments`(`user_id`, `advertisement_id`, `comment_mes
 VALUES
 (4, 1, 'The best car ever made', '2020-06-04'),
 (4, 2, 'What trash did you said', '2020-06-03');
+INSERT INTO `payment_types`(`type_description`, `type_duration`, `type_price`)
+VALUES 
+('15 days', 15, 3),
+('30 days', 30, 6),
+('3 months', 90, 12),
+('6 months', 180, 25);
+INSERT INTO `payments`(`advertisement_id`, `type_id`, `payment_start_date`, `payment_end_date`, `payment_price`, `state_id`)
+VALUES
+(1, 2, '2020-06-04', '2020-07-04', 6, 7);
