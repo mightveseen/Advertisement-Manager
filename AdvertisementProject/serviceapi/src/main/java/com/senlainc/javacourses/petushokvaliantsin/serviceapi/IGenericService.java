@@ -7,5 +7,5 @@ public interface IGenericService<E, K extends Serializable> {
 
     E read(K index);
 
-    List<E> readAll(int firstElement, int maxResult);
+    List<E> readAll(int page, int numberElements);
 }

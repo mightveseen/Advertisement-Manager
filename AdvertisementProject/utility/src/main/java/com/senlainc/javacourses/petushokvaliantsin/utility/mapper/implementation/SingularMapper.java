@@ -27,7 +27,8 @@ public class SingularMapper implements ISingularMapper {
                 Arrays.stream(j.getAnnotation(SingularModel.class).metamodels()).forEach(f -> {
                     for (Field field : f.getDeclaredFields()) {
                         if (field.getType().equals(SingularAttribute.class)) {
-                            fields.put(field.getName().toLowerCase(), field);
+                            fields.put(f.getSimpleName().substring(0, f.getSimpleName().length() - 1) + "-"
+                                    + field.getName().toLowerCase(), field);
                         }
                     }
                 });
@@ -37,7 +38,7 @@ public class SingularMapper implements ISingularMapper {
 
     public <T, E> SingularAttribute<T, E> getSingularAttribute(String parameter) {
         try {
-            return SingularAttribute.class.cast(fields.get(parameter.toLowerCase()).get(null));
+            return parameter.endsWith("default") ? null : SingularAttribute.class.cast(fields.get(parameter).get(null));
         } catch (NullPointerException | IllegalAccessException e) {
             throw new IncorrectCastException("Chosen parameter [" + parameter + "] does not match any field");
         }

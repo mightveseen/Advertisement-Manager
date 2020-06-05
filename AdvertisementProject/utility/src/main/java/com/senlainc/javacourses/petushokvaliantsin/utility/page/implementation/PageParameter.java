@@ -15,35 +15,35 @@ public class PageParameter implements IPageParameter {
     private final Sort.Direction sort;
     private SingularAttribute criteriaField;
 
-    private PageParameter(int firstElement, int maxResult) {
-        this.firstElement = firstElement;
-        this.maxResult = maxResult;
+    private PageParameter(int page, int numberElements) {
+        this.firstElement = getFirstElement(page, numberElements);
+        this.maxResult = getMaxResult(page, numberElements);
         this.sort = Sort.Direction.ASC;
     }
 
-    private PageParameter(int fistElement, int maxResult, String direction) {
-        this.firstElement = fistElement;
-        this.maxResult = maxResult;
+    private PageParameter(int page, int numberElements, String direction) {
+        this.firstElement = getFirstElement(page, numberElements);
+        this.maxResult = getMaxResult(page, numberElements);
         this.sort = getDirection(direction);
     }
 
-    private <E, F> PageParameter(int firstElement, int maxResult, String direction, SingularAttribute<E, F> criteriaField) {
-        this.firstElement = firstElement;
-        this.maxResult = maxResult;
+    private <E, F> PageParameter(int page, int numberElements, String direction, SingularAttribute<E, F> criteriaField) {
+        this.firstElement = getFirstElement(page, numberElements);
+        this.maxResult = getMaxResult(page, numberElements);
         this.sort = getDirection(direction);
         this.criteriaField = criteriaField;
     }
 
-    public static PageParameter of(int firstElement, int maxResult) {
-        return new PageParameter(firstElement, maxResult);
+    public static PageParameter of(int page, int numberElements) {
+        return new PageParameter(page, numberElements);
     }
 
-    public static PageParameter of(int firstElement, int maxResult, String direction) {
-        return new PageParameter(firstElement, maxResult, direction);
+    public static PageParameter of(int page, int numberElements, String direction) {
+        return new PageParameter(page, numberElements, direction);
     }
 
-    public static <E, F> PageParameter of(int firstElement, int maxResult, String direction, SingularAttribute<E, F> criteriaField) {
-        return new PageParameter(firstElement, maxResult, direction, criteriaField);
+    public static <E, F> PageParameter of(int page, int numberElements, String direction, SingularAttribute<E, F> criteriaField) {
+        return new PageParameter(page, numberElements, direction, criteriaField);
     }
 
     @Override
@@ -83,5 +83,13 @@ public class PageParameter implements IPageParameter {
             return Sort.Direction.DESC;
         }
         return Sort.Direction.ASC;
+    }
+
+    private int getFirstElement(int page, int numberElements) {
+        return page <= 0 ? 0 : page * numberElements - numberElements;
+    }
+
+    private int getMaxResult(int page, int numberElements) {
+        return page <= 0 ? numberElements : page * numberElements;
     }
 }

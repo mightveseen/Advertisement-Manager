@@ -39,13 +39,13 @@ public class AdvertisementController {
     }
 
     @GetMapping
-    public List<AdvertisementDto> getAdvertisements(@RequestParam(name = "first", defaultValue = "0") int firstElement,
-                                                    @RequestParam(name = "max", defaultValue = "15") int maxResult,
+    public List<AdvertisementDto> getAdvertisements(@RequestParam(name = "page", defaultValue = "1") @Positive int page,
+                                                    @RequestParam(name = "number", defaultValue = "15") @Positive int numberElements,
                                                     @RequestParam(name = "direction", defaultValue = "asc") String direction,
                                                     @RequestParam(name = "sort", defaultValue = "default") String sort,
-                                                    @RequestParam(name = "cat", defaultValue = "all") String category,
+                                                    @RequestParam(name = "cat", defaultValue = "none") String category,
                                                     @RequestParam(name = "search", defaultValue = "none") String search) {
-        return dtoMapper.mapAll(advertisementService.readAll(firstElement, maxResult, direction, sort), AdvertisementDto.class);
+        return dtoMapper.mapAll(advertisementService.readAll(page, numberElements, direction, sort, category, search), AdvertisementDto.class);
     }
 
     @GetMapping(value = "/{id}")

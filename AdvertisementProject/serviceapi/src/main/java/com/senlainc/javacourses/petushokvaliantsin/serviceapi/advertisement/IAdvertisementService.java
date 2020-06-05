@@ -13,5 +13,5 @@ public interface IAdvertisementService extends IGenericService<Advertisement, Lo
 
     boolean update(Advertisement object);
 
-    List<Advertisement> readAll(int firstElement, int maxResult, String direction, String sortField);
+    List<Advertisement> readAll(int firstElement, int maxResult, String direction, String sortField, String category, String search);
 }

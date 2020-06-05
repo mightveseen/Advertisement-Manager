@@ -1,6 +1,7 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.advertisement;
 
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
+import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementCategory_;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement_;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
@@ -57,17 +58,23 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
 
     @Override
     @Transactional(readOnly = true)
-    public List<Advertisement> readAll(int firstElement, int maxResult) {
-        return advertisementDao.readAll(PageParameter.of(firstElement, maxResult));
+    public List<Advertisement> readAll(int page, int numberElements) {
+        return advertisementDao.readAll(PageParameter.of(page, numberElements));
     }
 
     @Override
     @Transactional(readOnly = true)
     @SingularModel(metamodels = Advertisement_.class)
-    public List<Advertisement> readAll(int firstElement, int maxResult, String direction, String sortField) {
-        if (sortField.equals("default")) {
-            return advertisementDao.readAll(PageParameter.of(firstElement, maxResult, direction));
+    public List<Advertisement> readAll(int page, int numberElements, String direction, String sortField, String category, String search) {
+        if (!search.equals("none")) {
+            return advertisementDao.readAllWithSearch(PageParameter.of(page, numberElements, direction,
+                    singularMapper.getSingularAttribute("Advertisement-" + sortField.toLowerCase())), Advertisement_.header, search);
         }
-        return advertisementDao.readAll(PageParameter.of(firstElement, maxResult, direction, singularMapper.getSingularAttribute(sortField)));
+        if (!category.equals("none")) {
+            return advertisementDao.readAllWithCategory(PageParameter.of(page, numberElements, direction,
+                    singularMapper.getSingularAttribute("Advertisement-" + sortField.toLowerCase())), AdvertisementCategory_.description, category);
+        }
+        return advertisementDao.readAll(PageParameter.of(page, numberElements, direction,
+                singularMapper.getSingularAttribute("Advertisement-" + sortField.toLowerCase())));
     }
 }

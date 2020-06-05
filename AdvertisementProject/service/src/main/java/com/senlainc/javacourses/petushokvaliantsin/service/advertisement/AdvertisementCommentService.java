@@ -63,19 +63,19 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
 
     @Override
     @Transactional(readOnly = true)
-    public List<AdvertisementComment> readAll(int firstElement, int maxResult) {
-        return advertisementCommentDao.readAll(PageParameter.of(firstElement, maxResult));
+    public List<AdvertisementComment> readAll(int page, int numberElements) {
+        return advertisementCommentDao.readAll(PageParameter.of(page, numberElements));
     }
 
     @Override
     @Transactional(readOnly = true)
     @SingularModel(metamodels = AdvertisementComment_.class)
-    public List<AdvertisementComment> readAll(Long index, int firstElement, int maxResult, String direction, String sortField) {
+    public List<AdvertisementComment> readAll(Long index, int page, int numberElements, String direction, String sortField) {
         if (sortField.equals("default")) {
-            return advertisementCommentDao.readAll(PageParameter.of(firstElement, maxResult, direction),
+            return advertisementCommentDao.readAll(PageParameter.of(page, numberElements, direction),
                     AdvertisementComment_.advertisement, advertisementService.read(index));
         }
-        return advertisementCommentDao.readAll(PageParameter.of(firstElement, maxResult, direction, singularMapper.getSingularAttribute(sortField)),
+        return advertisementCommentDao.readAll(PageParameter.of(page, numberElements, direction, singularMapper.getSingularAttribute(sortField)),
                 AdvertisementComment_.advertisement, advertisementService.read(index));
     }
 }

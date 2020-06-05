@@ -13,5 +13,5 @@ public interface IAdvertisementCommentService extends IGenericService<Advertisem
 
     boolean update(AdvertisementComment object);
 
-    List<AdvertisementComment> readAll(Long index, int firstElement, int maxResult, String direction, String sortField);
+    List<AdvertisementComment> readAll(Long index, int page, int numberElements, String direction, String sortField);
 }
