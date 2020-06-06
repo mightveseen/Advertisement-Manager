@@ -4,18 +4,18 @@ import java.io.Serializable;
 
 public class UserCredDto implements Serializable {
 
-    private Long index;
+    private Long id;
     private String login;
     private String password;
     private UserRoleDto userRole;
     private UserDto user;
 
-    public Long getIndex() {
-        return index;
+    public Long getId() {
+        return id;
     }
 
-    public void setIndex(Long index) {
-        this.index = index;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getLogin() {

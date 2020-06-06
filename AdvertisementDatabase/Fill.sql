@@ -4,7 +4,7 @@ VALUES
 ('ADMIN'),
 ('MODERATOR'),
 ('COMMON');
-INSERT INTO `user_data`(`user_login`, `user_password`, `role_id`)
+INSERT INTO `user_creds`(`user_login`, `user_password`, `role_id`)
 VALUES
 ('admin', 'admin', 1),
 ('moderator', 'moderator', 2),
@@ -16,6 +16,10 @@ VALUES
 (1, 'Daniel', 'Dark', 'danieldark@gmail.com', 298674592, '2012-12-12', 5.0),
 (3, 'Vasilij', 'Bochkov', 'bochok@gmail.com', 339922111, '2019-09-19', 7.0),
 (4, 'Robert', 'Downey Jr', 'stark@gmail.com', 010000001, '2019-09-19', 7.0);
+INSERT INTO `user_ratings`(`user_owner_id`, `user_rated_id`, `rating_value`)
+VALUES
+(3, 4, 7),
+(4, 3, 7);
 INSERT INTO `advertisement_categories`(`category_description`)
 VALUES
 ('Household appliances'),
@@ -48,8 +52,24 @@ INSERT INTO `payment_types`(`type_description`, `type_duration`, `type_price`)
 VALUES 
 ('15 days', 15, 3),
 ('30 days', 30, 6),
-('3 months', 90, 12),
-('6 months', 180, 25);
+('90 days', 90, 12),
+('180 days', 180, 25);
 INSERT INTO `payments`(`advertisement_id`, `type_id`, `payment_start_date`, `payment_end_date`, `payment_price`, `state_id`)
 VALUES
 (1, 2, '2020-06-04', '2020-07-04', 6, 7);
+INSERT INTO `chats`(`chat_name`, `chat_last_message`)
+VALUES 
+('Sony Z1 Ultra', 'Hi'),
+('Audi R8', 'Hi');
+INSERT INTO `user_chats`(`chat_id`, `chat_user`)
+VALUES
+(1, 3),
+(1, 4),
+(2, 3),
+(2, 4);
+INSERT INTO `messages`(`user_id`, `chat_id`, `message_text`, `message_date`)
+VALUES
+(3, 1, 'trash loto', '2020-02-12'),
+(4, 1, 'lol', '2020-03-12'),
+(3, 1, 'not bad', '2020-04-12'),
+(4, 1, 'see you', '2020-05-12');

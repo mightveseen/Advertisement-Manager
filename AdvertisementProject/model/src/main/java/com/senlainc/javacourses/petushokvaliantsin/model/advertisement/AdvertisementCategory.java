@@ -18,7 +18,7 @@ public class AdvertisementCategory {
     @Id
     @Column(name = "category_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long index;
+    private Long id;
     @Column(name = "category_description")
     private String description;
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
@@ -31,12 +31,12 @@ public class AdvertisementCategory {
         this.description = description;
     }
 
-    public Long getIndex() {
-        return index;
+    public Long getId() {
+        return id;
     }
 
-    public void setIndex(Long index) {
-        this.index = index;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDescription() {
@@ -52,22 +52,20 @@ public class AdvertisementCategory {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AdvertisementCategory that = (AdvertisementCategory) o;
-        return index.equals(that.index) &&
+        return id.equals(that.id) &&
                 description.equals(that.description) &&
                 Objects.equals(advertisements, that.advertisements);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(index, description, advertisements);
+        return Objects.hash(id, description, advertisements);
     }
 
     @Override
     public String toString() {
         return "AdvertisementCategory{" +
-                "index=" + index +
-                ", description='" + description + '\'' +
-                ", advertisements=" + advertisements +
-                '}';
+                "id=" + id +
+                ", description='" + description + '}';
     }
 }

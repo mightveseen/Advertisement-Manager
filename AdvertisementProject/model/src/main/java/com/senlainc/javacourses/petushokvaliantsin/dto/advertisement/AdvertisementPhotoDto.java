@@ -4,16 +4,16 @@ import java.io.Serializable;
 
 public class AdvertisementPhotoDto implements Serializable {
 
-    private Long index;
+    private Long id;
     private AdvertisementDto advertisement;
     private String url;
 
-    public Long getIndex() {
-        return index;
+    public Long getId() {
+        return id;
     }
 
-    public void setIndex(Long index) {
-        this.index = index;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public AdvertisementDto getAdvertisement() {

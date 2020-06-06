@@ -23,7 +23,7 @@ public class Chat {
     @Id
     @Column(name = "chat_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long index;
+    private Long id;
     @Column(name = "chat_name")
     private String name;
     @Column(name = "chat_last_message")
@@ -31,7 +31,7 @@ public class Chat {
     @OneToMany(mappedBy = "chat")
     private Set<Message> messages;
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "chat_users", joinColumns = @JoinColumn(name = "chat_id"),
+    @JoinTable(name = "user_chats", joinColumns = @JoinColumn(name = "chat_id"),
             inverseJoinColumns = @JoinColumn(name = "chat_user"))
     private Set<User> users;
 
@@ -43,12 +43,12 @@ public class Chat {
         this.lastMessage = lastMessage;
     }
 
-    public Long getIndex() {
-        return index;
+    public Long getId() {
+        return id;
     }
 
-    public void setIndex(Long index) {
-        this.index = index;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -88,7 +88,7 @@ public class Chat {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Chat chat = (Chat) o;
-        return index.equals(chat.index) &&
+        return id.equals(chat.id) &&
                 name.equals(chat.name) &&
                 lastMessage.equals(chat.lastMessage) &&
                 Objects.equals(messages, chat.messages) &&
@@ -97,17 +97,6 @@ public class Chat {
 
     @Override
     public int hashCode() {
-        return Objects.hash(index, name, lastMessage, messages, users);
-    }
-
-    @Override
-    public String toString() {
-        return "Chat{" +
-                "index=" + index +
-                ", name='" + name + '\'' +
-                ", lastMessage='" + lastMessage + '\'' +
-                ", messages=" + messages +
-                ", users=" + users +
-                '}';
+        return Objects.hash(id, name, lastMessage, messages, users);
     }
 }

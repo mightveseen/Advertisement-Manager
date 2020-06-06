@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS `user_roles` (
 `role_id` INT AUTO_INCREMENT PRIMARY KEY,
 `role_description` VARCHAR(50) NOT NULL
 );
-CREATE TABLE IF NOT EXISTS `user_data` (
+CREATE TABLE IF NOT EXISTS `user_creds` (
 `user_id` INT AUTO_INCREMENT PRIMARY KEY,
 `user_login` VARCHAR(50) NOT NULL,
 `user_password` VARCHAR(120) NOT NULL,
@@ -20,7 +20,15 @@ CREATE TABLE IF NOT EXISTS `users` (
 `user_phone` INT NOT NULL,
 `user_registration_date` DATE NOT NULL,
 `user_rating` FLOAT NOT NULL,
-FOREIGN KEY (`user_id`) REFERENCES `user_data`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+FOREIGN KEY (`user_id`) REFERENCES `user_creds`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE TABLE IF NOT EXISTS `user_ratings` (
+`rating_id` INT AUTO_INCREMENT PRIMARY KEY,
+`user_owner_id` INT, 
+`user_rated_id` INT, 
+`rating_value` TINYINT,
+FOREIGN KEY (`user_owner_id`) REFERENCES `users`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+FOREIGN KEY (`user_rated_id`) REFERENCES `users`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE TABLE IF NOT EXISTS `advertisement_categories` (
 `category_id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -80,6 +88,12 @@ CREATE TABLE IF NOT EXISTS `chats` (
 `chat_name` VARCHAR(50) NOT NULL,
 `chat_last_message` VARCHAR(100) NOT NULL
 );
+CREATE TABLE IF NOT EXISTS `user_chats` (
+`chat_id` INT,
+`chat_user` INT,
+FOREIGN KEY (`chat_id`) REFERENCES `chats`(`chat_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+FOREIGN KEY (`chat_user`) REFERENCES `users`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE
+);
 CREATE TABLE IF NOT EXISTS `messages` (
 `message_id` INT AUTO_INCREMENT PRIMARY KEY,
 `user_id` INT,
@@ -88,12 +102,6 @@ CREATE TABLE IF NOT EXISTS `messages` (
 `message_date` DATE NOT NULL,
 FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
 FOREIGN KEY (`chat_id`) REFERENCES `chats`(`chat_id`) ON DELETE CASCADE ON UPDATE CASCADE
-);
-CREATE TABLE IF NOT EXISTS `сhat_users` (
-`chat_id` INT,
-`chat_user` INT,
-FOREIGN KEY (`chat_user`) REFERENCES `users`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-FOREIGN KEY (`chat_id`) REFERENCES `chats`(`chat_id`) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 

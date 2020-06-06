@@ -21,7 +21,7 @@ public class AdvertisementComment {
     @Id
     @Column(name = "comment_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long index;
+    private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -43,12 +43,12 @@ public class AdvertisementComment {
         this.dateTime = dateTime;
     }
 
-    public Long getIndex() {
-        return index;
+    public Long getId() {
+        return id;
     }
 
-    public void setIndex(Long index) {
-        this.index = index;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public User getUser() {
@@ -88,7 +88,7 @@ public class AdvertisementComment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AdvertisementComment that = (AdvertisementComment) o;
-        return index.equals(that.index) &&
+        return id.equals(that.id) &&
                 Objects.equals(user, that.user) &&
                 advertisement.equals(that.advertisement) &&
                 message.equals(that.message) &&
@@ -97,13 +97,13 @@ public class AdvertisementComment {
 
     @Override
     public int hashCode() {
-        return Objects.hash(index, user, advertisement, message, dateTime);
+        return Objects.hash(id, user, advertisement, message, dateTime);
     }
 
     @Override
     public String toString() {
         return "AdvertisementComment{" +
-                "index=" + index +
+                "id=" + id +
                 ", user=" + user +
                 ", advertisement=" + advertisement +
                 ", message='" + message + '\'' +

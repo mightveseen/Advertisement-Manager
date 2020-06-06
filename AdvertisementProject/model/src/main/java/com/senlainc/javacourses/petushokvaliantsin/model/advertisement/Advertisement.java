@@ -24,14 +24,14 @@ import java.util.Set;
 @Entity
 @Table(name = "advertisements")
 @NamedEntityGraphs(value = {@NamedEntityGraph(name = "main", attributeNodes = {
-        @NamedAttributeNode("index"), @NamedAttributeNode("header"), @NamedAttributeNode("description")
+        @NamedAttributeNode("id"), @NamedAttributeNode("header"), @NamedAttributeNode("description")
 })})
 public class Advertisement implements Cloneable {
 
     @Id
     @Column(name = "advertisement_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long index;
+    private Long id;
     @Column(name = "advertisement_header")
     private String header;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -66,12 +66,12 @@ public class Advertisement implements Cloneable {
         this.state = state;
     }
 
-    public Long getIndex() {
-        return index;
+    public Long getId() {
+        return id;
     }
 
-    public void setIndex(Long index) {
-        this.index = index;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getHeader() {
@@ -151,7 +151,7 @@ public class Advertisement implements Cloneable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Advertisement that = (Advertisement) o;
-        return index.equals(that.index) &&
+        return id.equals(that.id) &&
                 header.equals(that.header) &&
                 user.equals(that.user) &&
                 Objects.equals(description, that.description) &&
@@ -165,7 +165,7 @@ public class Advertisement implements Cloneable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(index, header, user, description, category, date, state, comments, photos, payments);
+        return Objects.hash(id, header, user, description, category, date, state, comments, photos, payments);
     }
 
     @Override
@@ -176,7 +176,7 @@ public class Advertisement implements Cloneable {
     @Override
     public String toString() {
         return "Advertisement{" +
-                "index=" + index +
+                "id=" + id +
                 ", header='" + header + '\'' +
                 ", user=" + user +
                 ", description='" + description + '\'' +

@@ -13,7 +13,7 @@ import java.time.LocalDate;
 
 public class AdvertisementDto implements Serializable {
 
-    private Long index;
+    private Long id;
     private String header;
     private UserDto user;
     private String description;
@@ -24,12 +24,12 @@ public class AdvertisementDto implements Serializable {
     private LocalDate date;
     private StateDto state;
 
-    public Long getIndex() {
-        return index;
+    public Long getId() {
+        return id;
     }
 
-    public void setIndex(Long index) {
-        this.index = index;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getHeader() {

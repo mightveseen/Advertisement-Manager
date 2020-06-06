@@ -26,7 +26,7 @@ public class User {
 
     @Id
     @Column(name = "user_id", unique = true, updatable = false, nullable = false)
-    private Long index;
+    private Long id;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private UserCred userCred;
@@ -42,16 +42,20 @@ public class User {
     private LocalDate registrationDate;
     @Column(name = "user_rating")
     private Float rating;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_chats", joinColumns = @JoinColumn(name = "chat_user"),
+            inverseJoinColumns = @JoinColumn(name = "chat_id"))
+    private Set<Chat> chats;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Message> messages;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<AdvertisementComment> comments;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Advertisement> advertisements;
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "chat_users", joinColumns = @JoinColumn(name = "chat_user"),
-            inverseJoinColumns = @JoinColumn(name = "chat_id"))
-    private Set<Chat> chats;
+    @OneToMany(mappedBy = "userOwner", fetch = FetchType.LAZY)
+    private Set<UserRating> ownerUserRatings;
+    @OneToMany(mappedBy = "ratedUser", fetch = FetchType.LAZY)
+    private Set<UserRating> ratedUserRatings;
 
     public User() {
     }
@@ -66,12 +70,12 @@ public class User {
         this.userCred = userCred;
     }
 
-    public Long getIndex() {
-        return index;
+    public Long getId() {
+        return id;
     }
 
-    public void setIndex(Long index) {
-        this.index = index;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -162,12 +166,28 @@ public class User {
         this.userCred = userCred;
     }
 
+    public Set<UserRating> getOwnerUserRatings() {
+        return ownerUserRatings;
+    }
+
+    public void setOwnerUserRatings(Set<UserRating> ownerUserRatings) {
+        this.ownerUserRatings = ownerUserRatings;
+    }
+
+    public Set<UserRating> getRatedUserRatings() {
+        return ratedUserRatings;
+    }
+
+    public void setRatedUserRatings(Set<UserRating> ratedUserRatings) {
+        this.ratedUserRatings = ratedUserRatings;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return index.equals(user.index) &&
+        return id.equals(user.id) &&
                 firstName.equals(user.firstName) &&
                 lastName.equals(user.lastName) &&
                 email.equals(user.email) &&
@@ -183,13 +203,13 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(index, firstName, lastName, email, phone, registrationDate, rating, messages, comments, advertisements, chats, userCred);
+        return Objects.hash(id, firstName, lastName, email, phone, registrationDate, rating, messages, comments, advertisements, chats, userCred);
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "index=" + index +
+                "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +

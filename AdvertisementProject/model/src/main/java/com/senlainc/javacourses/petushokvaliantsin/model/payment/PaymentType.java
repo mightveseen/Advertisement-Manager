@@ -18,7 +18,7 @@ public class PaymentType {
     @Id
     @Column(name = "type_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long index;
+    private Long id;
     @Column(name = "type_description")
     private String description;
     @Column(name = "type_duration")
@@ -37,12 +37,12 @@ public class PaymentType {
         this.price = price;
     }
 
-    public Long getIndex() {
-        return index;
+    public Long getId() {
+        return id;
     }
 
-    public void setIndex(Long index) {
-        this.index = index;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDescription() {
@@ -74,7 +74,7 @@ public class PaymentType {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PaymentType that = (PaymentType) o;
-        return index.equals(that.index) &&
+        return id.equals(that.id) &&
                 description.equals(that.description) &&
                 duration.equals(that.duration) &&
                 price.equals(that.price);
@@ -82,13 +82,13 @@ public class PaymentType {
 
     @Override
     public int hashCode() {
-        return Objects.hash(index, description, duration, price);
+        return Objects.hash(id, description, duration, price);
     }
 
     @Override
     public String toString() {
         return "PaymentType{" +
-                "index=" + index +
+                "id=" + id +
                 ", description='" + description + '\'' +
                 ", duration=" + duration +
                 ", price=" + price +

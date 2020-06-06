@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 public class UserDto implements Serializable {
 
-    private Long index;
+    private Long id;
     private String firstName;
     private String lastName;
     private String email;
@@ -22,12 +22,12 @@ public class UserDto implements Serializable {
     private LocalDate registrationDate;
     private Float rating;
 
-    public Long getIndex() {
-        return index;
+    public Long getId() {
+        return id;
     }
 
-    public void setIndex(Long index) {
-        this.index = index;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {

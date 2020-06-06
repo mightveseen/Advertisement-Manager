@@ -14,13 +14,13 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "user_data")
+@Table(name = "user_creds")
 public class UserCred {
 
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long index;
+    private Long id;
     @Column(name = "user_login")
     private String login;
     @Column(name = "user_password")
@@ -39,12 +39,12 @@ public class UserCred {
         this.password = password;
     }
 
-    public Long getIndex() {
-        return index;
+    public Long getId() {
+        return id;
     }
 
-    public void setIndex(Long index) {
-        this.index = index;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getLogin() {
@@ -76,7 +76,7 @@ public class UserCred {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserCred userCred = (UserCred) o;
-        return index.equals(userCred.index) &&
+        return id.equals(userCred.id) &&
                 login.equals(userCred.login) &&
                 password.equals(userCred.password) &&
                 Objects.equals(user, userCred.user);
@@ -84,15 +84,6 @@ public class UserCred {
 
     @Override
     public int hashCode() {
-        return Objects.hash(index, login, password, user);
-    }
-
-    @Override
-    public String toString() {
-        return "UserData{" +
-                "index=" + index +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return Objects.hash(id, login, password, user);
     }
 }

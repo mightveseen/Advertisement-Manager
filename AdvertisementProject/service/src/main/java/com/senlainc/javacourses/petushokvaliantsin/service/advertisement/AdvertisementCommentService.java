@@ -37,7 +37,7 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
     @Override
     public boolean create(Long advertisementIndex, AdvertisementComment object) {
         object.setAdvertisement(advertisementService.read(advertisementIndex));
-        object.setUser(userService.read(object.getUser().getIndex()));
+        object.setUser(userService.read(object.getUser().getId()));
         object.setDateTime(LocalDateTime.now());
         advertisementCommentDao.create(object);
         return true;

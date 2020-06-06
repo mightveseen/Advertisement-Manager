@@ -4,17 +4,17 @@ import java.io.Serializable;
 
 public class PaymentTypeDto implements Serializable {
 
-    private Long index;
+    private Long id;
     private String description;
     private Integer duration;
     private Double price;
 
-    public Long getIndex() {
-        return index;
+    public Long getId() {
+        return id;
     }
 
-    public void setIndex(Long index) {
-        this.index = index;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDescription() {

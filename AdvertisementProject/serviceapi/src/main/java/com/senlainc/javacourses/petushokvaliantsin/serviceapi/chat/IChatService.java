@@ -10,4 +10,6 @@ public interface IChatService extends IGenericService<Chat, Long> {
     boolean delete(Long index);
 
     boolean update(Chat object);
+
+//    public List<Chat> readAll(Long userIndex, int firstElement, int maxResult);
 }

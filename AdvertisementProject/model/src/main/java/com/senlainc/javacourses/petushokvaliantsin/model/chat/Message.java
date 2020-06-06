@@ -21,7 +21,7 @@ public class Message {
     @Id
     @Column(name = "message_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long index;
+    private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -43,12 +43,12 @@ public class Message {
         this.dateTime = dateTime;
     }
 
-    public Long getIndex() {
-        return index;
+    public Long getId() {
+        return id;
     }
 
-    public void setIndex(Long index) {
-        this.index = index;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public User getUser() {
@@ -88,7 +88,7 @@ public class Message {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Message message = (Message) o;
-        return index.equals(message.index) &&
+        return id.equals(message.id) &&
                 Objects.equals(user, message.user) &&
                 chat.equals(message.chat) &&
                 text.equals(message.text) &&
@@ -97,6 +97,6 @@ public class Message {
 
     @Override
     public int hashCode() {
-        return Objects.hash(index, user, chat, text, dateTime);
+        return Objects.hash(id, user, chat, text, dateTime);
     }
 }

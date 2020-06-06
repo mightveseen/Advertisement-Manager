@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 public class MessageDto implements Serializable {
 
-    private Long index;
+    private Long id;
     private UserDto user;
     private ChatDto chat;
     private String message;
@@ -21,12 +21,12 @@ public class MessageDto implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm+dd-MM-yyyy")
     private LocalDateTime dateTime;
 
-    public Long getIndex() {
-        return index;
+    public Long getId() {
+        return id;
     }
 
-    public void setIndex(Long index) {
-        this.index = index;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public UserDto getUser() {

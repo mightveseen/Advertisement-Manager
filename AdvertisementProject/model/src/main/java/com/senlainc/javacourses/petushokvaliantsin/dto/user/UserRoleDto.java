@@ -4,15 +4,15 @@ import java.io.Serializable;
 
 public class UserRoleDto implements Serializable {
 
-    private Long index;
+    private Long id;
     private String description;
 
-    public Long getIndex() {
-        return index;
+    public Long getId() {
+        return id;
     }
 
-    public void setIndex(Long index) {
-        this.index = index;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDescription() {

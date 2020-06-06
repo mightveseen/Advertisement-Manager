@@ -20,7 +20,7 @@ public class State {
     @Id
     @Column(name = "state_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long index;
+    private Long id;
     @Column(name = "state_description")
     private String description;
     @OneToMany(mappedBy = "state", fetch = FetchType.LAZY)
@@ -35,12 +35,12 @@ public class State {
         this.description = description;
     }
 
-    public Long getIndex() {
-        return index;
+    public Long getId() {
+        return id;
     }
 
-    public void setIndex(Long index) {
-        this.index = index;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDescription() {
@@ -72,7 +72,7 @@ public class State {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         State state = (State) o;
-        return index.equals(state.index) &&
+        return id.equals(state.id) &&
                 description.equals(state.description) &&
                 Objects.equals(payments, state.payments) &&
                 Objects.equals(advertisements, state.advertisements);
@@ -80,16 +80,6 @@ public class State {
 
     @Override
     public int hashCode() {
-        return Objects.hash(index, description, payments, advertisements);
-    }
-
-    @Override
-    public String toString() {
-        return "State{" +
-                "index=" + index +
-                ", description='" + description + '\'' +
-                ", payments=" + payments +
-                ", advertisements=" + advertisements +
-                '}';
+        return Objects.hash(id, description, payments, advertisements);
     }
 }

@@ -22,7 +22,7 @@ public class Payment {
     @Id
     @Column(name = "payment_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long index;
+    private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "advertisement_id", nullable = false)
     private Advertisement advertisement;
@@ -51,12 +51,12 @@ public class Payment {
         this.state = state;
     }
 
-    public Long getIndex() {
-        return index;
+    public Long getId() {
+        return id;
     }
 
-    public void setIndex(Long index) {
-        this.index = index;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Advertisement getAdvertisement() {
@@ -112,7 +112,7 @@ public class Payment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Payment payment = (Payment) o;
-        return index.equals(payment.index) &&
+        return id.equals(payment.id) &&
                 advertisement.equals(payment.advertisement) &&
                 type.equals(payment.type) &&
                 startDate.equals(payment.startDate) &&
@@ -123,19 +123,6 @@ public class Payment {
 
     @Override
     public int hashCode() {
-        return Objects.hash(index, advertisement, type, startDate, endDate, price, state);
-    }
-
-    @Override
-    public String toString() {
-        return "Payment{" +
-                "index=" + index +
-                ", advertisement=" + advertisement +
-                ", type=" + type +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", price=" + price +
-                ", state=" + state +
-                '}';
+        return Objects.hash(id, advertisement, type, startDate, endDate, price, state);
     }
 }

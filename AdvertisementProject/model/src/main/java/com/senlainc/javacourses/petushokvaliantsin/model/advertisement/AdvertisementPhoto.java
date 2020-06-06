@@ -18,7 +18,7 @@ public class AdvertisementPhoto {
     @Id
     @Column(name = "photo_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long index;
+    private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "advertisement_id", nullable = false)
     private Advertisement advertisement;
@@ -33,12 +33,12 @@ public class AdvertisementPhoto {
         this.url = url;
     }
 
-    public Long getIndex() {
-        return index;
+    public Long getId() {
+        return id;
     }
 
-    public void setIndex(Long index) {
-        this.index = index;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Advertisement getAdvertisement() {
@@ -62,22 +62,13 @@ public class AdvertisementPhoto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AdvertisementPhoto that = (AdvertisementPhoto) o;
-        return index.equals(that.index) &&
+        return id.equals(that.id) &&
                 advertisement.equals(that.advertisement) &&
                 url.equals(that.url);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(index, advertisement, url);
-    }
-
-    @Override
-    public String toString() {
-        return "AdvertisementPhoto{" +
-                "index=" + index +
-                ", advertisement=" + advertisement +
-                ", url='" + url + '\'' +
-                '}';
+        return Objects.hash(id, advertisement, url);
     }
 }
