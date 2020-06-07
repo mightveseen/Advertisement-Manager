@@ -3,8 +3,8 @@ package com.senlainc.javacourses.petushokvaliantsin.model.user;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementComment;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
+import com.senlainc.javacourses.petushokvaliantsin.model.chat.Message;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,7 +25,7 @@ public class User {
     @Id
     @Column(name = "user_id", unique = true, updatable = false, nullable = false)
     private Long id;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserCred userCred;
     @Column(name = "user_first_name")
@@ -41,10 +41,10 @@ public class User {
     @Column(name = "user_rating")
     private Float rating;
 
-    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private Set<Chat> chats;
-    //    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-//    private Set<Message> messages;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Message> messages;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<AdvertisementComment> comments;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -123,13 +123,13 @@ public class User {
         this.rating = rating;
     }
 
-//    public Set<Message> getmessages() {
-//        return messages;
-//    }
-//
-//    public void setmessages(Set<Message> messages) {
-//        this.messages = messages;
-//    }
+    public Set<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(Set<Message> messages) {
+        this.messages = messages;
+    }
 
     public Set<AdvertisementComment> getComments() {
         return comments;
@@ -191,17 +191,17 @@ public class User {
                 phone.equals(user.phone) &&
                 registrationDate.equals(user.registrationDate) &&
                 rating.equals(user.rating) &&
-//                Objects.equals(messages, user.messages) &&
+                Objects.equals(messages, user.messages) &&
                 Objects.equals(comments, user.comments) &&
                 Objects.equals(advertisements, user.advertisements) &&
                 Objects.equals(chats, user.chats) &&
                 userCred.equals(user.userCred);
     }
 
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(id, firstName, lastName, email, phone, registrationDate, rating, messages, comments, advertisements, chats, userCred);
-//    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, email, phone, registrationDate, rating, messages, comments, advertisements, chats, userCred);
+    }
 
     @Override
     public String toString() {

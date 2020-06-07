@@ -1,5 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.advertisement;
 
+import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementCategory_;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement_;
@@ -37,6 +38,13 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     }
 
     @Override
+    public boolean create(AdvertisementDto object) {
+        final Advertisement advertisement = dtoMapper.map(object, Advertisement.class);
+        advertisementDao.create(advertisement);
+        return true;
+    }
+
+    @Override
     public boolean delete(Long index) {
         final Advertisement advertisement = advertisementDao.read(index);
         advertisement.setState(stateService.read("DISABLED"));
@@ -51,6 +59,12 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     }
 
     @Override
+    public boolean update(AdvertisementDto object) {
+        advertisementDao.update(dtoMapper.map(object, Advertisement.class));
+        return true;
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public Advertisement read(Long index) {
         return advertisementDao.read(index);
@@ -58,17 +72,26 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
 
     @Override
     @Transactional(readOnly = true)
+    public AdvertisementDto getAdvertisement(Long index) {
+        return dtoMapper.map(advertisementDao.read(index), AdvertisementDto.class);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     @SingularModel(metamodels = Advertisement_.class)
-    public List<Advertisement> readAll(int page, int numberElements, String direction, String sortField, String category, String search) {
+    public List<AdvertisementDto> getAdvertisements(int page, int numberElements, String direction, String sortField, String category, String search) {
         if (!search.equals("none")) {
-            return advertisementDao.readAllWithSearch(PageParameter.of(page, numberElements, direction,
-                    singularMapper.getSingularAttribute("Advertisement-" + sortField.toLowerCase())), Advertisement_.header, search);
+            return dtoMapper.mapAll(advertisementDao.readAllWithSearch(PageParameter.of(page, numberElements, direction,
+                    singularMapper.getSingularAttribute("Advertisement-" + sortField.toLowerCase())), Advertisement_.header, search),
+                    AdvertisementDto.class);
         }
         if (!category.equals("none")) {
-            return advertisementDao.readAllWithCategory(PageParameter.of(page, numberElements, direction,
-                    singularMapper.getSingularAttribute("Advertisement-" + sortField.toLowerCase())), AdvertisementCategory_.description, category);
+            return dtoMapper.mapAll(advertisementDao.readAllWithCategory(PageParameter.of(page, numberElements, direction,
+                    singularMapper.getSingularAttribute("Advertisement-" + sortField.toLowerCase())), AdvertisementCategory_.description, category),
+                    AdvertisementDto.class);
         }
-        return advertisementDao.readAll(PageParameter.of(page, numberElements, direction,
-                singularMapper.getSingularAttribute("Advertisement-" + sortField.toLowerCase())));
+        return dtoMapper.mapAll(advertisementDao.readAll(PageParameter.of(page, numberElements, direction,
+                singularMapper.getSingularAttribute("Advertisement-" + sortField.toLowerCase()))),
+                AdvertisementDto.class);
     }
 }

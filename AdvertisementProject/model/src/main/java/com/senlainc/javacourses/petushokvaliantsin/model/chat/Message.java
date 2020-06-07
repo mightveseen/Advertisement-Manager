@@ -99,4 +99,15 @@ public class Message {
     public int hashCode() {
         return Objects.hash(id, user, chat, text, dateTime);
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id=" + id +
+                ", user=" + user +
+                ", chat=" + chat +
+                ", text='" + text + '\'' +
+                ", dateTime=" + dateTime +
+                '}';
+    }
 }

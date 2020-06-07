@@ -21,6 +21,7 @@ public class AdvertisementCategory {
     private Long id;
     @Column(name = "category_description")
     private String description;
+
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private Set<Advertisement> advertisements;
 

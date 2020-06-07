@@ -1,5 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.user;
 
+import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
@@ -39,8 +40,20 @@ public class UserService extends AbstractService<User, Long> implements IUserSer
     }
 
     @Override
+    public boolean update(UserDto object) {
+        userDao.update(dtoMapper.map(object, User.class));
+        return true;
+    }
+
+    @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public User read(Long index) {
         return userDao.read(index);
+    }
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
+    public UserDto getUser(Long index) {
+        return dtoMapper.map(userDao.read(index), UserDto.class);
     }
 }

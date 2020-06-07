@@ -1,5 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.chat;
 
+import com.senlainc.javacourses.petushokvaliantsin.dto.chat.ChatDto;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat_;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
@@ -33,9 +34,9 @@ public class ChatService extends AbstractService<Chat, Long> implements IChatSer
 
     @Override
     public boolean create(Long userIndex, User accountUser) {
-        final Set<User> chatUsers = new HashSet<>();
         final User user = userService.read(userIndex);
         final Chat chat = new Chat(user.getFirstName(), accountUser.getFirstName() + " create chat", LocalDateTime.now());
+        final Set<User> chatUsers = new HashSet<>();
         chatUsers.add(user);
         chatUsers.add(accountUser);
         chat.setUsers(chatUsers);
@@ -45,9 +46,7 @@ public class ChatService extends AbstractService<Chat, Long> implements IChatSer
 
     @Override
     public boolean delete(Long index, User user) {
-        final Chat chat = chatDao.read(index);
-        chat.getUsers().remove(chat.getUsers().stream().filter(i -> i.getId().equals(user.getId())).findFirst().orElse(null));
-        chatDao.update(chat);
+        chatDao.deleteUserChat(user);
         return true;
     }
 
@@ -59,7 +58,8 @@ public class ChatService extends AbstractService<Chat, Long> implements IChatSer
 
     @Override
     @Transactional(readOnly = true)
-    public List<Chat> readAll(User user, int page, int maxResult) {
-        return chatDao.readAllUserChat(PageParameter.of(page, maxResult, Sort.Direction.DESC.name(), Chat_.updateDateTime), user);
+    public List<ChatDto> getChats(User user, int page, int maxResult) {
+        return dtoMapper.mapAll(chatDao.readAllUserChat(PageParameter.of(page, maxResult, Sort.Direction.DESC.name(), Chat_.updateDateTime), user),
+                ChatDto.class);
     }
 }

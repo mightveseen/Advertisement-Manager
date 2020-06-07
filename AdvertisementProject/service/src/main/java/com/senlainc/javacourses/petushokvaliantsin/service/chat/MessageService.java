@@ -1,5 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.chat;
 
+import com.senlainc.javacourses.petushokvaliantsin.dto.chat.MessageDto;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Message;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Message_;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.chat.IMessageDao;
@@ -31,7 +32,8 @@ public class MessageService extends AbstractService<Message, Long> implements IM
     }
 
     @Override
-    public boolean create(Long chatIndex, Message message) {
+    public boolean create(Long chatIndex, MessageDto object) {
+        final Message message = dtoMapper.map(object, Message.class);
         message.setChat(chatService.read(chatIndex));
         message.setUser(userService.read(message.getUser().getId()));
         message.setDateTime(LocalDateTime.now());
@@ -53,7 +55,8 @@ public class MessageService extends AbstractService<Message, Long> implements IM
 
     @Override
     @Transactional(readOnly = true)
-    public List<Message> readAll(Long chatIndex, int firstElement, int maxResult) {
-        return messageDao.readAll(PageParameter.of(firstElement, maxResult), Message_.chat, chatService.read(chatIndex));
+    public List<MessageDto> getMessages(Long chatIndex, int firstElement, int maxResult) {
+        return dtoMapper.mapAll(messageDao.readAll(PageParameter.of(firstElement, maxResult), Message_.chat, chatService.read(chatIndex)),
+                MessageDto.class);
     }
 }

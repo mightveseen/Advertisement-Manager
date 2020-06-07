@@ -125,4 +125,17 @@ public class Payment {
     public int hashCode() {
         return Objects.hash(id, advertisement, type, startDate, endDate, price, state);
     }
+
+    @Override
+    public String toString() {
+        return "Payment{" +
+                "id=" + id +
+                ", advertisement=" + advertisement +
+                ", type=" + type +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", price=" + price +
+                ", state=" + state +
+                '}';
+    }
 }

@@ -9,7 +9,6 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -30,7 +29,7 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
         this.entityClazz = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
-    @PersistenceContext(name = "mainPersistence", type = PersistenceContextType.EXTENDED)
+    @PersistenceContext(name = "mainPersistence")
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
         this.criteriaBuilder = entityManager.getCriteriaBuilder();

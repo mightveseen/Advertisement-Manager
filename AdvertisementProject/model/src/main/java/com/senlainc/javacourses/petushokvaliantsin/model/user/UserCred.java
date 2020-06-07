@@ -28,6 +28,7 @@ public class UserCred {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private UserRole userRole;
+
     @OneToOne(mappedBy = "userCred", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User user;
 
@@ -85,5 +86,15 @@ public class UserCred {
     @Override
     public int hashCode() {
         return Objects.hash(id, login, password, user);
+    }
+
+    @Override
+    public String toString() {
+        return "UserCred{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", userRole=" + userRole +
+                '}';
     }
 }

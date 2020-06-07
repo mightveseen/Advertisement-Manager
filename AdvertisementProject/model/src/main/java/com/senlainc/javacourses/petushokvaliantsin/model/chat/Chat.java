@@ -112,4 +112,15 @@ public class Chat {
     public int hashCode() {
         return Objects.hash(id, name, lastMessage, messages, users);
     }
+
+    @Override
+    public String toString() {
+        return "Chat{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", lastMessage='" + lastMessage + '\'' +
+                ", updateDateTime=" + updateDateTime +
+                ", users=" + users +
+                '}';
+    }
 }

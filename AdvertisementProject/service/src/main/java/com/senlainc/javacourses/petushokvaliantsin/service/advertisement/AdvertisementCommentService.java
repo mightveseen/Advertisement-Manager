@@ -1,5 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.advertisement;
 
+import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementCommentDto;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementComment;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementComment_;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementCommentDao;
@@ -35,11 +36,12 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
     }
 
     @Override
-    public boolean create(Long advertisementIndex, AdvertisementComment object) {
-        object.setAdvertisement(advertisementService.read(advertisementIndex));
-        object.setUser(userService.read(object.getUser().getId()));
-        object.setDateTime(LocalDateTime.now());
-        advertisementCommentDao.create(object);
+    public boolean create(Long advertisementIndex, AdvertisementCommentDto object) {
+        final AdvertisementComment advertisementComment = dtoMapper.map(object, AdvertisementComment.class);
+        advertisementComment.setAdvertisement(advertisementService.read(advertisementIndex));
+        advertisementComment.setUser(userService.read(object.getUser().getId()));
+        advertisementComment.setDateTime(LocalDateTime.now());
+        advertisementCommentDao.create(advertisementComment);
         return true;
     }
 
@@ -58,12 +60,10 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
     @Override
     @Transactional(readOnly = true)
     @SingularModel(metamodels = AdvertisementComment_.class)
-    public List<AdvertisementComment> readAll(Long index, int page, int numberElements, String direction, String sortField) {
-        if (sortField.equals("default")) {
-            return advertisementCommentDao.readAll(PageParameter.of(page, numberElements, direction),
-                    AdvertisementComment_.advertisement, advertisementService.read(index));
-        }
-        return advertisementCommentDao.readAll(PageParameter.of(page, numberElements, direction, singularMapper.getSingularAttribute(sortField)),
-                AdvertisementComment_.advertisement, advertisementService.read(index));
+    public List<AdvertisementCommentDto> getAdvertisementComments(Long index, int page, int numberElements, String direction, String sortField) {
+        return dtoMapper.mapAll(advertisementCommentDao.readAll(PageParameter.of(page, numberElements, direction,
+                singularMapper.getSingularAttribute("AdvertisementComment-" + sortField.toLowerCase())),
+                AdvertisementComment_.advertisement, advertisementService.read(index)),
+                AdvertisementCommentDto.class);
     }
 }

@@ -1,5 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat;
 
+import com.senlainc.javacourses.petushokvaliantsin.dto.chat.ChatDto;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 
@@ -13,5 +14,5 @@ public interface IChatService {
 
     Chat read(Long index);
 
-    List<Chat> readAll(User user, int page, int maxResult);
+    List<ChatDto> getChats(User user, int page, int maxResult);
 }

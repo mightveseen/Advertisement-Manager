@@ -84,4 +84,14 @@ public class UserRating {
     public int hashCode() {
         return Objects.hash(id, userOwner, ratedUser, value);
     }
+
+    @Override
+    public String toString() {
+        return "UserRating{" +
+                "id=" + id +
+                ", userOwner=" + userOwner +
+                ", ratedUser=" + ratedUser +
+                ", value=" + value +
+                '}';
+    }
 }

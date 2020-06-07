@@ -2,11 +2,8 @@ package com.senlainc.javacourses.petushokvaliantsin.controller;
 
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementCommentDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
-import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
-import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementComment;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementCommentService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementService;
-import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.IDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,14 +25,11 @@ public class AdvertisementController {
 
     private final IAdvertisementService advertisementService;
     private final IAdvertisementCommentService advertisementCommentService;
-    private final IDtoMapper dtoMapper;
 
     @Autowired
-    public AdvertisementController(IAdvertisementService advertisementService, IAdvertisementCommentService advertisementCommentService,
-                                   IDtoMapper dtoMapper) {
+    public AdvertisementController(IAdvertisementService advertisementService, IAdvertisementCommentService advertisementCommentService) {
         this.advertisementService = advertisementService;
         this.advertisementCommentService = advertisementCommentService;
-        this.dtoMapper = dtoMapper;
     }
 
     @GetMapping
@@ -45,12 +39,12 @@ public class AdvertisementController {
                                                     @RequestParam(name = "sort", defaultValue = "default") String sort,
                                                     @RequestParam(name = "cat", defaultValue = "none") String category,
                                                     @RequestParam(name = "search", defaultValue = "none") String search) {
-        return dtoMapper.mapAll(advertisementService.readAll(page, numberElements, direction, sort, category, search), AdvertisementDto.class);
+        return advertisementService.getAdvertisements(page, numberElements, direction, sort, category, search);
     }
 
     @GetMapping(value = "/{id}")
     public AdvertisementDto getAdvertisement(@PathVariable(name = "id") @Positive Long index) {
-        return dtoMapper.map(advertisementService.read(index), AdvertisementDto.class);
+        return advertisementService.getAdvertisement(index);
     }
 
     @GetMapping(value = "/{id}/comments")
@@ -59,13 +53,13 @@ public class AdvertisementController {
                                                                   @RequestParam(name = "max", defaultValue = "15") int maxResult,
                                                                   @RequestParam(name = "direction", defaultValue = "asc") String direction,
                                                                   @RequestParam(name = "sort", defaultValue = "default") String sort) {
-        return dtoMapper.mapAll(advertisementCommentService.readAll(index, firstElement, maxResult, direction, sort), AdvertisementCommentDto.class);
+        return advertisementCommentService.getAdvertisementComments(index, firstElement, maxResult, direction, sort);
     }
 
     @PostMapping(value = "/{id}/comments")
     public boolean createAdvertisementComment(@PathVariable(name = "id") @Positive Long index,
                                               @RequestBody @Validated(AdvertisementCommentDto.class) AdvertisementCommentDto object) {
-        return advertisementCommentService.create(index, dtoMapper.map(object, AdvertisementComment.class));
+        return advertisementCommentService.create(index, object);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -75,11 +69,11 @@ public class AdvertisementController {
 
     @PutMapping(value = "/{id}")
     public boolean updateAdvertisement(@RequestBody @Validated(AdvertisementDto.class) AdvertisementDto object) {
-        return advertisementService.update(dtoMapper.map(object, Advertisement.class));
+        return advertisementService.update(object);
     }
 
     @PostMapping(value = "/create")
     public boolean createAdvertisement(@RequestBody @Validated(AdvertisementDto.class) AdvertisementDto object) {
-        return advertisementService.create(dtoMapper.map(object, Advertisement.class));
+        return advertisementService.create(object);
     }
 }

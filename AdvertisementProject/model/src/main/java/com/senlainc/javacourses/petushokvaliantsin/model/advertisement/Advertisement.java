@@ -47,6 +47,7 @@ public class Advertisement implements Cloneable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "state_id")
     private State state;
+
     @OneToMany(mappedBy = "advertisement", fetch = FetchType.LAZY)
     private Set<AdvertisementComment> comments;
     @OneToMany(mappedBy = "advertisement", fetch = FetchType.LAZY)
@@ -182,10 +183,6 @@ public class Advertisement implements Cloneable {
                 ", description='" + description + '\'' +
                 ", category=" + category +
                 ", date=" + date +
-                ", state=" + state +
-                ", comments=" + comments +
-                ", photos=" + photos +
-                ", payments=" + payments +
-                '}';
+                ", state=" + state + '}';
     }
 }

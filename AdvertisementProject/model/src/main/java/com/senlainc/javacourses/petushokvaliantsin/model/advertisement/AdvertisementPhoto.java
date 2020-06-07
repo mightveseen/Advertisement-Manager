@@ -71,4 +71,13 @@ public class AdvertisementPhoto {
     public int hashCode() {
         return Objects.hash(id, advertisement, url);
     }
+
+    @Override
+    public String toString() {
+        return "AdvertisementPhoto{" +
+                "id=" + id +
+                ", advertisement=" + advertisement +
+                ", url='" + url + '\'' +
+                '}';
+    }
 }

@@ -23,6 +23,7 @@ public class State {
     private Long id;
     @Column(name = "state_description")
     private String description;
+
     @OneToMany(mappedBy = "state", fetch = FetchType.LAZY)
     private Set<Payment> payments;
     @OneToMany(mappedBy = "state", fetch = FetchType.LAZY)
@@ -81,5 +82,13 @@ public class State {
     @Override
     public int hashCode() {
         return Objects.hash(id, description, payments, advertisements);
+    }
+
+    @Override
+    public String toString() {
+        return "State{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                '}';
     }
 }
