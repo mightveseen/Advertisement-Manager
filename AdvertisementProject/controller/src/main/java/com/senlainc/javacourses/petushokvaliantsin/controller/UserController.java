@@ -36,6 +36,6 @@ public class UserController {
     @PostMapping(value = "/{id}")
     public boolean createChatWithUser(@PathVariable(name = "id") @Positive Long index,
                                       @RequestParam(name = "id") @Positive Long accountId) {
-        return chatService.create(index, accountId);
+        return chatService.create(index, userService.read(accountId));
     }
 }

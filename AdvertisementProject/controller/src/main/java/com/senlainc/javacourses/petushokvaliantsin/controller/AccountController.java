@@ -38,6 +38,14 @@ public class AccountController {
         this.dtoMapper = dtoMapper;
     }
 
+    //TODO : Change to Session user
+    @GetMapping(value = "/chats")
+    public List<ChatDto> getUserChats(@RequestParam(name = "userId") @Positive Long userId,
+                                      @RequestParam(name = "page", defaultValue = "1") @Positive int page,
+                                      @RequestParam(name = "max", defaultValue = "15") @Positive int max) {
+        return dtoMapper.mapAll(chatService.readAll(userService.read(userId), page, max), ChatDto.class);
+    }
+
     @GetMapping(value = "/chats/{id}")
     public List<MessageDto> getChatMessage(@PathVariable(name = "id") @Positive Long index,
                                            @RequestParam(name = "page", defaultValue = "1") @Positive int page,
@@ -53,15 +61,8 @@ public class AccountController {
 
     //TODO : Change to Session user
     @DeleteMapping(value = "/chats/{id}")
-    public boolean removeChat(@PathVariable(name = "id") @Positive Long index) {
-        return chatService.delete(index, userService.read((long) 3));
-    }
-
-    //TODO : Change to Session user
-    @GetMapping(value = "/chats")
-    public List<ChatDto> getUserChats(@RequestParam(name = "id") @Positive Long index,
-                                      @RequestParam(name = "page", defaultValue = "1") @Positive int page,
-                                      @RequestParam(name = "max", defaultValue = "15") @Positive int max) {
-        return dtoMapper.mapAll(chatService.readAll(userService.read(index), page, max), ChatDto.class);
+    public boolean removeChat(@PathVariable(name = "id") @Positive Long index,
+                              @RequestParam(name = "userId") @Positive Long userId) {
+        return chatService.delete(index, userService.read(userId));
     }
 }

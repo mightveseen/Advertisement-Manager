@@ -32,10 +32,9 @@ public class ChatService extends AbstractService<Chat, Long> implements IChatSer
     }
 
     @Override
-    public boolean create(Long userIndex, Long accountIndex) {
+    public boolean create(Long userIndex, User accountUser) {
         final Set<User> chatUsers = new HashSet<>();
         final User user = userService.read(userIndex);
-        final User accountUser = userService.read(userIndex);
         final Chat chat = new Chat(user.getFirstName(), accountUser.getFirstName() + " create chat", LocalDateTime.now());
         chatUsers.add(user);
         chatUsers.add(accountUser);
@@ -47,8 +46,7 @@ public class ChatService extends AbstractService<Chat, Long> implements IChatSer
     @Override
     public boolean delete(Long index, User user) {
         final Chat chat = chatDao.read(index);
-        User user1 = chat.getUsers().stream().filter(i -> i.getId().equals(user.getId())).findFirst().orElse(null);
-        chat.getUsers().remove(user1);
+        chat.getUsers().remove(chat.getUsers().stream().filter(i -> i.getId().equals(user.getId())).findFirst().orElse(null));
         chatDao.update(chat);
         return true;
     }
