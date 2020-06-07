@@ -58,12 +58,6 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
 
     @Override
     @Transactional(readOnly = true)
-    public List<Advertisement> readAll(int page, int numberElements) {
-        return advertisementDao.readAll(PageParameter.of(page, numberElements));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     @SingularModel(metamodels = Advertisement_.class)
     public List<Advertisement> readAll(int page, int numberElements, String direction, String sortField, String category, String search) {
         if (!search.equals("none")) {

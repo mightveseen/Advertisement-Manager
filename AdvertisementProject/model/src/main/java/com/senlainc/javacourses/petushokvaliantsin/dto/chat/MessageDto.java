@@ -14,8 +14,7 @@ public class MessageDto implements Serializable {
 
     private Long id;
     private UserDto user;
-    private ChatDto chat;
-    private String message;
+    private String text;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm+dd-MM-yyyy")
@@ -37,20 +36,12 @@ public class MessageDto implements Serializable {
         this.user = user;
     }
 
-    public ChatDto getChat() {
-        return chat;
+    public String getText() {
+        return text;
     }
 
-    public void setChat(ChatDto chat) {
-        this.chat = chat;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public LocalDateTime getDateTime() {

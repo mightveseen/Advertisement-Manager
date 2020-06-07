@@ -57,10 +57,10 @@ VALUES
 INSERT INTO `payments`(`advertisement_id`, `type_id`, `payment_start_date`, `payment_end_date`, `payment_price`, `state_id`)
 VALUES
 (1, 2, '2020-06-04', '2020-07-04', 6, 7);
-INSERT INTO `chats`(`chat_name`, `chat_last_message`)
+INSERT INTO `chats`(`chat_name`, `chat_last_message`, `chat_update_date`)
 VALUES 
-('Sony Z1 Ultra', 'Hi'),
-('Audi R8', 'Hi');
+('Sony Z1 Ultra', 'Hi', '2020-02-12+16:02:33'),
+('Audi R8', 'Hi', '2020-04-12+09:12:33');
 INSERT INTO `user_chats`(`chat_id`, `chat_user`)
 VALUES
 (1, 3),
@@ -69,7 +69,7 @@ VALUES
 (2, 4);
 INSERT INTO `messages`(`user_id`, `chat_id`, `message_text`, `message_date`)
 VALUES
-(3, 1, 'trash loto', '2020-02-12'),
-(4, 1, 'lol', '2020-03-12'),
-(3, 1, 'not bad', '2020-04-12'),
-(4, 1, 'see you', '2020-05-12');
+(3, 1, 'trash loto', '2020-02-12+16:02:33'),
+(4, 1, 'lol', '2020-02-12+16:02:33'),
+(3, 1, 'not bad', '2020-02-12+16:02:33'),
+(4, 1, 'see you', '2020-02-12+16:02:33');

@@ -13,6 +13,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
@@ -28,19 +29,23 @@ public class Chat {
     private String name;
     @Column(name = "chat_last_message")
     private String lastMessage;
-    @OneToMany(mappedBy = "chat")
-    private Set<Message> messages;
+    @Column(name = "chat_update_date")
+    private LocalDateTime updateDateTime;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_chats", joinColumns = @JoinColumn(name = "chat_id"),
             inverseJoinColumns = @JoinColumn(name = "chat_user"))
     private Set<User> users;
 
+    @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY)
+    private Set<Message> messages;
+
     public Chat() {
     }
 
-    public Chat(String name, String lastMessage) {
+    public Chat(String name, String lastMessage, LocalDateTime updateDateTime) {
         this.name = name;
         this.lastMessage = lastMessage;
+        this.updateDateTime = updateDateTime;
     }
 
     public Long getId() {
@@ -81,6 +86,14 @@ public class Chat {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    public LocalDateTime getUpdateDateTime() {
+        return updateDateTime;
+    }
+
+    public void setUpdateDateTime(LocalDateTime updateDateTime) {
+        this.updateDateTime = updateDateTime;
     }
 
     @Override

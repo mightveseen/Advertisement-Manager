@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `advertisement_comments` (
 `user_id` INT,
 `advertisement_id` INT NOT NULL,
 `comment_message` VARCHAR(500) NOT NULL,
-`comment_date` DATE NOT NULL,
+`comment_date` DATETIME NOT NULL,
 FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
 FOREIGN KEY (`advertisement_id`) REFERENCES `advertisements`(`advertisement_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -86,7 +86,8 @@ FOREIGN KEY (`state_id`) REFERENCES `states`(`state_id`) ON DELETE SET NULL ON U
 CREATE TABLE IF NOT EXISTS `chats` (
 `chat_id` INT AUTO_INCREMENT PRIMARY KEY,
 `chat_name` VARCHAR(50) NOT NULL,
-`chat_last_message` VARCHAR(100) NOT NULL
+`chat_last_message` VARCHAR(100) NOT NULL,
+`chat_update_date` DATETIME NOT NULL
 );
 CREATE TABLE IF NOT EXISTS `user_chats` (
 `chat_id` INT,
@@ -99,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
 `user_id` INT,
 `chat_id` INT NOT NULL, 
 `message_text` VARCHAR(500) NOT NULL,
-`message_date` DATE NOT NULL,
+`message_date` DATETIME NOT NULL,
 FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
 FOREIGN KEY (`chat_id`) REFERENCES `chats`(`chat_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );

@@ -1,11 +1,10 @@
 package com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement;
 
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementComment;
-import com.senlainc.javacourses.petushokvaliantsin.serviceapi.IGenericService;
 
 import java.util.List;
 
-public interface IAdvertisementCommentService extends IGenericService<AdvertisementComment, Long> {
+public interface IAdvertisementCommentService {
 
     boolean create(Long advertisementIndex, AdvertisementComment object);
 

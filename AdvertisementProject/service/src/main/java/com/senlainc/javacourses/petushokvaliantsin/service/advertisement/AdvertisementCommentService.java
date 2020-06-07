@@ -57,18 +57,6 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
 
     @Override
     @Transactional(readOnly = true)
-    public AdvertisementComment read(Long index) {
-        return advertisementCommentDao.read(index);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<AdvertisementComment> readAll(int page, int numberElements) {
-        return advertisementCommentDao.readAll(PageParameter.of(page, numberElements));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     @SingularModel(metamodels = AdvertisementComment_.class)
     public List<AdvertisementComment> readAll(Long index, int page, int numberElements, String direction, String sortField) {
         if (sortField.equals("default")) {

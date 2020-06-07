@@ -1,13 +1,16 @@
 package com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat;
 
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Message;
-import com.senlainc.javacourses.petushokvaliantsin.serviceapi.IGenericService;
 
-public interface IMessageService extends IGenericService<Message, Long> {
+import java.util.List;
 
-    boolean create(Message object);
+public interface IMessageService {
+
+    boolean create(Long chatIndex, Message object);
 
     boolean delete(Long index);
 
     boolean update(Message object);
+
+    List<Message> readAll(Long chatIndex, int firstElement, int maxResult);
 }
