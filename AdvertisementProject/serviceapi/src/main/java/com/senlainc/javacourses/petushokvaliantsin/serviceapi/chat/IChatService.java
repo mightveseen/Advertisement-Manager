@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IChatService {
 
-    boolean create(Long userIndex, User accountIndex);
+    boolean create(ChatDto object);
 
     boolean delete(Long index, User user);
 

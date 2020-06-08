@@ -2,12 +2,12 @@ package com.senlainc.javacourses.petushokvaliantsin.service.advertisement;
 
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
-import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementCategory_;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement_;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.IStateService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementService;
+import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularClass;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularModel;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
@@ -23,11 +23,13 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
 
     private final IAdvertisementDao advertisementDao;
     private final IStateService stateService;
+    private final IUserService userService;
 
     @Autowired
-    public AdvertisementService(IAdvertisementDao advertisementDao, IStateService stateService) {
+    public AdvertisementService(IAdvertisementDao advertisementDao, IStateService stateService, IUserService userService) {
         this.advertisementDao = advertisementDao;
         this.stateService = stateService;
+        this.userService = userService;
     }
 
     @Override
@@ -82,16 +84,24 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
 
     @Override
     @Transactional(readOnly = true)
+    public List<AdvertisementDto> getUserAdvertisements(Long index, int page, int numberElements) {
+        return dtoMapper.mapAll(advertisementDao.readAllWithState(PageParameter.of(page, numberElements)
+                , userService.read(index), stateService.read("DISABLED"))
+                , AdvertisementDto.class);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     @SingularModel(metamodels = Advertisement_.class)
     public List<AdvertisementDto> getAdvertisements(int page, int numberElements, String direction, String sortField, String category, String search) {
         if (!search.equals("none")) {
             return dtoMapper.mapAll(advertisementDao.readAllWithSearch(PageParameter.of(page, numberElements, direction,
-                    singularMapper.getSingularAttribute("Advertisement-" + sortField.toLowerCase())), Advertisement_.header, search),
+                    singularMapper.getSingularAttribute("Advertisement-" + sortField.toLowerCase())), search),
                     AdvertisementDto.class);
         }
         if (!category.equals("none")) {
             return dtoMapper.mapAll(advertisementDao.readAllWithCategory(PageParameter.of(page, numberElements, direction,
-                    singularMapper.getSingularAttribute("Advertisement-" + sortField.toLowerCase())), AdvertisementCategory_.description, category),
+                    singularMapper.getSingularAttribute("Advertisement-" + sortField.toLowerCase())), category),
                     AdvertisementDto.class);
         }
         return dtoMapper.mapAll(advertisementDao.readAll(PageParameter.of(page, numberElements, direction,

@@ -14,10 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class ChatService extends AbstractService<Chat, Long> implements IChatService {
@@ -33,14 +30,8 @@ public class ChatService extends AbstractService<Chat, Long> implements IChatSer
 
     @Override
     @Transactional
-    public boolean create(Long userIndex, User accountUser) {
-        final User user = userService.read(userIndex);
-        final Chat chat = new Chat(user.getFirstName(), accountUser.getFirstName() + " create chat", LocalDateTime.now());
-        final Set<User> chatUsers = new HashSet<>();
-        chatUsers.add(user);
-        chatUsers.add(accountUser);
-        chat.setUsers(chatUsers);
-        chatDao.create(chat);
+    public boolean create(ChatDto object) {
+        chatDao.create(dtoMapper.map(object, Chat.class));
         return true;
     }
 

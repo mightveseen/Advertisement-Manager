@@ -7,7 +7,6 @@ import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.I
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementCommentService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementService;
-import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularClass;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularModel;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
@@ -24,13 +23,10 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
 
     private final IAdvertisementCommentDao advertisementCommentDao;
     private final IAdvertisementService advertisementService;
-    private final IUserService userService;
 
     @Autowired
-    public AdvertisementCommentService(IAdvertisementCommentDao advertisementCommentDao, IUserService userService,
-                                       IAdvertisementService advertisementService) {
+    public AdvertisementCommentService(IAdvertisementCommentDao advertisementCommentDao, IAdvertisementService advertisementService) {
         this.advertisementCommentDao = advertisementCommentDao;
-        this.userService = userService;
         this.advertisementService = advertisementService;
     }
 
@@ -38,8 +34,6 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
     @Transactional
     public boolean create(Long advertisementIndex, AdvertisementCommentDto object) {
         final AdvertisementComment advertisementComment = dtoMapper.map(object, AdvertisementComment.class);
-        advertisementComment.setAdvertisement(advertisementService.read(advertisementIndex));
-        advertisementComment.setUser(userService.read(object.getUser().getId()));
         advertisementComment.setDateTime(LocalDateTime.now());
         advertisementCommentDao.create(advertisementComment);
         return true;

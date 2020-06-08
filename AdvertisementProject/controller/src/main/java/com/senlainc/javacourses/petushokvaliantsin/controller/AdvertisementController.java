@@ -2,8 +2,10 @@ package com.senlainc.javacourses.petushokvaliantsin.controller;
 
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementCommentDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
+import com.senlainc.javacourses.petushokvaliantsin.dto.chat.ChatDto;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementCommentService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementService;
+import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,12 +25,16 @@ import java.util.List;
 @RequestMapping(path = "advertisements")
 public class AdvertisementController {
 
+    private final IChatService chatService;
     private final IAdvertisementService advertisementService;
     private final IAdvertisementCommentService advertisementCommentService;
 
+
     @Autowired
-    public AdvertisementController(IAdvertisementService advertisementService, IAdvertisementCommentService advertisementCommentService) {
+    public AdvertisementController(IAdvertisementService advertisementService, IChatService chatService,
+                                   IAdvertisementCommentService advertisementCommentService) {
         this.advertisementService = advertisementService;
+        this.chatService = chatService;
         this.advertisementCommentService = advertisementCommentService;
     }
 
@@ -47,11 +53,17 @@ public class AdvertisementController {
         return advertisementService.getAdvertisement(index);
     }
 
+    @PostMapping(value = "/{id}")
+    public boolean createChat(@PathVariable(name = "id") @Positive Long index,
+                              @RequestBody @Validated(ChatDto.class) ChatDto chat) {
+        return chatService.create(chat);
+    }
+
     @GetMapping(value = "/{id}/comments")
     public List<AdvertisementCommentDto> getAdvertisementComments(@PathVariable(name = "id") @Positive Long index,
                                                                   @RequestParam(name = "first", defaultValue = "0") int firstElement,
                                                                   @RequestParam(name = "max", defaultValue = "15") int maxResult,
-                                                                  @RequestParam(name = "direction", defaultValue = "asc") String direction,
+                                                                  @RequestParam(name = "direction", defaultValue = "desc") String direction,
                                                                   @RequestParam(name = "sort", defaultValue = "default") String sort) {
         return advertisementCommentService.getAdvertisementComments(index, firstElement, maxResult, direction, sort);
     }
