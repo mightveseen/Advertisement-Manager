@@ -22,18 +22,15 @@ public class SingularMapper implements ISingularMapper {
     }
 
     private void setClass(Set<Class<?>> clazz) {
-        clazz.forEach(i -> Arrays.stream(i.getDeclaredMethods()).forEach(j -> {
-            if (j.isAnnotationPresent(SingularModel.class)) {
-                Arrays.stream(j.getAnnotation(SingularModel.class).metamodels()).forEach(f -> {
-                    for (Field field : f.getDeclaredFields()) {
-                        if (field.getType().equals(SingularAttribute.class)) {
-                            fields.put(f.getSimpleName().substring(0, f.getSimpleName().length() - 1) + "-"
-                                    + field.getName().toLowerCase(), field);
-                        }
-                    }
-                });
-            }
-        }));
+        clazz.forEach(i -> Arrays.stream(i.getDeclaredMethods()).filter(k -> k.isAnnotationPresent(SingularModel.class))
+                .forEach(j -> Arrays.stream(j.getAnnotation(SingularModel.class).metamodels())
+                        .forEach(f -> Arrays.stream(f.getDeclaredFields()).filter(e -> e.getType().equals(SingularAttribute.class))
+                                .forEach(t -> fields.put(f.getSimpleName().substring(0, f.getSimpleName().length() - 1) + "-"
+                                        + t.getName().toLowerCase(), t)
+                                )
+                        )
+                )
+        );
     }
 
     public <T, E> SingularAttribute<T, E> getSingularAttribute(String parameter) {
