@@ -54,13 +54,12 @@ public class AdvertisementCategory {
         if (o == null || getClass() != o.getClass()) return false;
         AdvertisementCategory that = (AdvertisementCategory) o;
         return id.equals(that.id) &&
-                description.equals(that.description) &&
-                Objects.equals(advertisements, that.advertisements);
+                description.equals(that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, advertisements);
+        return Objects.hash(id, description);
     }
 
     @Override

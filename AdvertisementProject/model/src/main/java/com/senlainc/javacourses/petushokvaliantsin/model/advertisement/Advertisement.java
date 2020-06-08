@@ -158,15 +158,12 @@ public class Advertisement implements Cloneable {
                 Objects.equals(description, that.description) &&
                 Objects.equals(category, that.category) &&
                 date.equals(that.date) &&
-                Objects.equals(state, that.state) &&
-                Objects.equals(comments, that.comments) &&
-                Objects.equals(photos, that.photos) &&
-                Objects.equals(payments, that.payments);
+                Objects.equals(state, that.state);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, header, user, description, category, date, state, comments, photos, payments);
+        return Objects.hash(id, header, user, description, category, date, state);
     }
 
     @Override

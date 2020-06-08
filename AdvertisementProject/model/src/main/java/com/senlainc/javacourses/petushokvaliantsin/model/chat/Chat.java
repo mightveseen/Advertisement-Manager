@@ -2,6 +2,7 @@ package com.senlainc.javacourses.petushokvaliantsin.model.chat;
 
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,7 +32,7 @@ public class Chat {
     private String lastMessage;
     @Column(name = "chat_update_date")
     private LocalDateTime updateDateTime;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinTable(name = "user_chats", joinColumns = @JoinColumn(name = "chat_id"),
             inverseJoinColumns = @JoinColumn(name = "chat_user"))
     private Set<User> users;
@@ -104,13 +105,12 @@ public class Chat {
         return id.equals(chat.id) &&
                 name.equals(chat.name) &&
                 lastMessage.equals(chat.lastMessage) &&
-                Objects.equals(messages, chat.messages) &&
                 users.equals(chat.users);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, lastMessage, messages, users);
+        return Objects.hash(id, name, lastMessage, users);
     }
 
     @Override

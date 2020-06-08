@@ -55,7 +55,7 @@ public class UserService extends AbstractService<User, Long> implements IUserSer
     }
 
     @Override
-    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(readOnly = true)
     public UserDto getUser(Long index) {
         return dtoMapper.map(userDao.read(index), UserDto.class);
     }

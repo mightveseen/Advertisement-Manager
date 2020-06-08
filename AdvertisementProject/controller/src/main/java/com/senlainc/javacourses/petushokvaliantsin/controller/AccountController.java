@@ -58,7 +58,6 @@ public class AccountController {
     }
 
     //TODO : Change to Session user
-    //TODO : Fix query
     @DeleteMapping(value = "/chats/{id}")
     public boolean removeChat(@PathVariable(name = "id") @Positive Long index,
                               @RequestParam(name = "userId") @Positive Long userId) {
@@ -74,11 +73,4 @@ public class AccountController {
     public boolean updateUserProfile(@RequestBody @Validated(UserDto.class) UserDto user) {
         return userService.update(user);
     }
-
-//    //TODO : Fix change password
-//    @PutMapping(value = "/settings/profile/password")
-//    public boolean updatePassword(@RequestParam(name = "id") @Positive Long index,
-//                                  @RequestBody @Validated(UserDto.class) UserDto user) {
-//        return userService.update(dtoMapper.map(user, User.class));
-//    }
 }

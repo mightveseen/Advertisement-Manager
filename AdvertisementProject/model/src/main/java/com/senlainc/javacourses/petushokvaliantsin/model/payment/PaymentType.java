@@ -25,6 +25,7 @@ public class PaymentType {
     private Integer duration;
     @Column(name = "type_price")
     private Double price;
+
     @OneToMany(mappedBy = "type", fetch = FetchType.LAZY)
     private Set<Payment> payments;
 

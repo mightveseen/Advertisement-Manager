@@ -10,7 +10,6 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.PersistenceException;
-import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
@@ -34,19 +33,6 @@ public class ChatDao extends AbstractDao<Chat, Long> implements IChatDao {
                     .setFirstResult(pageParameter.getFirstElement())
                     .setMaxResults(pageParameter.getMaxResult())
                     .getResultList();
-        } catch (PersistenceException exc) {
-            throw new ReadQueryException(exc);
-        }
-    }
-
-    @Override
-    public void deleteUserChat(User user) {
-        try {
-            final CriteriaDelete<Chat> criteriaQuery = criteriaBuilder.createCriteriaDelete(entityClazz);
-            final Root<Chat> root = criteriaQuery.from(entityClazz);
-            final Predicate predicate = criteriaBuilder.equal(root.get(Chat_.users), user);
-            entityManager.createQuery(criteriaQuery
-                    .where(predicate)).executeUpdate();
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);
         }

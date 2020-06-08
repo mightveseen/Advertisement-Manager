@@ -190,17 +190,12 @@ public class User {
                 email.equals(user.email) &&
                 phone.equals(user.phone) &&
                 registrationDate.equals(user.registrationDate) &&
-                rating.equals(user.rating) &&
-                Objects.equals(messages, user.messages) &&
-                Objects.equals(comments, user.comments) &&
-                Objects.equals(advertisements, user.advertisements) &&
-                Objects.equals(chats, user.chats) &&
-                userCred.equals(user.userCred);
+                rating.equals(user.rating);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, phone, registrationDate, rating, messages, comments, advertisements, chats, userCred);
+        return Objects.hash(id, firstName, lastName, email, phone, registrationDate, rating);
     }
 
     @Override

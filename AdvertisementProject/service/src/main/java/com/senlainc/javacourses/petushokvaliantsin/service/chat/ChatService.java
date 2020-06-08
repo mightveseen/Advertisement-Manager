@@ -47,7 +47,9 @@ public class ChatService extends AbstractService<Chat, Long> implements IChatSer
     @Override
     @Transactional
     public boolean delete(Long index, User user) {
-        chatDao.deleteUserChat(user);
+        final Chat chat = chatDao.read(index);
+        chat.getUsers().remove(userService.read(user.getId()));
+        chatDao.update(chat);
         return true;
     }
 

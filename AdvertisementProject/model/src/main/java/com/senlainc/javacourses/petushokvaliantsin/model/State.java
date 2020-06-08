@@ -74,14 +74,12 @@ public class State {
         if (o == null || getClass() != o.getClass()) return false;
         State state = (State) o;
         return id.equals(state.id) &&
-                description.equals(state.description) &&
-                Objects.equals(payments, state.payments) &&
-                Objects.equals(advertisements, state.advertisements);
+                description.equals(state.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, payments, advertisements);
+        return Objects.hash(id, description);
     }
 
     @Override

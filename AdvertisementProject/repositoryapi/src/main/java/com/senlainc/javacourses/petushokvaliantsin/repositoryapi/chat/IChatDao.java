@@ -10,6 +10,4 @@ import java.util.List;
 public interface IChatDao extends IGenericDao<Chat, Long> {
 
     List<Chat> readAllUserChat(IPageParameter pageParameter, User user);
-
-    void deleteUserChat(User user);
 }

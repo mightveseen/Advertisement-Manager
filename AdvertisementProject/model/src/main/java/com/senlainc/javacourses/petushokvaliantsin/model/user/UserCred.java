@@ -79,13 +79,12 @@ public class UserCred {
         UserCred userCred = (UserCred) o;
         return id.equals(userCred.id) &&
                 login.equals(userCred.login) &&
-                password.equals(userCred.password) &&
-                Objects.equals(user, userCred.user);
+                password.equals(userCred.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, password, user);
+        return Objects.hash(id, login, password);
     }
 
     @Override
