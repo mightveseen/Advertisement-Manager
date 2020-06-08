@@ -51,7 +51,6 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
         final Advertisement advertisement = advertisementDao.read(index);
         advertisement.setState(stateService.read("DISABLED"));
         advertisementDao.update(advertisement);
-        advertisementDao.delete(advertisement);
         return true;
     }
 
