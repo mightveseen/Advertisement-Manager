@@ -20,7 +20,6 @@ import java.util.List;
 
 @Service
 @SingularClass
-@Transactional
 public class AdvertisementCommentService extends AbstractService<AdvertisementComment, Long> implements IAdvertisementCommentService {
 
     private final IAdvertisementCommentDao advertisementCommentDao;
@@ -36,6 +35,7 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
     }
 
     @Override
+    @Transactional
     public boolean create(Long advertisementIndex, AdvertisementCommentDto object) {
         final AdvertisementComment advertisementComment = dtoMapper.map(object, AdvertisementComment.class);
         advertisementComment.setAdvertisement(advertisementService.read(advertisementIndex));
@@ -46,12 +46,14 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
     }
 
     @Override
+    @Transactional
     public boolean delete(Long index) {
         advertisementCommentDao.delete(advertisementCommentDao.read(index));
         return true;
     }
 
     @Override
+    @Transactional
     public boolean update(AdvertisementComment object) {
         advertisementCommentDao.update(object);
         return true;

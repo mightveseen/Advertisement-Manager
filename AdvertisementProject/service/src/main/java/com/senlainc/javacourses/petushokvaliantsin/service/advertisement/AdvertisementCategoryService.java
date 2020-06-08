@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 public class AdvertisementCategoryService extends AbstractService<AdvertisementCategory, Long> implements IAdvertisementCategoryService {
 
     private final IAdvertisementCategoryDao advertisementCategoryDao;
@@ -20,12 +19,14 @@ public class AdvertisementCategoryService extends AbstractService<AdvertisementC
     }
 
     @Override
+    @Transactional
     public boolean create(AdvertisementCategory object) {
         advertisementCategoryDao.create(object);
         return true;
     }
 
     @Override
+    @Transactional
     public boolean delete(Long index) {
         advertisementCategoryDao.delete(advertisementCategoryDao.read(index));
         return true;

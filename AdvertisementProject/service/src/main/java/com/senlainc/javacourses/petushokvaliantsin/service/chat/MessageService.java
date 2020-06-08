@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@Transactional
 public class MessageService extends AbstractService<Message, Long> implements IMessageService {
 
     private final IMessageDao messageDao;
@@ -32,6 +31,7 @@ public class MessageService extends AbstractService<Message, Long> implements IM
     }
 
     @Override
+    @Transactional
     public boolean create(Long chatIndex, MessageDto object) {
         final Message message = dtoMapper.map(object, Message.class);
         message.setChat(chatService.read(chatIndex));
@@ -42,12 +42,14 @@ public class MessageService extends AbstractService<Message, Long> implements IM
     }
 
     @Override
+    @Transactional
     public boolean delete(Long index) {
         messageDao.delete(messageDao.read(index));
         return true;
     }
 
     @Override
+    @Transactional
     public boolean update(Message object) {
         messageDao.update(object);
         return true;

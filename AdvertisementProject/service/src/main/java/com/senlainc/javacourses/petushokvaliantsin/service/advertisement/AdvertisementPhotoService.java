@@ -20,12 +20,14 @@ public class AdvertisementPhotoService extends AbstractService<AdvertisementPhot
     }
 
     @Override
+    @Transactional
     public boolean create(AdvertisementPhoto object) {
         advertisementPhotoDao.create(object);
         return true;
     }
 
     @Override
+    @Transactional
     public boolean delete(Long index) {
         advertisementPhotoDao.delete(advertisementPhotoDao.read(index));
         return true;

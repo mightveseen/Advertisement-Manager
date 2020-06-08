@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 public class UserService extends AbstractService<User, Long> implements IUserService {
 
     private final IUserDao userDao;
@@ -22,24 +21,28 @@ public class UserService extends AbstractService<User, Long> implements IUserSer
     }
 
     @Override
+    @Transactional
     public boolean create(User object) {
         userDao.create(object);
         return true;
     }
 
     @Override
+    @Transactional
     public boolean delete(Long index) {
         userDao.create(userDao.read(index));
         return true;
     }
 
     @Override
+    @Transactional
     public boolean update(User object) {
         userDao.update(object);
         return true;
     }
 
     @Override
+    @Transactional
     public boolean update(UserDto object) {
         userDao.update(dtoMapper.map(object, User.class));
         return true;

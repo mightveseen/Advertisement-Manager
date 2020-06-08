@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@Transactional
 public class ChatService extends AbstractService<Chat, Long> implements IChatService {
 
     private final IChatDao chatDao;
@@ -33,6 +32,7 @@ public class ChatService extends AbstractService<Chat, Long> implements IChatSer
     }
 
     @Override
+    @Transactional
     public boolean create(Long userIndex, User accountUser) {
         final User user = userService.read(userIndex);
         final Chat chat = new Chat(user.getFirstName(), accountUser.getFirstName() + " create chat", LocalDateTime.now());
@@ -45,6 +45,7 @@ public class ChatService extends AbstractService<Chat, Long> implements IChatSer
     }
 
     @Override
+    @Transactional
     public boolean delete(Long index, User user) {
         chatDao.deleteUserChat(user);
         return true;

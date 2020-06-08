@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 public class PaymentService extends AbstractService<Payment, Long> implements IPaymentService {
 
     private final IPaymentDao paymentDao;
@@ -20,18 +19,21 @@ public class PaymentService extends AbstractService<Payment, Long> implements IP
     }
 
     @Override
+    @Transactional
     public boolean create(Payment object) {
         paymentDao.create(object);
         return true;
     }
 
     @Override
+    @Transactional
     public boolean delete(Long index) {
         paymentDao.delete(paymentDao.read(index));
         return true;
     }
 
     @Override
+    @Transactional
     public boolean update(Payment object) {
         paymentDao.update(object);
         return true;
