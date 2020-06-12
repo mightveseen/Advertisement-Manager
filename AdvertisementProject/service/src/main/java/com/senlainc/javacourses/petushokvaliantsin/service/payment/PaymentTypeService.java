@@ -1,5 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.payment;
 
+import com.senlainc.javacourses.petushokvaliantsin.dto.payment.PaymentTypeDto;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.PaymentType;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.payment.IPaymentTypeDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
@@ -7,6 +8,8 @@ import com.senlainc.javacourses.petushokvaliantsin.serviceapi.payment.IPaymentTy
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class PaymentTypeService extends AbstractService<PaymentType, Long> implements IPaymentTypeService {
@@ -37,5 +40,11 @@ public class PaymentTypeService extends AbstractService<PaymentType, Long> imple
     public boolean update(PaymentType object) {
         paymentTypeDao.update(object);
         return true;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PaymentTypeDto> getPaymentTypes() {
+        return dtoMapper.mapAll(paymentTypeDao.readAll(), PaymentTypeDto.class);
     }
 }

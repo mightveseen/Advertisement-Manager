@@ -72,6 +72,19 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
     }
 
     @Override
+    public List<E> readAll() {
+        try {
+            final CriteriaQuery<E> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
+            final Root<E> root = criteriaQuery.from(entityClazz);
+            return entityManager.createQuery(criteriaQuery
+                    .select(root))
+                    .getResultList();
+        } catch (PersistenceException exc) {
+            throw new ReadQueryException(exc);
+        }
+    }
+
+    @Override
     public List<E> readAll(IPageParameter pageParameter) {
         try {
             final CriteriaQuery<E> criteriaQuery = criteriaBuilder.createQuery(entityClazz);

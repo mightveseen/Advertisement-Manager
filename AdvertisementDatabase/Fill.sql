@@ -33,8 +33,6 @@ VALUES
 ('ACTIVE'),
 ('DISABLED'),
 ('APPROVED'),
-('PAID'),
-('CANCELLED'),
 ('FINISHED');
 INSERT INTO `advertisements`(`advertisement_header`, `user_id`, `advertisement_description`, `category_id`, `advertisement_date`, `state_id`)
 VALUES

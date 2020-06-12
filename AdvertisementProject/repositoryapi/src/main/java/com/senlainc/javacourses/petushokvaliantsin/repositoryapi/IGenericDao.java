@@ -16,6 +16,8 @@ public interface IGenericDao<E, K extends Serializable> {
 
     E read(K index);
 
+    List<E> readAll();
+
     List<E> readAll(IPageParameter pageParameter);
 
     <F> List<E> readAll(IPageParameter pageParameter, SingularAttribute<E, F> field, F value);
