@@ -21,7 +21,7 @@ public interface IAdvertisementService {
 
     AdvertisementDto getAdvertisement(Long index);
 
-    List<AdvertisementDto> getUserAdvertisements(Long index, int page, int numberElements);
+    List<AdvertisementDto> getUserAdvertisements(Long index, int page, int numberElements, String state);
 
     List<AdvertisementDto> getAdvertisements(int firstElement, int maxResult, String direction, String sortField, String category, String search);
 }

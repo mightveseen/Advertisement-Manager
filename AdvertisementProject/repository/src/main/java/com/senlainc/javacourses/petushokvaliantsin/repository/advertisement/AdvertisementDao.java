@@ -32,8 +32,7 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
             return entityManager.createQuery(criteriaQuery
                     .select(root)
                     .orderBy(pageParameter.getOrder(criteriaBuilder, root))
-                    .where(userPredicate)
-                    .where(statePredicate))
+                    .where(criteriaBuilder.and(userPredicate, statePredicate)))
                     .setFirstResult(pageParameter.getFirstElement())
                     .setMaxResults(pageParameter.getMaxResult())
                     .getResultList();

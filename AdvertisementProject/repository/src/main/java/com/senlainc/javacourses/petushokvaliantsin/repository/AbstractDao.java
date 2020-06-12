@@ -106,12 +106,27 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
     }
 
     @Override
-    public Long readSize() {
+    public Long readCount() {
         try {
             final CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
             final Root<E> root = criteriaQuery.from(entityClazz);
             return entityManager.createQuery(criteriaQuery
                     .select(criteriaBuilder.count(root)))
+                    .getSingleResult();
+        } catch (PersistenceException exc) {
+            throw new ReadQueryException(exc);
+        }
+    }
+
+    @Override
+    public <F> Long readCount(SingularAttribute<E, F> field, F value) {
+        try {
+            final CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+            final Root<E> root = criteriaQuery.from(entityClazz);
+            final Predicate predicate = criteriaBuilder.equal(root.get(field), value);
+            return entityManager.createQuery(criteriaQuery
+                    .select(criteriaBuilder.count(root))
+                    .where(predicate))
                     .getSingleResult();
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);

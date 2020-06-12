@@ -21,7 +21,7 @@ public class UserRating {
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_owner_id")
-    private User userOwner;
+    private User rateOwnerUser;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_rated_id")
     private User ratedUser;
@@ -31,8 +31,8 @@ public class UserRating {
     public UserRating() {
     }
 
-    public UserRating(User userOwner, User ratedUser, Short value) {
-        this.userOwner = userOwner;
+    public UserRating(User rateOwnerUser, User ratedUser, Short value) {
+        this.rateOwnerUser = rateOwnerUser;
         this.ratedUser = ratedUser;
         this.value = value;
     }
@@ -45,12 +45,12 @@ public class UserRating {
         this.id = id;
     }
 
-    public User getUserOwner() {
-        return userOwner;
+    public User getRateOwnerUser() {
+        return rateOwnerUser;
     }
 
-    public void setUserOwner(User userOwner) {
-        this.userOwner = userOwner;
+    public void setRateOwnerUser(User userOwner) {
+        this.rateOwnerUser = userOwner;
     }
 
     public User getRatedUser() {
@@ -75,21 +75,21 @@ public class UserRating {
         if (o == null || getClass() != o.getClass()) return false;
         UserRating that = (UserRating) o;
         return id.equals(that.id) &&
-                Objects.equals(userOwner, that.userOwner) &&
+                Objects.equals(rateOwnerUser, that.rateOwnerUser) &&
                 ratedUser.equals(that.ratedUser) &&
                 value.equals(that.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userOwner, ratedUser, value);
+        return Objects.hash(id, rateOwnerUser, ratedUser, value);
     }
 
     @Override
     public String toString() {
         return "UserRating{" +
                 "id=" + id +
-                ", userOwner=" + userOwner +
+                ", userOwner=" + rateOwnerUser +
                 ", ratedUser=" + ratedUser +
                 ", value=" + value +
                 '}';

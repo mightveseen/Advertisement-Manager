@@ -49,21 +49,20 @@ public class User {
     private Set<AdvertisementComment> comments;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Advertisement> advertisements;
-    @OneToMany(mappedBy = "userOwner", fetch = FetchType.LAZY)
-    private Set<UserRating> ownerUserRatings;
+    @OneToMany(mappedBy = "rateOwnerUser", fetch = FetchType.LAZY)
+    private Set<UserRating> rateOwnerUserRatings;
     @OneToMany(mappedBy = "ratedUser", fetch = FetchType.LAZY)
     private Set<UserRating> ratedUserRatings;
 
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, Integer phone, LocalDate registrationDate, Float rating, UserCred userCred) {
+    public User(String firstName, String lastName, String email, Integer phone, LocalDate registrationDate, UserCred userCred) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
         this.registrationDate = registrationDate;
-        this.rating = rating;
         this.userCred = userCred;
     }
 
@@ -73,6 +72,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public UserCred getUserCred() {
+        return userCred;
+    }
+
+    public void setUserCred(UserCred userCred) {
+        this.userCred = userCred;
     }
 
     public String getFirstName() {
@@ -123,6 +130,14 @@ public class User {
         this.rating = rating;
     }
 
+    public Set<Chat> getChats() {
+        return chats;
+    }
+
+    public void setChats(Set<Chat> chats) {
+        this.chats = chats;
+    }
+
     public Set<Message> getMessages() {
         return messages;
     }
@@ -147,28 +162,12 @@ public class User {
         this.advertisements = advertisements;
     }
 
-    public Set<Chat> getChats() {
-        return chats;
+    public Set<UserRating> getRateOwnerUserRatings() {
+        return rateOwnerUserRatings;
     }
 
-    public void setChats(Set<Chat> chats) {
-        this.chats = chats;
-    }
-
-    public UserCred getUserCred() {
-        return userCred;
-    }
-
-    public void setUserCred(UserCred userCred) {
-        this.userCred = userCred;
-    }
-
-    public Set<UserRating> getOwnerUserRatings() {
-        return ownerUserRatings;
-    }
-
-    public void setOwnerUserRatings(Set<UserRating> ownerUserRatings) {
-        this.ownerUserRatings = ownerUserRatings;
+    public void setRateOwnerUserRatings(Set<UserRating> rateOwnerUserRatings) {
+        this.rateOwnerUserRatings = rateOwnerUserRatings;
     }
 
     public Set<UserRating> getRatedUserRatings() {

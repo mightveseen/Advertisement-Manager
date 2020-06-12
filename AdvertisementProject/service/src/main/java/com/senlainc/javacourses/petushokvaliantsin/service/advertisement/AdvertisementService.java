@@ -84,9 +84,9 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
 
     @Override
     @Transactional(readOnly = true)
-    public List<AdvertisementDto> getUserAdvertisements(Long index, int page, int numberElements) {
+    public List<AdvertisementDto> getUserAdvertisements(Long index, int page, int numberElements, String state) {
         return dtoMapper.mapAll(advertisementDao.readAllWithState(PageParameter.of(page, numberElements)
-                , userService.read(index), stateService.read("DISABLED"))
+                , userService.read(index), stateService.read(state))
                 , AdvertisementDto.class);
     }
 

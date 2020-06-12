@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 `user_email` VARCHAR(50) NOT NULL,
 `user_phone` INT NOT NULL,
 `user_registration_date` DATE NOT NULL,
-`user_rating` FLOAT NOT NULL,
+`user_rating` FLOAT,
 FOREIGN KEY (`user_id`) REFERENCES `user_creds`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE TABLE IF NOT EXISTS `user_ratings` (

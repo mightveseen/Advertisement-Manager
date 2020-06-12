@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class UserRatingDto implements Serializable {
 
     private Long id;
-    private UserDto userOwner;
+    private UserDto rateOwnerUser;
     private UserDto ratedUser;
     private Short value;
 
@@ -17,12 +17,12 @@ public class UserRatingDto implements Serializable {
         this.id = id;
     }
 
-    public UserDto getUserOwner() {
-        return userOwner;
+    public UserDto getRateOwnerUser() {
+        return rateOwnerUser;
     }
 
-    public void setUserOwner(UserDto userOwner) {
-        this.userOwner = userOwner;
+    public void setRateOwnerUser(UserDto rateOwnerUser) {
+        this.rateOwnerUser = rateOwnerUser;
     }
 
     public UserDto getRatedUser() {
