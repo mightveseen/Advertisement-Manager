@@ -97,7 +97,7 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     @SingularModel(metamodels = Advertisement_.class)
     public List<AdvertisementDto> getAdvertisements(int page, int numberElements, String direction, String sortField, String search,
                                                     String category, double minPrice, double maxPrice) {
-        return dtoMapper.mapAll(advertisementDao.readAll(PageParameter.of(page, numberElements, direction,
+        return dtoMapper.mapAll(advertisementDao.readAllWithFilter(PageParameter.of(page, numberElements, direction,
                 singularMapper.getSingularAttribute("Advertisement-" + sortField.toLowerCase())),
                 FilterParameter.of(search, category, minPrice, maxPrice), stateService.read(EnumState.ACTIVE.name())),
                 AdvertisementDto.class);

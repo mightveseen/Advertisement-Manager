@@ -44,7 +44,7 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
     }
 
     @Override
-    public List<Advertisement> readAll(IPageParameter pageParameter, IFilterParameter filterParameter, State state) {
+    public List<Advertisement> readAllWithFilter(IPageParameter pageParameter, IFilterParameter filterParameter, State state) {
         try {
             final CriteriaQuery<Advertisement> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
             final Root<Advertisement> root = criteriaQuery.from(entityClazz);
