@@ -44,8 +44,10 @@ public class AdvertisementController {
                                                     @RequestParam(name = "direction", defaultValue = "asc") String direction,
                                                     @RequestParam(name = "sort", defaultValue = "default") String sort,
                                                     @RequestParam(name = "cat", defaultValue = "none") String category,
-                                                    @RequestParam(name = "search", defaultValue = "none") String search) {
-        return advertisementService.getAdvertisements(page, numberElements, direction, sort, category, search);
+                                                    @RequestParam(name = "search", defaultValue = "none") String search,
+                                                    @RequestParam(name = "min", defaultValue = "0") double minPrice,
+                                                    @RequestParam(name = "max", defaultValue = "0") double maxPrice) {
+        return advertisementService.getAdvertisements(page, numberElements, direction, sort, search, category, minPrice, maxPrice);
     }
 
     @GetMapping(value = "/{id}")

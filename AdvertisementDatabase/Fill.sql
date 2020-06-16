@@ -34,10 +34,10 @@ VALUES
 ('DISABLED'),
 ('APPROVED'),
 ('FINISHED');
-INSERT INTO `advertisements`(`advertisement_header`, `user_id`, `advertisement_description`, `category_id`, `advertisement_date`, `state_id`)
+INSERT INTO `advertisements`(`advertisement_header`, `user_id`, `advertisement_description`, `category_id`, `advertisement_date`, `advertisement_price`,`state_id`)
 VALUES
-('Audi R8 2010', 4, 'Cool car (starring in Iron Man), but i bought new', 2, '2020-06-02', 1),
-('Sony Z1 Ultra', 3, 'With this COVID-19 and 5G towers I decided buy Nokia 6300', 7, '2020-05-28', 4);
+('Audi R8 2010', 4, 'Cool car (starring in Iron Man), but i bought new', 2, '2020-06-02', 230.5, 4),
+('Sony Z1 Ultra', 3, 'With this COVID-19 and 5G towers I decided buy Nokia 6300', 7, '2020-05-28', 470.0, 4);
 INSERT INTO `advertisement_comments`(`user_id`, `advertisement_id`, `comment_message`, `comment_date`)
 VALUES
 (4, 1, 'The best car ever made', '2020-06-04'),

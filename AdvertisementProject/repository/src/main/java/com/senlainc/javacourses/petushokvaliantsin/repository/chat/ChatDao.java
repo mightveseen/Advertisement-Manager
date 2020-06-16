@@ -28,7 +28,7 @@ public class ChatDao extends AbstractDao<Chat, Long> implements IChatDao {
             final Predicate predicate = criteriaBuilder.equal(join, user);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
-                    .orderBy(pageParameter.getOrder(criteriaBuilder, root))
+                    .orderBy(getOrder(pageParameter, criteriaBuilder, root))
                     .where(predicate))
                     .setFirstResult(pageParameter.getFirstElement())
                     .setMaxResults(pageParameter.getMaxResult())

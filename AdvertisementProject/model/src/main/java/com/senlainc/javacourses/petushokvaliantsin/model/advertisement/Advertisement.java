@@ -44,6 +44,8 @@ public class Advertisement implements Cloneable {
     private AdvertisementCategory category;
     @Column(name = "advertisement_date")
     private LocalDate date;
+    @Column(name = "advertisement_price")
+    private Double price;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "state_id")
     private State state;
@@ -147,6 +149,14 @@ public class Advertisement implements Cloneable {
         this.payments = payments;
     }
 
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -158,12 +168,13 @@ public class Advertisement implements Cloneable {
                 Objects.equals(description, that.description) &&
                 Objects.equals(category, that.category) &&
                 date.equals(that.date) &&
+                price.equals(that.price) &&
                 Objects.equals(state, that.state);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, header, user, description, category, date, state);
+        return Objects.hash(id, header, user, description, category, date, price, state);
     }
 
     @Override
@@ -180,6 +191,7 @@ public class Advertisement implements Cloneable {
                 ", description='" + description + '\'' +
                 ", category=" + category +
                 ", date=" + date +
+                ", price=" + price +
                 ", state=" + state + '}';
     }
 }

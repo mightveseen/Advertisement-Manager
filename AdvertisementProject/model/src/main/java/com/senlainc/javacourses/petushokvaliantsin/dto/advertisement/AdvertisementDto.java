@@ -22,6 +22,7 @@ public class AdvertisementDto implements Serializable {
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate date;
+    private Double price;
     private StateDto state;
 
     public Long getId() {
@@ -78,5 +79,13 @@ public class AdvertisementDto implements Serializable {
 
     public void setState(StateDto state) {
         this.state = state;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }

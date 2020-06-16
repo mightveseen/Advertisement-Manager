@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
@@ -91,7 +92,7 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
             final Root<E> root = criteriaQuery.from(entityClazz);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
-                    .orderBy(pageParameter.getOrder(criteriaBuilder, root)))
+                    .orderBy(getOrder(pageParameter, criteriaBuilder, root)))
                     .setFirstResult(pageParameter.getFirstElement())
                     .setMaxResults(pageParameter.getMaxResult())
                     .getResultList();
@@ -108,7 +109,7 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
             final Predicate predicate = criteriaBuilder.equal(root.get(field), value);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
-                    .orderBy(pageParameter.getOrder(criteriaBuilder, root))
+                    .orderBy(getOrder(pageParameter, criteriaBuilder, root))
                     .where(predicate))
                     .setFirstResult(pageParameter.getFirstElement())
                     .setMaxResults(pageParameter.getMaxResult())
@@ -143,6 +144,17 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
                     .getSingleResult();
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);
+        }
+    }
+
+    protected Order getOrder(IPageParameter pageParameter, CriteriaBuilder criteriaBuilder, Root<E> root) {
+        switch (pageParameter.getDirection()) {
+            case ASC:
+                return pageParameter.getCriteriaField() != null ? criteriaBuilder.asc(root.get(pageParameter.getCriteriaField())) : criteriaBuilder.asc(root);
+            case DESC:
+                return pageParameter.getCriteriaField() != null ? criteriaBuilder.desc(root.get(pageParameter.getCriteriaField())) : criteriaBuilder.desc(root);
+            default:
+                return criteriaBuilder.asc(root);
         }
     }
 }

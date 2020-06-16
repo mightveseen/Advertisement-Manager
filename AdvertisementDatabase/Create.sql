@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS `advertisements`(
 `advertisement_description` VARCHAR(500),
 `category_id` INT,
 `advertisement_date` DATE NOT NULL,
+`advertisement_price` FLOAT NOT NULL,
 `state_id` INT,
 FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (`category_id`) REFERENCES `advertisement_categories`(`category_id`) ON DELETE SET NULL ON UPDATE CASCADE,

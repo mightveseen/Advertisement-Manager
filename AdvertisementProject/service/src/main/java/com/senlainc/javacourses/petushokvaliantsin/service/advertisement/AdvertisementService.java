@@ -1,6 +1,7 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.advertisement;
 
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement_;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementDao;
@@ -10,6 +11,7 @@ import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdv
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularClass;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularModel;
+import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.FilterParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,7 +53,7 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     @Transactional
     public boolean delete(Long index) {
         final Advertisement advertisement = advertisementDao.read(index);
-        advertisement.setState(stateService.read("DISABLED"));
+        advertisement.setState(stateService.read(EnumState.DISABLED.name()));
         advertisementDao.update(advertisement);
         return true;
     }
@@ -93,19 +95,11 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     @Override
     @Transactional(readOnly = true)
     @SingularModel(metamodels = Advertisement_.class)
-    public List<AdvertisementDto> getAdvertisements(int page, int numberElements, String direction, String sortField, String category, String search) {
-        if (!search.equals("none")) {
-            return dtoMapper.mapAll(advertisementDao.readAllWithSearch(PageParameter.of(page, numberElements, direction,
-                    singularMapper.getSingularAttribute("Advertisement-" + sortField.toLowerCase())), search),
-                    AdvertisementDto.class);
-        }
-        if (!category.equals("none")) {
-            return dtoMapper.mapAll(advertisementDao.readAllWithCategory(PageParameter.of(page, numberElements, direction,
-                    singularMapper.getSingularAttribute("Advertisement-" + sortField.toLowerCase())), category),
-                    AdvertisementDto.class);
-        }
+    public List<AdvertisementDto> getAdvertisements(int page, int numberElements, String direction, String sortField, String search,
+                                                    String category, double minPrice, double maxPrice) {
         return dtoMapper.mapAll(advertisementDao.readAll(PageParameter.of(page, numberElements, direction,
-                singularMapper.getSingularAttribute("Advertisement-" + sortField.toLowerCase()))),
+                singularMapper.getSingularAttribute("Advertisement-" + sortField.toLowerCase())),
+                FilterParameter.of(search, category, minPrice, maxPrice), stateService.read(EnumState.ACTIVE.name())),
                 AdvertisementDto.class);
     }
 }
