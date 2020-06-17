@@ -1,6 +1,7 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.payment;
 
 import com.senlainc.javacourses.petushokvaliantsin.dto.payment.PaymentTypeDto;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.PaymentType;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.payment.IPaymentDao;
@@ -33,7 +34,7 @@ public class PaymentService extends AbstractService<Payment, Long> implements IP
     public boolean create(Long advertisementIndex, PaymentTypeDto paymentTypeDto) {
         final PaymentType paymentType = dtoMapper.map(paymentTypeDto, PaymentType.class);
         final Payment payment = new Payment(advertisementService.read(advertisementIndex), paymentType, LocalDate.now(),
-                LocalDate.now().plusDays(paymentType.getDuration()), paymentType.getPrice(), stateService.read("APPROVED"));
+                LocalDate.now().plusDays(paymentType.getDuration()), paymentType.getPrice(), stateService.read(EnumState.APPROVED.name()));
         paymentDao.create(payment);
         return true;
     }

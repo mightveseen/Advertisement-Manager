@@ -48,8 +48,7 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
         try {
             final CriteriaQuery<Advertisement> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
             final Root<Advertisement> root = criteriaQuery.from(entityClazz);
-            final List<Predicate> predicates = getPredicates(root, filterParameter);
-            predicates.add(criteriaBuilder.equal(root.get(Advertisement_.state), state));
+            final List<Predicate> predicates = getPredicates(root, filterParameter, state);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
                     .orderBy(getOrder(pageParameter, criteriaBuilder, root))
@@ -62,8 +61,8 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
         }
     }
 
-    private List<Predicate> getPredicates(Root<Advertisement> root, IFilterParameter filterParameter) {
-        final List<Predicate> predicates = new ArrayList<>();
+    private List<Predicate> getPredicates(Root<Advertisement> root, IFilterParameter filterParameter, State state) {
+        final List<Predicate> predicates = new ArrayList<>(5);
         if (!filterParameter.getSearch().equals("none")) {
             predicates.add(criteriaBuilder.like(root.get(Advertisement_.header), "%" + filterParameter.getSearch() + "%"));
         }
@@ -77,6 +76,7 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
         if (filterParameter.getMaxPrice() > 0) {
             predicates.add(criteriaBuilder.le(root.get(Advertisement_.price), filterParameter.getMaxPrice()));
         }
+        predicates.add(criteriaBuilder.equal(root.get(Advertisement_.state), state));
         return predicates;
     }
 }

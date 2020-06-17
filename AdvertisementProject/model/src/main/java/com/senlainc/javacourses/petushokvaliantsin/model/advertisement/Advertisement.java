@@ -12,9 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
-import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
@@ -23,9 +20,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "advertisements")
-@NamedEntityGraphs(value = {@NamedEntityGraph(name = "main", attributeNodes = {
-        @NamedAttributeNode("id"), @NamedAttributeNode("header"), @NamedAttributeNode("description")
-})})
 public class Advertisement implements Cloneable {
 
     @Id

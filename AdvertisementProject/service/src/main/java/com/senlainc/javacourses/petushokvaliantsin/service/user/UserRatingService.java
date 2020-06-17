@@ -27,17 +27,18 @@ public class UserRatingService extends AbstractService<UserRating, Long> impleme
 
     @Override
     @Transactional
+    //TODO : Fix rating
     public boolean create(UserRatingDto userRatingDto) {
         final UserRating userRating = dtoMapper.map(userRatingDto, UserRating.class);
         if (userRating.getRatedUser().getId().equals(userRating.getRateOwnerUser().getId())) {
             throw new WrongEnteredDataException("Yoy can't rate yourself");
         }
-        if (userRatingDao.readCount(userRating.getRateOwnerUser(), userRating.getRatedUser()) > 0) {
+        final User user = userService.read(userRating.getRatedUser().getId());
+        if (user.getRatedUserRatings().stream().anyMatch(i -> i.getRateOwnerUser().getId().equals(userRating.getRateOwnerUser().getId()))) {
             throw new EntityAlreadyExistException("You already rated this user");
         }
         userRatingDao.create(userRating);
-        final User user = userService.read(userRating.getRatedUser().getId());
-        user.setRating((user.getRating() * user.getRatedUserRatings().size() + userRating.getValue()) / user.getRatedUserRatings().size() + 1);
+//        user.setRating((user.getRating() * user.getRatedUserRatings().size() + userRating.getValue()) / user.getRatedUserRatings().size() + 1);
         userService.update(user);
         return true;
     }

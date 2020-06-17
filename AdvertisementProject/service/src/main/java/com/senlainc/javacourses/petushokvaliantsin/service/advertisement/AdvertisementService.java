@@ -23,6 +23,7 @@ import java.util.List;
 @SingularClass
 public class AdvertisementService extends AbstractService<Advertisement, Long> implements IAdvertisementService {
 
+    private static final String SORT_FIELD = "Advertisement-";
     private final IAdvertisementDao advertisementDao;
     private final IStateService stateService;
     private final IUserService userService;
@@ -98,7 +99,7 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     public List<AdvertisementDto> getAdvertisements(int page, int numberElements, String direction, String sortField, String search,
                                                     String category, double minPrice, double maxPrice) {
         return dtoMapper.mapAll(advertisementDao.readAllWithFilter(PageParameter.of(page, numberElements, direction,
-                singularMapper.getSingularAttribute("Advertisement-" + sortField.toLowerCase())),
+                singularMapper.getSingularAttribute(SORT_FIELD + sortField.toLowerCase())),
                 FilterParameter.of(search, category, minPrice, maxPrice), stateService.read(EnumState.ACTIVE.name())),
                 AdvertisementDto.class);
     }

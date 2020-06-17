@@ -21,6 +21,7 @@ import java.util.List;
 @SingularClass
 public class AdvertisementCommentService extends AbstractService<AdvertisementComment, Long> implements IAdvertisementCommentService {
 
+    private static final String SORT_FIELD = "AdvertisementComment-";
     private final IAdvertisementCommentDao advertisementCommentDao;
     private final IAdvertisementService advertisementService;
 
@@ -58,7 +59,7 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
     @SingularModel(metamodels = AdvertisementComment_.class)
     public List<AdvertisementCommentDto> getAdvertisementComments(Long index, int page, int numberElements, String direction, String sortField) {
         return dtoMapper.mapAll(advertisementCommentDao.readAll(PageParameter.of(page, numberElements, direction,
-                singularMapper.getSingularAttribute("AdvertisementComment-" + sortField.toLowerCase())),
+                singularMapper.getSingularAttribute(SORT_FIELD + sortField.toLowerCase())),
                 AdvertisementComment_.advertisement, advertisementService.read(index)),
                 AdvertisementCommentDto.class);
     }

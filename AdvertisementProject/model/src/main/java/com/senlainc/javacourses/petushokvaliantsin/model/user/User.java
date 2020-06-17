@@ -5,6 +5,7 @@ import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertise
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Message;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -49,9 +50,9 @@ public class User {
     private Set<AdvertisementComment> comments;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Advertisement> advertisements;
-    @OneToMany(mappedBy = "rateOwnerUser", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "rateOwnerUser", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Set<UserRating> rateOwnerUserRatings;
-    @OneToMany(mappedBy = "ratedUser", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "ratedUser", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Set<UserRating> ratedUserRatings;
 
     public User() {
