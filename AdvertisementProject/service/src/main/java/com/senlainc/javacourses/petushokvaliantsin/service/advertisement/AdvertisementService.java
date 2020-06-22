@@ -96,6 +96,7 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
                 , AdvertisementDto.class);
     }
 
+    //TODO : Payments first
     @Override
     @Transactional(readOnly = true)
     @SingularModel(metamodels = {Advertisement_.class, User_.class})
