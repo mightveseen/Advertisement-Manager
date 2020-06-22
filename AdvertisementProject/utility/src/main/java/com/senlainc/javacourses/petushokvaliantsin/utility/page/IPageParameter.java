@@ -12,5 +12,5 @@ public interface IPageParameter {
 
     Sort.Direction getDirection();
 
-    <E, F> SingularAttribute<E, F> getCriteriaField();
+    <E, F> SingularAttribute<E, F>[] getCriteriaField();
 }

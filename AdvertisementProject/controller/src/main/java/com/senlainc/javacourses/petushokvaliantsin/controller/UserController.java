@@ -7,6 +7,8 @@ import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserRatingDto;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserRatingService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,8 +41,8 @@ public class UserController {
     }
 
     @PostMapping(value = "/{id}")
-    public boolean rateUser(@RequestBody @Validated(UserRatingDto.class) UserRatingDto userRatingDto) {
-        return userRatingService.create(userRatingDto);
+    public ResponseEntity<Object> rateUser(@RequestBody @Validated(UserRatingDto.class) UserRatingDto userRatingDto) {
+        return new ResponseEntity<>(userRatingService.create(userRatingDto), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}/closed")

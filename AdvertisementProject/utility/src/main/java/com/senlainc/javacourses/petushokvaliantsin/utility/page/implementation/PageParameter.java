@@ -10,7 +10,7 @@ public class PageParameter implements IPageParameter {
     private final int firstElement;
     private final int maxResult;
     private final Sort.Direction sort;
-    private SingularAttribute criteriaField;
+    private SingularAttribute[] criteriaField;
 
     private PageParameter(int page, int numberElements) {
         this.firstElement = setFirstElement(page, numberElements);
@@ -24,7 +24,8 @@ public class PageParameter implements IPageParameter {
         this.sort = setDirection(direction);
     }
 
-    private <E, F> PageParameter(int page, int numberElements, String direction, SingularAttribute<E, F> criteriaField) {
+    @SafeVarargs
+    private <E, F> PageParameter(int page, int numberElements, String direction, SingularAttribute<E, F>... criteriaField) {
         this.firstElement = setFirstElement(page, numberElements);
         this.maxResult = setMaxResult(page, numberElements);
         this.sort = setDirection(direction);
@@ -39,7 +40,8 @@ public class PageParameter implements IPageParameter {
         return new PageParameter(page, numberElements, direction);
     }
 
-    public static <E, F> PageParameter of(int page, int numberElements, String direction, SingularAttribute<E, F> criteriaField) {
+    @SafeVarargs
+    public static <E, F> PageParameter of(int page, int numberElements, String direction, SingularAttribute<E, F>... criteriaField) {
         return new PageParameter(page, numberElements, direction, criteriaField);
     }
 
@@ -54,7 +56,7 @@ public class PageParameter implements IPageParameter {
     }
 
     @Override
-    public <E, F> SingularAttribute<E, F> getCriteriaField() {
+    public <E, F> SingularAttribute<E, F>[] getCriteriaField() {
         return criteriaField;
     }
 

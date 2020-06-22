@@ -150,9 +150,19 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
     protected Order getOrder(IPageParameter pageParameter, CriteriaBuilder criteriaBuilder, Root<E> root) {
         switch (pageParameter.getDirection()) {
             case ASC:
-                return pageParameter.getCriteriaField() != null ? criteriaBuilder.asc(root.get(pageParameter.getCriteriaField())) : criteriaBuilder.asc(root);
+                if (pageParameter.getCriteriaField() == null) {
+                    return criteriaBuilder.asc(root);
+                }
+                return pageParameter.getCriteriaField().length > 1 ?
+                        criteriaBuilder.asc(root.join(pageParameter.getCriteriaField()[0]).get(pageParameter.getCriteriaField()[1])) :
+                        criteriaBuilder.asc(root.get(pageParameter.getCriteriaField()[0]));
             case DESC:
-                return pageParameter.getCriteriaField() != null ? criteriaBuilder.desc(root.get(pageParameter.getCriteriaField())) : criteriaBuilder.desc(root);
+                if (pageParameter.getCriteriaField() == null) {
+                    return criteriaBuilder.desc(root);
+                }
+                return pageParameter.getCriteriaField().length > 1 ?
+                        criteriaBuilder.desc(root.join(pageParameter.getCriteriaField()[0]).get(pageParameter.getCriteriaField()[1])) :
+                        criteriaBuilder.desc(root.get(pageParameter.getCriteriaField()[0]));
             default:
                 return criteriaBuilder.asc(root);
         }

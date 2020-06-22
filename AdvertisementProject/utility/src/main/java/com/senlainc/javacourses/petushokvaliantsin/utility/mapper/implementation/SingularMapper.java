@@ -25,7 +25,7 @@ public class SingularMapper implements ISingularMapper {
         clazz.forEach(c -> Arrays.stream(c.getDeclaredMethods()).filter(method -> method.isAnnotationPresent(SingularModel.class))
                 .forEach(method -> Arrays.stream(method.getAnnotation(SingularModel.class).metamodels())
                         .forEach(t -> Arrays.stream(t.getDeclaredFields()).filter(type -> type.getType().equals(SingularAttribute.class))
-                                .forEach(f -> fields.put(t.getSimpleName().substring(0, t.getSimpleName().length() - 1) + "-"
+                                .forEach(f -> fields.put(t.getSimpleName().substring(0, t.getSimpleName().length() - 1).toLowerCase() + "-"
                                         + f.getName().toLowerCase(), f)
                                 )
                         )
@@ -33,7 +33,7 @@ public class SingularMapper implements ISingularMapper {
         );
     }
 
-    public <T, E> SingularAttribute<T, E> getSingularAttribute(String parameter) {
+    public <T, E> SingularAttribute<T, E> getAttribute(String parameter) {
         try {
             return parameter.endsWith("default") ? null : SingularAttribute.class.cast(fields.get(parameter).get(null));
         } catch (NullPointerException | IllegalAccessException e) {

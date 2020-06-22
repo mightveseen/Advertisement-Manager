@@ -4,5 +4,5 @@ import javax.persistence.metamodel.SingularAttribute;
 
 public interface ISingularMapper {
 
-    <T, E> SingularAttribute<T, E> getSingularAttribute(String parameter);
+    <T, E> SingularAttribute<T, E> getAttribute(String parameter);
 }

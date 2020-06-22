@@ -7,6 +7,8 @@ import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdv
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IChatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,8 +43,8 @@ public class AdvertisementController {
     @GetMapping
     public List<AdvertisementDto> getAdvertisements(@RequestParam(name = "page", defaultValue = "1") @Positive int page,
                                                     @RequestParam(name = "number", defaultValue = "15") @Positive int numberElements,
-                                                    @RequestParam(name = "direction", defaultValue = "asc") String direction,
-                                                    @RequestParam(name = "sort", defaultValue = "default") String sort,
+                                                    @RequestParam(name = "direction", defaultValue = "desc") String direction,
+                                                    @RequestParam(name = "sort", defaultValue = "user-rating") String sort,
                                                     @RequestParam(name = "cat", defaultValue = "none") String category,
                                                     @RequestParam(name = "search", defaultValue = "none") String search,
                                                     @RequestParam(name = "min", defaultValue = "0") double minPrice,
@@ -56,9 +58,9 @@ public class AdvertisementController {
     }
 
     @PostMapping(value = "/{id}")
-    public boolean createChat(@PathVariable(name = "id") @Positive Long index,
-                              @RequestBody @Validated(ChatDto.class) ChatDto chat) {
-        return chatService.create(chat);
+    public ResponseEntity<Object> createChat(@PathVariable(name = "id") @Positive Long index,
+                                             @RequestBody @Validated(ChatDto.class) ChatDto chat) {
+        return new ResponseEntity<>(chatService.create(chat), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}/comments")
@@ -71,23 +73,23 @@ public class AdvertisementController {
     }
 
     @PostMapping(value = "/{id}/comments")
-    public boolean createAdvertisementComment(@PathVariable(name = "id") @Positive Long index,
-                                              @RequestBody @Validated(AdvertisementCommentDto.class) AdvertisementCommentDto object) {
-        return advertisementCommentService.create(index, object);
+    public ResponseEntity<Object> createAdvertisementComment(@PathVariable(name = "id") @Positive Long index,
+                                                             @RequestBody @Validated(AdvertisementCommentDto.class) AdvertisementCommentDto object) {
+        return new ResponseEntity<>(advertisementCommentService.create(index, object), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
-    public boolean deleteAdvertisement(@PathVariable(name = "id") @Positive Long index) {
-        return advertisementService.delete(index);
+    public ResponseEntity<Object> deleteAdvertisement(@PathVariable(name = "id") @Positive Long index) {
+        return new ResponseEntity<>(advertisementService.delete(index), HttpStatus.OK);
     }
 
     @PutMapping(value = "/{id}")
-    public boolean updateAdvertisement(@RequestBody @Validated(AdvertisementDto.class) AdvertisementDto object) {
-        return advertisementService.update(object);
+    public ResponseEntity<Object> updateAdvertisement(@RequestBody @Validated(AdvertisementDto.class) AdvertisementDto object) {
+        return new ResponseEntity<>(advertisementService.update(object), HttpStatus.OK);
     }
 
     @PostMapping(value = "/create")
-    public boolean createAdvertisement(@RequestBody @Validated(AdvertisementDto.class) AdvertisementDto object) {
-        return advertisementService.create(object);
+    public ResponseEntity<Object> createAdvertisement(@RequestBody @Validated(AdvertisementDto.class) AdvertisementDto object) {
+        return new ResponseEntity<>(advertisementService.create(object), HttpStatus.OK);
     }
 }

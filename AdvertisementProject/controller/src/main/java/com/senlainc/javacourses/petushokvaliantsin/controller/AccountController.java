@@ -7,6 +7,8 @@ import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IChatService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IMessageService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,16 +54,16 @@ public class AccountController {
     }
 
     @PostMapping(value = "/chats/{id}")
-    public boolean addMessageIntoChat(@PathVariable(name = "id") @Positive Long index,
-                                      @RequestBody @Validated(MessageDto.class) MessageDto message) {
-        return messageService.create(index, message);
+    public ResponseEntity<Object> addMessageIntoChat(@PathVariable(name = "id") @Positive Long index,
+                                                     @RequestBody @Validated(MessageDto.class) MessageDto message) {
+        return new ResponseEntity<>(messageService.create(index, message), HttpStatus.OK);
     }
 
     //TODO : Change to Session user
     @DeleteMapping(value = "/chats/{id}")
-    public boolean removeChat(@PathVariable(name = "id") @Positive Long index,
-                              @RequestParam(name = "userId") @Positive Long userId) {
-        return chatService.delete(index, userService.read(userId));
+    public ResponseEntity<Object> removeChat(@PathVariable(name = "id") @Positive Long index,
+                                             @RequestParam(name = "userId") @Positive Long userId) {
+        return new ResponseEntity<>(chatService.delete(index, userService.read(userId)), HttpStatus.OK);
     }
 
     @GetMapping(value = "/settings/profile")
@@ -70,7 +72,7 @@ public class AccountController {
     }
 
     @PutMapping(value = "/settings/profile")
-    public boolean updateUserProfile(@RequestBody @Validated(UserDto.class) UserDto user) {
-        return userService.update(user);
+    public ResponseEntity<Object> updateUserProfile(@RequestBody @Validated(UserDto.class) UserDto user) {
+        return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
     }
 }

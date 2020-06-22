@@ -4,6 +4,7 @@ import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.Advertiseme
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement_;
+import com.senlainc.javacourses.petushokvaliantsin.model.user.User_;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.IStateService;
@@ -11,6 +12,8 @@ import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdv
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularClass;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularModel;
+import com.senlainc.javacourses.petushokvaliantsin.utility.page.IFilterParameter;
+import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.FilterParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +26,7 @@ import java.util.List;
 @SingularClass
 public class AdvertisementService extends AbstractService<Advertisement, Long> implements IAdvertisementService {
 
-    private static final String SORT_FIELD = "Advertisement-";
+    private static final String SORT_FIELD = "advertisement-";
     private final IAdvertisementDao advertisementDao;
     private final IStateService stateService;
     private final IUserService userService;
@@ -95,12 +98,14 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
 
     @Override
     @Transactional(readOnly = true)
-    @SingularModel(metamodels = Advertisement_.class)
+    @SingularModel(metamodels = {Advertisement_.class, User_.class})
     public List<AdvertisementDto> getAdvertisements(int page, int numberElements, String direction, String sortField, String search,
                                                     String category, double minPrice, double maxPrice) {
-        return dtoMapper.mapAll(advertisementDao.readAllWithFilter(PageParameter.of(page, numberElements, direction,
-                singularMapper.getSingularAttribute(SORT_FIELD + sortField.toLowerCase())),
-                FilterParameter.of(search, category, minPrice, maxPrice), stateService.read(EnumState.ACTIVE.name())),
+        final IPageParameter pageParameter = sortField.contains("-") ?
+                PageParameter.of(page, numberElements, direction, singularMapper.getAttribute(SORT_FIELD + sortField.split("-")[0]), singularMapper.getAttribute(sortField)) :
+                PageParameter.of(page, numberElements, direction, singularMapper.getAttribute(SORT_FIELD + sortField));
+        final IFilterParameter filterParameter = FilterParameter.of(search, category, minPrice, maxPrice);
+        return dtoMapper.mapAll(advertisementDao.readAllWithFilter(pageParameter, filterParameter, stateService.read(EnumState.ACTIVE.name())),
                 AdvertisementDto.class);
     }
 }

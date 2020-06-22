@@ -4,6 +4,8 @@ import com.senlainc.javacourses.petushokvaliantsin.dto.payment.PaymentTypeDto;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.payment.IPaymentService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.payment.IPaymentTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,8 +35,8 @@ public class PaymentController {
     }
 
     @PostMapping
-    public boolean addPayment(@PathVariable(name = "id") Long index,
-                              @RequestBody @Validated(PaymentTypeDto.class) PaymentTypeDto object) {
-        return paymentService.create(index, object);
+    public ResponseEntity<Object> addPayment(@PathVariable(name = "id") Long index,
+                                             @RequestBody @Validated(PaymentTypeDto.class) PaymentTypeDto object) {
+        return new ResponseEntity<>(paymentService.create(index, object), HttpStatus.OK);
     }
 }
