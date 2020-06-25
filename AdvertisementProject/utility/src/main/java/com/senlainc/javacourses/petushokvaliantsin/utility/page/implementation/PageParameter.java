@@ -7,8 +7,8 @@ import javax.persistence.metamodel.SingularAttribute;
 
 public class PageParameter implements IPageParameter {
 
-    private final int firstElement;
-    private final int maxResult;
+    private int firstElement;
+    private int maxResult;
     private final Sort.Direction sort;
     private SingularAttribute[] criteriaField;
 
@@ -32,16 +32,16 @@ public class PageParameter implements IPageParameter {
         this.criteriaField = criteriaField;
     }
 
-    public static PageParameter of(int page, int numberElements) {
+    public static IPageParameter of(int page, int numberElements) {
         return new PageParameter(page, numberElements);
     }
 
-    public static PageParameter of(int page, int numberElements, String direction) {
+    public static IPageParameter of(int page, int numberElements, String direction) {
         return new PageParameter(page, numberElements, direction);
     }
 
     @SafeVarargs
-    public static <E, F> PageParameter of(int page, int numberElements, String direction, SingularAttribute<E, F>... criteriaField) {
+    public static <E, F> IPageParameter of(int page, int numberElements, String direction, SingularAttribute<E, F>... criteriaField) {
         return new PageParameter(page, numberElements, direction, criteriaField);
     }
 
@@ -54,6 +54,7 @@ public class PageParameter implements IPageParameter {
     public int getMaxResult() {
         return maxResult;
     }
+
 
     @Override
     public <E, F> SingularAttribute<E, F>[] getCriteriaField() {
@@ -70,6 +71,14 @@ public class PageParameter implements IPageParameter {
             return Sort.Direction.DESC;
         }
         return Sort.Direction.ASC;
+    }
+
+    public void setFirstElement(int firstElement) {
+        this.firstElement = firstElement;
+    }
+
+    public void setMaxResult(int maxResult) {
+        this.maxResult = maxResult;
     }
 
     private int setFirstElement(int page, int numberElements) {

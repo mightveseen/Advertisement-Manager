@@ -5,17 +5,21 @@ import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertise
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementCategory;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementCategory_;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement_;
+import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import com.senlainc.javacourses.petushokvaliantsin.repository.AbstractDao;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementDao;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.ReadQueryException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IFilterParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
+import com.senlainc.javacourses.petushokvaliantsin.utility.page.IStateParameter;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
@@ -44,14 +48,15 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
     }
 
     @Override
-    public List<Advertisement> readAllWithFilter(IPageParameter pageParameter, IFilterParameter filterParameter, State state) {
+    public List<Advertisement> readAllWithFilter(IPageParameter pageParameter, IFilterParameter filterParameter, IStateParameter stateParameter) {
         try {
             final CriteriaQuery<Advertisement> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
             final Root<Advertisement> root = criteriaQuery.from(entityClazz);
-            final List<Predicate> predicates = getPredicates(root, filterParameter, state);
+            final List<Predicate> predicates = getPredicates(root, filterParameter, stateParameter);
+            final List<Order> orders = getOrders(pageParameter, root, predicates, stateParameter);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
-                    .orderBy(getOrder(pageParameter, criteriaBuilder, root))
+                    .orderBy(orders)
                     .where(criteriaBuilder.and(predicates.toArray(new Predicate[0]))))
                     .setFirstResult(pageParameter.getFirstElement())
                     .setMaxResults(pageParameter.getMaxResult())
@@ -61,8 +66,8 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
         }
     }
 
-    private List<Predicate> getPredicates(Root<Advertisement> root, IFilterParameter filterParameter, State state) {
-        final List<Predicate> predicates = new ArrayList<>(5);
+    private List<Predicate> getPredicates(Root<Advertisement> root, IFilterParameter filterParameter, IStateParameter stateParameter) {
+        final List<Predicate> predicates = new ArrayList<>(6);
         if (!filterParameter.getSearch().equals("none")) {
             predicates.add(criteriaBuilder.like(root.get(Advertisement_.header), "%" + filterParameter.getSearch() + "%"));
         }
@@ -76,7 +81,16 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
         if (filterParameter.getMaxPrice() > 0) {
             predicates.add(criteriaBuilder.le(root.get(Advertisement_.price), filterParameter.getMaxPrice()));
         }
-        predicates.add(criteriaBuilder.equal(root.get(Advertisement_.state), state));
+        predicates.add(criteriaBuilder.equal(root.get(Advertisement_.state), stateParameter.getAdvertisementState()));
         return predicates;
+    }
+
+    //TODO : Approved payments
+    private List<Order> getOrders(IPageParameter pageParameter, Root<Advertisement> root, List<Predicate> predicates, IStateParameter stateParameter) {
+        final List<Order> orders = new ArrayList<>();
+        orders.add(getOrder(pageParameter, criteriaBuilder, root));
+        final Join<Advertisement, Payment> join = root.join(Advertisement_.payments, JoinType.LEFT);
+        orders.add(criteriaBuilder.desc(join));
+        return orders;
     }
 }

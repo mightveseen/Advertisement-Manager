@@ -14,12 +14,15 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.Sin
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularModel;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IFilterParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
+import com.senlainc.javacourses.petushokvaliantsin.utility.page.IStateParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.FilterParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
+import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.StateParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -96,17 +99,20 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
                 , AdvertisementDto.class);
     }
 
-    //TODO : Payments first
     @Override
     @Transactional(readOnly = true)
     @SingularModel(metamodels = {Advertisement_.class, User_.class})
     public List<AdvertisementDto> getAdvertisements(int page, int numberElements, String direction, String sortField, String search,
                                                     String category, double minPrice, double maxPrice) {
+        final List<AdvertisementDto> advertisements = new ArrayList<>(numberElements);
         final IPageParameter pageParameter = sortField.contains("-") ?
-                PageParameter.of(page, numberElements, direction, singularMapper.getAttribute(SORT_FIELD + sortField.split("-")[0]), singularMapper.getAttribute(sortField)) :
+                PageParameter.of(page, numberElements, direction, singularMapper.getAttribute(SORT_FIELD + sortField.split("-")[0]),
+                        singularMapper.getAttribute(sortField)) :
                 PageParameter.of(page, numberElements, direction, singularMapper.getAttribute(SORT_FIELD + sortField));
         final IFilterParameter filterParameter = FilterParameter.of(search, category, minPrice, maxPrice);
-        return dtoMapper.mapAll(advertisementDao.readAllWithFilter(pageParameter, filterParameter, stateService.read(EnumState.ACTIVE.name())),
-                AdvertisementDto.class);
+        final IStateParameter stateParameter = StateParameter.of(stateService.read(EnumState.ACTIVE.name()), stateService.read(EnumState.APPROVED.name()));
+        advertisements.addAll(dtoMapper.mapAll(advertisementDao.readAllWithFilter(pageParameter, filterParameter, stateParameter),
+                AdvertisementDto.class));
+        return advertisements;
     }
 }

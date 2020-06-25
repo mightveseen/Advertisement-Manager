@@ -50,7 +50,7 @@ VALUES
 ('180 days', 180, 25);
 INSERT INTO `payments`(`advertisement_id`, `type_id`, `payment_start_date`, `payment_end_date`, `payment_price`, `state_id`)
 VALUES
-(1, 2, '2020-06-04', '2020-07-04', 6, 7);
+(2, 2, '2020-06-04', '2020-07-04', 6, 6);
 INSERT INTO `chats`(`chat_name`, `chat_last_message`, `chat_update_date`)
 VALUES 
 ('Sony Z1 Ultra', 'Hi', '2020-02-12+16:02:33'),
