@@ -5,6 +5,8 @@ import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertise
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementCategory;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementCategory_;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement_;
+import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment;
+import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment_;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import com.senlainc.javacourses.petushokvaliantsin.repository.AbstractDao;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementDao;
@@ -52,7 +54,7 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
             final CriteriaQuery<Advertisement> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
             final Root<Advertisement> root = criteriaQuery.from(entityClazz);
             final List<Predicate> predicates = getPredicates(root, filterParameter, stateParameter);
-            final List<Order> orders = getOrders(pageParameter, root, predicates);
+            final List<Order> orders = getOrders(pageParameter, root, stateParameter);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
                     .orderBy(orders)
@@ -84,10 +86,10 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
         return predicates;
     }
 
-    //TODO : Check payments status
-    private List<Order> getOrders(IPageParameter pageParameter, Root<Advertisement> root, List<Predicate> predicates) {
+    private List<Order> getOrders(IPageParameter pageParameter, Root<Advertisement> root, IStateParameter stateParameter) {
         final List<Order> orders = new ArrayList<>();
-        orders.add(criteriaBuilder.desc(root.join(Advertisement_.payments, JoinType.LEFT)));
+        final Join<Advertisement, Payment> join = root.join(Advertisement_.payments, JoinType.LEFT);
+        orders.add(criteriaBuilder.desc(join.on(criteriaBuilder.equal(join.get(Payment_.state), stateParameter.getPaymentState()))));
         orders.add(getOrder(pageParameter, criteriaBuilder, root));
         return orders;
     }

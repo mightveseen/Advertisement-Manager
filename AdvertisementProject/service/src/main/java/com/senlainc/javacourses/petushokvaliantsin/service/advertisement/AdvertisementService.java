@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -104,15 +103,13 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     @SingularModel(metamodels = {Advertisement_.class, User_.class})
     public List<AdvertisementDto> getAdvertisements(int page, int numberElements, String direction, String sortField, String search,
                                                     String category, double minPrice, double maxPrice) {
-        final List<AdvertisementDto> advertisements = new ArrayList<>(numberElements);
         final IPageParameter pageParameter = sortField.contains("-") ?
                 PageParameter.of(page, numberElements, direction, singularMapper.getAttribute(SORT_FIELD + sortField.split("-")[0]),
                         singularMapper.getAttribute(sortField)) :
                 PageParameter.of(page, numberElements, direction, singularMapper.getAttribute(SORT_FIELD + sortField));
         final IFilterParameter filterParameter = FilterParameter.of(search, category, minPrice, maxPrice);
         final IStateParameter stateParameter = StateParameter.of(stateService.read(EnumState.ACTIVE.name()), stateService.read(EnumState.APPROVED.name()));
-        advertisements.addAll(dtoMapper.mapAll(advertisementDao.readAllWithFilter(pageParameter, filterParameter, stateParameter),
-                AdvertisementDto.class));
-        return advertisements;
+        return dtoMapper.mapAll(advertisementDao.readAllWithFilter(pageParameter, filterParameter, stateParameter),
+                AdvertisementDto.class);
     }
 }

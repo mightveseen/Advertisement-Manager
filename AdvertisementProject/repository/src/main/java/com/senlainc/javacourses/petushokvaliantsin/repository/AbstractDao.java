@@ -18,7 +18,9 @@ import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class AbstractDao<E, K extends Serializable> implements IGenericDao<E, K> {
 
@@ -150,14 +152,14 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
     protected Order getOrder(IPageParameter pageParameter, CriteriaBuilder criteriaBuilder, Root<E> root) {
         switch (pageParameter.getDirection()) {
             case ASC:
-                if (pageParameter.getCriteriaField() == null) {
+                if (Arrays.stream(pageParameter.getCriteriaField()).anyMatch(Objects::isNull)) {
                     return criteriaBuilder.asc(root);
                 }
                 return pageParameter.getCriteriaField().length > 1 ?
                         criteriaBuilder.asc(root.join(pageParameter.getCriteriaField()[0]).get(pageParameter.getCriteriaField()[1])) :
                         criteriaBuilder.asc(root.get(pageParameter.getCriteriaField()[0]));
             case DESC:
-                if (pageParameter.getCriteriaField() == null) {
+                if (Arrays.stream(pageParameter.getCriteriaField()).anyMatch(Objects::isNull)) {
                     return criteriaBuilder.desc(root);
                 }
                 return pageParameter.getCriteriaField().length > 1 ?

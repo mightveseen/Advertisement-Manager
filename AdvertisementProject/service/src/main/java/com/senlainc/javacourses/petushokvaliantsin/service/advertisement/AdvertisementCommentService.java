@@ -9,6 +9,7 @@ import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdv
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularClass;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularModel;
+import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,9 +59,8 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
     @Transactional(readOnly = true)
     @SingularModel(metamodels = AdvertisementComment_.class)
     public List<AdvertisementCommentDto> getAdvertisementComments(Long index, int page, int numberElements, String direction, String sortField) {
-        return dtoMapper.mapAll(advertisementCommentDao.readAll(PageParameter.of(page, numberElements, direction,
-                singularMapper.getAttribute(SORT_FIELD + sortField.toLowerCase())),
-                AdvertisementComment_.advertisement, advertisementService.read(index)),
+        final IPageParameter pageParameter = PageParameter.of(page, numberElements, direction, singularMapper.getAttribute(SORT_FIELD + sortField.toLowerCase()));
+        return dtoMapper.mapAll(advertisementCommentDao.readAll(pageParameter, AdvertisementComment_.advertisement, advertisementService.read(index)),
                 AdvertisementCommentDto.class);
     }
 }
