@@ -8,13 +8,13 @@ public interface IPageParameter {
 
     int getFirstElement();
 
+    void setFirstElement(int firstElement);
+
     int getMaxResult();
+
+    void setMaxResult(int maxResult);
 
     Sort.Direction getDirection();
 
     <E, F> SingularAttribute<E, F>[] getCriteriaField();
-
-    void setFirstElement(int firstElement);
-
-    void setMaxResult(int maxResult);
 }

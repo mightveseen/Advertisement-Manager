@@ -7,9 +7,9 @@ import javax.persistence.metamodel.SingularAttribute;
 
 public class PageParameter implements IPageParameter {
 
+    private final Sort.Direction sort;
     private int firstElement;
     private int maxResult;
-    private final Sort.Direction sort;
     private SingularAttribute[] criteriaField;
 
     private PageParameter(int page, int numberElements) {
@@ -50,11 +50,18 @@ public class PageParameter implements IPageParameter {
         return firstElement;
     }
 
+    public void setFirstElement(int firstElement) {
+        this.firstElement = firstElement;
+    }
+
     @Override
     public int getMaxResult() {
         return maxResult;
     }
 
+    public void setMaxResult(int maxResult) {
+        this.maxResult = maxResult;
+    }
 
     @Override
     public <E, F> SingularAttribute<E, F>[] getCriteriaField() {
@@ -71,14 +78,6 @@ public class PageParameter implements IPageParameter {
             return Sort.Direction.DESC;
         }
         return Sort.Direction.ASC;
-    }
-
-    public void setFirstElement(int firstElement) {
-        this.firstElement = firstElement;
-    }
-
-    public void setMaxResult(int maxResult) {
-        this.maxResult = maxResult;
     }
 
     private int setFirstElement(int page, int numberElements) {
