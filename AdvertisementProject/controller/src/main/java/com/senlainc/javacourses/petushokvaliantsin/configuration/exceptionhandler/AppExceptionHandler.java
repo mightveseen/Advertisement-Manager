@@ -1,6 +1,7 @@
 package com.senlainc.javacourses.petushokvaliantsin.configuration.exceptionhandler;
 
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityAlreadyExistException;
+import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.IncorrectCastException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.WrongEnteredDataException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.CreateQueryException;
@@ -16,7 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({WrongEnteredDataException.class, EntityAlreadyExistException.class, IncorrectCastException.class})
+    @ExceptionHandler({WrongEnteredDataException.class, EntityAlreadyExistException.class, EntityNotExistException.class, IncorrectCastException.class})
     public ResponseEntity<Object> badRequest(RuntimeException exc) {
         return new ResponseEntity<>(ExceptionTemplate.of(exc.getMessage()), HttpStatus.BAD_REQUEST);
     }

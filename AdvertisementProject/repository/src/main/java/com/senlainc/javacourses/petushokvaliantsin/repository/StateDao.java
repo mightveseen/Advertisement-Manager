@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -20,7 +19,7 @@ public class StateDao implements IStateDao {
 
     private EntityManager entityManager;
 
-    @PersistenceContext(name = "mainPersistence", type = PersistenceContextType.EXTENDED)
+    @PersistenceContext(name = "mainPersistence")
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }

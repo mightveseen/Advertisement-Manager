@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 
 public class ExceptionTemplate {
 
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss+dd-MM-yyyy")
     private LocalDateTime dateTime;
     private String message;

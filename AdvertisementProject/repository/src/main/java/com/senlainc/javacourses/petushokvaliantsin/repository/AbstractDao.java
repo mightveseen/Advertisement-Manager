@@ -1,6 +1,7 @@
 package com.senlainc.javacourses.petushokvaliantsin.repository;
 
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.IGenericDao;
+import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.CreateQueryException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.DeleteQueryException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.ReadQueryException;
@@ -68,7 +69,11 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
     @Override
     public E read(K index) {
         try {
-            return entityManager.find(entityClazz, index);
+            final E object = entityManager.find(entityClazz, index);
+            if (object == null) {
+                throw new EntityNotExistException("Entity with index [" + index + "] not exist");
+            }
+            return object;
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);
         }
@@ -87,6 +92,7 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
         }
     }
 
+    //TODO : Remove unused method
     @Override
     public List<E> readAll(IPageParameter pageParameter) {
         try {
@@ -134,34 +140,16 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
         }
     }
 
-    @Override
-    public <F> Long readCount(SingularAttribute<E, F> field, F value) {
-        try {
-            final CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-            final Root<E> root = criteriaQuery.from(entityClazz);
-            final Predicate predicate = criteriaBuilder.equal(root.get(field), value);
-            return entityManager.createQuery(criteriaQuery
-                    .select(criteriaBuilder.count(root))
-                    .where(predicate))
-                    .getSingleResult();
-        } catch (PersistenceException exc) {
-            throw new ReadQueryException(exc);
-        }
-    }
-
     protected Order getOrder(IPageParameter pageParameter, CriteriaBuilder criteriaBuilder, Root<E> root) {
+        if (pageParameter.getCriteriaField() == null || Arrays.stream(pageParameter.getCriteriaField()).anyMatch(Objects::isNull)) {
+            return pageParameter.getDirection().isDescending() ? criteriaBuilder.desc(root) : criteriaBuilder.asc(root);
+        }
         switch (pageParameter.getDirection()) {
             case ASC:
-                if (Arrays.stream(pageParameter.getCriteriaField()).anyMatch(Objects::isNull)) {
-                    return criteriaBuilder.asc(root);
-                }
                 return pageParameter.getCriteriaField().length > 1 ?
                         criteriaBuilder.asc(root.join(pageParameter.getCriteriaField()[0]).get(pageParameter.getCriteriaField()[1])) :
                         criteriaBuilder.asc(root.get(pageParameter.getCriteriaField()[0]));
             case DESC:
-                if (Arrays.stream(pageParameter.getCriteriaField()).anyMatch(Objects::isNull)) {
-                    return criteriaBuilder.desc(root);
-                }
                 return pageParameter.getCriteriaField().length > 1 ?
                         criteriaBuilder.desc(root.join(pageParameter.getCriteriaField()[0]).get(pageParameter.getCriteriaField()[1])) :
                         criteriaBuilder.desc(root.get(pageParameter.getCriteriaField()[0]));

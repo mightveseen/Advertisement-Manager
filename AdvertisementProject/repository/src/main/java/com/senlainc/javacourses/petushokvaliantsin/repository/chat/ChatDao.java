@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
@@ -19,13 +18,13 @@ import java.util.List;
 @Repository
 public class ChatDao extends AbstractDao<Chat, Long> implements IChatDao {
 
+    //TODO : Think about it
     @Override
     public List<Chat> readAllUserChat(IPageParameter pageParameter, User user) {
         try {
             final CriteriaQuery<Chat> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
             final Root<Chat> root = criteriaQuery.from(entityClazz);
-            final Join<Chat, User> join = root.join(Chat_.users);
-            final Predicate predicate = criteriaBuilder.equal(join, user);
+            final Predicate predicate = criteriaBuilder.equal(root.join(Chat_.users), user);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
                     .orderBy(getOrder(pageParameter, criteriaBuilder, root))
