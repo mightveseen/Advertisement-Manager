@@ -7,13 +7,9 @@ import java.util.List;
 
 public interface IAdvertisementService {
 
-    boolean create(Advertisement object);
-
     boolean create(AdvertisementDto object);
 
     boolean delete(Long index);
-
-    boolean update(Advertisement object);
 
     boolean update(AdvertisementDto object);
 

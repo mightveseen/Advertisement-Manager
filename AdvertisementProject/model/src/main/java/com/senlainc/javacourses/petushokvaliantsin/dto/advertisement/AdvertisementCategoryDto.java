@@ -1,10 +1,17 @@
 package com.senlainc.javacourses.petushokvaliantsin.dto.advertisement;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 
 public class AdvertisementCategoryDto implements Serializable {
 
+    @Null(groups = {Create.class})
+    @NotNull(groups = {Update.class, AdvertisementDto.Update.class, AdvertisementDto.Create.class})
+    @Positive(groups = {Update.class, AdvertisementDto.Update.class, AdvertisementDto.Create.class})
     private Long id;
+    @NotNull(groups = {Create.class, Update.class})
     private String description;
 
     public Long getId() {
@@ -21,5 +28,13 @@ public class AdvertisementCategoryDto implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public interface Create {
+
+    }
+
+    public interface Update {
+
     }
 }

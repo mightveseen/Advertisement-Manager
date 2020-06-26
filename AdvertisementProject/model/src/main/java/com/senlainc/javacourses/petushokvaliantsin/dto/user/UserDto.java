@@ -1,25 +1,35 @@
 package com.senlainc.javacourses.petushokvaliantsin.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.time.LocalDate;
 
 public class UserDto implements Serializable {
 
+    @Null(groups = {Create.class})
+    @Positive(groups = {Update.class, AdvertisementDto.Update.class, AdvertisementDto.Create.class})
+    @NotNull(groups = {Update.class, AdvertisementDto.Update.class, AdvertisementDto.Create.class})
     private Long id;
+    @NotNull(groups = {Create.class, Update.class})
     private String firstName;
+    @NotNull(groups = {Create.class, Update.class})
     private String lastName;
+    @NotNull(groups = {Create.class, Update.class})
     private String email;
+    @NotNull(groups = {Create.class, Update.class})
     private Integer phone;
+    @Null(groups = {Create.class, Update.class})
     @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate registrationDate;
+    @Null(groups = {Create.class, Update.class})
     private Float rating;
 
     public Long getId() {
@@ -76,5 +86,13 @@ public class UserDto implements Serializable {
 
     public void setRating(Float rating) {
         this.rating = rating;
+    }
+
+    public interface Create {
+
+    }
+
+    public interface Update {
+
     }
 }

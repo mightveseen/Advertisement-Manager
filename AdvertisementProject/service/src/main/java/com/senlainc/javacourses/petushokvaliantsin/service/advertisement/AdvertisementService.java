@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -42,15 +43,10 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
 
     @Override
     @Transactional
-    public boolean create(Advertisement object) {
-        advertisementDao.create(object);
-        return true;
-    }
-
-    @Override
-    @Transactional
     public boolean create(AdvertisementDto object) {
         final Advertisement advertisement = dtoMapper.map(object, Advertisement.class);
+        advertisement.setState(stateService.read(EnumState.MODERATION.name()));
+        advertisement.setDate(LocalDate.now());
         advertisementDao.create(advertisement);
         return true;
     }
@@ -66,14 +62,8 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
 
     @Override
     @Transactional
-    public boolean update(Advertisement object) {
-        advertisementDao.update(object);
-        return true;
-    }
-
-    @Override
-    @Transactional
     public boolean update(AdvertisementDto object) {
+        object.setDate(LocalDate.now());
         advertisementDao.update(dtoMapper.map(object, Advertisement.class));
         return true;
     }
@@ -94,7 +84,7 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     @Transactional(readOnly = true)
     public List<AdvertisementDto> getUserAdvertisements(Long index, int page, int numberElements, String state) {
         return dtoMapper.mapAll(advertisementDao.readAllWithState(PageParameter.of(page, numberElements)
-                , userService.read(index), stateService.read(state))
+                , userService.read(index), stateService.read(EnumState.valueOf(state).name()))
                 , AdvertisementDto.class);
     }
 

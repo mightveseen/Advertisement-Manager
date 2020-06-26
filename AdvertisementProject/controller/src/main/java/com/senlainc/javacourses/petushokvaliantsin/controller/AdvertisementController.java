@@ -58,8 +58,8 @@ public class AdvertisementController {
     }
 
     @PostMapping(value = "/{id}")
-    public ResponseEntity<Object> createChat(@PathVariable(name = "id") @Positive Long index,
-                                             @RequestBody @Validated(ChatDto.class) ChatDto chat) {
+    public ResponseEntity<Boolean> createChat(@PathVariable(name = "id") @Positive Long index,
+                                              @RequestBody @Validated(ChatDto.class) ChatDto chat) {
         return new ResponseEntity<>(chatService.create(chat), HttpStatus.OK);
     }
 
@@ -73,23 +73,23 @@ public class AdvertisementController {
     }
 
     @PostMapping(value = "/{id}/comments")
-    public ResponseEntity<Object> createAdvertisementComment(@PathVariable(name = "id") @Positive Long index,
-                                                             @RequestBody @Validated(AdvertisementCommentDto.class) AdvertisementCommentDto object) {
+    public ResponseEntity<Boolean> createAdvertisementComment(@PathVariable(name = "id") @Positive Long index,
+                                                              @RequestBody @Validated(AdvertisementCommentDto.class) AdvertisementCommentDto object) {
         return new ResponseEntity<>(advertisementCommentService.create(index, object), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Object> deleteAdvertisement(@PathVariable(name = "id") @Positive Long index) {
+    public ResponseEntity<Boolean> deleteAdvertisement(@PathVariable(name = "id") @Positive Long index) {
         return new ResponseEntity<>(advertisementService.delete(index), HttpStatus.OK);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Object> updateAdvertisement(@RequestBody @Validated(AdvertisementDto.class) AdvertisementDto object) {
+    public ResponseEntity<Boolean> updateAdvertisement(@RequestBody @Validated(AdvertisementDto.Update.class) AdvertisementDto object) {
         return new ResponseEntity<>(advertisementService.update(object), HttpStatus.OK);
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<Object> createAdvertisement(@RequestBody @Validated(AdvertisementDto.class) AdvertisementDto object) {
+    public ResponseEntity<Boolean> createAdvertisement(@RequestBody @Validated(AdvertisementDto.Create.class) AdvertisementDto object) {
         return new ResponseEntity<>(advertisementService.create(object), HttpStatus.OK);
     }
 }

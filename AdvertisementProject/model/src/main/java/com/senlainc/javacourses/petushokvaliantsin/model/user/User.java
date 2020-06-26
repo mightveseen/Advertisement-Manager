@@ -36,7 +36,7 @@ public class User {
     private String email;
     @Column(name = "user_phone")
     private Integer phone;
-    @Column(name = "user_registration_date")
+    @Column(name = "user_registration_date", updatable = false)
     private LocalDate registrationDate;
     @Column(name = "user_rating")
     private Float rating;

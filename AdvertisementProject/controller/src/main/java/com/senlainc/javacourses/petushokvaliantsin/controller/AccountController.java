@@ -72,7 +72,7 @@ public class AccountController {
     }
 
     @PutMapping(value = "/settings/profile")
-    public ResponseEntity<Object> updateUserProfile(@RequestBody @Validated(UserDto.class) UserDto user) {
+    public ResponseEntity<Object> updateUserProfile(@RequestBody @Validated(UserDto.Update.class) UserDto user) {
         return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
     }
 }

@@ -27,7 +27,6 @@ VALUES
 ('Cell phones and tablets');
 INSERT INTO `states`(`state_description`)
 VALUES
-('DRAFT'),
 ('MODERATION'),
 ('REJECTED'),
 ('ACTIVE'),
@@ -36,8 +35,8 @@ VALUES
 ('FINISHED');
 INSERT INTO `advertisements`(`advertisement_header`, `user_id`, `advertisement_description`, `category_id`, `advertisement_date`, `advertisement_price`,`state_id`)
 VALUES
-('Audi R8 2010', 4, 'Cool car (starring in Iron Man), but i bought new', 2, '2020-06-02', 230.5, 4),
-('Sony Z1 Ultra', 3, 'With this COVID-19 and 5G towers I decided buy Nokia 6300', 7, '2020-05-28', 470.0, 4);
+('Audi R8 2010', 4, 'Cool car (starring in Iron Man), but i bought new', 2, '2020-06-02', 230.5, 3),
+('Sony Z1 Ultra', 3, 'With this COVID-19 and 5G towers I decided buy Nokia 6300', 7, '2020-05-28', 470.0, 3);
 INSERT INTO `advertisement_comments`(`user_id`, `advertisement_id`, `comment_message`, `comment_date`)
 VALUES
 (4, 1, 'The best car ever made', '2020-06-04'),
@@ -50,7 +49,7 @@ VALUES
 ('180 days', 180, 25);
 INSERT INTO `payments`(`advertisement_id`, `type_id`, `payment_start_date`, `payment_end_date`, `payment_price`, `state_id`)
 VALUES
-(2, 2, '2020-06-04', '2020-07-04', 6, 6);
+(2, 2, '2020-06-04', '2020-07-04', 6, 5);
 INSERT INTO `chats`(`chat_name`, `chat_last_message`, `chat_update_date`)
 VALUES 
 ('Sony Z1 Ultra', 'Hi', '2020-02-12+16:02:33'),
