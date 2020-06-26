@@ -1,22 +1,25 @@
 package com.senlainc.javacourses.petushokvaliantsin.dto.chat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class MessageDto implements Serializable {
 
+    @Null(groups = {Create.class})
     private Long id;
+    @NotNull(groups = {Create.class})
     private UserDto user;
+    @NotNull(groups = {Create.class})
     private String text;
+    @Null(groups = {Create.class})
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm+dd-MM-yyyy")
     private LocalDateTime dateTime;
 
@@ -50,5 +53,8 @@ public class MessageDto implements Serializable {
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public interface Create {
     }
 }

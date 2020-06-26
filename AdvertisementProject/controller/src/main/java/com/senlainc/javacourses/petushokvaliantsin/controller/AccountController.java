@@ -38,12 +38,14 @@ public class AccountController {
         this.userService = userService;
     }
 
-    //TODO : Change to Session user
+    /**
+     * Chat operation [Show all, show message of chat, add message, remove chat]
+     */
     @GetMapping(value = "/chats")
     public List<ChatDto> getUserChats(@RequestParam(name = "userId") @Positive Long userId,
                                       @RequestParam(name = "page", defaultValue = "1") @Positive int page,
                                       @RequestParam(name = "max", defaultValue = "15") @Positive int max) {
-        return chatService.getChats(userService.read(userId), page, max);
+        return chatService.getChats(userId, page, max);
     }
 
     @GetMapping(value = "/chats/{id}")
@@ -54,25 +56,29 @@ public class AccountController {
     }
 
     @PostMapping(value = "/chats/{id}")
-    public ResponseEntity<Object> addMessageIntoChat(@PathVariable(name = "id") @Positive Long index,
-                                                     @RequestBody @Validated(MessageDto.class) MessageDto message) {
+    public ResponseEntity<Boolean> addMessageIntoChat(@PathVariable(name = "id") @Positive Long index,
+                                                      @RequestBody @Validated(MessageDto.class) MessageDto message) {
         return new ResponseEntity<>(messageService.create(index, message), HttpStatus.OK);
     }
 
-    //TODO : Change to Session user
+    //TODO : Think about it
     @DeleteMapping(value = "/chats/{id}")
-    public ResponseEntity<Object> removeChat(@PathVariable(name = "id") @Positive Long index,
-                                             @RequestParam(name = "userId") @Positive Long userId) {
-        return new ResponseEntity<>(chatService.delete(index, userService.read(userId)), HttpStatus.OK);
+    public ResponseEntity<Boolean> removeChat(@PathVariable(name = "id") @Positive Long index,
+                                              @RequestParam(name = "userId") @Positive Long userId) {
+        return new ResponseEntity<>(chatService.delete(index, userId), HttpStatus.OK);
     }
 
+    /**
+     * Profile operation [Show/update profile information, ? Update user cred ?]
+     */
+    //TODO : Don't forget about encrypted password
     @GetMapping(value = "/settings/profile")
     public UserDto getUserProfile(@RequestParam(name = "id") @Positive Long index) {
         return userService.getUser(index);
     }
 
     @PutMapping(value = "/settings/profile")
-    public ResponseEntity<Object> updateUserProfile(@RequestBody @Validated(UserDto.Update.class) UserDto user) {
+    public ResponseEntity<Boolean> updateUserProfile(@RequestBody @Validated(UserDto.Update.class) UserDto user) {
         return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
     }
 }

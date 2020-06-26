@@ -3,7 +3,10 @@ package com.senlainc.javacourses.petushokvaliantsin.dto.user;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementCommentDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
+import com.senlainc.javacourses.petushokvaliantsin.dto.chat.ChatDto;
+import com.senlainc.javacourses.petushokvaliantsin.dto.chat.MessageDto;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -13,9 +16,14 @@ import java.time.LocalDate;
 
 public class UserDto implements Serializable {
 
+    //TODO : Validation not working while add Advertisement
     @Null(groups = {Create.class})
-    @Positive(groups = {Update.class, AdvertisementDto.Update.class, AdvertisementDto.Create.class})
-    @NotNull(groups = {Update.class, AdvertisementDto.Update.class, AdvertisementDto.Create.class})
+    @Positive(groups = {Update.class, AdvertisementDto.Update.class, AdvertisementDto.Create.class,
+            AdvertisementCommentDto.Create.class, AdvertisementCommentDto.Update.class,
+            ChatDto.Create.class, ChatDto.Update.class, MessageDto.Create.class})
+    @NotNull(groups = {Update.class, AdvertisementDto.Update.class, AdvertisementDto.Create.class,
+            AdvertisementCommentDto.Create.class, AdvertisementCommentDto.Update.class,
+            ChatDto.Create.class, ChatDto.Update.class, MessageDto.Create.class})
     private Long id;
     @NotNull(groups = {Create.class, Update.class})
     private String firstName;

@@ -37,14 +37,8 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
     public boolean create(Long advertisementIndex, AdvertisementCommentDto object) {
         final AdvertisementComment advertisementComment = dtoMapper.map(object, AdvertisementComment.class);
         advertisementComment.setDateTime(LocalDateTime.now());
+        advertisementComment.setAdvertisement(advertisementService.read(advertisementIndex));
         advertisementCommentDao.create(advertisementComment);
-        return true;
-    }
-
-    @Override
-    @Transactional
-    public boolean delete(Long index) {
-        advertisementCommentDao.delete(advertisementCommentDao.read(index));
         return true;
     }
 

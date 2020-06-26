@@ -74,10 +74,7 @@ public class PageParameter implements IPageParameter {
     }
 
     private Sort.Direction setDirection(String direction) {
-        if (direction.equalsIgnoreCase("desc")) {
-            return Sort.Direction.DESC;
-        }
-        return Sort.Direction.ASC;
+        return direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
     }
 
     private int setFirstElement(int page, int numberElements) {

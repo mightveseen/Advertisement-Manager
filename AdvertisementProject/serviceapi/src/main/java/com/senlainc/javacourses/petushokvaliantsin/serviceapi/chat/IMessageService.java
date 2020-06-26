@@ -9,8 +9,6 @@ public interface IMessageService {
 
     boolean create(Long chatIndex, MessageDto message);
 
-    boolean delete(Long index);
-
     boolean update(Message object);
 
     List<MessageDto> getMessages(Long chatIndex, int firstElement, int maxResult);

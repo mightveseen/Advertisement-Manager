@@ -45,8 +45,8 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     @Transactional
     public boolean create(AdvertisementDto object) {
         final Advertisement advertisement = dtoMapper.map(object, Advertisement.class);
-        advertisement.setState(stateService.read(EnumState.MODERATION.name()));
         advertisement.setDate(LocalDate.now());
+        advertisement.setState(stateService.read(EnumState.MODERATION.name()));
         advertisementDao.create(advertisement);
         return true;
     }
@@ -63,8 +63,10 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     @Override
     @Transactional
     public boolean update(AdvertisementDto object) {
-        object.setDate(LocalDate.now());
-        advertisementDao.update(dtoMapper.map(object, Advertisement.class));
+        final Advertisement advertisement = dtoMapper.map(object, Advertisement.class);
+        advertisement.setDate(LocalDate.now());
+        advertisement.setState(stateService.read(EnumState.MODERATION.name()));
+        advertisementDao.update(advertisement);
         return true;
     }
 

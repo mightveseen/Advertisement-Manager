@@ -30,7 +30,7 @@ public class AdvertisementComment {
     private Advertisement advertisement;
     @Column(name = "comment_message")
     private String message;
-    @Column(name = "comment_date")
+    @Column(name = "comment_date", updatable = false)
     private LocalDateTime dateTime;
 
     public AdvertisementComment() {

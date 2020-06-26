@@ -9,8 +9,6 @@ public interface IAdvertisementCommentService {
 
     boolean create(Long advertisementIndex, AdvertisementCommentDto object);
 
-    boolean delete(Long index);
-
     boolean update(AdvertisementComment object);
 
     List<AdvertisementCommentDto> getAdvertisementComments(Long index, int page, int numberElements, String direction, String sortField);

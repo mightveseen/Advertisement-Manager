@@ -40,6 +40,9 @@ public class AdvertisementController {
         this.advertisementCommentService = advertisementCommentService;
     }
 
+    /**
+     * Advertisement operation [Show all, show by id, delete/remove/update]
+     */
     @GetMapping
     public List<AdvertisementDto> getAdvertisements(@RequestParam(name = "page", defaultValue = "1") @Positive int page,
                                                     @RequestParam(name = "number", defaultValue = "15") @Positive int numberElements,
@@ -57,27 +60,6 @@ public class AdvertisementController {
         return advertisementService.getAdvertisement(index);
     }
 
-    @PostMapping(value = "/{id}")
-    public ResponseEntity<Boolean> createChat(@PathVariable(name = "id") @Positive Long index,
-                                              @RequestBody @Validated(ChatDto.class) ChatDto chat) {
-        return new ResponseEntity<>(chatService.create(chat), HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/{id}/comments")
-    public List<AdvertisementCommentDto> getAdvertisementComments(@PathVariable(name = "id") @Positive Long index,
-                                                                  @RequestParam(name = "first", defaultValue = "0") int firstElement,
-                                                                  @RequestParam(name = "max", defaultValue = "15") int maxResult,
-                                                                  @RequestParam(name = "direction", defaultValue = "desc") String direction,
-                                                                  @RequestParam(name = "sort", defaultValue = "default") String sort) {
-        return advertisementCommentService.getAdvertisementComments(index, firstElement, maxResult, direction, sort);
-    }
-
-    @PostMapping(value = "/{id}/comments")
-    public ResponseEntity<Boolean> createAdvertisementComment(@PathVariable(name = "id") @Positive Long index,
-                                                              @RequestBody @Validated(AdvertisementCommentDto.class) AdvertisementCommentDto object) {
-        return new ResponseEntity<>(advertisementCommentService.create(index, object), HttpStatus.OK);
-    }
-
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Boolean> deleteAdvertisement(@PathVariable(name = "id") @Positive Long index) {
         return new ResponseEntity<>(advertisementService.delete(index), HttpStatus.OK);
@@ -92,4 +74,31 @@ public class AdvertisementController {
     public ResponseEntity<Boolean> createAdvertisement(@RequestBody @Validated(AdvertisementDto.Create.class) AdvertisementDto object) {
         return new ResponseEntity<>(advertisementService.create(object), HttpStatus.OK);
     }
+
+    /**
+     * Chat operation [Create chat]
+     */
+    @PostMapping(value = "/{id}")
+    public ResponseEntity<Boolean> createChat(@RequestBody @Validated(ChatDto.Create.class) ChatDto chat) {
+        return new ResponseEntity<>(chatService.create(chat), HttpStatus.OK);
+    }
+
+    /**
+     * Comment operation [Show all advertisement comment's, add comment]
+     */
+    @GetMapping(value = "/{id}/comments")
+    public List<AdvertisementCommentDto> getAdvertisementComments(@PathVariable(name = "id") @Positive Long index,
+                                                                  @RequestParam(name = "first", defaultValue = "0") int firstElement,
+                                                                  @RequestParam(name = "max", defaultValue = "15") int maxResult,
+                                                                  @RequestParam(name = "direction", defaultValue = "desc") String direction,
+                                                                  @RequestParam(name = "sort", defaultValue = "default") String sort) {
+        return advertisementCommentService.getAdvertisementComments(index, firstElement, maxResult, direction, sort);
+    }
+
+    @PostMapping(value = "/{id}/comments")
+    public ResponseEntity<Boolean> createAdvertisementComment(@PathVariable(name = "id") @Positive Long index,
+                                                              @RequestBody @Validated(AdvertisementCommentDto.Create.class) AdvertisementCommentDto object) {
+        return new ResponseEntity<>(advertisementCommentService.create(index, object), HttpStatus.OK);
+    }
+
 }

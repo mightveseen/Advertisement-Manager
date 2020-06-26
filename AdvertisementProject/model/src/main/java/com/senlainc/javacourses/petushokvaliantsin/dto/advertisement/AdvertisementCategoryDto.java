@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 public class AdvertisementCategoryDto implements Serializable {
 
+    //TODO : Validation not working while add Advertisement
     @Null(groups = {Create.class})
     @NotNull(groups = {Update.class, AdvertisementDto.Update.class, AdvertisementDto.Create.class})
     @Positive(groups = {Update.class, AdvertisementDto.Update.class, AdvertisementDto.Create.class})
