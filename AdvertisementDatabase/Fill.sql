@@ -14,7 +14,7 @@ INSERT INTO `users`(`user_id`, `user_first_name`, `user_last_name`, `user_email`
 VALUES
 (2, 'Caren', 'Johnson', 'caren18@gmail.com', 292350943, '2017-04-02', 5),
 (1, 'Daniel', 'Dark', 'danieldark@gmail.com', 298674592, '2012-12-12', 5),
-(3, 'Vasilij', 'Bochkov', 'bochok@gmail.com', 339922111, '2019-09-19', 5),
+(3, 'Vasilij', 'Bochkov', 'bochok@gmail.com', 339922111, '2019-09-19', 7),
 (4, 'Robert', 'Downey Jr', 'stark@gmail.com', 010000001, '2019-09-19', 5);
 INSERT INTO `advertisement_categories`(`category_description`)
 VALUES

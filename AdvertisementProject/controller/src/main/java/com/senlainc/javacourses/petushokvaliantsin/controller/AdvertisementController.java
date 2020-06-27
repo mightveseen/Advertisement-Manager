@@ -31,7 +31,6 @@ public class AdvertisementController {
     private final IAdvertisementService advertisementService;
     private final IAdvertisementCommentService advertisementCommentService;
 
-
     @Autowired
     public AdvertisementController(IAdvertisementService advertisementService, IChatService chatService,
                                    IAdvertisementCommentService advertisementCommentService) {

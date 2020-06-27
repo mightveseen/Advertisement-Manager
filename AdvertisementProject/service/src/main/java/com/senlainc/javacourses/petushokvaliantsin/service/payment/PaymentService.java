@@ -2,6 +2,8 @@ package com.senlainc.javacourses.petushokvaliantsin.service.payment;
 
 import com.senlainc.javacourses.petushokvaliantsin.dto.payment.PaymentTypeDto;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
+import com.senlainc.javacourses.petushokvaliantsin.model.State;
+import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.PaymentType;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.payment.IPaymentDao;
@@ -9,33 +11,54 @@ import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.IStateService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.payment.IPaymentService;
+import com.senlainc.javacourses.petushokvaliantsin.serviceapi.payment.IPaymentTypeService;
+import com.senlainc.javacourses.petushokvaliantsin.utility.exception.ExceededLimitException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@PropertySource(value = "classpath:/properties/service.properties", ignoreResourceNotFound = true)
 public class PaymentService extends AbstractService<Payment, Long> implements IPaymentService {
 
     private final IPaymentDao paymentDao;
     private final IAdvertisementService advertisementService;
+    private final IPaymentTypeService paymentTypeService;
     private final IStateService stateService;
+    @Value("${PAYMENT.ACTIVE_LIMIT:3}")
+    private Short activeLimit;
 
     @Autowired
-    public PaymentService(IPaymentDao paymentDao, IAdvertisementService advertisementService, IStateService stateService) {
+    public PaymentService(IPaymentDao paymentDao, IAdvertisementService advertisementService, IStateService stateService, IPaymentTypeService paymentTypeService) {
         this.paymentDao = paymentDao;
         this.advertisementService = advertisementService;
+        this.paymentTypeService = paymentTypeService;
         this.stateService = stateService;
     }
 
+    //TODO : Should take DTO data or take dto id and read data from DataBase?
     @Override
     @Transactional
     public boolean create(Long advertisementIndex, PaymentTypeDto paymentTypeDto) {
-        final PaymentType paymentType = dtoMapper.map(paymentTypeDto, PaymentType.class);
-        final Payment payment = new Payment(advertisementService.read(advertisementIndex), paymentType, LocalDate.now(),
-                LocalDate.now().plusDays(paymentType.getDuration()), paymentType.getPrice(), stateService.read(EnumState.APPROVED.name()));
-        paymentDao.create(payment);
+        final Advertisement advertisement = advertisementService.read(advertisementIndex);
+        final State state = stateService.read(EnumState.APPROVED.name());
+        final List<Payment> advertisementActivePayment = advertisement.getPayments().stream().filter(i -> i.getState().equals(state)).collect(Collectors.toList());
+        if (advertisementActivePayment.size() >= activeLimit) {
+            throw new ExceededLimitException("You have: [" + activeLimit + "] active payment's");
+        }
+        final LocalDate paymentStartDate = (!advertisementActivePayment.isEmpty()) ?
+                advertisementActivePayment.stream().max(Comparator.comparing(Payment::getEndDate)).get().getEndDate() :
+                LocalDate.now();
+        final PaymentType paymentType = paymentTypeService.read(paymentTypeDto.getId());
+        paymentDao.create(new Payment(advertisement, paymentType, paymentStartDate,
+                paymentStartDate.plusDays(paymentType.getDuration()), paymentType.getPrice(), state));
         return true;
     }
 

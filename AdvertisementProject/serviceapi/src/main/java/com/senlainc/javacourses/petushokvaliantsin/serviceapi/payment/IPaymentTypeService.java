@@ -13,5 +13,7 @@ public interface IPaymentTypeService {
 
     boolean update(PaymentType object);
 
+    PaymentType read(Long index);
+
     List<PaymentTypeDto> getPaymentTypes();
 }

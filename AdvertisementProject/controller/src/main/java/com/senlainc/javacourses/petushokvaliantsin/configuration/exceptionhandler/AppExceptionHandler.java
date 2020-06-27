@@ -2,7 +2,9 @@ package com.senlainc.javacourses.petushokvaliantsin.configuration.exceptionhandl
 
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityAlreadyExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
+import com.senlainc.javacourses.petushokvaliantsin.utility.exception.ExceededLimitException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.IncorrectCastException;
+import com.senlainc.javacourses.petushokvaliantsin.utility.exception.MappingException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.WrongEnteredDataException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.CreateQueryException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.DeleteQueryException;
@@ -17,7 +19,17 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({WrongEnteredDataException.class, EntityAlreadyExistException.class, EntityNotExistException.class, IncorrectCastException.class})
+    @ExceptionHandler({ExceededLimitException.class})
+    public ResponseEntity<Object> notAcceptable(RuntimeException exc) {
+        return new ResponseEntity<>(ExceptionTemplate.of(exc.getMessage()), HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler({EntityAlreadyExistException.class, EntityNotExistException.class})
+    public ResponseEntity<Object> conflict(RuntimeException exc) {
+        return new ResponseEntity<>(ExceptionTemplate.of(exc.getMessage()), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler({WrongEnteredDataException.class, IncorrectCastException.class, MappingException.class})
     public ResponseEntity<Object> badRequest(RuntimeException exc) {
         return new ResponseEntity<>(ExceptionTemplate.of(exc.getMessage()), HttpStatus.BAD_REQUEST);
     }

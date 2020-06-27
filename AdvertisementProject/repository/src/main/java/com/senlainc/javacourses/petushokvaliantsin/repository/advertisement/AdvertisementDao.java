@@ -57,7 +57,7 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
             final List<Order> orders = getOrders(pageParameter, root, stateParameter);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
-                    .orderBy(orders)
+                    .orderBy(orders).groupBy(root.get(Advertisement_.id))
                     .where(criteriaBuilder.and(predicates.toArray(new Predicate[0]))))
                     .setFirstResult(pageParameter.getFirstElement())
                     .setMaxResults(pageParameter.getMaxResult())
@@ -86,6 +86,7 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
         return predicates;
     }
 
+    //TODO : Fix sort (sorting only second part after left join)
     private List<Order> getOrders(IPageParameter pageParameter, Root<Advertisement> root, IStateParameter stateParameter) {
         final List<Order> orders = new ArrayList<>();
         final Join<Advertisement, Payment> join = root.join(Advertisement_.payments, JoinType.LEFT);

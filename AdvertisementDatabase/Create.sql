@@ -1,5 +1,6 @@
 DROP DATABASE IF EXISTS AdvertisementManager;
 CREATE DATABASE IF NOT EXISTS AdvertisementManager;
+SET GLOBAL sql_mode = (SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''));
 USE AdvertisementManager;
 CREATE TABLE IF NOT EXISTS `user_roles` (
 `role_id` INT AUTO_INCREMENT PRIMARY KEY,

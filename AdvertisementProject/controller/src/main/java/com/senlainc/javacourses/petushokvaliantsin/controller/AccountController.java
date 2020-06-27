@@ -58,10 +58,10 @@ public class AccountController {
     @PostMapping(value = "/chats/{id}")
     public ResponseEntity<Boolean> addMessageIntoChat(@PathVariable(name = "id") @Positive Long index,
                                                       @RequestBody @Validated(MessageDto.class) MessageDto message) {
-        return new ResponseEntity<>(messageService.create(index, message), HttpStatus.OK);
+        return new ResponseEntity<>(messageService.create(index, message), HttpStatus.CREATED);
     }
 
-    //TODO : Think about it
+    //TODO : Think about it (DTO or id)
     @DeleteMapping(value = "/chats/{id}")
     public ResponseEntity<Boolean> removeChat(@PathVariable(name = "id") @Positive Long index,
                                               @RequestParam(name = "userId") @Positive Long userId) {
@@ -79,6 +79,6 @@ public class AccountController {
 
     @PutMapping(value = "/settings/profile")
     public ResponseEntity<Boolean> updateUserProfile(@RequestBody @Validated(UserDto.Update.class) UserDto user) {
-        return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
+        return new ResponseEntity<>(userService.update(user), HttpStatus.ACCEPTED);
     }
 }

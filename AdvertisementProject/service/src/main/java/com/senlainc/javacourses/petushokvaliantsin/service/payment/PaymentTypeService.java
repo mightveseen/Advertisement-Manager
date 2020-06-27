@@ -43,6 +43,12 @@ public class PaymentTypeService extends AbstractService<PaymentType, Long> imple
     }
 
     @Override
+    @Transactional
+    public PaymentType read(Long index) {
+        return paymentTypeDao.read(index);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<PaymentTypeDto> getPaymentTypes() {
         return dtoMapper.mapAll(paymentTypeDao.readAll(), PaymentTypeDto.class);
