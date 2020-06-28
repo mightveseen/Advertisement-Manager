@@ -4,6 +4,7 @@ import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertise
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementComment;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Message;
+import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,6 +50,8 @@ public class User {
     private Set<AdvertisementComment> comments;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Advertisement> advertisements;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Payment> payments;
     @OneToMany(mappedBy = "rateOwnerUser", fetch = FetchType.LAZY)
     private Set<UserRating> rateOwnerUserRatings;
     @OneToMany(mappedBy = "ratedUser", fetch = FetchType.LAZY)
@@ -160,6 +163,14 @@ public class User {
 
     public void setAdvertisements(Set<Advertisement> advertisements) {
         this.advertisements = advertisements;
+    }
+
+    public Set<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(Set<Payment> payments) {
+        this.payments = payments;
     }
 
     public Set<UserRating> getRateOwnerUserRatings() {

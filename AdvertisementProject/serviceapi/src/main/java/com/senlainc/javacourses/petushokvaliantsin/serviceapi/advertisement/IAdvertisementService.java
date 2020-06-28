@@ -11,7 +11,7 @@ public interface IAdvertisementService {
 
     boolean delete(Long index);
 
-    boolean update(AdvertisementDto object);
+    boolean update(AdvertisementDto object, String state, boolean changeDate);
 
     Advertisement read(Long index);
 

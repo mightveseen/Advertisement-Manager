@@ -1,10 +1,12 @@
-package com.senlainc.javacourses.petushokvaliantsin.controller;
+package com.senlainc.javacourses.petushokvaliantsin.controller.user;
 
 import com.senlainc.javacourses.petushokvaliantsin.dto.chat.ChatDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.chat.MessageDto;
+import com.senlainc.javacourses.petushokvaliantsin.dto.payment.PaymentDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IChatService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IMessageService;
+import com.senlainc.javacourses.petushokvaliantsin.serviceapi.payment.IPaymentService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,16 +32,28 @@ public class AccountController {
     private final IChatService chatService;
     private final IMessageService messageService;
     private final IUserService userService;
+    private final IPaymentService paymentService;
 
     @Autowired
-    public AccountController(IChatService chatService, IMessageService messageService, IUserService userService) {
+    public AccountController(IChatService chatService, IMessageService messageService, IUserService userService, IPaymentService paymentService) {
         this.chatService = chatService;
         this.messageService = messageService;
         this.userService = userService;
+        this.paymentService = paymentService;
     }
 
     /**
-     * Chat operation [Show all, show message of chat, add message, remove chat]
+     * Payment operation [Get operation history]
+     */
+    @GetMapping(value = "/payments")
+    public List<PaymentDto> getUserPayments(@RequestBody @Validated(UserDto.Read.class) UserDto user,
+                                            @RequestParam(name = "page", defaultValue = "1") @Positive int page,
+                                            @RequestParam(name = "max", defaultValue = "15") @Positive int max) {
+        return paymentService.getUserPayments(user, page, max);
+    }
+
+    /**
+     * Chat operation [Show all, show chat message, add message, remove chat]
      */
     @GetMapping(value = "/chats")
     public List<ChatDto> getUserChats(@RequestParam(name = "userId") @Positive Long userId,
@@ -57,7 +71,7 @@ public class AccountController {
 
     @PostMapping(value = "/chats/{id}")
     public ResponseEntity<Boolean> addMessageIntoChat(@PathVariable(name = "id") @Positive Long index,
-                                                      @RequestBody @Validated(MessageDto.class) MessageDto message) {
+                                                      @RequestBody @Validated(MessageDto.Create.class) MessageDto message) {
         return new ResponseEntity<>(messageService.create(index, message), HttpStatus.CREATED);
     }
 

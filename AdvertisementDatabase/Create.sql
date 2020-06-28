@@ -75,12 +75,14 @@ CREATE TABLE IF NOT EXISTS `payment_types` (
 );
 CREATE TABLE IF NOT EXISTS `payments` (
 `payment_id` INT AUTO_INCREMENT PRIMARY KEY,
+`user_id` INT NOT NULL,
 `advertisement_id` INT NOT NULL,
 `type_id` INT,
 `payment_start_date` DATE NOT NULL,
 `payment_end_date` DATE NOT NULL,
 `payment_price` DOUBLE NOT NULL,
 `state_id` INT,
+FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (`advertisement_id`) REFERENCES `advertisements`(`advertisement_id`) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (`type_id`) REFERENCES `payment_types`(`type_id`) ON DELETE SET NULL ON UPDATE CASCADE,
 FOREIGN KEY (`state_id`) REFERENCES `states`(`state_id`) ON DELETE SET NULL ON UPDATE CASCADE

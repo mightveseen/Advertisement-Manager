@@ -32,6 +32,7 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
         this.advertisementService = advertisementService;
     }
 
+    //TODO : Should leave only 1 comment?
     @Override
     @Transactional
     public boolean create(Long advertisementIndex, AdvertisementCommentDto object) {
@@ -39,13 +40,6 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
         advertisementComment.setDateTime(LocalDateTime.now());
         advertisementComment.setAdvertisement(advertisementService.read(advertisementIndex));
         advertisementCommentDao.create(advertisementComment);
-        return true;
-    }
-
-    @Override
-    @Transactional
-    public boolean update(AdvertisementComment object) {
-        advertisementCommentDao.update(object);
         return true;
     }
 

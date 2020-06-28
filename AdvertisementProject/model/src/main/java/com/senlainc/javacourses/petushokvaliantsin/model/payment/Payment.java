@@ -2,6 +2,7 @@ package com.senlainc.javacourses.petushokvaliantsin.model.payment;
 
 import com.senlainc.javacourses.petushokvaliantsin.model.State;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
+import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,6 +25,9 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "advertisement_id", nullable = false)
     private Advertisement advertisement;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -42,7 +46,8 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(Advertisement advertisement, PaymentType type, LocalDate startDate, LocalDate endDate, Double price, State state) {
+    public Payment(User user, Advertisement advertisement, PaymentType type, LocalDate startDate, LocalDate endDate, Double price, State state) {
+        this.user = user;
         this.advertisement = advertisement;
         this.type = type;
         this.startDate = startDate;
@@ -57,6 +62,14 @@ public class Payment {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Advertisement getAdvertisement() {
@@ -113,6 +126,7 @@ public class Payment {
         if (o == null || getClass() != o.getClass()) return false;
         Payment payment = (Payment) o;
         return id.equals(payment.id) &&
+                user.equals(payment.user) &&
                 advertisement.equals(payment.advertisement) &&
                 type.equals(payment.type) &&
                 startDate.equals(payment.startDate) &&
@@ -123,13 +137,14 @@ public class Payment {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, advertisement, type, startDate, endDate, price, state);
+        return Objects.hash(id, user, advertisement, type, startDate, endDate, price, state);
     }
 
     @Override
     public String toString() {
         return "Payment{" +
                 "id=" + id +
+                ", user=" + user +
                 ", advertisement=" + advertisement +
                 ", type=" + type +
                 ", startDate=" + startDate +

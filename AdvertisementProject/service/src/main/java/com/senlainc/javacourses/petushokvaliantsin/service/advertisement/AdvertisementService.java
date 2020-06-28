@@ -62,10 +62,12 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
 
     @Override
     @Transactional
-    public boolean update(AdvertisementDto object) {
+    public boolean update(AdvertisementDto object, String state, boolean changeDate) {
         final Advertisement advertisement = dtoMapper.map(object, Advertisement.class);
-        advertisement.setDate(LocalDate.now());
-        advertisement.setState(stateService.read(EnumState.MODERATION.name()));
+        if (changeDate) {
+            advertisement.setDate(LocalDate.now());
+        }
+        advertisement.setState(stateService.read(state.toUpperCase()));
         advertisementDao.update(advertisement);
         return true;
     }
@@ -86,7 +88,7 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     @Transactional(readOnly = true)
     public List<AdvertisementDto> getUserAdvertisements(Long index, int page, int numberElements, String state) {
         return dtoMapper.mapAll(advertisementDao.readAllWithState(PageParameter.of(page, numberElements)
-                , userService.read(index), stateService.read(EnumState.valueOf(state).name()))
+                , userService.read(index), stateService.read(state.toUpperCase()))
                 , AdvertisementDto.class);
     }
 

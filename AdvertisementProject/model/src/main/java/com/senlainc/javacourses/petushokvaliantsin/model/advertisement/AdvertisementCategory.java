@@ -48,6 +48,14 @@ public class AdvertisementCategory {
         this.description = description;
     }
 
+    public Set<Advertisement> getAdvertisements() {
+        return advertisements;
+    }
+
+    public void setAdvertisements(Set<Advertisement> advertisements) {
+        this.advertisements = advertisements;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

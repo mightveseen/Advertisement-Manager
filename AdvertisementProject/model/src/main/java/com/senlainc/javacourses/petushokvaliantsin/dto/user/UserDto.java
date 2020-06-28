@@ -23,21 +23,25 @@ public class UserDto implements Serializable {
             ChatDto.Create.class, ChatDto.Update.class, MessageDto.Create.class})
     @NotNull(groups = {Update.class, AdvertisementDto.Update.class, AdvertisementDto.Create.class,
             AdvertisementCommentDto.Create.class, AdvertisementCommentDto.Update.class,
-            ChatDto.Create.class, ChatDto.Update.class, MessageDto.Create.class})
+            ChatDto.Create.class, ChatDto.Update.class, MessageDto.Create.class, Read.class})
     private Long id;
+    @Null(groups = {Read.class})
     @NotNull(groups = {Create.class, Update.class})
     private String firstName;
+    @Null(groups = {Read.class})
     @NotNull(groups = {Create.class, Update.class})
     private String lastName;
+    @Null(groups = {Read.class})
     @NotNull(groups = {Create.class, Update.class})
     private String email;
+    @Null(groups = {Read.class})
     @NotNull(groups = {Create.class, Update.class})
     private Integer phone;
-    @Null(groups = {Create.class, Update.class})
+    @Null(groups = {Create.class, Update.class, Read.class})
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate registrationDate;
-    @Null(groups = {Create.class, Update.class})
+    @Null(groups = {Create.class, Update.class, Read.class})
     private Float rating;
 
     public Long getId() {
@@ -101,6 +105,10 @@ public class UserDto implements Serializable {
     }
 
     public interface Update {
+
+    }
+
+    public interface Read {
 
     }
 }

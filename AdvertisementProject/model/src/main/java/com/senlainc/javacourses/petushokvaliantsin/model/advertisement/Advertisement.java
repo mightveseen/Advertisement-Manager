@@ -111,6 +111,14 @@ public class Advertisement implements Cloneable {
         this.date = date;
     }
 
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
     public State getState() {
         return state;
     }
@@ -141,14 +149,6 @@ public class Advertisement implements Cloneable {
 
     public void setPayments(Set<Payment> payments) {
         this.payments = payments;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     @Override

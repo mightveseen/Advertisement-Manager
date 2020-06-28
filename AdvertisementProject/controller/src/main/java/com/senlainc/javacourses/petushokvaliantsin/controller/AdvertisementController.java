@@ -66,7 +66,7 @@ public class AdvertisementController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<Boolean> updateAdvertisement(@RequestBody @Validated(AdvertisementDto.Update.class) AdvertisementDto object) {
-        return new ResponseEntity<>(advertisementService.update(object), HttpStatus.OK);
+        return new ResponseEntity<>(advertisementService.update(object, "MODERATION", true), HttpStatus.OK);
     }
 
     @PostMapping(value = "/create")

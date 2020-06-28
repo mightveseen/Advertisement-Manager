@@ -34,7 +34,7 @@ public class ChatService extends AbstractService<Chat, Long> implements IChatSer
     public boolean create(ChatDto object) {
         final Chat chat = dtoMapper.map(object, Chat.class);
         chat.setUpdateDateTime(LocalDateTime.now());
-        chat.setLastMessage("Chat created");
+        chat.setLastMessage(object.getUsers().toArray()[0] + " create chat");
         chatDao.create(chat);
         return true;
     }
