@@ -5,15 +5,11 @@ import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 
 public interface IUserService {
 
-    boolean update(User object);
-
     boolean update(UserDto object);
 
     boolean delete(Long index);
 
     boolean create(User object);
-
-    User read(Long index);
 
     UserDto getUser(Long index);
 }

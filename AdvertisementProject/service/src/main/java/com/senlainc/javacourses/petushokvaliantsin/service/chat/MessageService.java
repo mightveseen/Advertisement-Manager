@@ -4,11 +4,11 @@ import com.senlainc.javacourses.petushokvaliantsin.dto.chat.MessageDto;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Message;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Message_;
+import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.chat.IChatDao;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.chat.IMessageDao;
+import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
-import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IChatService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IMessageService;
-import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,35 +21,35 @@ import java.util.List;
 public class MessageService extends AbstractService<Message, Long> implements IMessageService {
 
     private final IMessageDao messageDao;
-    private final IChatService chatService;
-    private final IUserService userService;
+    private final IChatDao chatDao;
+    private final IUserDao userDao;
 
     @Autowired
-    public MessageService(IMessageDao messageDao, IChatService chatService, IUserService userService) {
+    public MessageService(IMessageDao messageDao, IChatDao chatDao, IUserDao userDao) {
         this.messageDao = messageDao;
-        this.chatService = chatService;
-        this.userService = userService;
+        this.chatDao = chatDao;
+        this.userDao = userDao;
     }
 
     @Override
     @Transactional
     public boolean create(Long chatIndex, MessageDto object) {
         final Message message = dtoMapper.map(object, Message.class);
-        final Chat chat = chatService.read(chatIndex);
+        final Chat chat = chatDao.read(chatIndex);
         message.setChat(chat);
-        message.setUser(userService.read(message.getUser().getId()));
+        message.setUser(userDao.read(message.getUser().getId()));
         message.setDateTime(LocalDateTime.now());
         messageDao.create(message);
         chat.setUpdateDateTime(LocalDateTime.now());
         chat.setLastMessage(message.getUser().getFirstName() + ": " + message.getText().substring(0, 20) + "...");
-        chatService.update(chat);
+        chatDao.update(chat);
         return true;
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<MessageDto> getMessages(Long chatIndex, int firstElement, int maxResult) {
-        return dtoMapper.mapAll(messageDao.readAll(PageParameter.of(firstElement, maxResult), Message_.chat, chatService.read(chatIndex)),
+        return dtoMapper.mapAll(messageDao.readAll(PageParameter.of(firstElement, maxResult), Message_.chat, chatDao.read(chatIndex)),
                 MessageDto.class);
     }
 }

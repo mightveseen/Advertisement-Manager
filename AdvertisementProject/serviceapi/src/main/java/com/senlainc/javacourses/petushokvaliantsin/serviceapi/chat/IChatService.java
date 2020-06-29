@@ -13,7 +13,5 @@ public interface IChatService {
 
     boolean delete(Long index, Long userIndex);
 
-    Chat read(Long index);
-
     List<ChatDto> getChats(Long userIndex, int page, int maxResult);
 }

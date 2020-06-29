@@ -2,7 +2,6 @@ package com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement;
 
 import com.senlainc.javacourses.petushokvaliantsin.dto.StateDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
-import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
 
 import java.util.List;
 
@@ -15,8 +14,6 @@ public interface IAdvertisementService {
     boolean updateByUser(AdvertisementDto object);
 
     boolean updateByModerator(Long advertisementIndex, StateDto state);
-
-    Advertisement read(Long index);
 
     AdvertisementDto getAdvertisementByUser(Long index);
 
