@@ -71,7 +71,7 @@ public class AccountController {
 
     @PostMapping(value = "/chats/{id}")
     public ResponseEntity<Boolean> addMessageIntoChat(@PathVariable(name = "id") @Positive Long index,
-                                                      @RequestBody @Validated(MessageDto.Create.class) MessageDto message) {
+                                                      @RequestBody @Validated({MessageDto.Create.class, UserDto.Read.class}) MessageDto message) {
         return new ResponseEntity<>(messageService.create(index, message), HttpStatus.CREATED);
     }
 

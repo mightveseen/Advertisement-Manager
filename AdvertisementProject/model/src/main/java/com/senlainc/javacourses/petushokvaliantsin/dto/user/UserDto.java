@@ -3,11 +3,9 @@ package com.senlainc.javacourses.petushokvaliantsin.dto.user;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementCommentDto;
-import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
-import com.senlainc.javacourses.petushokvaliantsin.dto.chat.ChatDto;
-import com.senlainc.javacourses.petushokvaliantsin.dto.chat.MessageDto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Positive;
@@ -16,32 +14,24 @@ import java.time.LocalDate;
 
 public class UserDto implements Serializable {
 
-    //TODO : Validation not working while add Advertisement
-    @Null(groups = {Create.class})
-    @Positive(groups = {Update.class, AdvertisementDto.Update.class, AdvertisementDto.Create.class,
-            AdvertisementCommentDto.Create.class, AdvertisementCommentDto.Update.class,
-            ChatDto.Create.class, ChatDto.Update.class, MessageDto.Create.class})
-    @NotNull(groups = {Update.class, AdvertisementDto.Update.class, AdvertisementDto.Create.class,
-            AdvertisementCommentDto.Create.class, AdvertisementCommentDto.Update.class,
-            ChatDto.Create.class, ChatDto.Update.class, MessageDto.Create.class, Read.class})
+    @Null(groups = Create.class)
+    @Positive(groups = Update.class)
+    @NotNull(groups = {Update.class, Read.class})
     private Long id;
-    @Null(groups = {Read.class})
-    @NotNull(groups = {Create.class, Update.class})
+    @NotEmpty(groups = {Create.class, Update.class})
     private String firstName;
-    @Null(groups = {Read.class})
-    @NotNull(groups = {Create.class, Update.class})
+    @NotEmpty(groups = {Create.class, Update.class})
     private String lastName;
-    @Null(groups = {Read.class})
-    @NotNull(groups = {Create.class, Update.class})
+    @Email(groups = {Create.class, Update.class})
+    @NotEmpty(groups = {Create.class, Update.class})
     private String email;
-    @Null(groups = {Read.class})
     @NotNull(groups = {Create.class, Update.class})
     private Integer phone;
-    @Null(groups = {Create.class, Update.class, Read.class})
+    @Null(groups = {Create.class, Update.class})
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate registrationDate;
-    @Null(groups = {Create.class, Update.class, Read.class})
+    @Null(groups = {Create.class, Update.class})
     private Float rating;
 
     public Long getId() {

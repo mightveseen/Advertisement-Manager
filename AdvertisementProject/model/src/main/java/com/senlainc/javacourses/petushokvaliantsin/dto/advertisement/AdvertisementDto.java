@@ -1,13 +1,13 @@
 package com.senlainc.javacourses.petushokvaliantsin.dto.advertisement;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.senlainc.javacourses.petushokvaliantsin.dto.StateDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Positive;
@@ -17,21 +17,23 @@ import java.time.LocalDate;
 
 public class AdvertisementDto implements Serializable {
 
-    @Positive(groups = {Update.class})
-    @Null(groups = {Create.class})
-    @NotNull(groups = {Update.class})
+    @Null(groups = Create.class)
+    @Positive(groups = Update.class)
+    @NotNull(groups = Update.class)
     private Long id;
-    @NotNull(groups = {Create.class, Update.class})
+    @NotEmpty(groups = {Create.class, Update.class})
     private String header;
-    @NotNull(groups = {Create.class, Update.class})
+    @Valid
+    @Null(groups = Update.class)
+    @NotNull(groups = Create.class)
     private UserDto user;
-    @NotNull(groups = {Create.class, Update.class})
+    @NotEmpty(groups = {Create.class, Update.class})
     private String description;
+    @Valid
     @NotNull(groups = {Create.class, Update.class})
     private AdvertisementCategoryDto advertisementCategory;
     @Null(groups = {Create.class, Update.class})
     @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate date;
     @NotNull(groups = {Create.class, Update.class})
@@ -109,6 +111,10 @@ public class AdvertisementDto implements Serializable {
     }
 
     public interface Update {
+
+    }
+
+    public interface Read {
 
     }
 }

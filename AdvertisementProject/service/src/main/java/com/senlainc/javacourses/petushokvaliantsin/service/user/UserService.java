@@ -43,6 +43,7 @@ public class UserService extends AbstractService<User, Long> implements IUserSer
     @Override
     @Transactional
     public boolean update(UserDto object) {
+        userDao.read(object.getId());
         object.setRating(userDao.read(object.getId()).getRating());
         userDao.update(dtoMapper.map(object, User.class));
         return true;

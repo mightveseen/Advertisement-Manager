@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/{id}")
-    public ResponseEntity<Object> rateUser(@RequestBody @Validated(UserRatingDto.class) UserRatingDto userRatingDto) {
+    public ResponseEntity<Object> rateUser(@RequestBody @Validated({UserRatingDto.Create.class, UserDto.Read.class}) UserRatingDto userRatingDto) {
         return new ResponseEntity<>(userRatingService.create(userRatingDto), HttpStatus.OK);
     }
 

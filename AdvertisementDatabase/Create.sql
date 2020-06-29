@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 `user_id` INT PRIMARY KEY,
 `user_first_name` VARCHAR(50) NOT NULL, 
 `user_last_name` VARCHAR(50) NOT NULL,
-`user_email` VARCHAR(50) NOT NULL,
+`user_email` VARCHAR(50) NOT NULL UNIQUE,
 `user_phone` INT NOT NULL,
 `user_registration_date` DATE NOT NULL,
 `user_rating` FLOAT,

@@ -6,9 +6,9 @@ import java.io.Serializable;
 
 public class AdvertisementPhotoDto implements Serializable {
 
-    @Null(groups = {Create.class})
+    @Null(groups = Create.class)
     private Long id;
-    @NotNull(groups = {Create.class})
+    @NotNull(groups = Create.class)
     private String url;
 
     public Long getId() {

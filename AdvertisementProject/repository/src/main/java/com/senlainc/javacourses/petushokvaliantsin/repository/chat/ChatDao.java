@@ -18,7 +18,6 @@ import java.util.List;
 @Repository
 public class ChatDao extends AbstractDao<Chat, Long> implements IChatDao {
 
-    //TODO : Think about it
     @Override
     public List<Chat> readAllUserChat(IPageParameter pageParameter, User user) {
         try {

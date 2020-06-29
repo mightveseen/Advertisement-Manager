@@ -47,13 +47,6 @@ public class MessageService extends AbstractService<Message, Long> implements IM
     }
 
     @Override
-    @Transactional
-    public boolean update(Message object) {
-        messageDao.update(object);
-        return true;
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public List<MessageDto> getMessages(Long chatIndex, int firstElement, int maxResult) {
         return dtoMapper.mapAll(messageDao.readAll(PageParameter.of(firstElement, maxResult), Message_.chat, chatService.read(chatIndex)),

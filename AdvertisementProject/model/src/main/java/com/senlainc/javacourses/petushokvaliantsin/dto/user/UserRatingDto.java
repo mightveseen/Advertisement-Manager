@@ -1,12 +1,21 @@
 package com.senlainc.javacourses.petushokvaliantsin.dto.user;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.io.Serializable;
 
 public class UserRatingDto implements Serializable {
 
+    @Null(groups = Create.class)
     private Long id;
+    @Valid
+    @NotNull(groups = Create.class)
     private UserDto rateOwnerUser;
+    @Valid
+    @NotNull(groups = Create.class)
     private UserDto ratedUser;
+    @NotNull(groups = Create.class)
     private Short value;
 
     public Long getId() {
@@ -39,5 +48,9 @@ public class UserRatingDto implements Serializable {
 
     public void setValue(Short value) {
         this.value = value;
+    }
+
+    public interface Create {
+
     }
 }

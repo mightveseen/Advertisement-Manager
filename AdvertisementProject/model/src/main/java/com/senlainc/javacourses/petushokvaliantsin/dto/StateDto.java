@@ -1,10 +1,14 @@
 package com.senlainc.javacourses.petushokvaliantsin.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.io.Serializable;
 
 public class StateDto implements Serializable {
 
+    @Null(groups = Read.class)
     private Long id;
+    @NotNull(groups = Read.class)
     private String description;
 
     public Long getId() {
@@ -21,5 +25,8 @@ public class StateDto implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public interface Read {
     }
 }

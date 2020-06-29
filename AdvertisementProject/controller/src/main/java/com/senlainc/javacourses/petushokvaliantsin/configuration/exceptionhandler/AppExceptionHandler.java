@@ -1,6 +1,7 @@
 package com.senlainc.javacourses.petushokvaliantsin.configuration.exceptionhandler;
 
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityAlreadyExistException;
+import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotAvailableException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.ExceededLimitException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.IncorrectCastException;
@@ -22,6 +23,11 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({ExceededLimitException.class})
     public ResponseEntity<Object> notAcceptable(RuntimeException exc) {
         return new ResponseEntity<>(ExceptionTemplate.of(exc.getMessage()), HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler({EntityNotAvailableException.class})
+    public ResponseEntity<Object> forbidden(RuntimeException exc) {
+        return new ResponseEntity<>(ExceptionTemplate.of(exc.getMessage()), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler({EntityAlreadyExistException.class, EntityNotExistException.class})

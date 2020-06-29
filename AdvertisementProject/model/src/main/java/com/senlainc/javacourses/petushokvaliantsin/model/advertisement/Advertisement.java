@@ -29,7 +29,7 @@ public class Advertisement implements Cloneable {
     @Column(name = "advertisement_header")
     private String header;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", updatable = false)
     private User user;
     @Column(name = "advertisement_description")
     private String description;

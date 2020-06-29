@@ -42,6 +42,7 @@ public class ChatService extends AbstractService<Chat, Long> implements IChatSer
     @Override
     @Transactional
     public boolean update(Chat object) {
+        chatDao.read(object.getId());
         chatDao.update(object);
         return true;
     }

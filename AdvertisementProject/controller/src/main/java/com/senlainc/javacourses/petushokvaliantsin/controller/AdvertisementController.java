@@ -1,8 +1,11 @@
 package com.senlainc.javacourses.petushokvaliantsin.controller;
 
+import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementCategoryDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementCommentDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.chat.ChatDto;
+import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementCommentService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IChatService;
@@ -51,12 +54,12 @@ public class AdvertisementController {
                                                     @RequestParam(name = "search", defaultValue = "none") String search,
                                                     @RequestParam(name = "min", defaultValue = "0") double minPrice,
                                                     @RequestParam(name = "max", defaultValue = "0") double maxPrice) {
-        return advertisementService.getAdvertisements(page, numberElements, direction, sort, search, category, minPrice, maxPrice);
+        return advertisementService.getAdvertisements(page, numberElements, direction, sort, search, category, minPrice, maxPrice, EnumState.ACTIVE.name());
     }
 
     @GetMapping(value = "/{id}")
     public AdvertisementDto getAdvertisement(@PathVariable(name = "id") @Positive Long index) {
-        return advertisementService.getAdvertisement(index);
+        return advertisementService.getAdvertisementByUser(index);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -65,12 +68,12 @@ public class AdvertisementController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Boolean> updateAdvertisement(@RequestBody @Validated(AdvertisementDto.Update.class) AdvertisementDto object) {
-        return new ResponseEntity<>(advertisementService.update(object, "MODERATION", true), HttpStatus.OK);
+    public ResponseEntity<Boolean> updateAdvertisement(@RequestBody @Validated({AdvertisementDto.Update.class, AdvertisementCategoryDto.Read.class}) AdvertisementDto object) {
+        return new ResponseEntity<>(advertisementService.updateByUser(object), HttpStatus.OK);
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<Boolean> createAdvertisement(@RequestBody @Validated(AdvertisementDto.Create.class) AdvertisementDto object) {
+    public ResponseEntity<Boolean> createAdvertisement(@RequestBody @Validated({AdvertisementDto.Create.class, UserDto.Read.class, AdvertisementCategoryDto.Read.class}) AdvertisementDto object) {
         return new ResponseEntity<>(advertisementService.create(object), HttpStatus.OK);
     }
 
@@ -78,7 +81,7 @@ public class AdvertisementController {
      * Chat operation [Create chat]
      */
     @PostMapping(value = "/{id}")
-    public ResponseEntity<Boolean> createChat(@RequestBody @Validated(ChatDto.Create.class) ChatDto chat) {
+    public ResponseEntity<Boolean> createChat(@RequestBody @Validated({ChatDto.Create.class, UserDto.Read.class}) ChatDto chat) {
         return new ResponseEntity<>(chatService.create(chat), HttpStatus.OK);
     }
 
@@ -96,8 +99,7 @@ public class AdvertisementController {
 
     @PostMapping(value = "/{id}/comments")
     public ResponseEntity<Boolean> createAdvertisementComment(@PathVariable(name = "id") @Positive Long index,
-                                                              @RequestBody @Validated(AdvertisementCommentDto.Create.class) AdvertisementCommentDto object) {
+                                                              @RequestBody @Validated({AdvertisementCommentDto.Create.class, UserDto.Read.class}) AdvertisementCommentDto object) {
         return new ResponseEntity<>(advertisementCommentService.create(index, object), HttpStatus.OK);
     }
-
 }

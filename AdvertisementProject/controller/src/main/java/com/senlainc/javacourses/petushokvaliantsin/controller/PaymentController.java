@@ -36,7 +36,7 @@ public class PaymentController {
 
     @PostMapping
     public ResponseEntity<Object> addPayment(@PathVariable(name = "id") Long index,
-                                             @RequestBody @Validated(PaymentTypeDto.AddPayment.class) PaymentTypeDto object) {
+                                             @RequestBody @Validated(PaymentTypeDto.Read.class) PaymentTypeDto object) {
         return new ResponseEntity<>(paymentService.create(index, object), HttpStatus.OK);
     }
 }

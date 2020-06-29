@@ -38,6 +38,7 @@ public class PaymentTypeService extends AbstractService<PaymentType, Long> imple
     @Override
     @Transactional
     public boolean update(PaymentType object) {
+        paymentTypeDao.read(object.getId());
         paymentTypeDao.update(object);
         return true;
     }
