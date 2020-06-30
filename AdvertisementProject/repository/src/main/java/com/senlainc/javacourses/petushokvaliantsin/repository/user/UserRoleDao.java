@@ -1,9 +1,9 @@
 package com.senlainc.javacourses.petushokvaliantsin.repository.user;
 
-import com.senlainc.javacourses.petushokvaliantsin.model.user.UserCred;
-import com.senlainc.javacourses.petushokvaliantsin.model.user.UserCred_;
+import com.senlainc.javacourses.petushokvaliantsin.model.user.UserRole;
+import com.senlainc.javacourses.petushokvaliantsin.model.user.UserRole_;
 import com.senlainc.javacourses.petushokvaliantsin.repository.AbstractDao;
-import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserCredDao;
+import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserRoleDao;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.ReadQueryException;
 import org.springframework.stereotype.Repository;
 
@@ -13,14 +13,14 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 @Repository
-public class UserCredDao extends AbstractDao<UserCred, Long> implements IUserCredDao {
+public class UserRoleDao extends AbstractDao<UserRole, Long> implements IUserRoleDao {
 
     @Override
-    public UserCred readByUsername(String username) {
+    public UserRole readByDescription(String description) {
         try {
-            final CriteriaQuery<UserCred> criteriaQuery = criteriaBuilder.createQuery(UserCred.class);
-            final Root<UserCred> root = criteriaQuery.from(UserCred.class);
-            final Predicate predicate = criteriaBuilder.equal(root.get(UserCred_.login), username);
+            final CriteriaQuery<UserRole> criteriaQuery = criteriaBuilder.createQuery(UserRole.class);
+            final Root<UserRole> root = criteriaQuery.from(UserRole.class);
+            final Predicate predicate = criteriaBuilder.equal(root.get(UserRole_.description), description);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
                     .where(predicate))

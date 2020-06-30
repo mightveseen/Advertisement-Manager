@@ -1,12 +1,16 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.user;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "user_roles")
@@ -18,6 +22,9 @@ public class UserRole {
     private Long id;
     @Column(name = "role_description")
     private String description;
+
+    @OneToMany(mappedBy = "userRole", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<UserCred> userCreds;
 
     public UserRole() {
     }
@@ -40,6 +47,14 @@ public class UserRole {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<UserCred> getUserCreds() {
+        return userCreds;
+    }
+
+    public void setUserCreds(Set<UserCred> userCreds) {
+        this.userCreds = userCreds;
     }
 
     @Override

@@ -57,6 +57,7 @@ public class AdvertisementController {
         return advertisementService.getAdvertisements(page, numberElements, direction, sort, search, category, minPrice, maxPrice, EnumState.ACTIVE.name());
     }
 
+    //TODO : Make return counter
     @GetMapping(value = "/{id}")
     public AdvertisementDto getAdvertisement(@PathVariable(name = "id") @Positive Long index) {
         return advertisementService.getAdvertisementByUser(index);
