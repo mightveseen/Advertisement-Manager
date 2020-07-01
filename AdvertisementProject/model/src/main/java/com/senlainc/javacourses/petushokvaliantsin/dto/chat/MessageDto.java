@@ -5,9 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -16,8 +14,7 @@ public class MessageDto implements Serializable {
 
     @Null(groups = Create.class)
     private Long id;
-    @Valid
-    @NotNull(groups = Create.class)
+    @Null(groups = Create.class)
     private UserDto user;
     @NotEmpty(groups = Create.class)
     private String text;

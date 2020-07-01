@@ -36,15 +36,18 @@ public class ChatDao extends AbstractDao<Chat, Long> implements IChatDao {
         }
     }
 
-    //TODO : Fix set (cannot find single user)
     @Override
     public Long readCountWithUser(User user) {
-        final CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-        final Root<Chat> root = criteriaQuery.from(Chat.class);
-        final Predicate predicate = criteriaBuilder.equal(root.get(Chat_.users), user);
-        return entityManager.createQuery(criteriaQuery
-                .select(criteriaBuilder.count(root))
-                .where(predicate))
-                .getSingleResult();
+        try {
+            final CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+            final Root<Chat> root = criteriaQuery.from(entityClazz);
+            final Predicate predicate = criteriaBuilder.equal(root.join(Chat_.users), user);
+            return entityManager.createQuery(criteriaQuery
+                    .select(criteriaBuilder.count(root))
+                    .where(predicate))
+                    .getSingleResult();
+        } catch (PersistenceException exc) {
+            throw new ReadQueryException(exc);
+        }
     }
 }

@@ -4,12 +4,13 @@ import com.senlainc.javacourses.petushokvaliantsin.dto.ResultListDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementCategoryDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementCommentDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
-import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
+import com.senlainc.javacourses.petushokvaliantsin.dto.payment.PaymentTypeDto;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
-import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementCommentService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IChatService;
+import com.senlainc.javacourses.petushokvaliantsin.serviceapi.payment.IPaymentService;
+import com.senlainc.javacourses.petushokvaliantsin.serviceapi.payment.IPaymentTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "advertisements")
@@ -33,13 +37,17 @@ public class AdvertisementController {
     private final IChatService chatService;
     private final IAdvertisementService advertisementService;
     private final IAdvertisementCommentService advertisementCommentService;
+    private final IPaymentService paymentService;
+    private final IPaymentTypeService paymentTypeService;
 
     @Autowired
-    public AdvertisementController(IAdvertisementService advertisementService, IChatService chatService,
-                                   IAdvertisementCommentService advertisementCommentService) {
+    public AdvertisementController(IAdvertisementService advertisementService, IChatService chatService, IPaymentTypeService paymentTypeService,
+                                   IAdvertisementCommentService advertisementCommentService, IPaymentService paymentService) {
         this.advertisementService = advertisementService;
         this.chatService = chatService;
+        this.paymentService = paymentService;
         this.advertisementCommentService = advertisementCommentService;
+        this.paymentTypeService = paymentTypeService;
     }
 
     /**
@@ -64,29 +72,28 @@ public class AdvertisementController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Boolean> deleteAdvertisement(@PathVariable(name = "id") @Positive Long index) {
-        return new ResponseEntity<>(advertisementService.delete(index), HttpStatus.OK);
+    public ResponseEntity<Boolean> deleteAdvertisement(@PathVariable(name = "id") @Positive Long index, @NotNull Principal principal) {
+        return new ResponseEntity<>(advertisementService.delete(principal.getName(), index), HttpStatus.OK);
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<Boolean> updateAdvertisement(@RequestBody @Validated({AdvertisementDto.Update.class, AdvertisementCategoryDto.Read.class})
-                                                               AdvertisementDto object) {
-        return new ResponseEntity<>(advertisementService.updateByUser(object), HttpStatus.OK);
+                                                               AdvertisementDto object, @NotNull Principal principal) {
+        return new ResponseEntity<>(advertisementService.updateByUser(principal.getName(), object), HttpStatus.OK);
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<Boolean> createAdvertisement(@RequestBody @Validated({AdvertisementDto.Create.class, UserDto.Read.class, AdvertisementCategoryDto.Read.class})
-                                                               AdvertisementDto object) {
-        return new ResponseEntity<>(advertisementService.create(object), HttpStatus.OK);
+    public ResponseEntity<Boolean> createAdvertisement(@RequestBody @Validated({AdvertisementDto.Create.class, AdvertisementCategoryDto.Read.class})
+                                                               AdvertisementDto object, @NotNull Principal principal) {
+        return new ResponseEntity<>(advertisementService.create(principal.getName(), object), HttpStatus.OK);
     }
 
     /**
      * Chat operation [Create chat]
      */
     @PostMapping(value = "/{id}")
-    public ResponseEntity<Boolean> createChat(@PathVariable(name = "id") @Positive Long index) {
-        final User user = new User();
-        return new ResponseEntity<>(chatService.create(user, index), HttpStatus.OK);
+    public ResponseEntity<Boolean> createChat(@PathVariable(name = "id") @Positive Long index, @NotNull Principal principal) {
+        return new ResponseEntity<>(chatService.create(principal.getName(), index), HttpStatus.OK);
     }
 
     /**
@@ -104,8 +111,23 @@ public class AdvertisementController {
 
     @PostMapping(value = "/{id}/comments")
     public ResponseEntity<Boolean> createAdvertisementComment(@PathVariable(name = "id") @Positive Long index,
-                                                              @RequestBody @Validated({AdvertisementCommentDto.Create.class, UserDto.Read.class})
-                                                                      AdvertisementCommentDto object) {
-        return new ResponseEntity<>(advertisementCommentService.create(index, object), HttpStatus.OK);
+                                                              @RequestBody @Validated(AdvertisementCommentDto.Create.class) AdvertisementCommentDto object,
+                                                              @NotNull Principal principal) {
+        return new ResponseEntity<>(advertisementCommentService.create(principal.getName(), index, object), HttpStatus.OK);
+    }
+
+    /**
+     * Payment operation [Show all payment type, add payment]
+     */
+    @GetMapping(value = "{id}/payments")
+    public List<PaymentTypeDto> getPaymentTypes() {
+        return paymentTypeService.getPaymentTypes();
+    }
+
+    @PostMapping(value = "{id}/payments")
+    public ResponseEntity<Boolean> addPayment(@PathVariable(name = "id") Long index,
+                                              @RequestBody @Validated(PaymentTypeDto.Read.class) PaymentTypeDto object,
+                                              @NotNull Principal principal) {
+        return new ResponseEntity<>(paymentService.create(principal.getName(), index, object), HttpStatus.OK);
     }
 }

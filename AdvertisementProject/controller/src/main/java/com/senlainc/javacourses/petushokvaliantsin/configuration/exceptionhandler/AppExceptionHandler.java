@@ -6,6 +6,7 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotEx
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.ExceededLimitException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.IncorrectCastException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.MappingException;
+import com.senlainc.javacourses.petushokvaliantsin.utility.exception.PermissionDeniedException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.WrongEnteredDataException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.CreateQueryException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.DeleteQueryException;
@@ -26,7 +27,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(ExceptionTemplate.of(exc.getMessage()), HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @ExceptionHandler({EntityNotAvailableException.class})
+    @ExceptionHandler({EntityNotAvailableException.class, PermissionDeniedException.class})
     public ResponseEntity<Object> forbidden(RuntimeException exc) {
         return new ResponseEntity<>(ExceptionTemplate.of(exc.getMessage()), HttpStatus.FORBIDDEN);
     }

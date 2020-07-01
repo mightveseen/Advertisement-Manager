@@ -20,7 +20,7 @@ public class UserCredDao extends AbstractDao<UserCred, Long> implements IUserCre
         try {
             final CriteriaQuery<UserCred> criteriaQuery = criteriaBuilder.createQuery(UserCred.class);
             final Root<UserCred> root = criteriaQuery.from(UserCred.class);
-            final Predicate predicate = criteriaBuilder.equal(root.get(UserCred_.login), username);
+            final Predicate predicate = criteriaBuilder.equal(root.get(UserCred_.username), username);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
                     .where(predicate))

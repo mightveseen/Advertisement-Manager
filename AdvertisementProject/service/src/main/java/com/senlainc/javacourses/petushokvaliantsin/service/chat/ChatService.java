@@ -1,6 +1,7 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.chat;
 
 import com.senlainc.javacourses.petushokvaliantsin.dto.chat.ChatDto;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumException;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat_;
@@ -37,35 +38,27 @@ public class ChatService extends AbstractService<Chat, Long> implements IChatSer
         this.advertisementDao = advertisementDao;
     }
 
-    //TODO : Fix
     @Override
     @Transactional
-    public boolean create(User user, Long advertisementIndex) {
+    public boolean create(String username, Long advertisementIndex) {
         final Advertisement advertisement = advertisementDao.read(advertisementIndex);
-        final User secondUser = advertisement.getUser();
-        if (userDao.read((long) 1).getChats().stream().anyMatch(i -> i.getUsers().stream().anyMatch(j -> j.getId().equals(secondUser.getId())))) {
-            throw new EntityAlreadyExistException("Chat with this user already exist");
+        final User activeUser = userDao.readByUserCred(username);
+        final User chosenUser = advertisement.getUser();
+        if (activeUser.getChats().stream().anyMatch(i -> i.getUsers().stream().anyMatch(j -> j.getId().equals(chosenUser.getId())))) {
+            throw new EntityAlreadyExistException(EnumException.CHAT_EXIST.getMessage());
         }
         final Set<User> users = new HashSet<>();
-        users.add(secondUser);
-        users.add(userDao.read((long) 1));
-        chatDao.create(new Chat(advertisement.getHeader(), userDao.read((long) 1).getFirstName() + " create chat", LocalDateTime.now(), users));
+        users.add(chosenUser);
+        users.add(activeUser);
+        chatDao.create(new Chat(advertisement.getHeader(), activeUser.getFirstName() + " create chat", LocalDateTime.now(), users));
         return true;
     }
 
     @Override
     @Transactional
-    public boolean update(Chat object) {
-        chatDao.read(object.getId());
-        chatDao.update(object);
-        return true;
-    }
-
-    @Override
-    @Transactional
-    public boolean delete(Long index, Long userIndex) {
+    public boolean delete(Long index, String username) {
         final Chat chat = chatDao.read(index);
-        chat.getUsers().remove(userDao.read(userIndex));
+        chat.getUsers().remove(userDao.readByUserCred(username));
         if (chat.getUsers().isEmpty()) {
             chatDao.delete(chat);
         } else {
@@ -76,15 +69,14 @@ public class ChatService extends AbstractService<Chat, Long> implements IChatSer
 
     @Override
     @Transactional(readOnly = true)
-    public List<ChatDto> getChats(Long userIndex, int page, int maxResult) {
+    public List<ChatDto> getChats(String username, int page, int maxResult) {
         final IPageParameter pageParameter = PageParameter.of(page, maxResult, Sort.Direction.DESC.name(), Chat_.updateDateTime);
-        return dtoMapper.mapAll(chatDao.readAllUserChat(pageParameter, userDao.read(userIndex)), ChatDto.class);
+        return dtoMapper.mapAll(chatDao.readAllUserChat(pageParameter, userDao.readByUserCred(username)), ChatDto.class);
     }
 
-    //TODO : Fix
     @Override
     @Transactional(readOnly = true)
-    public Long getSize(Long user) {
-        return chatDao.readCountWithUser(userDao.read(user));
+    public Long getSize(String username) {
+        return chatDao.readCountWithUser(userDao.readByUserCred(username));
     }
 }

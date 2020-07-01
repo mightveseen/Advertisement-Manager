@@ -1,15 +1,10 @@
 USE AdvertisementManager;
-INSERT INTO `user_roles`(`role_description`)
+INSERT INTO `user_creds`(`user_username`, `user_password`, `user_role`)
 VALUES
-('ADMIN'),
-('MODERATOR'),
-('COMMON');
-INSERT INTO `user_creds`(`user_login`, `user_password`, `role_id`)
-VALUES
-('admin', 'admin', 1),
-('moderator', 'moderator', 2),
-('common', 'common', 3),
-('common2', 'common2', 3);
+('admin', '$2a$12$krxeaT4hAui4ZJYZlK0D9e/rHb6fVehBghY63D1Q1iM//cwnYFOEe', 'ROLE_ADMIN'),
+('moderator', '$2a$12$krxeaT4hAui4ZJYZlK0D9e/rHb6fVehBghY63D1Q1iM//cwnYFOEe', 'ROLE_MODERATOR'),
+('common', '$2a$12$krxeaT4hAui4ZJYZlK0D9e/rHb6fVehBghY63D1Q1iM//cwnYFOEe', 'ROLE_COMMON'),
+('common2', '$2a$12$krxeaT4hAui4ZJYZlK0D9e/rHb6fVehBghY63D1Q1iM//cwnYFOEe', 'ROLE_COMMON');
 INSERT INTO `users`(`user_id`, `user_first_name`, `user_last_name`, `user_email`, `user_phone`, `user_registration_date`, `user_rating`)
 VALUES
 (2, 'Caren', 'Johnson', 'caren18@gmail.com', 292350943, '2017-04-02', 5),

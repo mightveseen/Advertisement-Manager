@@ -23,9 +23,7 @@ public class AdvertisementDto implements Serializable {
     private Long id;
     @NotEmpty(groups = {Create.class, Update.class})
     private String header;
-    @Valid
-    @Null(groups = Update.class)
-    @NotNull(groups = Create.class)
+    @Null(groups = {Update.class, Create.class})
     private UserDto user;
     @NotEmpty(groups = {Create.class, Update.class})
     private String description;

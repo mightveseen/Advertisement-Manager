@@ -44,7 +44,7 @@ public class TokenMapper {
                     .build()
                     .verify(token.substring(tokenPrefix.length() + 1))
                     .getSubject();
-            return userDetailsService.loadUserByUsername(new ObjectMapper().readValue(decodedToken, UserCredDto.class).getLogin());
+            return userDetailsService.loadUserByUsername(new ObjectMapper().readValue(decodedToken, UserCredDto.class).getUsername());
         } catch (Exception exc) {
             return null;
         }

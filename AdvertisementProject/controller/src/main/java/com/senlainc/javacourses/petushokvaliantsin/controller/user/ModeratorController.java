@@ -52,6 +52,6 @@ public class ModeratorController {
     @PutMapping(value = "/advertisements/{id}")
     public ResponseEntity<Boolean> changeState(@PathVariable(name = "id") @Positive Long index,
                                                @RequestBody @Validated(StateDto.Read.class) StateDto state) {
-        return new ResponseEntity<>(advertisementService.updateByModerator(index, state), HttpStatus.OK);
+        return new ResponseEntity<>(advertisementService.updateStateByModerator(index, state), HttpStatus.OK);
     }
 }

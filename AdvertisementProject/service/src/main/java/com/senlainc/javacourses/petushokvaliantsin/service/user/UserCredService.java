@@ -4,7 +4,6 @@ import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserCredDto;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumRole;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.UserCred;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserCredDao;
-import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserRoleDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserCredService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,19 +20,17 @@ import java.util.Collections;
 public class UserCredService extends AbstractService<UserCred, Long> implements UserDetailsService, IUserCredService {
 
     private final IUserCredDao userCredDao;
-    private final IUserRoleDao userRoleDao;
 
     @Autowired
-    public UserCredService(IUserCredDao userCredDao, IUserRoleDao userRoleDao) {
+    public UserCredService(IUserCredDao userCredDao) {
         this.userCredDao = userCredDao;
-        this.userRoleDao = userRoleDao;
     }
 
     @Override
     @Transactional
     public boolean create(UserCredDto userCredDto) {
         final UserCred userCred = dtoMapper.map(userCredDto, UserCred.class);
-        userCred.setUserRole(userRoleDao.readByDescription(EnumRole.COMMON.name()));
+        userCred.setEnumRole(EnumRole.ROLE_COMMON);
         userCredDao.create(userCred);
         return true;
     }
@@ -42,6 +39,6 @@ public class UserCredService extends AbstractService<UserCred, Long> implements 
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) {
         final UserCred user = userCredDao.readByUsername(username);
-        return new User(user.getLogin(), user.getPassword(), Collections.singleton(new SimpleGrantedAuthority(user.getUserRole().getDescription())));
+        return new User(user.getUsername(), user.getPassword(), Collections.singleton(new SimpleGrantedAuthority(user.getEnumRole().name())));
     }
 }

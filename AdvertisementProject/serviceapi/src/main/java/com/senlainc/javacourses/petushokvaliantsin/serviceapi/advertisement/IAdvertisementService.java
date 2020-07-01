@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface IAdvertisementService {
 
-    boolean create(AdvertisementDto object);
+    boolean create(String username, AdvertisementDto object);
 
-    boolean delete(Long index);
+    boolean delete(String username, Long advertisementIndex);
 
-    boolean updateByUser(AdvertisementDto object);
+    boolean updateByUser(String username, AdvertisementDto object);
 
-    boolean updateByModerator(Long advertisementIndex, StateDto state);
+    boolean updateStateByModerator(Long advertisementIndex, StateDto state);
 
     AdvertisementDto getAdvertisementByUser(Long index);
 

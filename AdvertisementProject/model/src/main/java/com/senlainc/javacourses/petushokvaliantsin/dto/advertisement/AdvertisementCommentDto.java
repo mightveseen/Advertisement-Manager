@@ -5,26 +5,20 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
-import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class AdvertisementCommentDto implements Serializable {
 
     @Null(groups = Create.class)
-    @Positive(groups = Update.class)
-    @NotNull(groups = Update.class)
     private Long id;
-    @Valid
-    @NotNull(groups = {Create.class, Update.class})
+    @Null(groups = Create.class)
     private UserDto user;
-    @NotEmpty(groups = {Create.class, Update.class})
+    @NotEmpty(groups = Create.class)
     private String message;
-    @Null(groups = {Create.class, Update.class})
+    @Null(groups = Create.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm+dd-MM-yyyy")
     private LocalDateTime dateTime;
@@ -62,8 +56,5 @@ public class AdvertisementCommentDto implements Serializable {
     }
 
     public interface Create {
-    }
-
-    public interface Update {
     }
 }

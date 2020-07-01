@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.security.Principal;
 
 @RestController
 @RequestMapping(path = "users")
@@ -42,8 +44,10 @@ public class UserController {
     }
 
     @PostMapping(value = "/{id}")
-    public ResponseEntity<Boolean> rateUser(@RequestBody @Validated({UserRatingDto.Create.class, UserDto.Read.class}) UserRatingDto userRatingDto) {
-        return new ResponseEntity<>(userRatingService.create(userRatingDto), HttpStatus.OK);
+    public ResponseEntity<Boolean> rateUser(@PathVariable(name = "id") @Positive Long ratedUserIndex,
+                                            @RequestBody @Validated(UserRatingDto.Create.class) UserRatingDto userRatingDto,
+                                            @NotNull Principal principal) {
+        return new ResponseEntity<>(userRatingService.create(principal.getName(), ratedUserIndex, userRatingDto), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}/closed")

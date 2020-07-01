@@ -1,5 +1,5 @@
 package com.senlainc.javacourses.petushokvaliantsin.enumeration;
 
 public enum EnumRole {
-    ADMIN, MODERATOR, COMMON
+    ROLE_ADMIN, ROLE_MODERATOR, ROLE_COMMON
 }

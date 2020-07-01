@@ -1,5 +1,7 @@
 package com.senlainc.javacourses.petushokvaliantsin.dto.user;
 
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumRole;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.io.Serializable;
@@ -9,9 +11,11 @@ public class UserCredDto implements Serializable {
     @Null(groups = Create.class)
     private Long id;
     @NotNull(groups = Create.class)
-    private String login;
+    private String username;
     @NotNull(groups = Create.class)
     private String password;
+    @Null(groups = Create.class)
+    private EnumRole enumRole;
 
     public Long getId() {
         return id;
@@ -21,12 +25,12 @@ public class UserCredDto implements Serializable {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -35,6 +39,14 @@ public class UserCredDto implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public EnumRole getEnumRole() {
+        return enumRole;
+    }
+
+    public void setEnumRole(EnumRole enumRole) {
+        this.enumRole = enumRole;
     }
 
     public interface Create {

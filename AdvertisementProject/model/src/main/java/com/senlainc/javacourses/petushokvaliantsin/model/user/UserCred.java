@@ -1,14 +1,16 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.user;
 
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumRole;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Objects;
@@ -21,13 +23,13 @@ public class UserCred {
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "user_login")
-    private String login;
+    @Column(name = "user_username")
+    private String username;
     @Column(name = "user_password")
     private String password;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id")
-    private UserRole userRole;
+    @Column(name = "user_role")
+    @Enumerated(value = EnumType.STRING)
+    private EnumRole enumRole;
 
     @OneToOne(mappedBy = "userCred", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User user;
@@ -35,8 +37,8 @@ public class UserCred {
     public UserCred() {
     }
 
-    public UserCred(String login, String password) {
-        this.login = login;
+    public UserCred(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 
@@ -48,12 +50,12 @@ public class UserCred {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -64,12 +66,12 @@ public class UserCred {
         this.password = password;
     }
 
-    public UserRole getUserRole() {
-        return userRole;
+    public EnumRole getEnumRole() {
+        return enumRole;
     }
 
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
+    public void setEnumRole(EnumRole enumRole) {
+        this.enumRole = enumRole;
     }
 
     public User getUser() {
@@ -86,22 +88,23 @@ public class UserCred {
         if (o == null || getClass() != o.getClass()) return false;
         UserCred userCred = (UserCred) o;
         return id.equals(userCred.id) &&
-                login.equals(userCred.login) &&
-                password.equals(userCred.password);
+                username.equals(userCred.username) &&
+                password.equals(userCred.password) &&
+                enumRole == userCred.enumRole;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, password);
+        return Objects.hash(id, username, password, enumRole);
     }
 
     @Override
     public String toString() {
         return "UserCred{" +
                 "id=" + id +
-                ", login='" + login + '\'' +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", userRole=" + userRole +
+                ", userRole=" + enumRole +
                 '}';
     }
 }

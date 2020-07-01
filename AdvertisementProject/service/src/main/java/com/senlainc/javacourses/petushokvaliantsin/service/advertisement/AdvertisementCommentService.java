@@ -5,6 +5,7 @@ import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertise
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementComment_;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementCommentDao;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementDao;
+import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementCommentService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularClass;
@@ -25,17 +26,20 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
     private static final String SORT_FIELD = "advertisementcomment-";
     private final IAdvertisementCommentDao advertisementCommentDao;
     private final IAdvertisementDao advertisementDao;
+    private final IUserDao userDao;
 
     @Autowired
-    public AdvertisementCommentService(IAdvertisementCommentDao advertisementCommentDao, IAdvertisementDao advertisementDao) {
+    public AdvertisementCommentService(IAdvertisementCommentDao advertisementCommentDao, IAdvertisementDao advertisementDao, IUserDao userDao) {
         this.advertisementCommentDao = advertisementCommentDao;
         this.advertisementDao = advertisementDao;
+        this.userDao = userDao;
     }
 
     @Override
     @Transactional
-    public boolean create(Long advertisementIndex, AdvertisementCommentDto object) {
+    public boolean create(String username, Long advertisementIndex, AdvertisementCommentDto object) {
         final AdvertisementComment advertisementComment = dtoMapper.map(object, AdvertisementComment.class);
+        advertisementComment.setUser(userDao.readByUserCred(username));
         advertisementComment.setDateTime(LocalDateTime.now());
         advertisementComment.setAdvertisement(advertisementDao.read(advertisementIndex));
         advertisementCommentDao.create(advertisementComment);

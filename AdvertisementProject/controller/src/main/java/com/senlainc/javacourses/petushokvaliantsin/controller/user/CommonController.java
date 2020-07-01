@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -47,53 +49,56 @@ public class CommonController {
      * Payment operation [Get operation history]
      */
     @GetMapping(value = "/payments")
-    public ResultListDto<PaymentDto> getUserPayments(@RequestBody @Validated(UserDto.Read.class) UserDto user,
-                                                     @RequestParam(name = "page", defaultValue = "1") @Positive int page,
-                                                     @RequestParam(name = "max", defaultValue = "15") @Positive int max) {
-        return new ResultListDto<>(paymentService.getSize(user.getId()), paymentService.getUserPayments(user, page, max));
+    public ResultListDto<PaymentDto> getUserPayments(@RequestParam(name = "page", defaultValue = "1") @Positive int page,
+                                                     @RequestParam(name = "max", defaultValue = "15") @Positive int max,
+                                                     @NotNull Principal principal) {
+        return new ResultListDto<>(paymentService.getSize(principal.getName()), paymentService.getUserPayments(principal.getName(), page, max));
     }
 
     /**
      * Chat operation [Show all, show chat message, add message, remove chat]
      */
     @GetMapping(value = "/chats")
-    public ResultListDto<ChatDto> getUserChats(@RequestParam(name = "userId") @Positive Long userId,
-                                               @RequestParam(name = "page", defaultValue = "1") @Positive int page,
-                                               @RequestParam(name = "max", defaultValue = "15") @Positive int max) {
-        return new ResultListDto<>(chatService.getSize(userId), chatService.getChats(userId, page, max));
+    public ResultListDto<ChatDto> getUserChats(@RequestParam(name = "page", defaultValue = "1") @Positive int page,
+                                               @RequestParam(name = "max", defaultValue = "15") @Positive int max,
+                                               @NotNull Principal principal) {
+        return new ResultListDto<>(chatService.getSize(principal.getName()), chatService.getChats(principal.getName(), page, max));
     }
 
     @GetMapping(value = "/chats/{id}")
     public List<MessageDto> getChatMessage(@PathVariable(name = "id") @Positive Long index,
                                            @RequestParam(name = "page", defaultValue = "1") @Positive int page,
-                                           @RequestParam(name = "max", defaultValue = "15") @Positive int max) {
-        return messageService.getMessages(index, page, max);
+                                           @RequestParam(name = "max", defaultValue = "15") @Positive int max,
+                                           @NotNull Principal principal) {
+        return messageService.getMessages(principal.getName(), index, page, max);
     }
 
     @PostMapping(value = "/chats/{id}")
     public ResponseEntity<Boolean> addMessageIntoChat(@PathVariable(name = "id") @Positive Long index,
-                                                      @RequestBody @Validated({MessageDto.Create.class, UserDto.Read.class}) MessageDto message) {
-        return new ResponseEntity<>(messageService.create(index, message), HttpStatus.OK);
+                                                      @RequestBody @Validated(MessageDto.Create.class) MessageDto message,
+                                                      @NotNull Principal principal) {
+        return new ResponseEntity<>(messageService.create(principal.getName(), index, message), HttpStatus.OK);
     }
 
-    //TODO : Security take User (SecurityHolder)
     @DeleteMapping(value = "/chats/{id}")
     public ResponseEntity<Boolean> removeChat(@PathVariable(name = "id") @Positive Long index,
-                                              @RequestParam(name = "userId") @Positive Long userId) {
-        return new ResponseEntity<>(chatService.delete(index, userId), HttpStatus.OK);
+                                              @NotNull Principal principal) {
+        return new ResponseEntity<>(chatService.delete(index, principal.getName()), HttpStatus.OK);
     }
 
+    //TODO : Think about userCred
+
     /**
-     * Profile operation [Show/update profile information, ? Update user cred ?]
+     * Profile operation [Show/update profile information]
      */
-    //TODO : Don't forget about encrypted password
     @GetMapping(value = "/settings/profile")
-    public ResponseEntity<UserDto> getUserProfile(@RequestParam(name = "id") @Positive Long index) {
-        return new ResponseEntity<>(userService.getUser(index), HttpStatus.OK);
+    public ResponseEntity<UserDto> getUserProfile(@NotNull Principal principal) {
+        return new ResponseEntity<>(userService.getUser(principal.getName()), HttpStatus.OK);
     }
 
     @PutMapping(value = "/settings/profile")
-    public ResponseEntity<Boolean> updateUserProfile(@RequestBody @Validated(UserDto.Update.class) UserDto user) {
-        return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
+    public ResponseEntity<Boolean> updateUserProfile(@RequestBody @Validated(UserDto.Update.class) UserDto user,
+                                                     @NotNull Principal principal) {
+        return new ResponseEntity<>(userService.update(principal.getName(), user), HttpStatus.OK);
     }
 }

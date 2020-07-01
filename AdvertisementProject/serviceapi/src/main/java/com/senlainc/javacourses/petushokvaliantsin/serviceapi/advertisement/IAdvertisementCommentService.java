@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IAdvertisementCommentService {
 
-    boolean create(Long advertisementIndex, AdvertisementCommentDto object);
+    boolean create(String username, Long advertisementIndex, AdvertisementCommentDto object);
 
     List<AdvertisementCommentDto> getAdvertisementComments(Long index, int page, int numberElements, String direction, String sortField);
 

@@ -16,7 +16,7 @@ public class UserDto implements Serializable {
 
     @Null(groups = Create.class)
     @Positive(groups = Update.class)
-    @NotNull(groups = {Update.class, Read.class})
+    @NotNull(groups = Update.class)
     private Long id;
     @NotEmpty(groups = {Create.class, Update.class})
     private String firstName;
@@ -95,10 +95,6 @@ public class UserDto implements Serializable {
     }
 
     public interface Update {
-
-    }
-
-    public interface Read {
 
     }
 }

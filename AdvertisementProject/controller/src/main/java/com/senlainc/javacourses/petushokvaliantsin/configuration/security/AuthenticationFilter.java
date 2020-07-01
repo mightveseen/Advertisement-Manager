@@ -37,7 +37,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             final StringBuilder requestBody = new StringBuilder();
             request.getReader().lines().collect(Collectors.toList()).forEach(requestBody::append);
             final UserCredDto userDto = new ObjectMapper().readValue(requestBody.toString(), UserCredDto.class);
-            return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getLogin(), userDto.getPassword()));
+            return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword()));
         } catch (IOException e) {
             throw new EntityNotExistException(e.getMessage());
         }

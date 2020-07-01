@@ -35,8 +35,8 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(String token) {
-        final UserDetails userDto = tokenMapper.parseToken(token);
-        return new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword(),
-                userDto.getAuthorities());
+        final UserDetails userDetails = tokenMapper.parseToken(token);
+        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(),
+                userDetails.getAuthorities());
     }
 }

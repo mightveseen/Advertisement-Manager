@@ -4,5 +4,5 @@ import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserRatingDto;
 
 public interface IUserRatingService {
 
-    boolean create(UserRatingDto userRatingDto);
+    boolean create(String username, Long ratedUserIndex, UserRatingDto userRatingDto);
 }

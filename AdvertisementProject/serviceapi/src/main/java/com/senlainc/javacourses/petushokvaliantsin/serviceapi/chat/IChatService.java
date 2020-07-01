@@ -1,20 +1,16 @@
 package com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat;
 
 import com.senlainc.javacourses.petushokvaliantsin.dto.chat.ChatDto;
-import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
-import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 
 import java.util.List;
 
 public interface IChatService {
 
-    boolean create(User user, Long advertisementIndex);
+    boolean create(String username, Long advertisementIndex);
 
-    boolean update(Chat object);
+    boolean delete(Long index, String username);
 
-    boolean delete(Long index, Long userIndex);
+    List<ChatDto> getChats(String username, int page, int maxResult);
 
-    List<ChatDto> getChats(Long userIndex, int page, int maxResult);
-
-    Long getSize(Long user);
+    Long getSize(String username);
 }

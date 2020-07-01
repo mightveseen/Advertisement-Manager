@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -42,7 +43,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .anyRequest().permitAll()
+                .antMatchers("/login", "/sign-up").anonymous()
+                .antMatchers("/admin/*").hasRole("ADMIN")
+                .antMatchers("/moderator/*").hasAnyRole("MODERATOR", "ADMIN")
+                .antMatchers("/account/**").hasAnyRole("COMMON", "MODERATOR", "ADMIN")
+                .antMatchers(HttpMethod.PUT, "/advertisements/**").hasAnyRole("COMMON", "MODERATOR", "ADMIN")
+                .antMatchers(HttpMethod.POST, "/advertisements/**", "/users/{id}").hasAnyRole("COMMON", "MODERATOR", "ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/advertisements/**").hasAnyRole("COMMON", "MODERATOR", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/advertisements/**").permitAll()
                 .and().httpBasic()
                 .and().csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

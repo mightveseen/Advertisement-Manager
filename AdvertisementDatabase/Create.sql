@@ -2,16 +2,11 @@ DROP DATABASE IF EXISTS AdvertisementManager;
 CREATE DATABASE IF NOT EXISTS AdvertisementManager;
 SET GLOBAL sql_mode = (SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''));
 USE AdvertisementManager;
-CREATE TABLE IF NOT EXISTS `user_roles` (
-`role_id` INT AUTO_INCREMENT PRIMARY KEY,
-`role_description` VARCHAR(50) NOT NULL
-);
 CREATE TABLE IF NOT EXISTS `user_creds` (
 `user_id` INT AUTO_INCREMENT PRIMARY KEY,
-`user_login` VARCHAR(50) NOT NULL,
+`user_username` VARCHAR(50) NOT NULL UNIQUE,
 `user_password` VARCHAR(120) NOT NULL,
-`role_id` INT,
-FOREIGN KEY (`role_id`) REFERENCES `user_roles`(`role_id`) ON DELETE SET NULL ON UPDATE CASCADE
+`user_role` VARCHAR(20) NOT NULL
 );
 CREATE TABLE IF NOT EXISTS `users` (
 `user_id` INT PRIMARY KEY,

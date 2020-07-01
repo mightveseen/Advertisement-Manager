@@ -1,14 +1,17 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.chat;
 
 import com.senlainc.javacourses.petushokvaliantsin.dto.chat.MessageDto;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumException;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Message;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Message_;
+import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.chat.IChatDao;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.chat.IMessageDao;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IMessageService;
+import com.senlainc.javacourses.petushokvaliantsin.utility.exception.PermissionDeniedException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,14 +34,17 @@ public class MessageService extends AbstractService<Message, Long> implements IM
         this.userDao = userDao;
     }
 
-    //TODO : Check authority
     @Override
     @Transactional
-    public boolean create(Long chatIndex, MessageDto object) {
-        final Message message = dtoMapper.map(object, Message.class);
+    public boolean create(String username, Long chatIndex, MessageDto object) {
         final Chat chat = chatDao.read(chatIndex);
+        final User activeUser = userDao.readByUserCred(username);
+        if (chat.getUsers().stream().noneMatch(i -> i.getId().equals(activeUser.getId()))) {
+            throw new PermissionDeniedException(EnumException.PERMISSION_EXCEPTION.getMessage());
+        }
+        final Message message = dtoMapper.map(object, Message.class);
         message.setChat(chat);
-        message.setUser(userDao.read(message.getUser().getId()));
+        message.setUser(activeUser);
         message.setDateTime(LocalDateTime.now());
         messageDao.create(message);
         chat.setUpdateDateTime(LocalDateTime.now());
@@ -49,7 +55,11 @@ public class MessageService extends AbstractService<Message, Long> implements IM
 
     @Override
     @Transactional(readOnly = true)
-    public List<MessageDto> getMessages(Long chatIndex, int firstElement, int maxResult) {
+    public List<MessageDto> getMessages(String username, Long chatIndex, int firstElement, int maxResult) {
+        final Chat chat = chatDao.read(chatIndex);
+        if (chat.getUsers().stream().noneMatch(i -> i.getId().equals(userDao.readByUserCred(username).getId()))) {
+            throw new PermissionDeniedException(EnumException.PERMISSION_EXCEPTION.getMessage());
+        }
         return dtoMapper.mapAll(messageDao.readAll(PageParameter.of(firstElement, maxResult), Message_.chat, chatDao.read(chatIndex)),
                 MessageDto.class);
     }

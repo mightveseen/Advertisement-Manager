@@ -30,7 +30,7 @@ import java.util.List;
 public class AdvertisementDao extends AbstractDao<Advertisement, Long> implements IAdvertisementDao {
 
     @Override
-    public List<Advertisement> readAllWithState(IPageParameter pageParameter, User user, State state) {
+    public List<Advertisement> readAllWithUser(IPageParameter pageParameter, User user, State state) {
         try {
             final CriteriaQuery<Advertisement> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
             final Root<Advertisement> root = criteriaQuery.from(entityClazz);

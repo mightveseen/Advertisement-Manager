@@ -37,10 +37,11 @@ public class AuthenticationController {
         return new ResponseEntity<>(userCredService.create(userCredDto), HttpStatus.OK);
     }
 
+    //TODO : Fix setHeader
     @GetMapping(value = "/login")
-    public void authenticateUser(@RequestBody @Validated(UserCredDto.Create.class) UserCredDto userCredDto) {
-        final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userCredDto.getLogin(), userCredDto.getPassword());
+    public String authenticateUser(@RequestBody @Validated(UserCredDto.Create.class) UserCredDto userCredDto) {
+        final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userCredDto.getUsername(), userCredDto.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authenticationManager.authenticate(token));
-        tokenMapper.generateToken(SecurityContextHolder.getContext().getAuthentication());
+        return tokenMapper.generateToken(SecurityContextHolder.getContext().getAuthentication());
     }
 }

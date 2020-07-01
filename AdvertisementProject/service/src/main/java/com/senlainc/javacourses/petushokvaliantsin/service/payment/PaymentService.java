@@ -2,14 +2,13 @@ package com.senlainc.javacourses.petushokvaliantsin.service.payment;
 
 import com.senlainc.javacourses.petushokvaliantsin.dto.payment.PaymentDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.payment.PaymentTypeDto;
-import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumException;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
 import com.senlainc.javacourses.petushokvaliantsin.model.State;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.PaymentType;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment_;
-import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.IStateDao;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementDao;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.payment.IPaymentDao;
@@ -18,6 +17,7 @@ import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.payment.IPaymentService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.ExceededLimitException;
+import com.senlainc.javacourses.petushokvaliantsin.utility.exception.PermissionDeniedException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +55,11 @@ public class PaymentService extends AbstractService<Payment, Long> implements IP
 
     @Override
     @Transactional
-    public boolean create(Long advertisementIndex, PaymentTypeDto paymentTypeDto) {
+    public boolean create(String username, Long advertisementIndex, PaymentTypeDto paymentTypeDto) {
         final Advertisement advertisement = advertisementDao.read(advertisementIndex);
+        if (!advertisement.getUser().getId().equals(userDao.readByUserCred(username).getId())) {
+            throw new PermissionDeniedException(EnumException.PERMISSION_EXCEPTION.getMessage());
+        }
         final State state = stateDao.read(EnumState.APPROVED.name());
         final List<Payment> advertisementActivePayment = advertisement.getPayments().stream().filter(i -> i.getState().equals(state)).collect(Collectors.toList());
         if (advertisementActivePayment.size() >= activeLimit) {
@@ -73,16 +76,14 @@ public class PaymentService extends AbstractService<Payment, Long> implements IP
 
     @Override
     @Transactional
-    public List<PaymentDto> getUserPayments(UserDto userDto, int page, int max) {
-        final User user = userDao.read(userDto.getId());
+    public List<PaymentDto> getUserPayments(String username, int page, int max) {
         final IPageParameter pageParameter = PageParameter.of(page, max);
-        return dtoMapper.mapAll(paymentDao.readAll(pageParameter, Payment_.user, user), PaymentDto.class);
+        return dtoMapper.mapAll(paymentDao.readAll(pageParameter, Payment_.user, userDao.readByUserCred(username)), PaymentDto.class);
     }
 
-    //TODO : Fix
     @Override
     @Transactional(readOnly = true)
-    public Long getSize(Long user) {
-        return paymentDao.readCountWithUser(userDao.read(user));
+    public Long getSize(String username) {
+        return paymentDao.readCountWithUser(userDao.readByUserCred(username));
     }
 }
