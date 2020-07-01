@@ -43,10 +43,11 @@ public class Chat {
     public Chat() {
     }
 
-    public Chat(String name, String lastMessage, LocalDateTime updateDateTime) {
+    public Chat(String name, String lastMessage, LocalDateTime updateDateTime, Set<User> users) {
         this.name = name;
         this.lastMessage = lastMessage;
         this.updateDateTime = updateDateTime;
+        this.users = users;
     }
 
     public Long getId() {

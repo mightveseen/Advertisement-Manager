@@ -30,7 +30,8 @@ public class UserCredService extends AbstractService<UserCred, Long> implements 
     }
 
     @Override
-    public boolean Create(UserCredDto userCredDto) {
+    @Transactional
+    public boolean create(UserCredDto userCredDto) {
         final UserCred userCred = dtoMapper.map(userCredDto, UserCred.class);
         userCred.setUserRole(userRoleDao.readByDescription(EnumRole.COMMON.name()));
         userCredDao.create(userCred);

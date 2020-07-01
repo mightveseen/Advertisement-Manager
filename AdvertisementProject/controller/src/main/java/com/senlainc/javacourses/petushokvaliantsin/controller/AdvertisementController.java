@@ -1,11 +1,12 @@
 package com.senlainc.javacourses.petushokvaliantsin.controller;
 
+import com.senlainc.javacourses.petushokvaliantsin.dto.ResultListDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementCategoryDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementCommentDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
-import com.senlainc.javacourses.petushokvaliantsin.dto.chat.ChatDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
+import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementCommentService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IChatService;
@@ -24,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Positive;
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "advertisements")
@@ -46,21 +46,21 @@ public class AdvertisementController {
      * Advertisement operation [Show all, show by id, delete/remove/update]
      */
     @GetMapping
-    public List<AdvertisementDto> getAdvertisements(@RequestParam(name = "page", defaultValue = "1") @Positive int page,
-                                                    @RequestParam(name = "number", defaultValue = "15") @Positive int numberElements,
-                                                    @RequestParam(name = "direction", defaultValue = "desc") String direction,
-                                                    @RequestParam(name = "sort", defaultValue = "user-rating") String sort,
-                                                    @RequestParam(name = "cat", defaultValue = "none") String category,
-                                                    @RequestParam(name = "search", defaultValue = "none") String search,
-                                                    @RequestParam(name = "min", defaultValue = "0") double minPrice,
-                                                    @RequestParam(name = "max", defaultValue = "0") double maxPrice) {
-        return advertisementService.getAdvertisements(page, numberElements, direction, sort, search, category, minPrice, maxPrice, EnumState.ACTIVE.name());
+    public ResultListDto<AdvertisementDto> getAdvertisements(@RequestParam(name = "page", defaultValue = "1") @Positive int page,
+                                                             @RequestParam(name = "number", defaultValue = "15") @Positive int numberElements,
+                                                             @RequestParam(name = "direction", defaultValue = "desc") String direction,
+                                                             @RequestParam(name = "sort", defaultValue = "user-rating") String sort,
+                                                             @RequestParam(name = "cat", defaultValue = "none") String category,
+                                                             @RequestParam(name = "search", defaultValue = "none") String search,
+                                                             @RequestParam(name = "min", defaultValue = "0") double minPrice,
+                                                             @RequestParam(name = "max", defaultValue = "0") double maxPrice) {
+        return new ResultListDto<>(advertisementService.getSize(EnumState.ACTIVE),
+                advertisementService.getAdvertisements(page, numberElements, direction, sort, search, category, minPrice, maxPrice, EnumState.ACTIVE));
     }
 
-    //TODO : Make return counter
     @GetMapping(value = "/{id}")
-    public AdvertisementDto getAdvertisement(@PathVariable(name = "id") @Positive Long index) {
-        return advertisementService.getAdvertisementByUser(index);
+    public ResponseEntity<AdvertisementDto> getAdvertisement(@PathVariable(name = "id") @Positive Long index) {
+        return new ResponseEntity<>(advertisementService.getAdvertisementByUser(index), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -69,12 +69,14 @@ public class AdvertisementController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Boolean> updateAdvertisement(@RequestBody @Validated({AdvertisementDto.Update.class, AdvertisementCategoryDto.Read.class}) AdvertisementDto object) {
+    public ResponseEntity<Boolean> updateAdvertisement(@RequestBody @Validated({AdvertisementDto.Update.class, AdvertisementCategoryDto.Read.class})
+                                                               AdvertisementDto object) {
         return new ResponseEntity<>(advertisementService.updateByUser(object), HttpStatus.OK);
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<Boolean> createAdvertisement(@RequestBody @Validated({AdvertisementDto.Create.class, UserDto.Read.class, AdvertisementCategoryDto.Read.class}) AdvertisementDto object) {
+    public ResponseEntity<Boolean> createAdvertisement(@RequestBody @Validated({AdvertisementDto.Create.class, UserDto.Read.class, AdvertisementCategoryDto.Read.class})
+                                                               AdvertisementDto object) {
         return new ResponseEntity<>(advertisementService.create(object), HttpStatus.OK);
     }
 
@@ -82,25 +84,28 @@ public class AdvertisementController {
      * Chat operation [Create chat]
      */
     @PostMapping(value = "/{id}")
-    public ResponseEntity<Boolean> createChat(@RequestBody @Validated({ChatDto.Create.class, UserDto.Read.class}) ChatDto chat) {
-        return new ResponseEntity<>(chatService.create(chat), HttpStatus.OK);
+    public ResponseEntity<Boolean> createChat(@PathVariable(name = "id") @Positive Long index) {
+        final User user = new User();
+        return new ResponseEntity<>(chatService.create(user, index), HttpStatus.OK);
     }
 
     /**
      * Comment operation [Show all advertisement comment's, add comment]
      */
     @GetMapping(value = "/{id}/comments")
-    public List<AdvertisementCommentDto> getAdvertisementComments(@PathVariable(name = "id") @Positive Long index,
-                                                                  @RequestParam(name = "first", defaultValue = "0") int firstElement,
-                                                                  @RequestParam(name = "max", defaultValue = "15") int maxResult,
-                                                                  @RequestParam(name = "direction", defaultValue = "desc") String direction,
-                                                                  @RequestParam(name = "sort", defaultValue = "default") String sort) {
-        return advertisementCommentService.getAdvertisementComments(index, firstElement, maxResult, direction, sort);
+    public ResultListDto<AdvertisementCommentDto> getAdvertisementComments(@PathVariable(name = "id") @Positive Long index,
+                                                                           @RequestParam(name = "first", defaultValue = "0") int firstElement,
+                                                                           @RequestParam(name = "max", defaultValue = "15") int maxResult,
+                                                                           @RequestParam(name = "direction", defaultValue = "desc") String direction,
+                                                                           @RequestParam(name = "sort", defaultValue = "default") String sort) {
+        return new ResultListDto<>(advertisementCommentService.getSize(),
+                advertisementCommentService.getAdvertisementComments(index, firstElement, maxResult, direction, sort));
     }
 
     @PostMapping(value = "/{id}/comments")
     public ResponseEntity<Boolean> createAdvertisementComment(@PathVariable(name = "id") @Positive Long index,
-                                                              @RequestBody @Validated({AdvertisementCommentDto.Create.class, UserDto.Read.class}) AdvertisementCommentDto object) {
+                                                              @RequestBody @Validated({AdvertisementCommentDto.Create.class, UserDto.Read.class})
+                                                                      AdvertisementCommentDto object) {
         return new ResponseEntity<>(advertisementCommentService.create(index, object), HttpStatus.OK);
     }
 }

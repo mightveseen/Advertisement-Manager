@@ -1,5 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.controller.user;
 
+import com.senlainc.javacourses.petushokvaliantsin.dto.ResultListDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.StateDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
@@ -17,12 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Positive;
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "moderator")
 public class ModeratorController {
 
+    private static final String DEFAULT_STRING = "none";
+    private static final Double DEFAULT_PRICE = 0.0;
     private final IAdvertisementService advertisementService;
 
     @Autowired
@@ -34,15 +36,17 @@ public class ModeratorController {
      * Moderator advertisement operation [Show all, show by id, change state]
      */
     @GetMapping(value = "/advertisements")
-    public List<AdvertisementDto> getAdvertisements(@RequestParam(name = "page", defaultValue = "1") @Positive int page,
-                                                    @RequestParam(name = "number", defaultValue = "15") @Positive int numberElements) {
-        return advertisementService.getAdvertisements(page, numberElements, "desc", "date", "none",
-                "none", 0, 0, EnumState.MODERATION.name());
+    public ResultListDto<AdvertisementDto> getAdvertisements(@RequestParam(name = "page", defaultValue = "1") @Positive int page,
+                                                             @RequestParam(name = "number", defaultValue = "15") @Positive int numberElements,
+                                                             @RequestParam(name = "direction", defaultValue = "desc") String direction,
+                                                             @RequestParam(name = "sort", defaultValue = "date") String sort) {
+        return new ResultListDto<>(advertisementService.getSize(EnumState.MODERATION),
+                advertisementService.getAdvertisements(page, numberElements, direction, sort, DEFAULT_STRING, DEFAULT_STRING, DEFAULT_PRICE, DEFAULT_PRICE, EnumState.MODERATION));
     }
 
     @GetMapping(value = "/advertisements/{id}")
-    public AdvertisementDto getAdvertisement(@PathVariable(name = "id") @Positive Long index) {
-        return advertisementService.getAdvertisementByModerator(index);
+    public ResponseEntity<AdvertisementDto> getAdvertisement(@PathVariable(name = "id") @Positive Long index) {
+        return new ResponseEntity<>(advertisementService.getAdvertisementByModerator(index), HttpStatus.OK);
     }
 
     @PutMapping(value = "/advertisements/{id}")

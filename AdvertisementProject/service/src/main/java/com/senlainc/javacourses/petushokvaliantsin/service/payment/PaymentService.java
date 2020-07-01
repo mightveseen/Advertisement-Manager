@@ -53,7 +53,6 @@ public class PaymentService extends AbstractService<Payment, Long> implements IP
         this.userDao = userDao;
     }
 
-    //TODO : Should take DTO data or take dto id and read data from DataBase?
     @Override
     @Transactional
     public boolean create(Long advertisementIndex, PaymentTypeDto paymentTypeDto) {
@@ -78,5 +77,12 @@ public class PaymentService extends AbstractService<Payment, Long> implements IP
         final User user = userDao.read(userDto.getId());
         final IPageParameter pageParameter = PageParameter.of(page, max);
         return dtoMapper.mapAll(paymentDao.readAll(pageParameter, Payment_.user, user), PaymentDto.class);
+    }
+
+    //TODO : Fix
+    @Override
+    @Transactional(readOnly = true)
+    public Long getSize(Long user) {
+        return paymentDao.readCountWithUser(userDao.read(user));
     }
 }

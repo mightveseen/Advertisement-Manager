@@ -1,14 +1,17 @@
 package com.senlainc.javacourses.petushokvaliantsin.dto.user;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.io.Serializable;
 
 public class UserCredDto implements Serializable {
 
+    @Null(groups = Create.class)
     private Long id;
+    @NotNull(groups = Create.class)
     private String login;
+    @NotNull(groups = Create.class)
     private String password;
-    private UserRoleDto userRole;
-    private UserDto user;
 
     public Long getId() {
         return id;
@@ -34,19 +37,7 @@ public class UserCredDto implements Serializable {
         this.password = password;
     }
 
-    public UserRoleDto getUserRole() {
-        return userRole;
-    }
+    public interface Create {
 
-    public void setUserRole(UserRoleDto userRole) {
-        this.userRole = userRole;
-    }
-
-    public UserDto getUser() {
-        return user;
-    }
-
-    public void setUser(UserDto user) {
-        this.user = user;
     }
 }

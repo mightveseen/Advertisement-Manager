@@ -1,5 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.controller.user;
 
+import com.senlainc.javacourses.petushokvaliantsin.dto.ResultListDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.chat.ChatDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.chat.MessageDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.payment.PaymentDto;
@@ -27,7 +28,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "account")
-public class AccountController {
+public class CommonController {
 
     private final IChatService chatService;
     private final IMessageService messageService;
@@ -35,7 +36,7 @@ public class AccountController {
     private final IPaymentService paymentService;
 
     @Autowired
-    public AccountController(IChatService chatService, IMessageService messageService, IUserService userService, IPaymentService paymentService) {
+    public CommonController(IChatService chatService, IMessageService messageService, IUserService userService, IPaymentService paymentService) {
         this.chatService = chatService;
         this.messageService = messageService;
         this.userService = userService;
@@ -46,20 +47,20 @@ public class AccountController {
      * Payment operation [Get operation history]
      */
     @GetMapping(value = "/payments")
-    public List<PaymentDto> getUserPayments(@RequestBody @Validated(UserDto.Read.class) UserDto user,
-                                            @RequestParam(name = "page", defaultValue = "1") @Positive int page,
-                                            @RequestParam(name = "max", defaultValue = "15") @Positive int max) {
-        return paymentService.getUserPayments(user, page, max);
+    public ResultListDto<PaymentDto> getUserPayments(@RequestBody @Validated(UserDto.Read.class) UserDto user,
+                                                     @RequestParam(name = "page", defaultValue = "1") @Positive int page,
+                                                     @RequestParam(name = "max", defaultValue = "15") @Positive int max) {
+        return new ResultListDto<>(paymentService.getSize(user.getId()), paymentService.getUserPayments(user, page, max));
     }
 
     /**
      * Chat operation [Show all, show chat message, add message, remove chat]
      */
     @GetMapping(value = "/chats")
-    public List<ChatDto> getUserChats(@RequestParam(name = "userId") @Positive Long userId,
-                                      @RequestParam(name = "page", defaultValue = "1") @Positive int page,
-                                      @RequestParam(name = "max", defaultValue = "15") @Positive int max) {
-        return chatService.getChats(userId, page, max);
+    public ResultListDto<ChatDto> getUserChats(@RequestParam(name = "userId") @Positive Long userId,
+                                               @RequestParam(name = "page", defaultValue = "1") @Positive int page,
+                                               @RequestParam(name = "max", defaultValue = "15") @Positive int max) {
+        return new ResultListDto<>(chatService.getSize(userId), chatService.getChats(userId, page, max));
     }
 
     @GetMapping(value = "/chats/{id}")
@@ -72,10 +73,10 @@ public class AccountController {
     @PostMapping(value = "/chats/{id}")
     public ResponseEntity<Boolean> addMessageIntoChat(@PathVariable(name = "id") @Positive Long index,
                                                       @RequestBody @Validated({MessageDto.Create.class, UserDto.Read.class}) MessageDto message) {
-        return new ResponseEntity<>(messageService.create(index, message), HttpStatus.CREATED);
+        return new ResponseEntity<>(messageService.create(index, message), HttpStatus.OK);
     }
 
-    //TODO : Think about it (DTO or id)
+    //TODO : Security take User (SecurityHolder)
     @DeleteMapping(value = "/chats/{id}")
     public ResponseEntity<Boolean> removeChat(@PathVariable(name = "id") @Positive Long index,
                                               @RequestParam(name = "userId") @Positive Long userId) {
@@ -87,12 +88,12 @@ public class AccountController {
      */
     //TODO : Don't forget about encrypted password
     @GetMapping(value = "/settings/profile")
-    public UserDto getUserProfile(@RequestParam(name = "id") @Positive Long index) {
-        return userService.getUser(index);
+    public ResponseEntity<UserDto> getUserProfile(@RequestParam(name = "id") @Positive Long index) {
+        return new ResponseEntity<>(userService.getUser(index), HttpStatus.OK);
     }
 
     @PutMapping(value = "/settings/profile")
     public ResponseEntity<Boolean> updateUserProfile(@RequestBody @Validated(UserDto.Update.class) UserDto user) {
-        return new ResponseEntity<>(userService.update(user), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
     }
 }

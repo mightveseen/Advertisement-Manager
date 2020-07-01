@@ -4,5 +4,5 @@ import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserCredDto;
 
 public interface IUserCredService {
 
-    boolean Create(UserCredDto userCredDto);
+    boolean create(UserCredDto userCredDto);
 }

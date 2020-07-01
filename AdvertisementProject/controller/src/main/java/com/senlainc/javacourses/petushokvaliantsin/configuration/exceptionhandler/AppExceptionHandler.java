@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 
+    //TODO : Validation exception
     @ExceptionHandler({ExceededLimitException.class})
     public ResponseEntity<Object> notAcceptable(RuntimeException exc) {
         return new ResponseEntity<>(ExceptionTemplate.of(exc.getMessage()), HttpStatus.NOT_ACCEPTABLE);

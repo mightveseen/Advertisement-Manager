@@ -15,4 +15,6 @@ public interface IAdvertisementDao extends IGenericDao<Advertisement, Long> {
     List<Advertisement> readAllWithState(IPageParameter pageParameter, User user, State state);
 
     List<Advertisement> readAllWithFilter(IPageParameter pageParameter, IFilterParameter filterParameter, IStateParameter stateParameter);
+
+    Long readCountWithState(State state);
 }

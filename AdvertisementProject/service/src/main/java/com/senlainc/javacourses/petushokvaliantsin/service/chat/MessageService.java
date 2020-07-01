@@ -31,6 +31,7 @@ public class MessageService extends AbstractService<Message, Long> implements IM
         this.userDao = userDao;
     }
 
+    //TODO : Check authority
     @Override
     @Transactional
     public boolean create(Long chatIndex, MessageDto object) {

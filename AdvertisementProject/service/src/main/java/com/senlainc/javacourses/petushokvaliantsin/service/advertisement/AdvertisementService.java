@@ -100,9 +100,9 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
 
     @Override
     @Transactional(readOnly = true)
-    public List<AdvertisementDto> getUserAdvertisements(Long index, int page, int numberElements, String state) {
+    public List<AdvertisementDto> getUserAdvertisements(Long index, int page, int numberElements, EnumState state) {
         return dtoMapper.mapAll(advertisementDao.readAllWithState(PageParameter.of(page, numberElements)
-                , userDao.read(index), stateDao.read(state.toUpperCase()))
+                , userDao.read(index), stateDao.read(state.name()))
                 , AdvertisementDto.class);
     }
 
@@ -110,14 +110,20 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     @Transactional(readOnly = true)
     @SingularModel(metamodels = {Advertisement_.class, User_.class})
     public List<AdvertisementDto> getAdvertisements(int page, int numberElements, String direction, String sortField, String search,
-                                                    String category, double minPrice, double maxPrice, String advertisementState) {
+                                                    String category, double minPrice, double maxPrice, EnumState advertisementState) {
         final IPageParameter pageParameter = sortField.contains("-") ?
                 PageParameter.of(page, numberElements, direction, singularMapper.getAttribute(SORT_FIELD + sortField.split("-")[0]),
                         singularMapper.getAttribute(sortField)) :
                 PageParameter.of(page, numberElements, direction, singularMapper.getAttribute(SORT_FIELD + sortField));
         final IFilterParameter filterParameter = FilterParameter.of(search, category, minPrice, maxPrice);
-        final IStateParameter stateParameter = StateParameter.of(stateDao.read(advertisementState.toUpperCase()), stateDao.read(EnumState.APPROVED.name()));
+        final IStateParameter stateParameter = StateParameter.of(stateDao.read(advertisementState.name()), stateDao.read(EnumState.APPROVED.name()));
         return dtoMapper.mapAll(advertisementDao.readAllWithFilter(pageParameter, filterParameter, stateParameter),
                 AdvertisementDto.class);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Long getSize(EnumState state) {
+        return advertisementDao.readCountWithState(stateDao.read(state.name()));
     }
 }

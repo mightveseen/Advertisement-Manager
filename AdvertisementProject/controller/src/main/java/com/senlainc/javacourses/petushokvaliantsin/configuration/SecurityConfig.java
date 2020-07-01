@@ -1,6 +1,8 @@
 package com.senlainc.javacourses.petushokvaliantsin.configuration;
 
+import com.senlainc.javacourses.petushokvaliantsin.configuration.security.AuthenticationFilter;
 import com.senlainc.javacourses.petushokvaliantsin.configuration.security.AuthorizationFilter;
+import com.senlainc.javacourses.petushokvaliantsin.configuration.security.mapper.TokenMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -44,7 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().httpBasic()
                 .and().csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilter(new AuthorizationFilter(authenticationManager()));
+        http.addFilter(new AuthorizationFilter(authenticationManager(), tokenMapper()));
+        http.addFilter(new AuthenticationFilter(authenticationManager(), tokenMapper()));
     }
 
     @Bean
@@ -62,4 +65,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
+
+    @Bean
+    public TokenMapper tokenMapper() {
+        return new TokenMapper(userDetailsService, tokenPrefix, secretKey, tokenHeader);
+    }
+
 }

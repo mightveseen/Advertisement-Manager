@@ -32,7 +32,6 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
         this.advertisementDao = advertisementDao;
     }
 
-    //TODO : Should leave only 1 comment?
     @Override
     @Transactional
     public boolean create(Long advertisementIndex, AdvertisementCommentDto object) {
@@ -50,5 +49,10 @@ public class AdvertisementCommentService extends AbstractService<AdvertisementCo
         final IPageParameter pageParameter = PageParameter.of(page, numberElements, direction, singularMapper.getAttribute(SORT_FIELD + sortField.toLowerCase()));
         return dtoMapper.mapAll(advertisementCommentDao.readAll(pageParameter, AdvertisementComment_.advertisement, advertisementDao.read(index)),
                 AdvertisementCommentDto.class);
+    }
+
+    @Override
+    public Long getSize() {
+        return advertisementCommentDao.readCount();
     }
 }

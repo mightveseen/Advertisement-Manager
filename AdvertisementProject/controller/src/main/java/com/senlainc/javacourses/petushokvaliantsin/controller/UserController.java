@@ -1,9 +1,11 @@
 package com.senlainc.javacourses.petushokvaliantsin.controller;
 
 
+import com.senlainc.javacourses.petushokvaliantsin.dto.ResultListDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserRatingDto;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserRatingService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserService;
@@ -19,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Positive;
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "users")
@@ -36,19 +37,20 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}")
-    public UserDto getUser(@PathVariable(name = "id") @Positive Long index) {
-        return userService.getUser(index);
+    public ResponseEntity<UserDto> getUser(@PathVariable(name = "id") @Positive Long index) {
+        return new ResponseEntity<>(userService.getUser(index), HttpStatus.OK);
     }
 
     @PostMapping(value = "/{id}")
-    public ResponseEntity<Object> rateUser(@RequestBody @Validated({UserRatingDto.Create.class, UserDto.Read.class}) UserRatingDto userRatingDto) {
+    public ResponseEntity<Boolean> rateUser(@RequestBody @Validated({UserRatingDto.Create.class, UserDto.Read.class}) UserRatingDto userRatingDto) {
         return new ResponseEntity<>(userRatingService.create(userRatingDto), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}/closed")
-    public List<AdvertisementDto> getUserClosedAdvertisements(@PathVariable(name = "id") @Positive Long index,
-                                                              @RequestParam(name = "page", defaultValue = "1") @Positive int page,
-                                                              @RequestParam(name = "number", defaultValue = "15") @Positive int numberElements) {
-        return advertisementService.getUserAdvertisements(index, page, numberElements, "DISABLED");
+    public ResultListDto<AdvertisementDto> getUserClosedAdvertisements(@PathVariable(name = "id") @Positive Long index,
+                                                                       @RequestParam(name = "page", defaultValue = "1") @Positive int page,
+                                                                       @RequestParam(name = "number", defaultValue = "15") @Positive int numberElements) {
+        return new ResultListDto<>(advertisementService.getSize(EnumState.DISABLED),
+                advertisementService.getUserAdvertisements(index, page, numberElements, EnumState.DISABLED));
     }
 }

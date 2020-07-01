@@ -11,4 +11,6 @@ public interface IPaymentService {
     boolean create(Long advertisementIndex, PaymentTypeDto paymentTypeDto);
 
     List<PaymentDto> getUserPayments(UserDto userDto, int page, int max);
+
+    Long getSize(Long user);
 }

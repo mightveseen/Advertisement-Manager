@@ -1,10 +1,9 @@
 package com.senlainc.javacourses.petushokvaliantsin.configuration.security;
 
+import com.senlainc.javacourses.petushokvaliantsin.configuration.security.mapper.TokenMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -13,18 +12,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
 
 public class AuthorizationFilter extends BasicAuthenticationFilter {
 
-    public AuthorizationFilter(AuthenticationManager authenticationManager) {
+    private final TokenMapper tokenMapper;
+
+    public AuthorizationFilter(AuthenticationManager authenticationManager, TokenMapper tokenMapper) {
         super(authenticationManager);
+        this.tokenMapper = tokenMapper;
     }
 
-    //TODO : Don't forget
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        final String token = request.getHeader("FF");
+        final String token = request.getHeader(tokenMapper.getTokenHeader());
         if (token == null || token.isEmpty()) {
             chain.doFilter(request, response);
             return;
@@ -34,11 +34,9 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
         chain.doFilter(request, response);
     }
 
-    //TODO : Don't forget
     private UsernamePasswordAuthenticationToken getAuthentication(String token) {
-        final UserDetails userDto = new User("ff", "ff", Collections.singleton(new SimpleGrantedAuthority("ff")));
+        final UserDetails userDto = tokenMapper.parseToken(token);
         return new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword(),
                 userDto.getAuthorities());
     }
-
 }
