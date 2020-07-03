@@ -1,5 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.user;
 
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumException;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.UserCred;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserCredDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
@@ -18,6 +19,7 @@ import java.util.Collections;
 @Service
 public class UserCredService extends AbstractService implements UserDetailsService {
 
+    private static final String USER_CRED_FIELD = "username";
     private final IUserCredDao userCredDao;
 
     @Autowired
@@ -32,7 +34,7 @@ public class UserCredService extends AbstractService implements UserDetailsServi
             final UserCred user = userCredDao.readByUsername(username);
             return new User(user.getUsername(), user.getPassword(), Collections.singleton(new SimpleGrantedAuthority(user.getEnumRole().name())));
         } catch (ReadQueryException exc) {
-            throw new EntityNotExistException("User with username [" + username + "] not exist");
+            throw new EntityNotExistException(String.format(EnumException.USER_WITH_FIELD_NOT_EXIST.getMessage(), USER_CRED_FIELD, username));
         }
     }
 }

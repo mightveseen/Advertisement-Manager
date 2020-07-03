@@ -1,7 +1,7 @@
 package com.senlainc.javacourses.petushokvaliantsin.controller;
 
 import com.senlainc.javacourses.petushokvaliantsin.configuration.security.mapper.TokenMapper;
-import com.senlainc.javacourses.petushokvaliantsin.dto.CreateUserDto;
+import com.senlainc.javacourses.petushokvaliantsin.dto.combination.AccountDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserCredDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserService;
@@ -36,8 +36,8 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/sign-up")
-    public ResponseEntity<Boolean> createUser(@RequestBody @Validated({CreateUserDto.Create.class, UserCredDto.Create.class, UserDto.Create.class}) CreateUserDto createUserDto) {
-        return new ResponseEntity<>(userService.create(createUserDto), HttpStatus.OK);
+    public ResponseEntity<Boolean> createUser(@RequestBody @Validated({AccountDto.Create.class, UserCredDto.Create.class, UserDto.Create.class}) AccountDto accountDto) {
+        return new ResponseEntity<>(userService.create(accountDto), HttpStatus.OK);
     }
 
     @GetMapping(value = "/login")

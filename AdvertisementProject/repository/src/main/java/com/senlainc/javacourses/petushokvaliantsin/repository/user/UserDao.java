@@ -16,11 +16,27 @@ import javax.persistence.criteria.Root;
 @Repository
 public class UserDao extends AbstractDao<User, Long> implements IUserDao {
 
+    @Override
     public User readByUserCred(String username) {
         try {
             final CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
             final Root<User> root = criteriaQuery.from(User.class);
             final Predicate predicate = criteriaBuilder.equal(root.join(User_.userCred).get(UserCred_.username), username);
+            return entityManager.createQuery(criteriaQuery
+                    .select(root)
+                    .where(predicate))
+                    .getSingleResult();
+        } catch (PersistenceException exc) {
+            throw new ReadQueryException(exc);
+        }
+    }
+
+    @Override
+    public User readByEmail(String email) {
+        try {
+            final CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+            final Root<User> root = criteriaQuery.from(User.class);
+            final Predicate predicate = criteriaBuilder.equal(root.get(User_.email), email);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
                     .where(predicate))

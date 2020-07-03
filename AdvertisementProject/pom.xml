@@ -54,6 +54,8 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.7.0</version>
                     <configuration>
+                        <source>13</source>
+                        <target>13</target>
                         <annotationProcessorPaths>
                             <path>
                                 <groupId>org.hibernate</groupId>
@@ -67,6 +69,13 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
                     <version>3.1.1</version>
+                    <configuration>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <configLocation>checkstyle.xml</configLocation>
+                        <suppressionsLocation>suppression.xml</suppressionsLocation>
+                        <suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
+                        <failsOnError>true</failsOnError>
+                    </configuration>
                     <executions>
                         <execution>
                             <id>verify-style</id>
@@ -76,13 +85,6 @@
                             </goals>
                         </execution>
                     </executions>
-                    <configuration>
-                        <encoding>${project.build.sourceEncoding}</encoding>
-                        <configLocation>checkstyle.xml</configLocation>
-                        <suppressionsLocation>suppression.xml</suppressionsLocation>
-                        <suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
-                        <failsOnError>true</failsOnError>
-                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

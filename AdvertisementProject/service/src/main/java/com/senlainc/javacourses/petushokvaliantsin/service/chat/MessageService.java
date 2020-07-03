@@ -39,11 +39,9 @@ public class MessageService extends AbstractService implements IMessageService {
     public boolean create(String username, Long chatIndex, MessageDto object) {
         final Chat chat = chatDao.read(chatIndex);
         final User activeUser = userDao.readByUserCred(username);
-        if (chat.getUsers().stream().noneMatch(i -> i.getId().equals(activeUser.getId()))) {
-            throw new PermissionDeniedException(EnumException.PERMISSION_EXCEPTION.getMessage());
-        }
-        messageDao.create(createMessageOperation(object, chat, activeUser));
-        chatDao.update(createChatOperation(chat, activeUser, object.getText()));
+        checkPermission(chat, activeUser);
+        messageDao.create(createMessageCreateOperation(object, chat, activeUser));
+        chatDao.update(createChatCreateOperation(chat, activeUser, object.getText()));
         return true;
     }
 
@@ -51,14 +49,12 @@ public class MessageService extends AbstractService implements IMessageService {
     @Transactional(readOnly = true)
     public List<MessageDto> getMessages(String username, Long chatIndex, int firstElement, int maxResult) {
         final Chat chat = chatDao.read(chatIndex);
-        if (chat.getUsers().stream().noneMatch(i -> i.getId().equals(userDao.readByUserCred(username).getId()))) {
-            throw new PermissionDeniedException(EnumException.PERMISSION_EXCEPTION.getMessage());
-        }
+        checkPermission(chat, userDao.readByUserCred(username));
         return dtoMapper.mapAll(messageDao.readAll(PageParameter.of(firstElement, maxResult), Message_.chat, chatDao.read(chatIndex)),
                 MessageDto.class);
     }
 
-    private Message createMessageOperation(MessageDto messageDto, Chat chat, User activeUser) {
+    private Message createMessageCreateOperation(MessageDto messageDto, Chat chat, User activeUser) {
         final Message message = dtoMapper.map(messageDto, Message.class);
         message.setChat(chat);
         message.setUser(activeUser);
@@ -66,9 +62,15 @@ public class MessageService extends AbstractService implements IMessageService {
         return message;
     }
 
-    private Chat createChatOperation(Chat chat, User activeUser, String text) {
+    private Chat createChatCreateOperation(Chat chat, User activeUser, String text) {
         chat.setUpdateDateTime(LocalDateTime.now());
         chat.setLastMessage(activeUser.getFirstName() + ": " + text.substring(0, 20) + "...");
         return chat;
+    }
+
+    private void checkPermission(Chat chat, User activeUser) {
+        if (chat.getUsers().stream().noneMatch(i -> i.getId().equals(activeUser.getId()))) {
+            throw new PermissionDeniedException(EnumException.PERMISSION.getMessage());
+        }
     }
 }

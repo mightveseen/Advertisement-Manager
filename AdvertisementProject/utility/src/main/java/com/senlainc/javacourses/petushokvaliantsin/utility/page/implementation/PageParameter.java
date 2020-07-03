@@ -5,7 +5,7 @@ import org.springframework.data.domain.Sort;
 
 import javax.persistence.metamodel.SingularAttribute;
 
-public class PageParameter implements IPageParameter {
+public final class PageParameter implements IPageParameter {
 
     private final Sort.Direction sort;
     private int firstElement;
@@ -50,17 +50,9 @@ public class PageParameter implements IPageParameter {
         return firstElement;
     }
 
-    public void setFirstElement(int firstElement) {
-        this.firstElement = firstElement;
-    }
-
     @Override
     public int getMaxResult() {
         return maxResult;
-    }
-
-    public void setMaxResult(int maxResult) {
-        this.maxResult = maxResult;
     }
 
     @Override

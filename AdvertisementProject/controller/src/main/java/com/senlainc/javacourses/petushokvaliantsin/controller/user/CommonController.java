@@ -1,8 +1,8 @@
 package com.senlainc.javacourses.petushokvaliantsin.controller.user;
 
-import com.senlainc.javacourses.petushokvaliantsin.dto.ResultListDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.chat.ChatDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.chat.MessageDto;
+import com.senlainc.javacourses.petushokvaliantsin.dto.combination.ResultListDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.payment.PaymentDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IChatService;

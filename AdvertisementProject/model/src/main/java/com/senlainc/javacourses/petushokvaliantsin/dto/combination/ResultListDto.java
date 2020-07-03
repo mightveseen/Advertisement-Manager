@@ -1,4 +1,4 @@
-package com.senlainc.javacourses.petushokvaliantsin.dto;
+package com.senlainc.javacourses.petushokvaliantsin.dto.combination;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;

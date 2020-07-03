@@ -52,7 +52,7 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
         final Advertisement advertisement = dtoMapper.map(advertisementDto, Advertisement.class);
         advertisement.setUser(userDao.readByUserCred(username));
         advertisement.setDate(LocalDate.now());
-        advertisement.setState(stateDao.read(EnumState.MODERATION.name()));
+        advertisement.setState(stateDao.readByDescription(EnumState.MODERATION.name()));
         advertisementDao.create(advertisement);
         return true;
     }
@@ -61,10 +61,8 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Transactional
     public boolean delete(String username, Long advertisementIndex) {
         final Advertisement advertisement = advertisementDao.read(advertisementIndex);
-        if (!advertisement.getUser().getId().equals(userDao.readByUserCred(username).getId())) {
-            throw new PermissionDeniedException(EnumException.PERMISSION_EXCEPTION.getMessage());
-        }
-        advertisement.setState(stateDao.read(EnumState.DISABLED.name()));
+        checkPermission(advertisement, username);
+        advertisement.setState(stateDao.readByDescription(EnumState.DISABLED.name()));
         advertisementDao.update(advertisement);
         return true;
     }
@@ -72,12 +70,10 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Override
     @Transactional
     public boolean updateByUser(String username, AdvertisementDto advertisementDto) {
-        if (!advertisementDao.read(advertisementDto.getId()).getUser().getId().equals(userDao.readByUserCred(username).getId())) {
-            throw new PermissionDeniedException(EnumException.PERMISSION_EXCEPTION.getMessage());
-        }
+        checkPermission(advertisementDao.read(advertisementDto.getId()), username);
         final Advertisement advertisement = dtoMapper.map(advertisementDto, Advertisement.class);
         advertisement.setDate(LocalDate.now());
-        advertisement.setState(stateDao.read(EnumState.MODERATION.name()));
+        advertisement.setState(stateDao.readByDescription(EnumState.MODERATION.name()));
         advertisementDao.update(advertisement);
         return true;
     }
@@ -86,7 +82,7 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Transactional
     public boolean updateStateByModerator(Long advertisementIndex, StateDto state) {
         final Advertisement advertisement = advertisementDao.read(advertisementIndex);
-        advertisement.setState(stateDao.read(state.getDescription()));
+        advertisement.setState(stateDao.readByDescription(state.getDescription()));
         advertisementDao.update(advertisement);
         return true;
     }
@@ -95,8 +91,8 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Transactional(readOnly = true)
     public AdvertisementDto getAdvertisementByUser(Long index) {
         final Advertisement advertisement = advertisementDao.read(index);
-        if (!advertisement.getState().getId().equals(stateDao.read(EnumState.ACTIVE.name()).getId())) {
-            throw new EntityNotAvailableException(EnumException.PERMISSION_EXCEPTION.getMessage());
+        if (!advertisement.getState().getId().equals(stateDao.readByDescription(EnumState.ACTIVE.name()).getId())) {
+            throw new EntityNotAvailableException(EnumException.PERMISSION.getMessage());
         }
         return dtoMapper.map(advertisement, AdvertisementDto.class);
     }
@@ -110,9 +106,9 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Override
     @Transactional(readOnly = true)
     public List<AdvertisementDto> getUserAdvertisements(Long index, int page, int numberElements, EnumState state) {
-        return dtoMapper.mapAll(advertisementDao.readAllWithUser(PageParameter.of(page, numberElements)
-                , userDao.read(index), stateDao.read(state.name()))
-                , AdvertisementDto.class);
+        return dtoMapper.mapAll(advertisementDao.readAllWithUser(PageParameter.of(page, numberElements),
+                userDao.read(index), stateDao.readByDescription(state.name())),
+                AdvertisementDto.class);
     }
 
     @Override
@@ -120,9 +116,9 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @SingularModel(metamodels = {Advertisement_.class, User_.class})
     public List<AdvertisementDto> getAdvertisements(int page, int numberElements, String direction, String sortField, String search,
                                                     String category, double minPrice, double maxPrice, EnumState advertisementState) {
-        final IPageParameter pageParameter = readAllPageParameterOperation(page, numberElements, direction, sortField);
+        final IPageParameter pageParameter = splitSortFiled(page, numberElements, direction, sortField);
         final IFilterParameter filterParameter = FilterParameter.of(search, category, minPrice, maxPrice);
-        final IStateParameter stateParameter = StateParameter.of(stateDao.read(advertisementState.name()), stateDao.read(EnumState.APPROVED.name()));
+        final IStateParameter stateParameter = StateParameter.of(stateDao.readByDescription(advertisementState.name()), stateDao.readByDescription(EnumState.APPROVED.name()));
         return dtoMapper.mapAll(advertisementDao.readAllWithFilter(pageParameter, filterParameter, stateParameter),
                 AdvertisementDto.class);
     }
@@ -130,14 +126,20 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Override
     @Transactional(readOnly = true)
     public Long getSize(EnumState state) {
-        return advertisementDao.readCountWithState(stateDao.read(state.name()));
+        return advertisementDao.readCountWithState(stateDao.readByDescription(state.name()));
     }
 
-    private IPageParameter readAllPageParameterOperation(int page, int numberElements, String direction, String sortField) {
+    private IPageParameter splitSortFiled(int page, int numberElements, String direction, String sortField) {
         if (sortField.contains(SORT_PARAMETER_SEPARATOR)) {
             return PageParameter.of(page, numberElements, direction, singularMapper.getAttribute(SORT_FIELD + sortField.split(SORT_PARAMETER_SEPARATOR)[0]),
                     singularMapper.getAttribute(sortField));
         }
         return PageParameter.of(page, numberElements, direction, singularMapper.getAttribute(SORT_FIELD + sortField));
+    }
+
+    private void checkPermission(Advertisement advertisement, String username) {
+        if (!advertisement.getUser().getId().equals(userDao.readByUserCred(username).getId())) {
+            throw new PermissionDeniedException(EnumException.PERMISSION.getMessage());
+        }
     }
 }

@@ -4,5 +4,5 @@ import com.senlainc.javacourses.petushokvaliantsin.model.State;
 
 public interface IStateDao {
 
-    State read(String description);
+    State readByDescription(String description);
 }

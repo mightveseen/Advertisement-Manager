@@ -24,7 +24,7 @@ public class StateDao implements IStateDao {
         this.entityManager = entityManager;
     }
 
-    public State read(String description) {
+    public State readByDescription(String description) {
         try {
             final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             final CriteriaQuery<State> criteriaQuery = criteriaBuilder.createQuery(State.class);

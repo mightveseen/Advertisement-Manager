@@ -8,7 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import java.time.LocalDateTime;
 
-public class ExceptionTemplate {
+public final class ExceptionTemplate {
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

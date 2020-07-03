@@ -1,4 +1,4 @@
-package com.senlainc.javacourses.petushokvaliantsin.dto;
+package com.senlainc.javacourses.petushokvaliantsin.dto.combination;
 
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserCredDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
@@ -6,7 +6,7 @@ import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-public class CreateUserDto {
+public class AccountDto {
 
     @Valid
     @NotNull(groups = Create.class)

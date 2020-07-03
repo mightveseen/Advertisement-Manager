@@ -1,9 +1,9 @@
 package com.senlainc.javacourses.petushokvaliantsin.controller;
 
-import com.senlainc.javacourses.petushokvaliantsin.dto.ResultListDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementCategoryDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementCommentDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
+import com.senlainc.javacourses.petushokvaliantsin.dto.combination.ResultListDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.payment.PaymentTypeDto;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementCommentService;

@@ -6,4 +6,6 @@ import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.IGenericDao;
 public interface IUserDao extends IGenericDao<User, Long> {
 
     User readByUserCred(String username);
+
+    User readByEmail(String email);
 }

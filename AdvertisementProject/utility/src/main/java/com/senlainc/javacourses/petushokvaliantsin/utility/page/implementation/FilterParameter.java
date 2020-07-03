@@ -2,7 +2,7 @@ package com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation;
 
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IFilterParameter;
 
-public class FilterParameter implements IFilterParameter {
+public final class FilterParameter implements IFilterParameter {
 
     private final String category;
     private final String search;

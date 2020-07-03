@@ -3,6 +3,8 @@ package com.senlainc.javacourses.petushokvaliantsin.configuration;
 import com.senlainc.javacourses.petushokvaliantsin.configuration.security.AuthorizationFilter;
 import com.senlainc.javacourses.petushokvaliantsin.configuration.security.handler.CustomAccessDeniedHandler;
 import com.senlainc.javacourses.petushokvaliantsin.configuration.security.handler.CustomAuthenticationEntryPointHandler;
+import com.senlainc.javacourses.petushokvaliantsin.configuration.security.handler.CustomAuthenticationSuccessHandler;
+import com.senlainc.javacourses.petushokvaliantsin.configuration.security.handler.CustomLogoutSuccessHandler;
 import com.senlainc.javacourses.petushokvaliantsin.configuration.security.mapper.TokenMapper;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -58,6 +62,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, ADVERTISEMENT_URL).hasAnyRole(EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
                 .antMatchers(HttpMethod.GET, ADVERTISEMENT_URL).permitAll()
                 .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint()).accessDeniedHandler(accessDeniedHandler())
+                .and().logout().logoutSuccessHandler(logoutSuccessHandler())
+                .and().formLogin().loginPage("/login").successHandler(authenticationSuccessHandler())
                 .and().httpBasic()
                 .and().csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -93,5 +99,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AccessDeniedHandler accessDeniedHandler() {
         return new CustomAccessDeniedHandler();
+    }
+
+    @Bean
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        return new CustomLogoutSuccessHandler();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new CustomAuthenticationSuccessHandler();
     }
 }

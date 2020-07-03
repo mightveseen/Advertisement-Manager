@@ -17,6 +17,7 @@ import java.util.Set;
 @Entity
 @Table(name = "states")
 public class State {
+
     @Id
     @Column(name = "state_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

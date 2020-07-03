@@ -57,15 +57,11 @@ public class PaymentService extends AbstractService implements IPaymentService {
     @Transactional
     public boolean create(String username, Long advertisementIndex, PaymentTypeDto paymentTypeDto) {
         final Advertisement advertisement = advertisementDao.read(advertisementIndex);
-        if (!advertisement.getUser().getId().equals(userDao.readByUserCred(username).getId())) {
-            throw new PermissionDeniedException(EnumException.PERMISSION_EXCEPTION.getMessage());
-        }
-        final State state = stateDao.read(EnumState.APPROVED.name());
+        checkPermission(advertisement, username);
+        final State state = stateDao.readByDescription(EnumState.APPROVED.name());
         final List<Payment> advertisementActivePayment = advertisement.getPayments().stream().filter(i -> i.getState().equals(state)).collect(Collectors.toList());
-        if (advertisementActivePayment.size() >= activeLimit) {
-            throw new ExceededLimitException("You have: [" + activeLimit + "] active payment's");
-        }
-        final LocalDate paymentStartDate = createLocalDateOperation(advertisementActivePayment);
+        checkLimit(advertisementActivePayment.size());
+        final LocalDate paymentStartDate = createLocalDate(advertisementActivePayment);
         final PaymentType paymentType = paymentTypeDao.read(paymentTypeDto.getId());
         paymentDao.create(new Payment(advertisement.getUser(), advertisement, paymentType, paymentStartDate,
                 paymentStartDate.plusDays(paymentType.getDuration()), paymentType.getPrice(), state));
@@ -85,10 +81,20 @@ public class PaymentService extends AbstractService implements IPaymentService {
         return paymentDao.readCountWithUser(userDao.readByUserCred(username));
     }
 
-    private LocalDate createLocalDateOperation(List<Payment> advertisementActivePayment) {
-        if (advertisementActivePayment.isEmpty()) {
-            return LocalDate.now();
+    private LocalDate createLocalDate(List<Payment> advertisementActivePayment) {
+        return (advertisementActivePayment.isEmpty()) ? LocalDate.now() :
+                advertisementActivePayment.stream().max(Comparator.comparing(Payment::getEndDate)).get().getEndDate();
+    }
+
+    private void checkPermission(Advertisement advertisement, String username) {
+        if (!advertisement.getUser().getId().equals(userDao.readByUserCred(username).getId())) {
+            throw new PermissionDeniedException(EnumException.PERMISSION.getMessage());
         }
-        return advertisementActivePayment.stream().max(Comparator.comparing(Payment::getEndDate)).get().getEndDate();
+    }
+
+    private void checkLimit(int paymentSize) {
+        if (paymentSize >= activeLimit) {
+            throw new ExceededLimitException(String.format(EnumException.ACTIVE_PAYMENT.getMessage(), activeLimit));
+        }
     }
 }

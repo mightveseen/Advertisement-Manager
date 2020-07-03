@@ -40,5 +40,4 @@ public class SingularMapper implements ISingularMapper {
             throw new IncorrectCastException("Chosen parameter [" + parameter + "] does not match any field");
         }
     }
-
 }

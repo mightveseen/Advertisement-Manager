@@ -29,6 +29,8 @@ import java.util.List;
 @Repository
 public class AdvertisementDao extends AbstractDao<Advertisement, Long> implements IAdvertisementDao {
 
+    private static final String NONE_PARAMETER = "none";
+
     @Override
     public List<Advertisement> readAllWithUser(IPageParameter pageParameter, User user, State state) {
         try {
@@ -84,10 +86,10 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
 
     private List<Predicate> getPredicates(Root<Advertisement> root, IFilterParameter filterParameter, IStateParameter stateParameter) {
         final List<Predicate> predicates = new ArrayList<>(6);
-        if (!filterParameter.getSearch().equals("none")) {
+        if (!filterParameter.getSearch().equals(NONE_PARAMETER)) {
             predicates.add(criteriaBuilder.like(root.get(Advertisement_.header), "%" + filterParameter.getSearch() + "%"));
         }
-        if (!filterParameter.getCategory().equals("none")) {
+        if (!filterParameter.getCategory().equals(NONE_PARAMETER)) {
             final Join<Advertisement, AdvertisementCategory> join = root.join(Advertisement_.category);
             predicates.add(criteriaBuilder.equal(join.get(AdvertisementCategory_.description), filterParameter.getCategory()));
         }

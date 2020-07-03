@@ -50,7 +50,7 @@ public class ChatService extends AbstractService implements IChatService {
         final Set<User> users = new HashSet<>();
         users.add(chosenUser);
         users.add(activeUser);
-        chatDao.create(new Chat(advertisement.getHeader(), activeUser.getFirstName() + " create chat", LocalDateTime.now(), users));
+        chatDao.create(new Chat(advertisement.getHeader(), String.format("%s create chat", activeUser.getFirstName()), LocalDateTime.now(), users));
         return true;
     }
 

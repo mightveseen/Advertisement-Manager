@@ -1,8 +1,8 @@
 package com.senlainc.javacourses.petushokvaliantsin.controller;
 
 
-import com.senlainc.javacourses.petushokvaliantsin.dto.ResultListDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
+import com.senlainc.javacourses.petushokvaliantsin.dto.combination.ResultListDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserRatingDto;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;

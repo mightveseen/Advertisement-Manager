@@ -15,7 +15,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException {
-        final ExceptionTemplate response = ExceptionTemplate.of(EnumException.PERMISSION_EXCEPTION.getMessage());
+        final ExceptionTemplate response = ExceptionTemplate.of(EnumException.PERMISSION.getMessage());
         final OutputStream out = httpServletResponse.getOutputStream();
         final ObjectMapper mapper = new ObjectMapper();
         httpServletResponse.setStatus(403);
