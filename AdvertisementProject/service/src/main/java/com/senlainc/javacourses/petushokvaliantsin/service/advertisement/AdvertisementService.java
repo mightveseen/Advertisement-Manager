@@ -31,7 +31,7 @@ import java.util.List;
 
 @Service
 @SingularClass
-public class AdvertisementService extends AbstractService<Advertisement, Long> implements IAdvertisementService {
+public class AdvertisementService extends AbstractService implements IAdvertisementService {
 
     private static final String SORT_FIELD = "advertisement-";
     private static final String SORT_PARAMETER_SEPARATOR = "-";
@@ -120,10 +120,7 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     @SingularModel(metamodels = {Advertisement_.class, User_.class})
     public List<AdvertisementDto> getAdvertisements(int page, int numberElements, String direction, String sortField, String search,
                                                     String category, double minPrice, double maxPrice, EnumState advertisementState) {
-        final IPageParameter pageParameter = sortField.contains(SORT_PARAMETER_SEPARATOR) ?
-                PageParameter.of(page, numberElements, direction, singularMapper.getAttribute(SORT_FIELD + sortField.split(SORT_PARAMETER_SEPARATOR)[0]),
-                        singularMapper.getAttribute(sortField)) :
-                PageParameter.of(page, numberElements, direction, singularMapper.getAttribute(SORT_FIELD + sortField));
+        final IPageParameter pageParameter = readAllPageParameterOperation(page, numberElements, direction, sortField);
         final IFilterParameter filterParameter = FilterParameter.of(search, category, minPrice, maxPrice);
         final IStateParameter stateParameter = StateParameter.of(stateDao.read(advertisementState.name()), stateDao.read(EnumState.APPROVED.name()));
         return dtoMapper.mapAll(advertisementDao.readAllWithFilter(pageParameter, filterParameter, stateParameter),
@@ -134,5 +131,13 @@ public class AdvertisementService extends AbstractService<Advertisement, Long> i
     @Transactional(readOnly = true)
     public Long getSize(EnumState state) {
         return advertisementDao.readCountWithState(stateDao.read(state.name()));
+    }
+
+    private IPageParameter readAllPageParameterOperation(int page, int numberElements, String direction, String sortField) {
+        if (sortField.contains(SORT_PARAMETER_SEPARATOR)) {
+            return PageParameter.of(page, numberElements, direction, singularMapper.getAttribute(SORT_FIELD + sortField.split(SORT_PARAMETER_SEPARATOR)[0]),
+                    singularMapper.getAttribute(sortField));
+        }
+        return PageParameter.of(page, numberElements, direction, singularMapper.getAttribute(SORT_FIELD + sortField));
     }
 }

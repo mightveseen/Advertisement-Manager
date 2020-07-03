@@ -4,9 +4,7 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.IDtoMapper;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.ISingularMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.Serializable;
-
-public abstract class AbstractService<E, K extends Serializable> {
+public abstract class AbstractService {
 
     protected ISingularMapper singularMapper;
     protected IDtoMapper dtoMapper;

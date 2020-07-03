@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class ChatService extends AbstractService<Chat, Long> implements IChatService {
+public class ChatService extends AbstractService implements IChatService {
 
     private final IChatDao chatDao;
     private final IUserDao userDao;

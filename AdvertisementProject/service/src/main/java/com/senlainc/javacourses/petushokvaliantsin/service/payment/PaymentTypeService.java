@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class PaymentTypeService extends AbstractService<PaymentType, Long> implements IPaymentTypeService {
+public class PaymentTypeService extends AbstractService implements IPaymentTypeService {
 
     private final IPaymentTypeDao paymentTypeDao;
 

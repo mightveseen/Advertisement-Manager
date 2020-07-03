@@ -21,29 +21,28 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 
-    //TODO : Validation exception
     @ExceptionHandler({ExceededLimitException.class})
-    public ResponseEntity<Object> notAcceptable(RuntimeException exc) {
+    public ResponseEntity<ExceptionTemplate> notAcceptable(RuntimeException exc) {
         return new ResponseEntity<>(ExceptionTemplate.of(exc.getMessage()), HttpStatus.NOT_ACCEPTABLE);
     }
 
     @ExceptionHandler({EntityNotAvailableException.class, PermissionDeniedException.class})
-    public ResponseEntity<Object> forbidden(RuntimeException exc) {
+    public ResponseEntity<ExceptionTemplate> forbidden(RuntimeException exc) {
         return new ResponseEntity<>(ExceptionTemplate.of(exc.getMessage()), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler({EntityAlreadyExistException.class, EntityNotExistException.class})
-    public ResponseEntity<Object> conflict(RuntimeException exc) {
+    public ResponseEntity<ExceptionTemplate> conflict(RuntimeException exc) {
         return new ResponseEntity<>(ExceptionTemplate.of(exc.getMessage()), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler({WrongEnteredDataException.class, IncorrectCastException.class, MappingException.class})
-    public ResponseEntity<Object> badRequest(RuntimeException exc) {
+    public ResponseEntity<ExceptionTemplate> badRequest(RuntimeException exc) {
         return new ResponseEntity<>(ExceptionTemplate.of(exc.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({ReadQueryException.class, DeleteQueryException.class, UpdateQueryException.class, CreateQueryException.class})
-    public ResponseEntity<Object> internalServerError(RuntimeException exc) {
+    public ResponseEntity<ExceptionTemplate> internalServerError(RuntimeException exc) {
         return new ResponseEntity<>(ExceptionTemplate.of(exc.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

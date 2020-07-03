@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class AdvertisementCategoryService extends AbstractService<AdvertisementCategory, Long> implements IAdvertisementCategoryService {
+public class AdvertisementCategoryService extends AbstractService implements IAdvertisementCategoryService {
 
     private final IAdvertisementCategoryDao advertisementCategoryDao;
 

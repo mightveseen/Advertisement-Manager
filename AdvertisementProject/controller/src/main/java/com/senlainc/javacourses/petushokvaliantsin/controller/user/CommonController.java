@@ -86,8 +86,6 @@ public class CommonController {
         return new ResponseEntity<>(chatService.delete(index, principal.getName()), HttpStatus.OK);
     }
 
-    //TODO : Think about userCred
-
     /**
      * Profile operation [Show/update profile information]
      */

@@ -20,7 +20,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "advertisements")
-public class Advertisement implements Cloneable {
+public class Advertisement {
 
     @Id
     @Column(name = "advertisement_id")
@@ -169,11 +169,6 @@ public class Advertisement implements Cloneable {
     @Override
     public int hashCode() {
         return Objects.hash(id, header, user, description, category, date, price, state);
-    }
-
-    @Override
-    public Advertisement clone() throws CloneNotSupportedException {
-        return (Advertisement) super.clone();
     }
 
     @Override

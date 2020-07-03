@@ -1,11 +1,10 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.user;
 
-import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserCredDto;
-import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumRole;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.UserCred;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserCredDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
-import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserCredService;
+import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
+import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.ReadQueryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -17,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 
 @Service
-public class UserCredService extends AbstractService<UserCred, Long> implements UserDetailsService, IUserCredService {
+public class UserCredService extends AbstractService implements UserDetailsService {
 
     private final IUserCredDao userCredDao;
 
@@ -27,18 +26,13 @@ public class UserCredService extends AbstractService<UserCred, Long> implements 
     }
 
     @Override
-    @Transactional
-    public boolean create(UserCredDto userCredDto) {
-        final UserCred userCred = dtoMapper.map(userCredDto, UserCred.class);
-        userCred.setEnumRole(EnumRole.ROLE_COMMON);
-        userCredDao.create(userCred);
-        return true;
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) {
-        final UserCred user = userCredDao.readByUsername(username);
-        return new User(user.getUsername(), user.getPassword(), Collections.singleton(new SimpleGrantedAuthority(user.getEnumRole().name())));
+        try {
+            final UserCred user = userCredDao.readByUsername(username);
+            return new User(user.getUsername(), user.getPassword(), Collections.singleton(new SimpleGrantedAuthority(user.getEnumRole().name())));
+        } catch (ReadQueryException exc) {
+            throw new EntityNotExistException("User with username [" + username + "] not exist");
+        }
     }
 }

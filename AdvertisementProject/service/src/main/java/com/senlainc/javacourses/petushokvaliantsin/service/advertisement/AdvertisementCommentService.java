@@ -21,7 +21,7 @@ import java.util.List;
 
 @Service
 @SingularClass
-public class AdvertisementCommentService extends AbstractService<AdvertisementComment, Long> implements IAdvertisementCommentService {
+public class AdvertisementCommentService extends AbstractService implements IAdvertisementCommentService {
 
     private static final String SORT_FIELD = "advertisementcomment-";
     private final IAdvertisementCommentDao advertisementCommentDao;

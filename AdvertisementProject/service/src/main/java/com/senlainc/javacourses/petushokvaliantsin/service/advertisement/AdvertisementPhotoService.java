@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class AdvertisementPhotoService extends AbstractService<AdvertisementPhoto, Long> implements IAdvertisementPhotoService {
+public class AdvertisementPhotoService extends AbstractService implements IAdvertisementPhotoService {
 
     private final IAdvertisementPhotoDao advertisementPhotoDao;
 

@@ -1,8 +1,10 @@
 package com.senlainc.javacourses.petushokvaliantsin.configuration;
 
-import com.senlainc.javacourses.petushokvaliantsin.configuration.security.AuthenticationFilter;
 import com.senlainc.javacourses.petushokvaliantsin.configuration.security.AuthorizationFilter;
+import com.senlainc.javacourses.petushokvaliantsin.configuration.security.handler.CustomAccessDeniedHandler;
+import com.senlainc.javacourses.petushokvaliantsin.configuration.security.handler.CustomAuthenticationEntryPointHandler;
 import com.senlainc.javacourses.petushokvaliantsin.configuration.security.mapper.TokenMapper;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +22,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -27,6 +31,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @PropertySource(value = "classpath:/properties/security.properties", ignoreResourceNotFound = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final String ADVERTISEMENT_URL = "/advertisements/**";
     private final UserDetailsService userDetailsService;
     @Value("${SECURITY_CONFIG.TOKEN_HEADER:Authorization}")
     private String tokenHeader;
@@ -44,18 +49,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/login", "/sign-up").anonymous()
-                .antMatchers("/admin/*").hasRole("ADMIN")
-                .antMatchers("/moderator/*").hasAnyRole("MODERATOR", "ADMIN")
-                .antMatchers("/account/**").hasAnyRole("COMMON", "MODERATOR", "ADMIN")
-                .antMatchers(HttpMethod.PUT, "/advertisements/**").hasAnyRole("COMMON", "MODERATOR", "ADMIN")
-                .antMatchers(HttpMethod.POST, "/advertisements/**", "/users/{id}").hasAnyRole("COMMON", "MODERATOR", "ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/advertisements/**").hasAnyRole("COMMON", "MODERATOR", "ADMIN")
-                .antMatchers(HttpMethod.GET, "/advertisements/**").permitAll()
+                .antMatchers("/logout").authenticated()
+                .antMatchers("/admin/*").hasRole(EnumRole.ROLE_ADMIN.getRole())
+                .antMatchers("/moderator/*").hasAnyRole(EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
+                .antMatchers("/account/**").hasAnyRole(EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_ADMIN.getRole(), EnumRole.ROLE_ADMIN.getRole())
+                .antMatchers(HttpMethod.PUT, ADVERTISEMENT_URL).hasAnyRole(EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
+                .antMatchers(HttpMethod.POST, ADVERTISEMENT_URL, "/users/{id}").hasAnyRole(EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
+                .antMatchers(HttpMethod.DELETE, ADVERTISEMENT_URL).hasAnyRole(EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
+                .antMatchers(HttpMethod.GET, ADVERTISEMENT_URL).permitAll()
+                .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint()).accessDeniedHandler(accessDeniedHandler())
                 .and().httpBasic()
                 .and().csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilter(new AuthorizationFilter(authenticationManager(), tokenMapper()));
-        http.addFilter(new AuthenticationFilter(authenticationManager(), tokenMapper()));
     }
 
     @Bean
@@ -64,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         final DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
-        ProviderManager providerManager = new ProviderManager(authenticationProvider);
+        final ProviderManager providerManager = new ProviderManager(authenticationProvider);
         providerManager.setEraseCredentialsAfterAuthentication(false);
         return providerManager;
     }
@@ -79,4 +85,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new TokenMapper(userDetailsService, tokenPrefix, secretKey, tokenHeader);
     }
 
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return new CustomAuthenticationEntryPointHandler();
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
 }

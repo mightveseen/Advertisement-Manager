@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class MessageService extends AbstractService<Message, Long> implements IMessageService {
+public class MessageService extends AbstractService implements IMessageService {
 
     private final IMessageDao messageDao;
     private final IChatDao chatDao;
@@ -42,14 +42,8 @@ public class MessageService extends AbstractService<Message, Long> implements IM
         if (chat.getUsers().stream().noneMatch(i -> i.getId().equals(activeUser.getId()))) {
             throw new PermissionDeniedException(EnumException.PERMISSION_EXCEPTION.getMessage());
         }
-        final Message message = dtoMapper.map(object, Message.class);
-        message.setChat(chat);
-        message.setUser(activeUser);
-        message.setDateTime(LocalDateTime.now());
-        messageDao.create(message);
-        chat.setUpdateDateTime(LocalDateTime.now());
-        chat.setLastMessage(message.getUser().getFirstName() + ": " + message.getText().substring(0, 20) + "...");
-        chatDao.update(chat);
+        messageDao.create(createMessageOperation(object, chat, activeUser));
+        chatDao.update(createChatOperation(chat, activeUser, object.getText()));
         return true;
     }
 
@@ -62,5 +56,19 @@ public class MessageService extends AbstractService<Message, Long> implements IM
         }
         return dtoMapper.mapAll(messageDao.readAll(PageParameter.of(firstElement, maxResult), Message_.chat, chatDao.read(chatIndex)),
                 MessageDto.class);
+    }
+
+    private Message createMessageOperation(MessageDto messageDto, Chat chat, User activeUser) {
+        final Message message = dtoMapper.map(messageDto, Message.class);
+        message.setChat(chat);
+        message.setUser(activeUser);
+        message.setDateTime(LocalDateTime.now());
+        return message;
+    }
+
+    private Chat createChatOperation(Chat chat, User activeUser, String text) {
+        chat.setUpdateDateTime(LocalDateTime.now());
+        chat.setLastMessage(activeUser.getFirstName() + ": " + text.substring(0, 20) + "...");
+        return chat;
     }
 }

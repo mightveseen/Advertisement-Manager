@@ -1,6 +1,7 @@
 package com.senlainc.javacourses.petushokvaliantsin.configuration.security;
 
 import com.senlainc.javacourses.petushokvaliantsin.configuration.security.mapper.TokenMapper;
+import com.senlainc.javacourses.petushokvaliantsin.utility.exception.WrongEnteredDataException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +16,7 @@ import java.io.IOException;
 
 public class AuthorizationFilter extends BasicAuthenticationFilter {
 
+    private static final String TOKEN_EXCEPTION = "Wrong token format";
     private final TokenMapper tokenMapper;
 
     public AuthorizationFilter(AuthenticationManager authenticationManager, TokenMapper tokenMapper) {
@@ -36,6 +38,9 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 
     private UsernamePasswordAuthenticationToken getAuthentication(String token) {
         final UserDetails userDetails = tokenMapper.parseToken(token);
+        if (userDetails == null) {
+            throw new WrongEnteredDataException(TOKEN_EXCEPTION);
+        }
         return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(),
                 userDetails.getAuthorities());
     }

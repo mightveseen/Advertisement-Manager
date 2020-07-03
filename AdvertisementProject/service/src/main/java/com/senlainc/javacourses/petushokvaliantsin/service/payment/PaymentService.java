@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 
 @Service
 @PropertySource(value = "classpath:/properties/service.properties", ignoreResourceNotFound = true)
-public class PaymentService extends AbstractService<Payment, Long> implements IPaymentService {
+public class PaymentService extends AbstractService implements IPaymentService {
 
     private final IPaymentDao paymentDao;
     private final IAdvertisementDao advertisementDao;
@@ -65,9 +65,7 @@ public class PaymentService extends AbstractService<Payment, Long> implements IP
         if (advertisementActivePayment.size() >= activeLimit) {
             throw new ExceededLimitException("You have: [" + activeLimit + "] active payment's");
         }
-        final LocalDate paymentStartDate = (!advertisementActivePayment.isEmpty()) ?
-                advertisementActivePayment.stream().max(Comparator.comparing(Payment::getEndDate)).get().getEndDate() :
-                LocalDate.now();
+        final LocalDate paymentStartDate = createLocalDateOperation(advertisementActivePayment);
         final PaymentType paymentType = paymentTypeDao.read(paymentTypeDto.getId());
         paymentDao.create(new Payment(advertisement.getUser(), advertisement, paymentType, paymentStartDate,
                 paymentStartDate.plusDays(paymentType.getDuration()), paymentType.getPrice(), state));
@@ -85,5 +83,12 @@ public class PaymentService extends AbstractService<Payment, Long> implements IP
     @Transactional(readOnly = true)
     public Long getSize(String username) {
         return paymentDao.readCountWithUser(userDao.readByUserCred(username));
+    }
+
+    private LocalDate createLocalDateOperation(List<Payment> advertisementActivePayment) {
+        if (advertisementActivePayment.isEmpty()) {
+            return LocalDate.now();
+        }
+        return advertisementActivePayment.stream().max(Comparator.comparing(Payment::getEndDate)).get().getEndDate();
     }
 }

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class UserRatingService extends AbstractService<UserRating, Long> implements IUserRatingService {
+public class UserRatingService extends AbstractService implements IUserRatingService {
 
     private final IUserRatingDao userRatingDao;
     private final IUserDao userDao;
@@ -30,19 +30,31 @@ public class UserRatingService extends AbstractService<UserRating, Long> impleme
     @Transactional
     public boolean create(String username, Long ratedUserIndex, UserRatingDto userRatingDto) {
         final User activeUser = userDao.readByUserCred(username);
-        if (activeUser.getId().equals(ratedUserIndex)) {
-            throw new WrongEnteredDataException(EnumException.RATE_YOURSELF.getMessage());
-        }
-        if (activeUser.getRatedUserRatings().stream().anyMatch(i -> i.getRateOwnerUser().getId().equals(ratedUserIndex))) {
-            throw new EntityAlreadyExistException(EnumException.RATE_EXIST.getMessage());
-        }
+        checkYourselfCreateOperation(activeUser, ratedUserIndex);
+        checkRateExistCreateOperation(activeUser, ratedUserIndex);
         final User ratedUser = userDao.read(ratedUserIndex);
+        userRatingDao.create(userRatingCreateOperation(userRatingDto, activeUser, ratedUser));
+        ratedUser.setRating((ratedUser.getRating() * ratedUser.getRatedUserRatings().size() + userRatingDto.getValue()) / (ratedUser.getRatedUserRatings().size() + 1));
+        userDao.update(ratedUser);
+        return true;
+    }
+
+    private UserRating userRatingCreateOperation(UserRatingDto userRatingDto, User activeUser, User ratedUser) {
         final UserRating userRating = dtoMapper.map(userRatingDto, UserRating.class);
         userRating.setRateOwnerUser(activeUser);
         userRating.setRatedUser(ratedUser);
-        userRatingDao.create(userRating);
-        ratedUser.setRating((ratedUser.getRating() * ratedUser.getRatedUserRatings().size() + userRating.getValue()) / (ratedUser.getRatedUserRatings().size() + 1));
-        userDao.update(ratedUser);
-        return true;
+        return userRating;
+    }
+
+    private void checkYourselfCreateOperation(User activeUser, Long ratedUserIndex) {
+        if (activeUser.getId().equals(ratedUserIndex)) {
+            throw new WrongEnteredDataException(EnumException.RATE_YOURSELF.getMessage());
+        }
+    }
+
+    private void checkRateExistCreateOperation(User activeUser, Long ratedUserIndex) {
+        if (activeUser.getRateOwnerUserRatings().stream().anyMatch(i -> i.getRatedUser().getId().equals(ratedUserIndex))) {
+            throw new EntityAlreadyExistException(EnumException.RATE_EXIST.getMessage());
+        }
     }
 }
