@@ -3,6 +3,9 @@ package com.senlainc.javacourses.petushokvaliantsin.model.payment;
 import com.senlainc.javacourses.petushokvaliantsin.model.State;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +19,9 @@ import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "payments")
 public class Payment {
@@ -43,9 +49,6 @@ public class Payment {
     @JoinColumn(name = "state_id")
     private State state;
 
-    public Payment() {
-    }
-
     public Payment(User user, Advertisement advertisement, PaymentType type, LocalDate startDate, LocalDate endDate, Double price, State state) {
         this.user = user;
         this.advertisement = advertisement;
@@ -56,88 +59,24 @@ public class Payment {
         this.state = state;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Advertisement getAdvertisement() {
-        return advertisement;
-    }
-
-    public void setAdvertisement(Advertisement advertisement) {
-        this.advertisement = advertisement;
-    }
-
-    public PaymentType getType() {
-        return type;
-    }
-
-    public void setType(PaymentType type) {
-        this.type = type;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Payment payment = (Payment) o;
-        return id.equals(payment.id) &&
-                user.equals(payment.user) &&
-                advertisement.equals(payment.advertisement) &&
-                type.equals(payment.type) &&
-                startDate.equals(payment.startDate) &&
-                endDate.equals(payment.endDate) &&
-                price.equals(payment.price) &&
-                state.equals(payment.state);
+        return getId().equals(payment.getId()) &&
+                getUser().equals(payment.getUser()) &&
+                getAdvertisement().equals(payment.getAdvertisement()) &&
+                getType().equals(payment.getType()) &&
+                getStartDate().equals(payment.getStartDate()) &&
+                getEndDate().equals(payment.getEndDate()) &&
+                getPrice().equals(payment.getPrice()) &&
+                getState().equals(payment.getState());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, advertisement, type, startDate, endDate, price, state);
+        return Objects.hash(getId(), getUser(), getAdvertisement(), getType(), getStartDate(), getEndDate(), getPrice(), getState());
     }
 
     @Override

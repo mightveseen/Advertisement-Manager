@@ -1,6 +1,9 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.chat;
 
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +17,9 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "messages")
 public class Message {
@@ -33,53 +39,10 @@ public class Message {
     @Column(name = "message_date")
     private LocalDateTime dateTime;
 
-    public Message() {
-    }
-
     public Message(User user, Chat chat, String text, LocalDateTime dateTime) {
         this.user = user;
         this.chat = chat;
         this.text = text;
-        this.dateTime = dateTime;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Chat getChat() {
-        return chat;
-    }
-
-    public void setChat(Chat chat) {
-        this.chat = chat;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -88,16 +51,16 @@ public class Message {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Message message = (Message) o;
-        return id.equals(message.id) &&
-                Objects.equals(user, message.user) &&
-                chat.equals(message.chat) &&
-                text.equals(message.text) &&
-                dateTime.equals(message.dateTime);
+        return getId().equals(message.getId()) &&
+                getUser().equals(message.getUser()) &&
+                getChat().equals(message.getChat()) &&
+                getText().equals(message.getText()) &&
+                getDateTime().equals(message.getDateTime());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, chat, text, dateTime);
+        return Objects.hash(getId(), getUser(), getChat(), getText(), getDateTime());
     }
 
     @Override

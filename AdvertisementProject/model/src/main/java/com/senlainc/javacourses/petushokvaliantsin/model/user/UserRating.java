@@ -1,5 +1,9 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.user;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.Objects;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "user_ratings")
 public class UserRating {
@@ -28,44 +35,9 @@ public class UserRating {
     @Column(name = "rating_value")
     private Short value;
 
-    public UserRating() {
-    }
-
     public UserRating(User rateOwnerUser, User ratedUser, Short value) {
         this.rateOwnerUser = rateOwnerUser;
         this.ratedUser = ratedUser;
-        this.value = value;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getRateOwnerUser() {
-        return rateOwnerUser;
-    }
-
-    public void setRateOwnerUser(User userOwner) {
-        this.rateOwnerUser = userOwner;
-    }
-
-    public User getRatedUser() {
-        return ratedUser;
-    }
-
-    public void setRatedUser(User ratedUser) {
-        this.ratedUser = ratedUser;
-    }
-
-    public Short getValue() {
-        return value;
-    }
-
-    public void setValue(Short value) {
         this.value = value;
     }
 
@@ -74,22 +46,22 @@ public class UserRating {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserRating that = (UserRating) o;
-        return id.equals(that.id) &&
-                Objects.equals(rateOwnerUser, that.rateOwnerUser) &&
-                ratedUser.equals(that.ratedUser) &&
-                value.equals(that.value);
+        return getId().equals(that.getId()) &&
+                getRateOwnerUser().equals(that.getRateOwnerUser()) &&
+                getRatedUser().equals(that.getRatedUser()) &&
+                getValue().equals(that.getValue());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, rateOwnerUser, ratedUser, value);
+        return Objects.hash(getId(), getRateOwnerUser(), getRatedUser(), getValue());
     }
 
     @Override
     public String toString() {
         return "UserRating{" +
                 "id=" + id +
-                ", userOwner=" + rateOwnerUser +
+                ", rateOwnerUser=" + rateOwnerUser +
                 ", ratedUser=" + ratedUser +
                 ", value=" + value +
                 '}';

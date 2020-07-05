@@ -3,6 +3,7 @@ package com.senlainc.javacourses.petushokvaliantsin.service.user;
 import com.senlainc.javacourses.petushokvaliantsin.dto.combination.AccountDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumException;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumLogger;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumRole;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.UserCred;
@@ -13,6 +14,8 @@ import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityAlreadyExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.PermissionDeniedException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.ReadQueryException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,7 @@ import java.time.LocalDate;
 @Service
 public class UserService extends AbstractService implements IUserService {
 
+    private static final Logger LOGGER = LogManager.getLogger(UserService.class);
     private static final String[] USER_FIELDS = {"username", "email"};
     private final IUserDao userDao;
     private final IUserCredDao userCredDao;
@@ -38,46 +42,52 @@ public class UserService extends AbstractService implements IUserService {
     @Override
     @Transactional
     public boolean create(AccountDto accountDto) {
-        checkUsernameCreateOperation(accountDto.getUserCred().getUsername());
-        checkEmailCreateOperation(accountDto.getUser().getEmail());
-        final UserCred userCred = userCredCreateOperation(accountDto);
+        checkUsername(accountDto.getUserCred().getUsername());
+        checkEmail(accountDto.getUser().getEmail());
+        final UserCred userCred = createUserCred(accountDto);
         userCred.setPassword(passwordEncoder.encode(userCred.getPassword()));
         userCredDao.create(userCred);
-        final User user = userCreateOperation(accountDto, userCred);
+        final User user = createUser(accountDto, userCred);
         userDao.create(user);
+        LOGGER.info(EnumLogger.SUCCESSFUL_CREATE.getText());
         return true;
     }
 
     @Override
     @Transactional
     public boolean update(String username, UserDto userDto) {
-        checkEmailUpdateOperation(userDto.getEmail(), userDto);
+        checkEmail(userDto.getEmail(), userDto);
         final User user = userDao.readByUserCred(username);
-        checkPermissionUpdateOperation(user, userDto);
+        checkPermission(user, userDto);
         userDto.setRating(user.getRating());
         userDao.update(dtoMapper.map(userDto, User.class));
+        LOGGER.info(EnumLogger.SUCCESSFUL_UPDATE.getText());
         return true;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public UserDto getUser(Long userIndex) {
-        return dtoMapper.map(userDao.read(userIndex), UserDto.class);
+    public UserDto read(Long userIndex) {
+        final UserDto result = dtoMapper.map(userDao.read(userIndex), UserDto.class);
+        LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
+        return result;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public UserDto getUser(String username) {
-        return dtoMapper.map(userDao.readByUserCred(username), UserDto.class);
+    public UserDto readByUsername(String username) {
+        final UserDto result = dtoMapper.map(userDao.readByUserCred(username), UserDto.class);
+        LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
+        return result;
     }
 
-    private UserCred userCredCreateOperation(AccountDto accountDto) {
+    private UserCred createUserCred(AccountDto accountDto) {
         final UserCred userCred = dtoMapper.map(accountDto.getUserCred(), UserCred.class);
         userCred.setEnumRole(EnumRole.ROLE_COMMON);
         return userCred;
     }
 
-    private User userCreateOperation(AccountDto accountDto, UserCred userCred) {
+    private User createUser(AccountDto accountDto, UserCred userCred) {
         final User user = dtoMapper.map(accountDto.getUser(), User.class);
         user.setRegistrationDate(LocalDate.now());
         user.setId(userCred.getId());
@@ -85,13 +95,13 @@ public class UserService extends AbstractService implements IUserService {
         return user;
     }
 
-    private void checkPermissionUpdateOperation(User user, UserDto userDto) {
+    private void checkPermission(User user, UserDto userDto) {
         if (!user.getId().equals(userDto.getId())) {
             throw new PermissionDeniedException(EnumException.PERMISSION.getMessage());
         }
     }
 
-    private void checkEmailCreateOperation(String email) {
+    private void checkEmail(String email) {
         try {
             if (userDao.readByEmail(email) != null) {
                 throw new EntityAlreadyExistException(String.format(EnumException.USER_WITH_FIELD_EXIST.getMessage(), USER_FIELDS[1], email));
@@ -100,7 +110,7 @@ public class UserService extends AbstractService implements IUserService {
         }
     }
 
-    private void checkEmailUpdateOperation(String email, UserDto userDto) {
+    private void checkEmail(String email, UserDto userDto) {
         try {
             final User user = userDao.readByEmail(email);
             if (user != null && !user.getId().equals(userDto.getId())) {
@@ -110,7 +120,7 @@ public class UserService extends AbstractService implements IUserService {
         }
     }
 
-    private void checkUsernameCreateOperation(String username) {
+    private void checkUsername(String username) {
         if (userCredDao.readByUsername(username) != null) {
             throw new EntityAlreadyExistException(String.format(EnumException.USER_WITH_FIELD_EXIST.getMessage(), USER_FIELDS[0], username));
         }

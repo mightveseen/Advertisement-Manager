@@ -1,5 +1,9 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.payment;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +15,9 @@ import javax.persistence.Table;
 import java.util.Objects;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "payment_types")
 public class PaymentType {
@@ -29,44 +36,9 @@ public class PaymentType {
     @OneToMany(mappedBy = "type", fetch = FetchType.LAZY)
     private Set<Payment> payments;
 
-    public PaymentType() {
-    }
-
     public PaymentType(String description, Integer duration, Double price) {
         this.description = description;
         this.duration = duration;
-        this.price = price;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getDuration() {
-        return duration;
-    }
-
-    public void setDuration(Integer duration) {
-        this.duration = duration;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -75,15 +47,15 @@ public class PaymentType {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PaymentType that = (PaymentType) o;
-        return id.equals(that.id) &&
-                description.equals(that.description) &&
-                duration.equals(that.duration) &&
-                price.equals(that.price);
+        return getId().equals(that.getId()) &&
+                getDescription().equals(that.getDescription()) &&
+                getDuration().equals(that.getDuration()) &&
+                getPrice().equals(that.getPrice());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, duration, price);
+        return Objects.hash(getId(), getDescription(), getDuration(), getPrice());
     }
 
     @Override

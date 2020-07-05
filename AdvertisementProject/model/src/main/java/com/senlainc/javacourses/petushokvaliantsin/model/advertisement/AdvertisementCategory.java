@@ -1,5 +1,9 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.advertisement;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +15,9 @@ import javax.persistence.Table;
 import java.util.Objects;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "advertisement_categories")
 public class AdvertisementCategory {
@@ -25,35 +32,8 @@ public class AdvertisementCategory {
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private Set<Advertisement> advertisements;
 
-    public AdvertisementCategory() {
-    }
-
     public AdvertisementCategory(String description) {
         this.description = description;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Set<Advertisement> getAdvertisements() {
-        return advertisements;
-    }
-
-    public void setAdvertisements(Set<Advertisement> advertisements) {
-        this.advertisements = advertisements;
     }
 
     @Override
@@ -61,19 +41,20 @@ public class AdvertisementCategory {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AdvertisementCategory that = (AdvertisementCategory) o;
-        return id.equals(that.id) &&
-                description.equals(that.description);
+        return getId().equals(that.getId()) &&
+                getDescription().equals(that.getDescription());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description);
+        return Objects.hash(getId(), getDescription());
     }
 
     @Override
     public String toString() {
         return "AdvertisementCategory{" +
                 "id=" + id +
-                ", description='" + description + '}';
+                ", description='" + description + '\'' +
+                '}';
     }
 }

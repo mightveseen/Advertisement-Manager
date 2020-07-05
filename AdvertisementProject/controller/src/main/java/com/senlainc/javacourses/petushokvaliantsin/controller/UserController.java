@@ -40,7 +40,7 @@ public class UserController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable(name = "id") @Positive Long index) {
-        return new ResponseEntity<>(userService.getUser(index), HttpStatus.OK);
+        return new ResponseEntity<>(userService.read(index), HttpStatus.OK);
     }
 
     @PostMapping(value = "/{id}")
@@ -54,7 +54,7 @@ public class UserController {
     public ResultListDto<AdvertisementDto> getUserClosedAdvertisements(@PathVariable(name = "id") @Positive Long index,
                                                                        @RequestParam(name = "page", defaultValue = "1") @Positive int page,
                                                                        @RequestParam(name = "number", defaultValue = "15") @Positive int numberElements) {
-        return new ResultListDto<>(advertisementService.getSize(EnumState.DISABLED),
-                advertisementService.getUserAdvertisements(index, page, numberElements, EnumState.DISABLED));
+        return new ResultListDto<>(advertisementService.readSize(EnumState.DISABLED),
+                advertisementService.readAllWithUser(index, page, numberElements, EnumState.DISABLED));
     }
 }

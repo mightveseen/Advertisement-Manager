@@ -2,10 +2,14 @@ package com.senlainc.javacourses.petushokvaliantsin.dto.combination;
 
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserCredDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+@Getter
+@Setter
 public class AccountDto {
 
     @Valid
@@ -14,22 +18,6 @@ public class AccountDto {
     @Valid
     @NotNull(groups = Create.class)
     private UserDto user;
-
-    public UserCredDto getUserCred() {
-        return userCred;
-    }
-
-    public void setUserCred(UserCredDto userCred) {
-        this.userCred = userCred;
-    }
-
-    public UserDto getUser() {
-        return user;
-    }
-
-    public void setUser(UserDto user) {
-        this.user = user;
-    }
 
     public interface Create {
 

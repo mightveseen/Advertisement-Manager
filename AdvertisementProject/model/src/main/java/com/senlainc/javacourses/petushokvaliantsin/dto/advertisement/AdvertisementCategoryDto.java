@@ -1,11 +1,16 @@
 package com.senlainc.javacourses.petushokvaliantsin.dto.advertisement;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Positive;
 import java.io.Serializable;
 
+@Getter
+@Setter
 public class AdvertisementCategoryDto implements Serializable {
 
     @Null(groups = Create.class)
@@ -14,22 +19,6 @@ public class AdvertisementCategoryDto implements Serializable {
     private Long id;
     @NotEmpty(groups = {Create.class, Update.class})
     private String description;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public interface Create {
 

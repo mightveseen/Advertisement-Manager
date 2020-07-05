@@ -62,13 +62,13 @@ public class AdvertisementController {
                                                              @RequestParam(name = "search", defaultValue = "none") String search,
                                                              @RequestParam(name = "min", defaultValue = "0") double minPrice,
                                                              @RequestParam(name = "max", defaultValue = "0") double maxPrice) {
-        return new ResultListDto<>(advertisementService.getSize(EnumState.ACTIVE),
-                advertisementService.getAdvertisements(page, numberElements, direction, sort, search, category, minPrice, maxPrice, EnumState.ACTIVE));
+        return new ResultListDto<>(advertisementService.readSize(EnumState.ACTIVE),
+                advertisementService.readAll(page, numberElements, direction, sort, search, category, minPrice, maxPrice, EnumState.ACTIVE));
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<AdvertisementDto> getAdvertisement(@PathVariable(name = "id") @Positive Long index) {
-        return new ResponseEntity<>(advertisementService.getAdvertisementByUser(index), HttpStatus.OK);
+        return new ResponseEntity<>(advertisementService.readByUser(index), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -105,8 +105,8 @@ public class AdvertisementController {
                                                                            @RequestParam(name = "max", defaultValue = "15") int maxResult,
                                                                            @RequestParam(name = "direction", defaultValue = "desc") String direction,
                                                                            @RequestParam(name = "sort", defaultValue = "default") String sort) {
-        return new ResultListDto<>(advertisementCommentService.getSize(),
-                advertisementCommentService.getAdvertisementComments(index, firstElement, maxResult, direction, sort));
+        return new ResultListDto<>(advertisementCommentService.readSize(),
+                advertisementCommentService.readAll(index, firstElement, maxResult, direction, sort));
     }
 
     @PostMapping(value = "/{id}/comments")
@@ -120,8 +120,8 @@ public class AdvertisementController {
      * Payment operation [Show all payment type, add payment]
      */
     @GetMapping(value = "{id}/payments")
-    public List<PaymentTypeDto> getPaymentTypes() {
-        return paymentTypeService.getPaymentTypes();
+    public List<PaymentTypeDto> getPaymentTypes(@PathVariable(name = "id") Long index) {
+        return paymentTypeService.readAll();
     }
 
     @PostMapping(value = "{id}/payments")

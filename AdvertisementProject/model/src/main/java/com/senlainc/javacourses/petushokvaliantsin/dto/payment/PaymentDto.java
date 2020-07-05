@@ -5,10 +5,14 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.senlainc.javacourses.petushokvaliantsin.dto.StateDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
+@Getter
+@Setter
 public class PaymentDto implements Serializable {
 
     private Long id;
@@ -22,60 +26,4 @@ public class PaymentDto implements Serializable {
     private LocalDate endDate;
     private Double price;
     private StateDto state;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public AdvertisementDto getAdvertisement() {
-        return advertisement;
-    }
-
-    public void setAdvertisement(AdvertisementDto advertisement) {
-        this.advertisement = advertisement;
-    }
-
-    public PaymentTypeDto getType() {
-        return type;
-    }
-
-    public void setType(PaymentTypeDto type) {
-        this.type = type;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public StateDto getState() {
-        return state;
-    }
-
-    public void setState(StateDto state) {
-        this.state = state;
-    }
 }

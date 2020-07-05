@@ -1,6 +1,9 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.advertisement;
 
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +17,9 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "advertisement_comments")
 public class AdvertisementComment {
@@ -33,53 +39,10 @@ public class AdvertisementComment {
     @Column(name = "comment_date", updatable = false)
     private LocalDateTime dateTime;
 
-    public AdvertisementComment() {
-    }
-
     public AdvertisementComment(User user, Advertisement advertisement, String message, LocalDateTime dateTime) {
         this.user = user;
         this.advertisement = advertisement;
         this.message = message;
-        this.dateTime = dateTime;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Advertisement getAdvertisement() {
-        return advertisement;
-    }
-
-    public void setAdvertisement(Advertisement advertisement) {
-        this.advertisement = advertisement;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -88,16 +51,16 @@ public class AdvertisementComment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AdvertisementComment that = (AdvertisementComment) o;
-        return id.equals(that.id) &&
-                Objects.equals(user, that.user) &&
-                advertisement.equals(that.advertisement) &&
-                message.equals(that.message) &&
-                dateTime.equals(that.dateTime);
+        return getId().equals(that.getId()) &&
+                getUser().equals(that.getUser()) &&
+                getAdvertisement().equals(that.getAdvertisement()) &&
+                getMessage().equals(that.getMessage()) &&
+                getDateTime().equals(that.getDateTime());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, advertisement, message, dateTime);
+        return Objects.hash(getId(), getUser(), getAdvertisement(), getMessage(), getDateTime());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.repository.advertisement;
 
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
 import com.senlainc.javacourses.petushokvaliantsin.model.State;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementCategory;
@@ -99,7 +100,9 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
         if (filterParameter.getMaxPrice() > 0) {
             predicates.add(criteriaBuilder.le(root.get(Advertisement_.price), filterParameter.getMaxPrice()));
         }
-        predicates.add(criteriaBuilder.equal(root.get(Advertisement_.state), stateParameter.getAdvertisementState()));
+        if (!stateParameter.getAdvertisementState().equals(EnumState.ALL)) {
+            predicates.add(criteriaBuilder.equal(root.get(Advertisement_.state), stateParameter.getAdvertisementState()));
+        }
         return predicates;
     }
 

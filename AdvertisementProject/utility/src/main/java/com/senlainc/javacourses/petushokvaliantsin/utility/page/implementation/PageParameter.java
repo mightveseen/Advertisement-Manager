@@ -8,8 +8,8 @@ import javax.persistence.metamodel.SingularAttribute;
 public final class PageParameter implements IPageParameter {
 
     private final Sort.Direction sort;
-    private int firstElement;
-    private int maxResult;
+    private final int firstElement;
+    private final int maxResult;
     private SingularAttribute[] criteriaField;
 
     private PageParameter(int page, int numberElements) {

@@ -52,7 +52,7 @@ public class CommonController {
     public ResultListDto<PaymentDto> getUserPayments(@RequestParam(name = "page", defaultValue = "1") @Positive int page,
                                                      @RequestParam(name = "max", defaultValue = "15") @Positive int max,
                                                      @NotNull Principal principal) {
-        return new ResultListDto<>(paymentService.getSize(principal.getName()), paymentService.getUserPayments(principal.getName(), page, max));
+        return new ResultListDto<>(paymentService.readSize(principal.getName()), paymentService.readAll(principal.getName(), page, max));
     }
 
     /**
@@ -62,7 +62,7 @@ public class CommonController {
     public ResultListDto<ChatDto> getUserChats(@RequestParam(name = "page", defaultValue = "1") @Positive int page,
                                                @RequestParam(name = "max", defaultValue = "15") @Positive int max,
                                                @NotNull Principal principal) {
-        return new ResultListDto<>(chatService.getSize(principal.getName()), chatService.getChats(principal.getName(), page, max));
+        return new ResultListDto<>(chatService.readSize(principal.getName()), chatService.readAll(principal.getName(), page, max));
     }
 
     @GetMapping(value = "/chats/{id}")
@@ -70,7 +70,7 @@ public class CommonController {
                                            @RequestParam(name = "page", defaultValue = "1") @Positive int page,
                                            @RequestParam(name = "max", defaultValue = "15") @Positive int max,
                                            @NotNull Principal principal) {
-        return messageService.getMessages(principal.getName(), index, page, max);
+        return messageService.readAll(principal.getName(), index, page, max);
     }
 
     @PostMapping(value = "/chats/{id}")
@@ -91,7 +91,7 @@ public class CommonController {
      */
     @GetMapping(value = "/settings/profile")
     public ResponseEntity<UserDto> getUserProfile(@NotNull Principal principal) {
-        return new ResponseEntity<>(userService.getUser(principal.getName()), HttpStatus.OK);
+        return new ResponseEntity<>(userService.readByUsername(principal.getName()), HttpStatus.OK);
     }
 
     @PutMapping(value = "/settings/profile")

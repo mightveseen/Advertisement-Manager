@@ -10,7 +10,7 @@ public interface IChatService {
 
     boolean delete(Long index, String username);
 
-    List<ChatDto> getChats(String username, int page, int maxResult);
+    List<ChatDto> readAll(String username, int page, int maxResult);
 
-    Long getSize(String username);
+    Long readSize(String username);
 }

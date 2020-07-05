@@ -10,20 +10,22 @@ public interface IAdvertisementService {
 
     boolean create(String username, AdvertisementDto object);
 
-    boolean delete(String username, Long advertisementIndex);
+    boolean delete(String username, Long index);
 
     boolean updateByUser(String username, AdvertisementDto object);
 
-    boolean updateStateByModerator(Long advertisementIndex, StateDto state);
+    boolean updateStateByModerator(Long index, StateDto state);
 
-    AdvertisementDto getAdvertisementByUser(Long index);
+    AdvertisementDto readByUser(Long index);
 
-    AdvertisementDto getAdvertisementByModerator(Long index);
+    AdvertisementDto readByModerator(Long index);
 
-    List<AdvertisementDto> getUserAdvertisements(Long index, int page, int numberElements, EnumState state);
+    List<AdvertisementDto> readAllWithUser(Long userIndex, int page, int numberElements, EnumState state);
 
-    List<AdvertisementDto> getAdvertisements(int page, int numberElements, String direction, String sortField, String search,
-                                             String category, double minPrice, double maxPrice, EnumState advertisementState);
+    List<AdvertisementDto> readAll(int page, int numberElements, String direction, String sortField, String search,
+                                   String category, double minPrice, double maxPrice, EnumState advertisementState);
 
-    Long getSize(EnumState state);
+    Long readSize();
+
+    Long readSize(EnumState state);
 }

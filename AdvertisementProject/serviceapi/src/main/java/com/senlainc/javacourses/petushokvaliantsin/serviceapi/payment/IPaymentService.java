@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface IPaymentService {
 
-    boolean create(String username, Long advertisementIndex, PaymentTypeDto paymentTypeDto);
+    boolean create(String username, Long advertisementIndex, PaymentTypeDto object);
 
-    List<PaymentDto> getUserPayments(String username, int page, int max);
+    List<PaymentDto> readAll(String username, int page, int max);
 
-    Long getSize(String username);
+    Long readSize(String username);
 }

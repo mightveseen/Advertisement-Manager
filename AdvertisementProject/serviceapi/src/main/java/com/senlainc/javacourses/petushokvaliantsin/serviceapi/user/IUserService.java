@@ -9,7 +9,7 @@ public interface IUserService {
 
     boolean create(AccountDto accountDto);
 
-    UserDto getUser(Long userIndex);
+    UserDto read(Long userIndex);
 
-    UserDto getUser(String username);
+    UserDto readByUsername(String username);
 }

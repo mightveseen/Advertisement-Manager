@@ -3,6 +3,7 @@ package com.senlainc.javacourses.petushokvaliantsin.service.payment;
 import com.senlainc.javacourses.petushokvaliantsin.dto.payment.PaymentDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.payment.PaymentTypeDto;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumException;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumLogger;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
 import com.senlainc.javacourses.petushokvaliantsin.model.State;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
@@ -20,6 +21,8 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.exception.ExceededLim
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.PermissionDeniedException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -35,6 +38,7 @@ import java.util.stream.Collectors;
 @PropertySource(value = "classpath:/properties/service.properties", ignoreResourceNotFound = true)
 public class PaymentService extends AbstractService implements IPaymentService {
 
+    private static final Logger LOGGER = LogManager.getLogger(PaymentService.class);
     private final IPaymentDao paymentDao;
     private final IAdvertisementDao advertisementDao;
     private final IPaymentTypeDao paymentTypeDao;
@@ -55,34 +59,37 @@ public class PaymentService extends AbstractService implements IPaymentService {
 
     @Override
     @Transactional
-    public boolean create(String username, Long advertisementIndex, PaymentTypeDto paymentTypeDto) {
+    public boolean create(String username, Long advertisementIndex, PaymentTypeDto object) {
         final Advertisement advertisement = advertisementDao.read(advertisementIndex);
         checkPermission(advertisement, username);
         final State state = stateDao.readByDescription(EnumState.APPROVED.name());
         final List<Payment> advertisementActivePayment = advertisement.getPayments().stream().filter(i -> i.getState().equals(state)).collect(Collectors.toList());
         checkLimit(advertisementActivePayment.size());
         final LocalDate paymentStartDate = createLocalDate(advertisementActivePayment);
-        final PaymentType paymentType = paymentTypeDao.read(paymentTypeDto.getId());
+        final PaymentType paymentType = paymentTypeDao.read(object.getId());
         paymentDao.create(new Payment(advertisement.getUser(), advertisement, paymentType, paymentStartDate,
                 paymentStartDate.plusDays(paymentType.getDuration()), paymentType.getPrice(), state));
+        LOGGER.info(EnumLogger.SUCCESSFUL_CREATE.getText());
         return true;
     }
 
     @Override
     @Transactional
-    public List<PaymentDto> getUserPayments(String username, int page, int max) {
+    public List<PaymentDto> readAll(String username, int page, int max) {
         final IPageParameter pageParameter = PageParameter.of(page, max);
-        return dtoMapper.mapAll(paymentDao.readAll(pageParameter, Payment_.user, userDao.readByUserCred(username)), PaymentDto.class);
+        final List<PaymentDto> result = dtoMapper.mapAll(paymentDao.readAll(pageParameter, Payment_.user, userDao.readByUserCred(username)), PaymentDto.class);
+        LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
+        return result;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Long getSize(String username) {
+    public Long readSize(String username) {
         return paymentDao.readCountWithUser(userDao.readByUserCred(username));
     }
 
     private LocalDate createLocalDate(List<Payment> advertisementActivePayment) {
-        return (advertisementActivePayment.isEmpty()) ? LocalDate.now() :
+        return (advertisementActivePayment == null || advertisementActivePayment.isEmpty()) ? LocalDate.now() :
                 advertisementActivePayment.stream().max(Comparator.comparing(Payment::getEndDate)).get().getEndDate();
     }
 

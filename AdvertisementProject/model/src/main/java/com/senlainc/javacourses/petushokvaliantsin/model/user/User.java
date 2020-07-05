@@ -5,6 +5,9 @@ import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertise
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Message;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +22,9 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -57,9 +63,6 @@ public class User {
     @OneToMany(mappedBy = "ratedUser", fetch = FetchType.LAZY)
     private Set<UserRating> ratedUserRatings;
 
-    public User() {
-    }
-
     public User(String firstName, String lastName, String email, Integer phone, LocalDate registrationDate, UserCred userCred) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -69,149 +72,31 @@ public class User {
         this.userCred = userCred;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public UserCred getUserCred() {
-        return userCred;
-    }
-
-    public void setUserCred(UserCred userCred) {
-        this.userCred = userCred;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Integer getPhone() {
-        return phone;
-    }
-
-    public void setPhone(Integer phone) {
-        this.phone = phone;
-    }
-
-    public LocalDate getRegistrationDate() {
-        return registrationDate;
-    }
-
-    public void setRegistrationDate(LocalDate registrationDate) {
-        this.registrationDate = registrationDate;
-    }
-
-    public Float getRating() {
-        return rating;
-    }
-
-    public void setRating(Float rating) {
-        this.rating = rating;
-    }
-
-    public Set<Chat> getChats() {
-        return chats;
-    }
-
-    public void setChats(Set<Chat> chats) {
-        this.chats = chats;
-    }
-
-    public Set<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(Set<Message> messages) {
-        this.messages = messages;
-    }
-
-    public Set<AdvertisementComment> getComments() {
-        return comments;
-    }
-
-    public void setComments(Set<AdvertisementComment> comments) {
-        this.comments = comments;
-    }
-
-    public Set<Advertisement> getAdvertisements() {
-        return advertisements;
-    }
-
-    public void setAdvertisements(Set<Advertisement> advertisements) {
-        this.advertisements = advertisements;
-    }
-
-    public Set<Payment> getPayments() {
-        return payments;
-    }
-
-    public void setPayments(Set<Payment> payments) {
-        this.payments = payments;
-    }
-
-    public Set<UserRating> getRateOwnerUserRatings() {
-        return rateOwnerUserRatings;
-    }
-
-    public void setRateOwnerUserRatings(Set<UserRating> rateOwnerUserRatings) {
-        this.rateOwnerUserRatings = rateOwnerUserRatings;
-    }
-
-    public Set<UserRating> getRatedUserRatings() {
-        return ratedUserRatings;
-    }
-
-    public void setRatedUserRatings(Set<UserRating> ratedUserRatings) {
-        this.ratedUserRatings = ratedUserRatings;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id.equals(user.id) &&
-                firstName.equals(user.firstName) &&
-                lastName.equals(user.lastName) &&
-                email.equals(user.email) &&
-                phone.equals(user.phone) &&
-                registrationDate.equals(user.registrationDate) &&
-                rating.equals(user.rating);
+        return getId().equals(user.getId()) &&
+                getUserCred().equals(user.getUserCred()) &&
+                getFirstName().equals(user.getFirstName()) &&
+                getLastName().equals(user.getLastName()) &&
+                getEmail().equals(user.getEmail()) &&
+                getPhone().equals(user.getPhone()) &&
+                getRegistrationDate().equals(user.getRegistrationDate()) &&
+                getRating().equals(user.getRating());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, phone, registrationDate, rating);
+        return Objects.hash(getId(), getUserCred(), getFirstName(), getLastName(), getEmail(), getPhone(), getRegistrationDate(), getRating());
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
+                ", userCred=" + userCred +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +

@@ -3,6 +3,9 @@ package com.senlainc.javacourses.petushokvaliantsin.model.advertisement;
 import com.senlainc.javacourses.petushokvaliantsin.model.State;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +21,9 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "advertisements")
 public class Advertisement {
@@ -51,9 +57,6 @@ public class Advertisement {
     @OneToMany(mappedBy = "advertisement", fetch = FetchType.LAZY)
     private Set<Payment> payments;
 
-    public Advertisement() {
-    }
-
     public Advertisement(String header, User user, String description, AdvertisementCategory category, LocalDate date, State state) {
         this.header = header;
         this.user = user;
@@ -63,112 +66,24 @@ public class Advertisement {
         this.state = state;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public AdvertisementCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(AdvertisementCategory category) {
-        this.category = category;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
-    public Set<AdvertisementComment> getComments() {
-        return comments;
-    }
-
-    public void setComments(Set<AdvertisementComment> comments) {
-        this.comments = comments;
-    }
-
-    public Set<AdvertisementPhoto> getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(Set<AdvertisementPhoto> photos) {
-        this.photos = photos;
-    }
-
-    public Set<Payment> getPayments() {
-        return payments;
-    }
-
-    public void setPayments(Set<Payment> payments) {
-        this.payments = payments;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Advertisement that = (Advertisement) o;
-        return id.equals(that.id) &&
-                header.equals(that.header) &&
-                user.equals(that.user) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(category, that.category) &&
-                date.equals(that.date) &&
-                price.equals(that.price) &&
-                Objects.equals(state, that.state);
+        return getId().equals(that.getId()) &&
+                getHeader().equals(that.getHeader()) &&
+                getUser().equals(that.getUser()) &&
+                Objects.equals(getDescription(), that.getDescription()) &&
+                getCategory().equals(that.getCategory()) &&
+                getDate().equals(that.getDate()) &&
+                getPrice().equals(that.getPrice()) &&
+                getState().equals(that.getState());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, header, user, description, category, date, price, state);
+        return Objects.hash(getId(), getHeader(), getUser(), getDescription(), getCategory(), getDate(), getPrice(), getState());
     }
 
     @Override
@@ -181,6 +96,7 @@ public class Advertisement {
                 ", category=" + category +
                 ", date=" + date +
                 ", price=" + price +
-                ", state=" + state + '}';
+                ", state=" + state +
+                '}';
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IMessageService {
 
-    boolean create(String username, Long chatIndex, MessageDto message);
+    boolean create(String username, Long chatIndex, MessageDto object);
 
-    List<MessageDto> getMessages(String username, Long chatIndex, int firstElement, int maxResult);
+    List<MessageDto> readAll(String username, Long chatIndex, int firstElement, int maxResult);
 }

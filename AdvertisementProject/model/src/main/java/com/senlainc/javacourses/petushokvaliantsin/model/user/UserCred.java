@@ -1,6 +1,9 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.user;
 
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumRole;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,6 +18,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Objects;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "user_creds")
 public class UserCred {
@@ -34,52 +40,9 @@ public class UserCred {
     @OneToOne(mappedBy = "userCred", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User user;
 
-    public UserCred() {
-    }
-
     public UserCred(String username, String password) {
         this.username = username;
         this.password = password;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public EnumRole getEnumRole() {
-        return enumRole;
-    }
-
-    public void setEnumRole(EnumRole enumRole) {
-        this.enumRole = enumRole;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     @Override
@@ -87,15 +50,15 @@ public class UserCred {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserCred userCred = (UserCred) o;
-        return id.equals(userCred.id) &&
-                username.equals(userCred.username) &&
-                password.equals(userCred.password) &&
-                enumRole == userCred.enumRole;
+        return getId().equals(userCred.getId()) &&
+                getUsername().equals(userCred.getUsername()) &&
+                getPassword().equals(userCred.getPassword()) &&
+                getEnumRole() == userCred.getEnumRole();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, enumRole);
+        return Objects.hash(getId(), getUsername(), getPassword(), getEnumRole());
     }
 
     @Override
@@ -104,7 +67,7 @@ public class UserCred {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", userRole=" + enumRole +
+                ", enumRole=" + enumRole +
                 '}';
     }
 }
