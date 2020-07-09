@@ -9,6 +9,7 @@ import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertise
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment_;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
+import com.senlainc.javacourses.petushokvaliantsin.model.user.User_;
 import com.senlainc.javacourses.petushokvaliantsin.repository.AbstractDao;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementDao;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.ReadQueryException;
@@ -60,7 +61,8 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
             final List<Order> orders = getOrders(pageParameter, root, stateParameter);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
-                    .orderBy(orders).groupBy(root.get(Advertisement_.id))
+                    .orderBy(orders)
+                    .groupBy(root.get(Advertisement_.id))
                     .where(criteriaBuilder.and(predicates.toArray(new Predicate[0]))))
                     .setFirstResult(pageParameter.getFirstElement())
                     .setMaxResults(pageParameter.getMaxResult())
@@ -106,13 +108,13 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
         return predicates;
     }
 
-    //TODO : Sort by price/date and parse for paid and not
-    //TODO : Try SQL query
     private List<Order> getOrders(IPageParameter pageParameter, Root<Advertisement> root, IStateParameter stateParameter) {
         final List<Order> orders = new ArrayList<>();
-        final Join<Advertisement, Payment> join = root.join(Advertisement_.payments, JoinType.LEFT);
-        join.on(criteriaBuilder.equal(join.get(Payment_.state), stateParameter.getPaymentState()));
-        orders.add(criteriaBuilder.desc(join));
+        if (pageParameter.getCriteriaField().length > 1 && pageParameter.getCriteriaField()[1].getName().equals("rating")) {
+            final Join<Advertisement, Payment> join = root.join(Advertisement_.PAYMENTS, JoinType.LEFT);
+            join.on(criteriaBuilder.equal(join.get(Payment_.state), stateParameter.getPaymentState()));
+            orders.add(criteriaBuilder.desc(join.join(Payment_.advertisement, JoinType.LEFT).join(Advertisement_.user, JoinType.LEFT).get(User_.rating)));
+        }
         orders.add(getOrder(pageParameter, criteriaBuilder, root));
         return orders;
     }
