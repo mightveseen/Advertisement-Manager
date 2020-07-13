@@ -4,7 +4,7 @@
         <Console name="LogConsole" target="SYSTEM_OUT">
             <PatternLayout pattern="[%-4p] %d{HH:mm:ss yyyy-MM-dd} [%c{1}:%L] - %msg%n"/>
         </Console>
-        <RollingFile name="LogFile" fileName="log/logging.log"
+        <RollingFile name="LogFile" fileName="logs/logging.log"
                      filePattern="${basePath}/logging-%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="[%-4p] %d{HH:mm:ss yyyy-MM-dd} [%c{1}:%L] - %msg%n"/>
             <Policies>
@@ -14,11 +14,9 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <Logger name="org.apache.log4j.xml" level="info" additivity="true">
-            <AppenderRef ref="LogFile"/>
-        </Logger>
         <Root level="info">
             <AppenderRef ref="LogConsole"/>
+            <AppenderRef ref="LogFile"/>
         </Root>
     </Loggers>
 </Configuration>

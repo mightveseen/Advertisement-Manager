@@ -12,14 +12,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -49,12 +47,5 @@ public class AuthenticationController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         response.setHeader(tokenMapper.getTokenHeader(), tokenMapper.generateToken(authentication));
         return new ResponseEntity<>(Boolean.TRUE, HttpStatus.ACCEPTED);
-    }
-
-    //TODO : Fix
-    @GetMapping(value = "/logout")
-    public void logout(HttpServletResponse response, HttpServletRequest request) {
-        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
-        request.getSession().invalidate();
     }
 }
