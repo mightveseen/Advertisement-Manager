@@ -44,8 +44,9 @@ public class ModeratorController {
                                                              @RequestParam(name = "direction", defaultValue = "desc") String direction,
                                                              @RequestParam(name = "sort", defaultValue = "date") String sort,
                                                              @RequestParam(name = "state", defaultValue = "moderation") String state) {
-        return new ResultListDto<>(advertisementService.readSize(EnumState.MODERATION),
-                advertisementService.readAll(page, numberElements, direction, sort, DEFAULT_STRING, DEFAULT_STRING, DEFAULT_PRICE, DEFAULT_PRICE, parseEnumState(state)));
+        final EnumState parsedState = parseEnumState(state);
+        return new ResultListDto<>(advertisementService.readSize(parsedState),
+                advertisementService.readAll(page, numberElements, direction, sort, DEFAULT_STRING, DEFAULT_STRING, DEFAULT_PRICE, DEFAULT_PRICE, parsedState));
     }
 
     @GetMapping(value = "/advertisements/{id}")
