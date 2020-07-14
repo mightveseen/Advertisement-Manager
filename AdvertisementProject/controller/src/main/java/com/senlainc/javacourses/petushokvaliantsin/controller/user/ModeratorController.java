@@ -45,7 +45,7 @@ public class ModeratorController {
                                                              @RequestParam(name = "sort", defaultValue = "date") String sort,
                                                              @RequestParam(name = "state", defaultValue = "moderation") String state) {
         final EnumState parsedState = parseEnumState(state);
-        return new ResultListDto<>(advertisementService.readSize(parsedState),
+        return new ResultListDto<>(advertisementService.readSize(DEFAULT_STRING, DEFAULT_STRING, DEFAULT_PRICE, DEFAULT_PRICE, parsedState),
                 advertisementService.readAll(page, numberElements, direction, sort, DEFAULT_STRING, DEFAULT_STRING, DEFAULT_PRICE, DEFAULT_PRICE, parsedState));
     }
 

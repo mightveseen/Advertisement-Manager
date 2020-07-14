@@ -131,7 +131,7 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
                                           String category, double minPrice, double maxPrice, EnumState advertisementState) {
         final IPageParameter pageParameter = splitSortFiled(page, numberElements, direction, sortField);
         final IFilterParameter filterParameter = FilterParameter.of(search, category, minPrice, maxPrice);
-        final IStateParameter stateParameter = StateParameter.of(stateDao.readByDescription(advertisementState.name()),
+        final IStateParameter stateParameter = StateParameter.of(advertisementState.equals(EnumState.ALL) ? null : stateDao.readByDescription(advertisementState.name()),
                 stateDao.readByDescription(EnumState.APPROVED.name()));
         final List<AdvertisementDto> result = dtoMapper.mapAll(advertisementDao.readAllWithFilter(pageParameter, filterParameter, stateParameter),
                 AdvertisementDto.class);
@@ -147,8 +147,11 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
 
     @Override
     @Transactional(readOnly = true)
-    public Long readSize(EnumState state) {
-        return advertisementDao.readCountWithState(stateDao.readByDescription(state.name()));
+    public Long readSize(String search, String category, double minPrice, double maxPrice, EnumState advertisementState) {
+        final IFilterParameter filterParameter = FilterParameter.of(search, category, minPrice, maxPrice);
+        final IStateParameter stateParameter = StateParameter.of(advertisementState.equals(EnumState.ALL) ? null : stateDao.readByDescription(advertisementState.name()),
+                stateDao.readByDescription(EnumState.APPROVED.name()));
+        return advertisementDao.readCountWitFilter(filterParameter, stateParameter);
     }
 
     private IPageParameter splitSortFiled(int page, int numberElements, String direction, String sortField) {

@@ -73,14 +73,14 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
     }
 
     @Override
-    public Long readCountWithState(State state) {
+    public Long readCountWitFilter(IFilterParameter filterParameter, IStateParameter stateParameter) {
         try {
             final CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
             final Root<Advertisement> root = criteriaQuery.from(entityClazz);
-            final Predicate predicate = criteriaBuilder.equal(root.get(Advertisement_.state), state);
+            final List<Predicate> predicates = getPredicates(root, filterParameter, stateParameter);
             return entityManager.createQuery(criteriaQuery
                     .select(criteriaBuilder.count(root))
-                    .where(predicate))
+                    .where(predicates.toArray(new Predicate[0])))
                     .getSingleResult();
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);
@@ -102,7 +102,7 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
         if (filterParameter.getMaxPrice() > 0) {
             predicates.add(criteriaBuilder.le(root.get(Advertisement_.price), filterParameter.getMaxPrice()));
         }
-        if (!stateParameter.getAdvertisementState().equals(EnumState.ALL)) {
+        if (stateParameter.getAdvertisementState() != null && !stateParameter.getAdvertisementState().equals(EnumState.ALL)) {
             predicates.add(criteriaBuilder.equal(root.get(Advertisement_.state), stateParameter.getAdvertisementState()));
         }
         return predicates;

@@ -27,5 +27,5 @@ public interface IAdvertisementService {
 
     Long readSize();
 
-    Long readSize(EnumState state);
+    Long readSize(String search, String category, double minPrice, double maxPrice, EnumState advertisementState);
 }

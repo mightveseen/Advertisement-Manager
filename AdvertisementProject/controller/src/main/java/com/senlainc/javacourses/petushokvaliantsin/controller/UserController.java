@@ -28,6 +28,8 @@ import java.security.Principal;
 @RequestMapping(path = "users")
 public class UserController {
 
+    private static final String DEFAULT_STRING = "none";
+    private static final Double DEFAULT_PRICE = 0.0;
     private final IUserService userService;
     private final IUserRatingService userRatingService;
     private final IAdvertisementService advertisementService;
@@ -54,7 +56,7 @@ public class UserController {
     public ResultListDto<AdvertisementDto> getUserClosedAdvertisements(@PathVariable(name = "id") @Positive Long index,
                                                                        @RequestParam(name = "page", defaultValue = "1") @Positive int page,
                                                                        @RequestParam(name = "number", defaultValue = "15") @Positive int numberElements) {
-        return new ResultListDto<>(advertisementService.readSize(EnumState.DISABLED),
+        return new ResultListDto<>(advertisementService.readSize(DEFAULT_STRING, DEFAULT_STRING, DEFAULT_PRICE, DEFAULT_PRICE, EnumState.DISABLED),
                 advertisementService.readAllWithUser(index, page, numberElements, EnumState.DISABLED));
     }
 }

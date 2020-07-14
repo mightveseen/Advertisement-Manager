@@ -62,7 +62,7 @@ public class AdvertisementController {
                                                              @RequestParam(name = "search", defaultValue = "none") String search,
                                                              @RequestParam(name = "min", defaultValue = "0") double minPrice,
                                                              @RequestParam(name = "max", defaultValue = "0") double maxPrice) {
-        return new ResultListDto<>(advertisementService.readSize(EnumState.ACTIVE),
+        return new ResultListDto<>(advertisementService.readSize(search, category, minPrice, maxPrice, EnumState.ACTIVE),
                 advertisementService.readAll(page, numberElements, direction, sort, search, category, minPrice, maxPrice, EnumState.ACTIVE));
     }
 
