@@ -17,7 +17,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
-import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
@@ -30,8 +29,7 @@ import java.util.Set;
 @Entity
 @Table(name = "advertisements")
 @NamedEntityGraph(name = "advertisementsMainGraph",
-        attributeNodes = {@NamedAttributeNode(value = "user", subgraph = "advertisementsUserSubGraph"), @NamedAttributeNode("category"), @NamedAttributeNode("state")},
-        subgraphs = @NamedSubgraph(name = "advertisementsUserSubGraph", attributeNodes = @NamedAttributeNode("userCred")))
+        attributeNodes = {@NamedAttributeNode("category"), @NamedAttributeNode("state")})
 public class Advertisement {
 
     @Id
