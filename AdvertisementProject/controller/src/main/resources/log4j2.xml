@@ -13,6 +13,8 @@
         </RollingFile>
     </Appenders>
     <Loggers>
+        <Logger name="org.apache.log4j.xml" level="info"/>
+        <logger name="org.springframework" level="info"/>
         <Root level="info">
             <AppenderRef ref="LogConsole"/>
             <AppenderRef ref="LogFile"/>

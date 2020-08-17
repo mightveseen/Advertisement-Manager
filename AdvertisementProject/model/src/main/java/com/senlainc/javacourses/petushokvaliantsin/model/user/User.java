@@ -15,6 +15,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -27,6 +29,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
+@NamedEntityGraph(name = "usersMainGraph",
+        attributeNodes = @NamedAttributeNode("userCred"))
 public class User {
 
     @Id

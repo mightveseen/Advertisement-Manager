@@ -8,6 +8,7 @@ import com.senlainc.javacourses.petushokvaliantsin.configuration.security.handle
 import com.senlainc.javacourses.petushokvaliantsin.configuration.security.mapper.TokenMapper;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,8 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
+import java.util.Collections;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
@@ -45,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private String secretKey;
 
     @Autowired
-    public SecurityConfig(UserDetailsService userDetailsService) {
+    public SecurityConfig(@Qualifier("userCredService") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
@@ -76,7 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         final DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
-        final ProviderManager providerManager = new ProviderManager(authenticationProvider);
+        final ProviderManager providerManager = new ProviderManager(Collections.singletonList(authenticationProvider));
         providerManager.setEraseCredentialsAfterAuthentication(false);
         return providerManager;
     }

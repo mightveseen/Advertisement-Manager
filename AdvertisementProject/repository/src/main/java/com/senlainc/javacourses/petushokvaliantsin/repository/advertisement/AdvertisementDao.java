@@ -44,6 +44,7 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
                     .select(root)
                     .orderBy(getOrder(pageParameter, criteriaBuilder, root))
                     .where(criteriaBuilder.and(userPredicate, statePredicate)))
+                    .setHint("javax.persistence.fetchgraph", entityManager.getEntityGraph("advertisementsMainGraph"))
                     .setFirstResult(pageParameter.getFirstElement())
                     .setMaxResults(pageParameter.getMaxResult())
                     .getResultList();
@@ -65,6 +66,7 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
                     .groupBy(root.get(Advertisement_.id))
                     .where(criteriaBuilder.and(predicates.toArray(new Predicate[0]))))
                     .setFirstResult(pageParameter.getFirstElement())
+                    .setHint("javax.persistence.fetchgraph", entityManager.getEntityGraph("advertisementsMainGraph"))
                     .setMaxResults(pageParameter.getMaxResult())
                     .getResultList();
         } catch (PersistenceException exc) {
