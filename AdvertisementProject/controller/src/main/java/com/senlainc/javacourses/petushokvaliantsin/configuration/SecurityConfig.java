@@ -21,7 +21,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,7 +34,7 @@ import java.util.Collections;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
-@PropertySource(value = "classpath:/properties/security.properties", ignoreResourceNotFound = true)
+@PropertySource(value = "classpath:/security.properties", ignoreResourceNotFound = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String ADVERTISEMENT_URL = "/advertisements/**";
@@ -69,7 +68,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().formLogin().loginPage("/login").successHandler(authenticationSuccessHandler())
                 .and().httpBasic()
                 .and().csrf().disable();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilter(new AuthorizationFilter(authenticationManager(), tokenMapper()));
     }
 

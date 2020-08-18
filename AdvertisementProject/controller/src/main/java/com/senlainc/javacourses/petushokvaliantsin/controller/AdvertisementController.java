@@ -11,6 +11,7 @@ import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdv
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IChatService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.payment.IPaymentService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.payment.IPaymentTypeService;
+import com.senlainc.javacourses.petushokvaliantsin.starter.StarterBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class AdvertisementController {
 
     @Autowired
     public AdvertisementController(IAdvertisementService advertisementService, IChatService chatService, IPaymentTypeService paymentTypeService,
-                                   IAdvertisementCommentService advertisementCommentService, IPaymentService paymentService) {
+                                   IAdvertisementCommentService advertisementCommentService, IPaymentService paymentService, StarterBean starterBean) {
         this.advertisementService = advertisementService;
         this.chatService = chatService;
         this.paymentService = paymentService;

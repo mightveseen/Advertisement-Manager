@@ -16,6 +16,7 @@
         <module>utility</module>
         <module>serviceapi</module>
         <module>repositoryapi</module>
+        <module>custom-starter</module>
     </modules>
 
     <properties>
