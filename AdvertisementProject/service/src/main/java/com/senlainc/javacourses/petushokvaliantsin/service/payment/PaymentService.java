@@ -29,6 +29,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -66,7 +67,7 @@ public class PaymentService extends AbstractService implements IPaymentService {
         final List<Payment> advertisementActivePayment = advertisement.getPayments().stream().filter(i -> i.getState().equals(state)).collect(Collectors.toList());
         checkLimit(advertisementActivePayment.size());
         final LocalDate paymentStartDate = createLocalDate(advertisementActivePayment);
-        final PaymentType paymentType = paymentTypeDao.read(object.getId());
+        final PaymentType paymentType = paymentTypeDao.findById(object.getId()).orElseThrow(EntityNotFoundException::new);
         paymentDao.create(new Payment(advertisement.getUser(), advertisement, paymentType, paymentStartDate,
                 paymentStartDate.plusDays(paymentType.getDuration()), paymentType.getPrice(), state));
         LOGGER.info(EnumLogger.SUCCESSFUL_CREATE.getText());
@@ -77,7 +78,7 @@ public class PaymentService extends AbstractService implements IPaymentService {
     @Transactional
     public List<PaymentDto> readAll(String username, int page, int max) {
         final IPageParameter pageParameter = PageParameter.of(page, max);
-        final List<PaymentDto> result = dtoMapper.mapAll(paymentDao.readAll(pageParameter, Payment_.user, userDao.readByUserCred(username)), PaymentDto.class);
+        final List<PaymentDto> result = dtoMapper.mapAll(paymentDao.readAll(pageParameter, Payment_.user, userDao.readByUserCred(username).orElseThrow()), PaymentDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
     }
@@ -85,7 +86,7 @@ public class PaymentService extends AbstractService implements IPaymentService {
     @Override
     @Transactional(readOnly = true)
     public Long readSize(String username) {
-        return paymentDao.readCountWithUser(userDao.readByUserCred(username));
+        return paymentDao.readCountWithUser(userDao.readByUserCred(username).orElseThrow());
     }
 
     private LocalDate createLocalDate(List<Payment> advertisementActivePayment) {
@@ -94,7 +95,7 @@ public class PaymentService extends AbstractService implements IPaymentService {
     }
 
     private void checkPermission(Advertisement advertisement, String username) {
-        if (!advertisement.getUser().getId().equals(userDao.readByUserCred(username).getId())) {
+        if (!advertisement.getUser().getId().equals(userDao.readByUserCred(username).orElseThrow().getId())) {
             throw new PermissionDeniedException(EnumException.PERMISSION.getMessage());
         }
     }

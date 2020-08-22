@@ -54,7 +54,7 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Transactional
     public boolean create(String username, AdvertisementDto advertisementDto) {
         final Advertisement advertisement = dtoMapper.map(advertisementDto, Advertisement.class);
-        advertisement.setUser(userDao.readByUserCred(username));
+        advertisement.setUser(userDao.readByUserCred(username).orElseThrow());
         advertisement.setDate(LocalDate.now());
         advertisement.setState(stateDao.readByDescription(EnumState.MODERATION.name()));
         advertisementDao.create(advertisement);
@@ -129,6 +129,9 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @SingularModel(metamodels = {Advertisement_.class, User_.class})
     public List<AdvertisementDto> readAll(int page, int numberElements, String direction, String sortField, String search,
                                           String category, double minPrice, double maxPrice, EnumState advertisementState) {
+        /* Try templates */
+        final List<Advertisement> jdbcTemplateList = advertisementDao.tryJdbcTemplate();
+        /* Normal */
         final IPageParameter pageParameter = splitSortFiled(page, numberElements, direction, sortField);
         final IFilterParameter filterParameter = FilterParameter.of(search, category, minPrice, maxPrice);
         final IStateParameter stateParameter = StateParameter.of(advertisementState.equals(EnumState.ALL) ? null : stateDao.readByDescription(advertisementState.name()),
@@ -164,7 +167,7 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     }
 
     private void checkPermission(Advertisement advertisement, String username) {
-        if (!advertisement.getUser().getId().equals(userDao.readByUserCred(username).getId())) {
+        if (!advertisement.getUser().getId().equals(userDao.readByUserCred(username).orElseThrow().getId())) {
             throw new PermissionDeniedException(EnumException.PERMISSION.getMessage());
         }
     }

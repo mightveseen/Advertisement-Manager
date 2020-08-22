@@ -1,5 +1,7 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.chat;
 
+import com.senlainc.javacourses.petushokvaliantsin.graph.DefaultGraph;
+import com.senlainc.javacourses.petushokvaliantsin.graph.GraphName;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
@@ -26,21 +30,23 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "chats")
+@DefaultGraph(name = GraphName.CHAT_DEFAULT)
+@NamedEntityGraph(name = GraphName.CHAT_DEFAULT, attributeNodes = @NamedAttributeNode("users"))
 public class Chat {
 
     @Id
-    @Column(name = "chat_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "chat_name")
+    @Column(name = "name")
     private String name;
-    @Column(name = "chat_last_message")
+    @Column(name = "last_message")
     private String lastMessage;
-    @Column(name = "chat_update_date")
+    @Column(name = "update_date")
     private LocalDateTime updateDateTime;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinTable(name = "user_chats", joinColumns = @JoinColumn(name = "chat_id"),
-            inverseJoinColumns = @JoinColumn(name = "chat_user"))
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users;
 
     @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY)

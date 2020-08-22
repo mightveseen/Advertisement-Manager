@@ -1,5 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.user;
 
+import com.senlainc.javacourses.petushokvaliantsin.graph.GraphName;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementComment;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
@@ -29,27 +30,27 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-@NamedEntityGraph(name = "usersMainGraph",
+@NamedEntityGraph(name = GraphName.USER_DEFAULT,
         attributeNodes = @NamedAttributeNode("userCred"))
 public class User {
 
     @Id
-    @Column(name = "user_id", unique = true, updatable = false, nullable = false)
+    @Column(name = "id", unique = true, updatable = false, nullable = false)
     private Long id;
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "id")
     private UserCred userCred;
-    @Column(name = "user_first_name")
+    @Column(name = "first_name")
     private String firstName;
-    @Column(name = "user_last_name")
+    @Column(name = "last_name")
     private String lastName;
-    @Column(name = "user_email")
+    @Column(name = "email")
     private String email;
-    @Column(name = "user_phone")
+    @Column(name = "phone")
     private Integer phone;
-    @Column(name = "user_registration_date", updatable = false)
+    @Column(name = "registration_date", updatable = false)
     private LocalDate registrationDate;
-    @Column(name = "user_rating")
+    @Column(name = "rating")
     private Float rating;
 
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
@@ -67,13 +68,13 @@ public class User {
     @OneToMany(mappedBy = "ratedUser", fetch = FetchType.LAZY)
     private Set<UserRating> ratedUserRatings;
 
-    public User(String firstName, String lastName, String email, Integer phone, LocalDate registrationDate, UserCred userCred) {
+    public User(String firstName, String lastName, String email, Integer phone, LocalDate registrationDate, Float rating) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
         this.registrationDate = registrationDate;
-        this.userCred = userCred;
+        this.rating = rating;
     }
 
     @Override

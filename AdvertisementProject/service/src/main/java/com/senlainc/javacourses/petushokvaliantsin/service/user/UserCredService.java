@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
 
 @Service
@@ -31,8 +32,8 @@ public class UserCredService extends AbstractService implements UserDetailsServi
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) {
         try {
-            final UserCred user = userCredDao.readByUsername(username);
-            return new User(user.getUsername(), user.getPassword(), Collections.singleton(new SimpleGrantedAuthority(user.getEnumRole().name())));
+            final UserCred user = userCredDao.readByUsername(username).orElseThrow(EntityNotFoundException::new);
+            return new User(user.getUsername(), user.getPassword(), Collections.singleton(new SimpleGrantedAuthority(user.getRole().name())));
         } catch (ReadQueryException exc) {
             throw new EntityNotExistException(String.format(EnumException.USER_WITH_FIELD_NOT_EXIST.getMessage(), USER_CRED_FIELD, username));
         }

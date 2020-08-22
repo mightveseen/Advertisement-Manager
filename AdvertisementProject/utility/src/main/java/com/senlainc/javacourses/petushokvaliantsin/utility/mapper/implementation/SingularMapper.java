@@ -35,7 +35,7 @@ public class SingularMapper implements ISingularMapper {
 
     public <T, E> SingularAttribute<T, E> getAttribute(String parameter) {
         try {
-            return parameter.endsWith("default") ? null : SingularAttribute.class.cast(fields.get(parameter).get(null));
+            return (SingularAttribute) fields.get(parameter).get(null);
         } catch (NullPointerException | IllegalAccessException e) {
             throw new IncorrectCastException("Chosen parameter [" + parameter + "] does not match any field");
         }

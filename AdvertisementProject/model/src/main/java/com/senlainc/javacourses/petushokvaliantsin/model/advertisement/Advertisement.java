@@ -1,5 +1,7 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.advertisement;
 
+import com.senlainc.javacourses.petushokvaliantsin.graph.DefaultGraph;
+import com.senlainc.javacourses.petushokvaliantsin.graph.GraphName;
 import com.senlainc.javacourses.petushokvaliantsin.model.State;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
@@ -17,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
@@ -28,27 +31,32 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "advertisements")
-@NamedEntityGraph(name = "advertisementsMainGraph",
-        attributeNodes = {@NamedAttributeNode("category"), @NamedAttributeNode("state")})
+@DefaultGraph(name = GraphName.Advertisement.DEFAULT)
+@NamedEntityGraphs(value = {
+        @NamedEntityGraph(name = GraphName.Advertisement.DEFAULT,
+                attributeNodes = {@NamedAttributeNode("category"), @NamedAttributeNode("state")}),
+        @NamedEntityGraph(name = GraphName.Advertisement.USER,
+                attributeNodes = @NamedAttributeNode("user"))
+})
 public class Advertisement {
 
     @Id
-    @Column(name = "advertisement_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "advertisement_header")
+    @Column(name = "header")
     private String header;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", updatable = false)
+    @JoinColumn(name = "owner_id", updatable = false)
     private User user;
-    @Column(name = "advertisement_description")
+    @Column(name = "description")
     private String description;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private AdvertisementCategory category;
-    @Column(name = "advertisement_date")
+    @Column(name = "date")
     private LocalDate date;
-    @Column(name = "advertisement_price")
+    @Column(name = "price")
     private Double price;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "state_id")

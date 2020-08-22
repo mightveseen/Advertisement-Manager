@@ -11,7 +11,6 @@ import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdv
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IChatService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.payment.IPaymentService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.payment.IPaymentTypeService;
-import com.senlainc.javacourses.petushokvaliantsin.starter.StarterBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +42,7 @@ public class AdvertisementController {
 
     @Autowired
     public AdvertisementController(IAdvertisementService advertisementService, IChatService chatService, IPaymentTypeService paymentTypeService,
-                                   IAdvertisementCommentService advertisementCommentService, IPaymentService paymentService, StarterBean starterBean) {
+                                   IAdvertisementCommentService advertisementCommentService, IPaymentService paymentService) {
         this.advertisementService = advertisementService;
         this.chatService = chatService;
         this.paymentService = paymentService;
@@ -105,8 +104,8 @@ public class AdvertisementController {
                                                                            @RequestParam(name = "first", defaultValue = "0") int firstElement,
                                                                            @RequestParam(name = "max", defaultValue = "15") int maxResult,
                                                                            @RequestParam(name = "direction", defaultValue = "desc") String direction,
-                                                                           @RequestParam(name = "sort", defaultValue = "default") String sort) {
-        return new ResultListDto<>(advertisementCommentService.readSize(),
+                                                                           @RequestParam(name = "sort", defaultValue = "id") String sort) {
+        return new ResultListDto<>(advertisementCommentService.readSize(index),
                 advertisementCommentService.readAll(index, firstElement, maxResult, direction, sort));
     }
 

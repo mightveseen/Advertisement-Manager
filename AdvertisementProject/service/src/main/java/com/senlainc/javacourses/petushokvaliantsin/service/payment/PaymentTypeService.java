@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class PaymentTypeService extends AbstractService implements IPaymentTypeService {
@@ -29,7 +31,7 @@ public class PaymentTypeService extends AbstractService implements IPaymentTypeS
     @Transactional
     public boolean create(PaymentTypeDto object) {
         final PaymentType paymentType = dtoMapper.map(object, PaymentType.class);
-        paymentTypeDao.create(paymentType);
+        paymentTypeDao.save(paymentType);
         LOGGER.info(EnumLogger.SUCCESSFUL_CREATE.getText());
         return true;
     }
@@ -37,7 +39,7 @@ public class PaymentTypeService extends AbstractService implements IPaymentTypeS
     @Override
     @Transactional
     public boolean delete(Long index) {
-        paymentTypeDao.delete(paymentTypeDao.read(index));
+        paymentTypeDao.deleteById(index);
         LOGGER.info(EnumLogger.SUCCESSFUL_DELETE.getText());
         return true;
     }
@@ -46,8 +48,8 @@ public class PaymentTypeService extends AbstractService implements IPaymentTypeS
     @Transactional
     public boolean update(PaymentTypeDto object) {
         final PaymentType paymentType = dtoMapper.map(object, PaymentType.class);
-        paymentTypeDao.read(paymentType.getId());
-        paymentTypeDao.update(paymentType);
+        paymentTypeDao.findById(paymentType.getId());
+        paymentTypeDao.save(paymentType);
         LOGGER.info(EnumLogger.SUCCESSFUL_UPDATE.getText());
         return true;
     }
@@ -55,7 +57,7 @@ public class PaymentTypeService extends AbstractService implements IPaymentTypeS
     @Override
     @Transactional(readOnly = true)
     public List<PaymentTypeDto> readAll() {
-        final List<PaymentTypeDto> result = dtoMapper.mapAll(paymentTypeDao.readAll(), PaymentTypeDto.class);
+        final List<PaymentTypeDto> result = dtoMapper.mapAll(StreamSupport.stream(paymentTypeDao.findAll().spliterator(), false).collect(Collectors.toList()), PaymentTypeDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
     }

@@ -1,6 +1,8 @@
 package com.senlainc.javacourses.petushokvaliantsin.repository.advertisement;
 
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumRole;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
+import com.senlainc.javacourses.petushokvaliantsin.graph.GraphName;
 import com.senlainc.javacourses.petushokvaliantsin.model.State;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementCategory;
@@ -9,6 +11,7 @@ import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertise
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment_;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
+import com.senlainc.javacourses.petushokvaliantsin.model.user.UserCred;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User_;
 import com.senlainc.javacourses.petushokvaliantsin.repository.AbstractDao;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementDao;
@@ -16,9 +19,12 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.ReadQue
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IFilterParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IStateParameter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
@@ -32,21 +38,24 @@ import java.util.List;
 public class AdvertisementDao extends AbstractDao<Advertisement, Long> implements IAdvertisementDao {
 
     private static final String NONE_PARAMETER = "none";
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public AdvertisementDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public List<Advertisement> readAllWithUser(IPageParameter pageParameter, User user, State state) {
         try {
-            final CriteriaQuery<Advertisement> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
-            final Root<Advertisement> root = criteriaQuery.from(entityClazz);
-            final Predicate userPredicate = criteriaBuilder.equal(root.get(Advertisement_.user), user);
-            final Predicate statePredicate = criteriaBuilder.equal(root.get(Advertisement_.state), state);
-            return entityManager.createQuery(criteriaQuery
-                    .select(root)
-                    .orderBy(getOrder(pageParameter, criteriaBuilder, root))
-                    .where(criteriaBuilder.and(userPredicate, statePredicate)))
-                    .setHint("javax.persistence.fetchgraph", entityManager.getEntityGraph("advertisementsMainGraph"))
-                    .setFirstResult(pageParameter.getFirstElement())
-                    .setMaxResults(pageParameter.getMaxResult())
+            final TypedQuery<Advertisement> query = entityManager.createQuery(
+                    "select a from Advertisement a\n" +
+                            "left join a.user u \n" +
+                            "left join a.state s \n" +
+                            "where u = :user and s = :state", Advertisement.class)
+                    .setParameter("user", user)
+                    .setParameter("state", state);
+            return query.setFirstResult(pageParameter.getFirstElement()).setMaxResults(pageParameter.getMaxResult())
                     .getResultList();
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);
@@ -63,10 +72,11 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
             return entityManager.createQuery(criteriaQuery
                     .select(root)
                     .orderBy(orders)
-                    .groupBy(root.get(Advertisement_.id))
+//                    .groupBy(root)
+//                    .having(criteriaBuilder.and(predicates.toArray(new Predicate[0]))))
                     .where(criteriaBuilder.and(predicates.toArray(new Predicate[0]))))
                     .setFirstResult(pageParameter.getFirstElement())
-                    .setHint("javax.persistence.fetchgraph", entityManager.getEntityGraph("advertisementsMainGraph"))
+                    .setHint(GraphName.FETCH_GRAPH_TYPE, entityManager.getEntityGraph(GraphName.Advertisement.DEFAULT))
                     .setMaxResults(pageParameter.getMaxResult())
                     .getResultList();
         } catch (PersistenceException exc) {
@@ -87,6 +97,29 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);
         }
+    }
+
+    @Override
+    public List<Advertisement> tryJdbcTemplate() {
+        final String query = "select * from advertisements a \n" +
+                "left join users u on a.owner_id = u.id \n" +
+                "left join user_creds uc on uc.id = u.id \n";
+        return jdbcTemplate.query(query, (resultSet, i) -> {
+            final Advertisement advertisement = new Advertisement();
+            advertisement.setId(resultSet.getLong("id"));
+            advertisement.setHeader(resultSet.getString("header"));
+            advertisement.setDescription(resultSet.getString("description"));
+            advertisement.setDate(resultSet.getDate("date").toLocalDate());
+            advertisement.setPrice(resultSet.getDouble("price"));
+            final UserCred userCred = new UserCred(resultSet.getString("username"), resultSet.getString("password"), EnumRole.valueOf(resultSet.getString("role")));
+            userCred.setId(resultSet.getLong("owner_id"));
+            final User user = new User(resultSet.getString("first_name"), resultSet.getString("last_name"), resultSet.getString("email"),
+                    resultSet.getInt("phone"), resultSet.getDate("registration_date").toLocalDate(), resultSet.getFloat("rating"));
+            user.setUserCred(userCred);
+            user.setId(resultSet.getLong("owner_id"));
+            advertisement.setUser(user);
+            return advertisement;
+        });
     }
 
     private List<Predicate> getPredicates(Root<Advertisement> root, IFilterParameter filterParameter, IStateParameter stateParameter) {
@@ -113,9 +146,9 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
     private List<Order> getOrders(IPageParameter pageParameter, Root<Advertisement> root, IStateParameter stateParameter) {
         final List<Order> orders = new ArrayList<>();
         if (pageParameter.getCriteriaField().length > 1 && pageParameter.getCriteriaField()[1].getName().equals("rating")) {
-            final Join<Advertisement, Payment> join = root.join(Advertisement_.PAYMENTS, JoinType.LEFT);
+            final Join<Advertisement, Payment> join = root.join(Advertisement_.payments, JoinType.LEFT);
             join.on(criteriaBuilder.equal(join.get(Payment_.state), stateParameter.getPaymentState()));
-            orders.add(criteriaBuilder.desc(join.join(Payment_.advertisement, JoinType.LEFT).join(Advertisement_.user, JoinType.LEFT).get(User_.rating)));
+            orders.add(criteriaBuilder.asc(join.join(Payment_.advertisement, JoinType.LEFT).join(Advertisement_.user, JoinType.LEFT).get(User_.rating)));
         }
         orders.add(getOrder(pageParameter, criteriaBuilder, root));
         return orders;

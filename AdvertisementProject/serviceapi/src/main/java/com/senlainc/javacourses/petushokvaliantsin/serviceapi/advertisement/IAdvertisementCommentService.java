@@ -10,5 +10,5 @@ public interface IAdvertisementCommentService {
 
     List<AdvertisementCommentDto> readAll(Long index, int page, int numberElements, String direction, String sortField);
 
-    Long readSize();
+    Long readSize(Long index);
 }

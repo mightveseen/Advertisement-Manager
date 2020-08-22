@@ -1,7 +1,7 @@
 package com.senlainc.javacourses.petushokvaliantsin.repositoryapi.payment;
 
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.PaymentType;
-import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.IGenericDao;
+import org.springframework.data.repository.CrudRepository;
 
-public interface IPaymentTypeDao extends IGenericDao<PaymentType, Long> {
+public interface IPaymentTypeDao extends CrudRepository<PaymentType, Long> {
 }

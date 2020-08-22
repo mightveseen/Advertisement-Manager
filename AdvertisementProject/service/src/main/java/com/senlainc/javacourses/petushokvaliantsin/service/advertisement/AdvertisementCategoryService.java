@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+
 @Service
 public class AdvertisementCategoryService extends AbstractService implements IAdvertisementCategoryService {
 
@@ -27,7 +29,7 @@ public class AdvertisementCategoryService extends AbstractService implements IAd
     @Transactional
     public boolean create(AdvertisementCategoryDto object) {
         final AdvertisementCategory advertisementCategory = dtoMapper.map(object, AdvertisementCategory.class);
-        advertisementCategoryDao.create(advertisementCategory);
+        advertisementCategoryDao.save(advertisementCategory);
         LOGGER.info(EnumLogger.SUCCESSFUL_CREATE.getText());
         return true;
     }
@@ -35,7 +37,8 @@ public class AdvertisementCategoryService extends AbstractService implements IAd
     @Override
     @Transactional
     public boolean delete(Long index) {
-        advertisementCategoryDao.delete(advertisementCategoryDao.read(index));
+        advertisementCategoryDao.findById(index).orElseThrow(EntityNotFoundException::new);
+        advertisementCategoryDao.deleteById(index);
         LOGGER.info(EnumLogger.SUCCESSFUL_DELETE.getText());
         return true;
     }

@@ -23,10 +23,10 @@ import java.util.Set;
 public class AdvertisementCategory {
 
     @Id
-    @Column(name = "category_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "category_description")
+    @Column(name = "description")
     private String description;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)

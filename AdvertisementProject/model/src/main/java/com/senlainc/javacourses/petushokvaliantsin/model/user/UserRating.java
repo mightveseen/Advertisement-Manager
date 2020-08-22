@@ -24,15 +24,15 @@ public class UserRating {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "rating_id")
+    @Column(name = "id")
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_owner_id")
+    @JoinColumn(name = "owner_id")
     private User rateOwnerUser;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_rated_id")
+    @JoinColumn(name = "rated_id")
     private User ratedUser;
-    @Column(name = "rating_value")
+    @Column(name = "value")
     private Short value;
 
     public UserRating(User rateOwnerUser, User ratedUser, Short value) {

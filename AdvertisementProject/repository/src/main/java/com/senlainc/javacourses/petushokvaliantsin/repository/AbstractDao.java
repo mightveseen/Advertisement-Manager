@@ -1,5 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.repository;
 
+import com.senlainc.javacourses.petushokvaliantsin.graph.GraphName;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.IGenericDao;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.CreateQueryException;
@@ -20,6 +21,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -69,7 +71,7 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
     @Override
     public E read(K index) {
         try {
-            final E object = entityManager.find(entityClazz, index);
+            final E object = entityManager.find(entityClazz, index, Collections.singletonMap(GraphName.FETCH_GRAPH_TYPE, entityManager.getEntityGraph(GraphName.USER_DEFAULT)));
             if (object == null) {
                 throw new EntityNotExistException("Entity [" + entityClazz.getSimpleName() + "] with index [" + index + "] not exist");
             }

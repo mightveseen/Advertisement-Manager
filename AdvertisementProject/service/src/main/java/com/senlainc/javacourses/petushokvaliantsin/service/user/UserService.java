@@ -13,7 +13,6 @@ import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityAlreadyExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.PermissionDeniedException;
-import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.ReadQueryException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +20,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 
 @Service
 public class UserService extends AbstractService implements IUserService {
 
     private static final Logger LOGGER = LogManager.getLogger(UserService.class);
-    private static final String[] USER_FIELDS = {"username", "email"};
+    private static final String[] USER_FIELDS = {"username", "email", "phone"};
     private final IUserDao userDao;
     private final IUserCredDao userCredDao;
     private final PasswordEncoder passwordEncoder;
@@ -44,9 +44,10 @@ public class UserService extends AbstractService implements IUserService {
     public boolean create(AccountDto accountDto) {
         checkUsername(accountDto.getUserCred().getUsername());
         checkEmail(accountDto.getUser().getEmail());
+        checkPhone(accountDto.getUser().getPhone());
         final UserCred userCred = createUserCred(accountDto);
         userCred.setPassword(passwordEncoder.encode(userCred.getPassword()));
-        userCredDao.create(userCred);
+        userCredDao.save(userCred);
         final User user = createUser(accountDto, userCred);
         userDao.create(user);
         LOGGER.info(EnumLogger.SUCCESSFUL_CREATE.getText());
@@ -57,7 +58,7 @@ public class UserService extends AbstractService implements IUserService {
     @Transactional
     public boolean update(String username, UserDto userDto) {
         checkEmail(userDto.getEmail(), userDto);
-        final User user = userDao.readByUserCred(username);
+        final User user = userDao.readByUserCred(username).orElseThrow(EntityNotFoundException::new);
         checkPermission(user, userDto);
         userDto.setRating(user.getRating());
         userDao.update(dtoMapper.map(userDto, User.class));
@@ -76,14 +77,14 @@ public class UserService extends AbstractService implements IUserService {
     @Override
     @Transactional(readOnly = true)
     public UserDto readByUsername(String username) {
-        final UserDto result = dtoMapper.map(userDao.readByUserCred(username), UserDto.class);
+        final UserDto result = dtoMapper.map(userDao.readByUserCred(username).orElseThrow(), UserDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
     }
 
     private UserCred createUserCred(AccountDto accountDto) {
         final UserCred userCred = dtoMapper.map(accountDto.getUserCred(), UserCred.class);
-        userCred.setEnumRole(EnumRole.ROLE_COMMON);
+        userCred.setRole(EnumRole.ROLE_COMMON);
         return userCred;
     }
 
@@ -102,26 +103,26 @@ public class UserService extends AbstractService implements IUserService {
     }
 
     private void checkEmail(String email) {
-        try {
-            if (userDao.readByEmail(email) != null) {
-                throw new EntityAlreadyExistException(String.format(EnumException.USER_WITH_FIELD_EXIST.getMessage(), USER_FIELDS[1], email));
-            }
-        } catch (ReadQueryException ignored) {
+        if (userDao.readByEmail(email).isPresent()) {
+            throw new EntityAlreadyExistException(String.format(EnumException.USER_WITH_FIELD_EXIST.getMessage(), USER_FIELDS[1], email));
+        }
+    }
+
+    private void checkPhone(Integer phone) {
+        if (userDao.readByPhone(phone).isEmpty()) {
+            throw new EntityAlreadyExistException(String.format(EnumException.USER_WITH_FIELD_EXIST.getMessage(), USER_FIELDS[2], phone));
         }
     }
 
     private void checkEmail(String email, UserDto userDto) {
-        try {
-            final User user = userDao.readByEmail(email);
-            if (user != null && !user.getId().equals(userDto.getId())) {
-                throw new EntityAlreadyExistException(String.format(EnumException.USER_WITH_FIELD_EXIST.getMessage(), USER_FIELDS[1], email));
-            }
-        } catch (ReadQueryException ignored) {
+        final User user = userDao.readByEmail(email).orElseThrow(EntityNotFoundException::new);
+        if (!user.getId().equals(userDto.getId())) {
+            throw new EntityAlreadyExistException(String.format(EnumException.USER_WITH_FIELD_EXIST.getMessage(), USER_FIELDS[1], email));
         }
     }
 
     private void checkUsername(String username) {
-        if (userCredDao.readByUsername(username) != null) {
+        if (userCredDao.readByUsername(username).isPresent()) {
             throw new EntityAlreadyExistException(String.format(EnumException.USER_WITH_FIELD_EXIST.getMessage(), USER_FIELDS[0], username));
         }
     }

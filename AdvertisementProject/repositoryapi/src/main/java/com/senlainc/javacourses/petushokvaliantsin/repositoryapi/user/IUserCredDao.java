@@ -1,9 +1,13 @@
 package com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user;
 
 import com.senlainc.javacourses.petushokvaliantsin.model.user.UserCred;
-import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.IGenericDao;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.repository.CrudRepository;
 
-public interface IUserCredDao extends IGenericDao<UserCred, Long> {
+import java.util.Optional;
 
-    UserCred readByUsername(String username);
+public interface IUserCredDao extends CrudRepository<UserCred, Long> {
+
+    @EntityGraph(attributePaths = {"user"})
+    Optional<UserCred> readByUsername(String username);
 }

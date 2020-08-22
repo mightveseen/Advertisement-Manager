@@ -1,5 +1,7 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.payment;
 
+import com.senlainc.javacourses.petushokvaliantsin.graph.DefaultGraph;
+import com.senlainc.javacourses.petushokvaliantsin.graph.GraphName;
 import com.senlainc.javacourses.petushokvaliantsin.model.State;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
@@ -15,6 +17,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -24,14 +28,18 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "payments")
+@DefaultGraph(name = GraphName.PAYMENT_DEFAULT)
+@NamedEntityGraph(name = GraphName.PAYMENT_DEFAULT, attributeNodes = {
+        @NamedAttributeNode("user"), @NamedAttributeNode("advertisement"), @NamedAttributeNode("type"), @NamedAttributeNode("state")
+})
 public class Payment {
 
     @Id
-    @Column(name = "payment_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "owner_id", nullable = false)
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "advertisement_id", nullable = false)
@@ -39,11 +47,11 @@ public class Payment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id")
     private PaymentType type;
-    @Column(name = "payment_start_date")
+    @Column(name = "start_date")
     private LocalDate startDate;
-    @Column(name = "payment_end_date")
+    @Column(name = "end_date")
     private LocalDate endDate;
-    @Column(name = "payment_price")
+    @Column(name = "price")
     private Double price;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "state_id")

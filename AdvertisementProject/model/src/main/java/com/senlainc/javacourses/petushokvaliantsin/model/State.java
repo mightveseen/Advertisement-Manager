@@ -25,10 +25,10 @@ import java.util.Set;
 public class State {
 
     @Id
-    @Column(name = "state_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "state_description")
+    @Column(name = "description")
     private String description;
 
     @OneToMany(mappedBy = "state", fetch = FetchType.LAZY)

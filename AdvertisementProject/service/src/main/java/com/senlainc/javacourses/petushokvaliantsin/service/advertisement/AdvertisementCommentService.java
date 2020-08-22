@@ -11,11 +11,12 @@ import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementCommentService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularClass;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularModel;
-import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
-import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,10 +44,10 @@ public class AdvertisementCommentService extends AbstractService implements IAdv
     @Transactional
     public boolean create(String username, Long index, AdvertisementCommentDto object) {
         final AdvertisementComment advertisementComment = dtoMapper.map(object, AdvertisementComment.class);
-        advertisementComment.setUser(userDao.readByUserCred(username));
+        advertisementComment.setUser(userDao.readByUserCred(username).orElseThrow());
         advertisementComment.setDateTime(LocalDateTime.now());
         advertisementComment.setAdvertisement(advertisementDao.read(index));
-        advertisementCommentDao.create(advertisementComment);
+        advertisementCommentDao.save(advertisementComment);
         LOGGER.info(EnumLogger.SUCCESSFUL_CREATE.getText());
         return true;
     }
@@ -55,8 +56,9 @@ public class AdvertisementCommentService extends AbstractService implements IAdv
     @Transactional(readOnly = true)
     @SingularModel(metamodels = AdvertisementComment_.class)
     public List<AdvertisementCommentDto> readAll(Long index, int page, int numberElements, String direction, String sortField) {
-        final IPageParameter pageParameter = PageParameter.of(page, numberElements, direction, singularMapper.getAttribute(SORT_FIELD + sortField.toLowerCase()));
-        final List<AdvertisementCommentDto> result = dtoMapper.mapAll(advertisementCommentDao.readAll(pageParameter, AdvertisementComment_.advertisement, advertisementDao.read(index)),
+        final Pageable pageParameter = PageRequest.of(page, numberElements,
+                Sort.by(Sort.Direction.valueOf(direction.toUpperCase()), singularMapper.getAttribute(SORT_FIELD + sortField.toLowerCase()).getName()));
+        final List<AdvertisementCommentDto> result = dtoMapper.mapAll(advertisementCommentDao.readAllByAdvertisement(pageParameter, advertisementDao.read(index)),
                 AdvertisementCommentDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
@@ -64,7 +66,7 @@ public class AdvertisementCommentService extends AbstractService implements IAdv
 
     @Override
     @Transactional(readOnly = true)
-    public Long readSize() {
-        return advertisementCommentDao.readCount();
+    public Long readSize(Long index) {
+        return advertisementCommentDao.countAdvertisementCommentByAdvertisement(advertisementDao.read(index));
     }
 }

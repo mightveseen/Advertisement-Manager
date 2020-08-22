@@ -1,5 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.advertisement;
 
+import com.senlainc.javacourses.petushokvaliantsin.graph.GraphName;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -22,21 +27,28 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "advertisement_comments")
+@NamedEntityGraphs(value = {
+        @NamedEntityGraph(name = GraphName.AdvertisementComment.DEFAULT,
+                attributeNodes = {@NamedAttributeNode("user"), @NamedAttributeNode("advertisement")}),
+        @NamedEntityGraph(name = GraphName.AdvertisementComment.USER,
+                attributeNodes = @NamedAttributeNode(value = "user", subgraph = "user-subgraph"),
+                subgraphs = @NamedSubgraph(name = "user-subgraph", attributeNodes = @NamedAttributeNode("userCred")))
+})
 public class AdvertisementComment {
 
     @Id
-    @Column(name = "comment_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "owner_id")
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "advertisement_id", nullable = false)
     private Advertisement advertisement;
-    @Column(name = "comment_message")
+    @Column(name = "message")
     private String message;
-    @Column(name = "comment_date", updatable = false)
+    @Column(name = "date", updatable = false)
     private LocalDateTime dateTime;
 
     public AdvertisementComment(User user, Advertisement advertisement, String message, LocalDateTime dateTime) {

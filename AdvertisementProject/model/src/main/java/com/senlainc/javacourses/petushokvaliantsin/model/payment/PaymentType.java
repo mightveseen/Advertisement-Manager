@@ -23,14 +23,14 @@ import java.util.Set;
 public class PaymentType {
 
     @Id
-    @Column(name = "type_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "type_description")
+    @Column(name = "description")
     private String description;
-    @Column(name = "type_duration")
+    @Column(name = "duration")
     private Integer duration;
-    @Column(name = "type_price")
+    @Column(name = "price")
     private Double price;
 
     @OneToMany(mappedBy = "type", fetch = FetchType.LAZY)

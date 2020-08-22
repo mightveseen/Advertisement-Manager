@@ -33,7 +33,7 @@ public class UserRatingService extends AbstractService implements IUserRatingSer
     @Override
     @Transactional
     public boolean create(String username, Long ratedUserIndex, UserRatingDto object) {
-        final User activeUser = userDao.readByUserCred(username);
+        final User activeUser = userDao.readByUserCred(username).orElseThrow();
         checkYourself(activeUser, ratedUserIndex);
         checkRateExist(activeUser, ratedUserIndex);
         final User ratedUser = userDao.read(ratedUserIndex);

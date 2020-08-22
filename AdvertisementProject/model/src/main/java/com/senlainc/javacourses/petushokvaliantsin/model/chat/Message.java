@@ -1,5 +1,7 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.chat;
 
+import com.senlainc.javacourses.petushokvaliantsin.graph.DefaultGraph;
+import com.senlainc.javacourses.petushokvaliantsin.graph.GraphName;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -22,21 +26,25 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "messages")
+@DefaultGraph(name = GraphName.MESSAGE_DEFAULT)
+@NamedEntityGraph(name = GraphName.MESSAGE_DEFAULT, attributeNodes = {
+        @NamedAttributeNode("user"), @NamedAttributeNode("chat")
+})
 public class Message {
 
     @Id
-    @Column(name = "message_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "owner_id")
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_id", nullable = false)
     private Chat chat;
-    @Column(name = "message_text")
+    @Column(name = "text")
     private String text;
-    @Column(name = "message_date")
+    @Column(name = "date")
     private LocalDateTime dateTime;
 
     public Message(User user, Chat chat, String text, LocalDateTime dateTime) {

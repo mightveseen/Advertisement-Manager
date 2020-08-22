@@ -41,7 +41,7 @@
             <column name="first_name" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="second_name" type="VARCHAR(50)">
+            <column name="last_name" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="email" type="VARCHAR(50)">
@@ -369,7 +369,7 @@
             <tableExists tableName="users"/>
         </preConditions>
         <sql>
-            INSERT INTO users(id, first_name, second_name, email, phone, registration_date, rating)
+            INSERT INTO users(id, first_name, last_name, email, phone, registration_date, rating)
             VALUES
             (2, 'Caren', 'Johnson', 'caren18@gmail.com', 292350943, '2017-04-02', 5),
             (1, 'Daniel', 'Dark', 'danieldark@gmail.com', 298674592, '2012-12-12', 5),
@@ -526,5 +526,11 @@
         <rollback>
             DELETE FROM messages;
         </rollback>
+    </changeSet>
+    <changeSet id="change-not-null-field-user" author="Valiantsin Petushok">
+        <preConditions>
+            <tableExists tableName="users"/>
+        </preConditions>
+        <dropNotNullConstraint tableName="users" columnName="rating"/>
     </changeSet>
 </databaseChangeLog>

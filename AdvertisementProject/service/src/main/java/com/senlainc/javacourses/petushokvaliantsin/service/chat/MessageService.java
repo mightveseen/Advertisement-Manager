@@ -42,7 +42,7 @@ public class MessageService extends AbstractService implements IMessageService {
     @Transactional
     public boolean create(String username, Long chatIndex, MessageDto object) {
         final Chat chat = chatDao.read(chatIndex);
-        final User activeUser = userDao.readByUserCred(username);
+        final User activeUser = userDao.readByUserCred(username).orElseThrow();
         checkPermission(chat, activeUser);
         messageDao.create(createMessage(object, chat, activeUser));
         chatDao.update(createChat(chat, activeUser, object.getText()));
@@ -54,7 +54,7 @@ public class MessageService extends AbstractService implements IMessageService {
     @Transactional(readOnly = true)
     public List<MessageDto> readAll(String username, Long chatIndex, int firstElement, int maxResult) {
         final Chat chat = chatDao.read(chatIndex);
-        checkPermission(chat, userDao.readByUserCred(username));
+        checkPermission(chat, userDao.readByUserCred(username).orElseThrow());
         final List<MessageDto> result = dtoMapper.mapAll(messageDao.readAll(PageParameter.of(firstElement, maxResult), Message_.chat, chatDao.read(chatIndex)),
                 MessageDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());

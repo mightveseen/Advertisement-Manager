@@ -46,7 +46,7 @@ public class ChatService extends AbstractService implements IChatService {
     @Transactional
     public boolean create(String username, Long advertisementIndex) {
         final Advertisement advertisement = advertisementDao.read(advertisementIndex);
-        final User activeUser = userDao.readByUserCred(username);
+        final User activeUser = userDao.readByUserCred(username).orElseThrow();
         final User chosenUser = advertisement.getUser();
         checkChatExist(activeUser, chosenUser);
         chatDao.create(new Chat(advertisement.getHeader(), String.format("%s create chat", activeUser.getFirstName()),
@@ -73,7 +73,7 @@ public class ChatService extends AbstractService implements IChatService {
     @Transactional(readOnly = true)
     public List<ChatDto> readAll(String username, int page, int maxResult) {
         final IPageParameter pageParameter = PageParameter.of(page, maxResult, Sort.Direction.DESC.name(), Chat_.updateDateTime);
-        final List<ChatDto> result = dtoMapper.mapAll(chatDao.readAllUserChat(pageParameter, userDao.readByUserCred(username)), ChatDto.class);
+        final List<ChatDto> result = dtoMapper.mapAll(chatDao.readAllUserChat(pageParameter, userDao.readByUserCred(username).orElseThrow()), ChatDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
     }
@@ -81,7 +81,7 @@ public class ChatService extends AbstractService implements IChatService {
     @Override
     @Transactional(readOnly = true)
     public Long readSize(String username) {
-        return chatDao.readCountWithUser(userDao.readByUserCred(username));
+        return chatDao.readCountWithUser(userDao.readByUserCred(username).orElseThrow());
     }
 
     private Set<User> getSetUser(User activeUser, User chosenUser) {
