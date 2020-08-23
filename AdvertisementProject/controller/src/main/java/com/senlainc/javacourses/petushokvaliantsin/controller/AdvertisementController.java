@@ -54,7 +54,7 @@ public class AdvertisementController {
      * Advertisement operation [Show all, show by id, delete/remove/update]
      */
     @GetMapping
-    public ResultListDto<AdvertisementDto> getAdvertisements(@RequestParam(name = "page", defaultValue = "1") @Positive int page,
+    public ResultListDto<AdvertisementDto> getAdvertisements(@RequestParam(name = "page", defaultValue = "0") @Positive int page,
                                                              @RequestParam(name = "number", defaultValue = "15") @Positive int numberElements,
                                                              @RequestParam(name = "direction", defaultValue = "desc") String direction,
                                                              @RequestParam(name = "sort", defaultValue = "user-rating") String sort,

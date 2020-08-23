@@ -1,6 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.advertisement;
 
-import com.senlainc.javacourses.petushokvaliantsin.graph.GraphName;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,11 +28,12 @@ import java.util.Objects;
 @Entity
 @Table(name = "advertisement_comments")
 @NamedEntityGraphs(value = {
-        @NamedEntityGraph(name = GraphName.AdvertisementComment.DEFAULT,
-                attributeNodes = {@NamedAttributeNode("user"), @NamedAttributeNode("advertisement")}),
-        @NamedEntityGraph(name = GraphName.AdvertisementComment.USER,
+        @NamedEntityGraph(name = GraphProperty.AdvertisementComment.DEFAULT, attributeNodes = {
+                @NamedAttributeNode(value = "user"),
+                @NamedAttributeNode(value = "advertisement")}),
+        @NamedEntityGraph(name = GraphProperty.AdvertisementComment.USER,
                 attributeNodes = @NamedAttributeNode(value = "user", subgraph = "user-subgraph"),
-                subgraphs = @NamedSubgraph(name = "user-subgraph", attributeNodes = @NamedAttributeNode("userCred")))
+                subgraphs = @NamedSubgraph(name = "user-subgraph", attributeNodes = @NamedAttributeNode(value = "userCred")))
 })
 public class AdvertisementComment {
 

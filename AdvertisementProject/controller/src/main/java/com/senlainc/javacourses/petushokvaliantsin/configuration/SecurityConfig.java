@@ -58,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/logout").authenticated()
                 .antMatchers("/admin/*").hasRole(EnumRole.ROLE_ADMIN.getRole())
                 .antMatchers("/moderator/*").hasAnyRole(EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
-                .antMatchers("/account/**").hasAnyRole(EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_ADMIN.getRole(), EnumRole.ROLE_ADMIN.getRole())
+                .antMatchers("/account/**").hasAnyRole(EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_ADMIN.getRole(), EnumRole.ROLE_MODERATOR.getRole())
                 .antMatchers(HttpMethod.PUT, ADVERTISEMENT_URL).hasAnyRole(EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
                 .antMatchers(HttpMethod.POST, ADVERTISEMENT_URL, "/users/{id}").hasAnyRole(EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
                 .antMatchers(HttpMethod.DELETE, ADVERTISEMENT_URL).hasAnyRole(EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())

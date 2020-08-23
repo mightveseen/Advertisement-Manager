@@ -49,7 +49,7 @@ public class CommonController {
      * Payment operation [Get operation history]
      */
     @GetMapping(value = "/payments")
-    public ResultListDto<PaymentDto> getUserPayments(@RequestParam(name = "page", defaultValue = "1") @Positive int page,
+    public ResultListDto<PaymentDto> getUserPayments(@RequestParam(name = "page", defaultValue = "0") @Positive int page,
                                                      @RequestParam(name = "max", defaultValue = "15") @Positive int max,
                                                      @NotNull Principal principal) {
         return new ResultListDto<>(paymentService.readSize(principal.getName()), paymentService.readAll(principal.getName(), page, max));
@@ -59,7 +59,7 @@ public class CommonController {
      * Chat operation [Show all, show chat message, add message, remove chat]
      */
     @GetMapping(value = "/chats")
-    public ResultListDto<ChatDto> getUserChats(@RequestParam(name = "page", defaultValue = "1") @Positive int page,
+    public ResultListDto<ChatDto> getUserChats(@RequestParam(name = "page", defaultValue = "0") @Positive int page,
                                                @RequestParam(name = "max", defaultValue = "15") @Positive int max,
                                                @NotNull Principal principal) {
         return new ResultListDto<>(chatService.readSize(principal.getName()), chatService.readAll(principal.getName(), page, max));
@@ -67,7 +67,7 @@ public class CommonController {
 
     @GetMapping(value = "/chats/{id}")
     public List<MessageDto> getChatMessage(@PathVariable(name = "id") @Positive Long index,
-                                           @RequestParam(name = "page", defaultValue = "1") @Positive int page,
+                                           @RequestParam(name = "page", defaultValue = "0") @Positive int page,
                                            @RequestParam(name = "max", defaultValue = "15") @Positive int max,
                                            @NotNull Principal principal) {
         return messageService.readAll(principal.getName(), index, page, max);

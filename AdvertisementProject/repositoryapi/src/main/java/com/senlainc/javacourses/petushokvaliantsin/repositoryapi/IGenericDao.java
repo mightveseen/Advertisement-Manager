@@ -1,10 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.repositoryapi;
 
-import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
-
-import javax.persistence.metamodel.SingularAttribute;
 import java.io.Serializable;
-import java.util.List;
 
 public interface IGenericDao<E, K extends Serializable> {
 
@@ -16,9 +12,7 @@ public interface IGenericDao<E, K extends Serializable> {
 
     E read(K index);
 
-    List<E> readAll();
-
-    <F> List<E> readAll(IPageParameter pageParameter, SingularAttribute<E, F> field, F value);
+    E read(K index, String graphName);
 
     Long readCount();
 }

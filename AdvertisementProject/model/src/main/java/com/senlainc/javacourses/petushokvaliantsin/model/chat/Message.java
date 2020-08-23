@@ -1,7 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.chat;
 
-import com.senlainc.javacourses.petushokvaliantsin.graph.DefaultGraph;
-import com.senlainc.javacourses.petushokvaliantsin.graph.GraphName;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,9 +25,8 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "messages")
-@DefaultGraph(name = GraphName.MESSAGE_DEFAULT)
-@NamedEntityGraph(name = GraphName.MESSAGE_DEFAULT, attributeNodes = {
-        @NamedAttributeNode("user"), @NamedAttributeNode("chat")
+@NamedEntityGraph(name = GraphProperty.MESSAGE_DEFAULT, attributeNodes = {
+        @NamedAttributeNode(value = "user"), @NamedAttributeNode(value = "chat")
 })
 public class Message {
 

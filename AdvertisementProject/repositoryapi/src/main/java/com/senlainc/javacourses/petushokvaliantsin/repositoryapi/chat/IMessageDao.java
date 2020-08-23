@@ -1,7 +1,13 @@
 package com.senlainc.javacourses.petushokvaliantsin.repositoryapi.chat;
 
+import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Message;
-import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.IGenericDao;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.CrudRepository;
 
-public interface IMessageDao extends IGenericDao<Message, Long> {
+import java.util.List;
+
+public interface IMessageDao extends CrudRepository<Message, Long> {
+
+    List<Message> readAllByChat(Pageable pageable, Chat chat);
 }

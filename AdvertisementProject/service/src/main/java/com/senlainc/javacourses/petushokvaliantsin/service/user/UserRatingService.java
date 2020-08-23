@@ -3,6 +3,7 @@ package com.senlainc.javacourses.petushokvaliantsin.service.user;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserRatingDto;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumException;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumLogger;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.UserRating;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserDao;
@@ -36,8 +37,8 @@ public class UserRatingService extends AbstractService implements IUserRatingSer
         final User activeUser = userDao.readByUserCred(username).orElseThrow();
         checkYourself(activeUser, ratedUserIndex);
         checkRateExist(activeUser, ratedUserIndex);
-        final User ratedUser = userDao.read(ratedUserIndex);
-        userRatingDao.create(createUserRating(object, activeUser, ratedUser));
+        final User ratedUser = userDao.read(ratedUserIndex, GraphProperty.User.USER_CRED_AND_RATE);
+        userRatingDao.save(createUserRating(object, activeUser, ratedUser));
         ratedUser.setRating(updateUserRatingValue(ratedUser, object.getValue()));
         userDao.update(ratedUser);
         LOGGER.info(EnumLogger.SUCCESSFUL_CREATE.getText());

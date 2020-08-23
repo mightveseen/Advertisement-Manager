@@ -28,7 +28,7 @@ public class AdvertisementPhotoService extends AbstractService implements IAdver
     @Transactional
     public boolean create(AdvertisementPhotoDto object) {
         final AdvertisementPhoto advertisementPhoto = dtoMapper.map(object, AdvertisementPhoto.class);
-        advertisementPhotoDao.create(advertisementPhoto);
+        advertisementPhotoDao.save(advertisementPhoto);
         LOGGER.info(EnumLogger.SUCCESSFUL_CREATE.getText());
         return true;
     }
@@ -36,7 +36,7 @@ public class AdvertisementPhotoService extends AbstractService implements IAdver
     @Override
     @Transactional
     public boolean delete(Long index) {
-        advertisementPhotoDao.delete(advertisementPhotoDao.read(index));
+        advertisementPhotoDao.deleteById(index);
         LOGGER.info(EnumLogger.SUCCESSFUL_DELETE.getText());
         return true;
     }

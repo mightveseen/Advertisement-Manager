@@ -19,4 +19,6 @@ public interface IAdvertisementDao extends IGenericDao<Advertisement, Long> {
     Long readCountWitFilter(IFilterParameter filterParameter, IStateParameter stateParameter);
 
     List<Advertisement> tryJdbcTemplate();
+
+    List<Advertisement> tryNativeQuery();
 }

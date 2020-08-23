@@ -5,7 +5,6 @@ import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumException;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumLogger;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Message;
-import com.senlainc.javacourses.petushokvaliantsin.model.chat.Message_;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.chat.IChatDao;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.chat.IMessageDao;
@@ -13,10 +12,10 @@ import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IMessageService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.PermissionDeniedException;
-import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,8 +43,8 @@ public class MessageService extends AbstractService implements IMessageService {
         final Chat chat = chatDao.read(chatIndex);
         final User activeUser = userDao.readByUserCred(username).orElseThrow();
         checkPermission(chat, activeUser);
-        messageDao.create(createMessage(object, chat, activeUser));
-        chatDao.update(createChat(chat, activeUser, object.getText()));
+        messageDao.save(createMessage(object, chat, activeUser));
+        chatDao.create(createChat(chat, activeUser, object.getText()));
         LOGGER.info(EnumLogger.SUCCESSFUL_CREATE.getText());
         return true;
     }
@@ -55,7 +54,7 @@ public class MessageService extends AbstractService implements IMessageService {
     public List<MessageDto> readAll(String username, Long chatIndex, int firstElement, int maxResult) {
         final Chat chat = chatDao.read(chatIndex);
         checkPermission(chat, userDao.readByUserCred(username).orElseThrow());
-        final List<MessageDto> result = dtoMapper.mapAll(messageDao.readAll(PageParameter.of(firstElement, maxResult), Message_.chat, chatDao.read(chatIndex)),
+        final List<MessageDto> result = dtoMapper.mapAll(messageDao.readAllByChat(PageRequest.of(firstElement, maxResult), chat),
                 MessageDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;

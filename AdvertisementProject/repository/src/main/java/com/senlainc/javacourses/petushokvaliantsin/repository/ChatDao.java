@@ -1,9 +1,9 @@
-package com.senlainc.javacourses.petushokvaliantsin.repository.chat;
+package com.senlainc.javacourses.petushokvaliantsin.repository;
 
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat_;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
-import com.senlainc.javacourses.petushokvaliantsin.repository.AbstractDao;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.chat.IChatDao;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.ReadQueryException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
@@ -28,6 +28,7 @@ public class ChatDao extends AbstractDao<Chat, Long> implements IChatDao {
                     .select(root)
                     .orderBy(getOrder(pageParameter, criteriaBuilder, root))
                     .where(predicate))
+                    .setHint(GraphProperty.Type.FETCH, entityManager.getEntityGraph(GraphProperty.CHAT_DEFAULT))
                     .setFirstResult(pageParameter.getFirstElement())
                     .setMaxResults(pageParameter.getMaxResult())
                     .getResultList();

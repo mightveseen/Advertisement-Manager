@@ -1,6 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.repository;
 
-import com.senlainc.javacourses.petushokvaliantsin.graph.GraphName;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.IGenericDao;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.CreateQueryException;
@@ -15,14 +15,11 @@ import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.SingularAttribute;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractDao<E, K extends Serializable> implements IGenericDao<E, K> {
@@ -71,10 +68,8 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
     @Override
     public E read(K index) {
         try {
-            final E object = entityManager.find(entityClazz, index, Collections.singletonMap(GraphName.FETCH_GRAPH_TYPE, entityManager.getEntityGraph(GraphName.USER_DEFAULT)));
-            if (object == null) {
-                throw new EntityNotExistException("Entity [" + entityClazz.getSimpleName() + "] with index [" + index + "] not exist");
-            }
+            final E object = entityManager.find(entityClazz, index);
+            checkObjectOnNull(index, object);
             return object;
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);
@@ -82,31 +77,11 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
     }
 
     @Override
-    public List<E> readAll() {
+    public E read(K index, String graphName) {
         try {
-            final CriteriaQuery<E> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
-            final Root<E> root = criteriaQuery.from(entityClazz);
-            return entityManager.createQuery(criteriaQuery
-                    .select(root))
-                    .getResultList();
-        } catch (PersistenceException exc) {
-            throw new ReadQueryException(exc);
-        }
-    }
-
-    @Override
-    public <F> List<E> readAll(IPageParameter pageParameter, SingularAttribute<E, F> field, F value) {
-        try {
-            final CriteriaQuery<E> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
-            final Root<E> root = criteriaQuery.from(entityClazz);
-            final Predicate predicate = criteriaBuilder.equal(root.get(field), value);
-            return entityManager.createQuery(criteriaQuery
-                    .select(root)
-                    .orderBy(getOrder(pageParameter, criteriaBuilder, root))
-                    .where(predicate))
-                    .setFirstResult(pageParameter.getFirstElement())
-                    .setMaxResults(pageParameter.getMaxResult())
-                    .getResultList();
+            final E object = entityManager.find(entityClazz, index, Collections.singletonMap(GraphProperty.Type.FETCH, entityManager.getEntityGraph(graphName)));
+            checkObjectOnNull(index, object);
+            return object;
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);
         }
@@ -140,6 +115,12 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
                         criteriaBuilder.desc(root.get(pageParameter.getCriteriaField()[0]));
             default:
                 return criteriaBuilder.asc(root);
+        }
+    }
+
+    private void checkObjectOnNull(K index, E object) {
+        if (object == null) {
+            throw new EntityNotExistException("Entity [" + entityClazz.getSimpleName() + "] with index [" + index + "] not exist");
         }
     }
 }

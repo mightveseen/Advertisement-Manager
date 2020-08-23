@@ -1,10 +1,18 @@
 package com.senlainc.javacourses.petushokvaliantsin.repositoryapi.payment;
 
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
-import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.IGenericDao;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.repository.CrudRepository;
 
-public interface IPaymentDao extends IGenericDao<Payment, Long> {
+import java.util.List;
 
-    Long readCountWithUser(User user);
+public interface IPaymentDao extends CrudRepository<Payment, Long> {
+
+    @EntityGraph(value = GraphProperty.PAYMENT_DEFAULT)
+    List<Payment> readAllByUser(Pageable pageable, User user);
+
+    Long countAllByUser(User user);
 }

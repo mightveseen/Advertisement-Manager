@@ -1,7 +1,7 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.user;
 
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumRole;
-import com.senlainc.javacourses.petushokvaliantsin.graph.GraphName;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,8 +26,8 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "user_creds")
-@NamedEntityGraph(name = GraphName.USER_CRED_DEFAULT,
-        attributeNodes = @NamedAttributeNode("user"))
+@NamedEntityGraph(name = GraphProperty.USER_CRED_DEFAULT,
+        attributeNodes = @NamedAttributeNode(value = "user"))
 public class UserCred {
 
     @Id

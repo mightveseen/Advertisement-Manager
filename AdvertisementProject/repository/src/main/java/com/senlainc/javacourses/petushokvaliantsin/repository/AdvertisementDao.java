@@ -1,8 +1,8 @@
-package com.senlainc.javacourses.petushokvaliantsin.repository.advertisement;
+package com.senlainc.javacourses.petushokvaliantsin.repository;
 
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumRole;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
-import com.senlainc.javacourses.petushokvaliantsin.graph.GraphName;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.model.State;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementCategory;
@@ -13,7 +13,6 @@ import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment_;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.UserCred;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User_;
-import com.senlainc.javacourses.petushokvaliantsin.repository.AbstractDao;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementDao;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.ReadQueryException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IFilterParameter;
@@ -62,6 +61,7 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
         }
     }
 
+    //FIXME : Fix order by
     @Override
     public List<Advertisement> readAllWithFilter(IPageParameter pageParameter, IFilterParameter filterParameter, IStateParameter stateParameter) {
         try {
@@ -72,11 +72,10 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
             return entityManager.createQuery(criteriaQuery
                     .select(root)
                     .orderBy(orders)
-//                    .groupBy(root)
-//                    .having(criteriaBuilder.and(predicates.toArray(new Predicate[0]))))
+//                    .groupBy(root, root.get(Advertisement_.id), root.join(Advertisement_.user).get(User_.id))
                     .where(criteriaBuilder.and(predicates.toArray(new Predicate[0]))))
                     .setFirstResult(pageParameter.getFirstElement())
-                    .setHint(GraphName.FETCH_GRAPH_TYPE, entityManager.getEntityGraph(GraphName.Advertisement.DEFAULT))
+                    .setHint(GraphProperty.Type.FETCH, entityManager.getEntityGraph(GraphProperty.Advertisement.DEFAULT))
                     .setMaxResults(pageParameter.getMaxResult())
                     .getResultList();
         } catch (PersistenceException exc) {
@@ -111,7 +110,8 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
             advertisement.setDescription(resultSet.getString("description"));
             advertisement.setDate(resultSet.getDate("date").toLocalDate());
             advertisement.setPrice(resultSet.getDouble("price"));
-            final UserCred userCred = new UserCred(resultSet.getString("username"), resultSet.getString("password"), EnumRole.valueOf(resultSet.getString("role")));
+            final UserCred userCred = new UserCred(resultSet.getString("username"), resultSet.getString("password"),
+                    EnumRole.valueOf(resultSet.getString("role")));
             userCred.setId(resultSet.getLong("owner_id"));
             final User user = new User(resultSet.getString("first_name"), resultSet.getString("last_name"), resultSet.getString("email"),
                     resultSet.getInt("phone"), resultSet.getDate("registration_date").toLocalDate(), resultSet.getFloat("rating"));
@@ -120,6 +120,20 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
             advertisement.setUser(user);
             return advertisement;
         });
+    }
+
+    /**
+     * Problem with duplicated fields (while make left join and after getting
+     * in result 3 fields with name 'id' - SQL Syntax Exception
+     *
+     * @return List with type Advertisement
+     */
+    @Override
+    @SuppressWarnings("uncheked")
+    public List<Advertisement> tryNativeQuery() {
+        final String query = "select * from advertisements a \n" +
+                "where a.price > 100";
+        return entityManager.createNativeQuery(query).getResultList();
     }
 
     private List<Predicate> getPredicates(Root<Advertisement> root, IFilterParameter filterParameter, IStateParameter stateParameter) {
@@ -148,7 +162,7 @@ public class AdvertisementDao extends AbstractDao<Advertisement, Long> implement
         if (pageParameter.getCriteriaField().length > 1 && pageParameter.getCriteriaField()[1].getName().equals("rating")) {
             final Join<Advertisement, Payment> join = root.join(Advertisement_.payments, JoinType.LEFT);
             join.on(criteriaBuilder.equal(join.get(Payment_.state), stateParameter.getPaymentState()));
-            orders.add(criteriaBuilder.asc(join.join(Payment_.advertisement, JoinType.LEFT).join(Advertisement_.user, JoinType.LEFT).get(User_.rating)));
+            orders.add(criteriaBuilder.asc(join.join(Advertisement_.USER, JoinType.LEFT).get(User_.RATING)));
         }
         orders.add(getOrder(pageParameter, criteriaBuilder, root));
         return orders;

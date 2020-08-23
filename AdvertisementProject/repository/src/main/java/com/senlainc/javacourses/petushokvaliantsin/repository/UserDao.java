@@ -1,10 +1,9 @@
-package com.senlainc.javacourses.petushokvaliantsin.repository.user;
+package com.senlainc.javacourses.petushokvaliantsin.repository;
 
-import com.senlainc.javacourses.petushokvaliantsin.graph.GraphName;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.UserCred_;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User_;
-import com.senlainc.javacourses.petushokvaliantsin.repository.AbstractDao;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserDao;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.ReadQueryException;
 import org.springframework.stereotype.Repository;
@@ -18,16 +17,17 @@ import java.util.Optional;
 @Repository
 public class UserDao extends AbstractDao<User, Long> implements IUserDao {
 
+    //TODO : Fix Optional
     @Override
     public Optional<User> readByUserCred(String username) {
         try {
             final CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
             final Root<User> root = criteriaQuery.from(User.class);
-            final Predicate predicate = criteriaBuilder.equal(root.join(User_.userCred).get(UserCred_.username), username);
+            final Predicate predicate = criteriaBuilder.equal(root.get(User_.userCred).get(UserCred_.username), username);
             return Optional.ofNullable(entityManager.createQuery(criteriaQuery
                     .select(root)
                     .where(predicate))
-                    .setHint(GraphName.FETCH_GRAPH_TYPE, entityManager.getEntityGraph(GraphName.USER_DEFAULT))
+                    .setHint(GraphProperty.Type.FETCH, entityManager.getEntityGraph(GraphProperty.User.DEFAULT))
                     .getSingleResult());
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);
@@ -43,7 +43,7 @@ public class UserDao extends AbstractDao<User, Long> implements IUserDao {
             return Optional.ofNullable(entityManager.createQuery(criteriaQuery
                     .select(root)
                     .where(predicate))
-                    .setHint(GraphName.FETCH_GRAPH_TYPE, entityManager.getEntityGraph(GraphName.USER_DEFAULT))
+                    .setHint(GraphProperty.Type.FETCH, entityManager.getEntityGraph(GraphProperty.User.DEFAULT))
                     .getSingleResult());
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);
@@ -59,7 +59,7 @@ public class UserDao extends AbstractDao<User, Long> implements IUserDao {
             return Optional.ofNullable(entityManager.createQuery(criteriaQuery
                     .select(root)
                     .where(predicate))
-                    .setHint(GraphName.FETCH_GRAPH_TYPE, entityManager.getEntityGraph(GraphName.USER_DEFAULT))
+                    .setHint(GraphProperty.Type.FETCH, entityManager.getEntityGraph(GraphProperty.User.DEFAULT))
                     .getSingleResult());
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);

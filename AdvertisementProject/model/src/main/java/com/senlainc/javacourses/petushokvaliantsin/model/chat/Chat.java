@@ -1,7 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.chat;
 
-import com.senlainc.javacourses.petushokvaliantsin.graph.DefaultGraph;
-import com.senlainc.javacourses.petushokvaliantsin.graph.GraphName;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +18,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
@@ -30,8 +30,10 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "chats")
-@DefaultGraph(name = GraphName.CHAT_DEFAULT)
-@NamedEntityGraph(name = GraphName.CHAT_DEFAULT, attributeNodes = @NamedAttributeNode("users"))
+@NamedEntityGraph(name = GraphProperty.CHAT_DEFAULT,
+        attributeNodes = @NamedAttributeNode(value = "users", subgraph = "chat-user-subgraph"),
+        subgraphs = @NamedSubgraph(name = "chat-user-subgraph",
+                attributeNodes = @NamedAttributeNode(value = "userCred")))
 public class Chat {
 
     @Id

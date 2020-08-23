@@ -1,6 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.user;
 
-import com.senlainc.javacourses.petushokvaliantsin.graph.GraphName;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementComment;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -30,8 +31,15 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-@NamedEntityGraph(name = GraphName.USER_DEFAULT,
-        attributeNodes = @NamedAttributeNode("userCred"))
+@NamedEntityGraphs(value = {
+        @NamedEntityGraph(name = GraphProperty.User.DEFAULT,
+                attributeNodes = @NamedAttributeNode("userCred")),
+        @NamedEntityGraph(name = GraphProperty.User.USER_CRED_AND_RATE,
+                attributeNodes = {
+                        @NamedAttributeNode(value = "userCred"),
+                        @NamedAttributeNode(value = "rateOwnerUserRatings"),
+                        @NamedAttributeNode(value = "ratedUserRatings")})
+})
 public class User {
 
     @Id

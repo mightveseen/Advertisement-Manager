@@ -5,6 +5,7 @@ import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumException;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumLogger;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumRole;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.UserCred;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserCredDao;
@@ -69,7 +70,7 @@ public class UserService extends AbstractService implements IUserService {
     @Override
     @Transactional(readOnly = true)
     public UserDto read(Long userIndex) {
-        final UserDto result = dtoMapper.map(userDao.read(userIndex), UserDto.class);
+        final UserDto result = dtoMapper.map(userDao.read(userIndex, GraphProperty.User.DEFAULT), UserDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
     }

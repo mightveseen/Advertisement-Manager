@@ -1,6 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.advertisement;
 
-import com.senlainc.javacourses.petushokvaliantsin.graph.GraphName;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +23,8 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "advertisement_photos")
-@NamedEntityGraph(name = GraphName.ADVERTISEMENT_PHOTO_DEFAULT, attributeNodes = @NamedAttributeNode("advertisement"))
+@NamedEntityGraph(name = GraphProperty.ADVERTISEMENT_PHOTO_DEFAULT,
+        attributeNodes = @NamedAttributeNode(value = "advertisement"))
 public class AdvertisementPhoto {
 
     @Id

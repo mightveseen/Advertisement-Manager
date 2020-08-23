@@ -59,7 +59,7 @@ public class ChatService extends AbstractService implements IChatService {
     @Transactional
     public boolean delete(Long index, String username) {
         final Chat chat = chatDao.read(index);
-        chat.getUsers().remove(userDao.readByUserCred(username));
+        chat.getUsers().remove(userDao.readByUserCred(username).orElseThrow());
         if (chat.getUsers().isEmpty()) {
             chatDao.delete(chat);
         } else {

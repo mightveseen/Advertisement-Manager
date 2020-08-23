@@ -1,7 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.advertisement;
 
-import com.senlainc.javacourses.petushokvaliantsin.graph.DefaultGraph;
-import com.senlainc.javacourses.petushokvaliantsin.graph.GraphName;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.model.State;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
@@ -20,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedEntityGraphs;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
@@ -31,11 +31,14 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "advertisements")
-@DefaultGraph(name = GraphName.Advertisement.DEFAULT)
 @NamedEntityGraphs(value = {
-        @NamedEntityGraph(name = GraphName.Advertisement.DEFAULT,
-                attributeNodes = {@NamedAttributeNode("category"), @NamedAttributeNode("state")}),
-        @NamedEntityGraph(name = GraphName.Advertisement.USER,
+        @NamedEntityGraph(name = GraphProperty.Advertisement.DEFAULT, attributeNodes = {
+                @NamedAttributeNode(value = "user", subgraph = "user-dependencies"),
+                @NamedAttributeNode(value = "category"),
+                @NamedAttributeNode(value = "state")},
+                subgraphs = @NamedSubgraph(name = "user-dependencies",
+                        attributeNodes = @NamedAttributeNode("userCred"))),
+        @NamedEntityGraph(name = GraphProperty.Advertisement.USER,
                 attributeNodes = @NamedAttributeNode("user"))
 })
 public class Advertisement {

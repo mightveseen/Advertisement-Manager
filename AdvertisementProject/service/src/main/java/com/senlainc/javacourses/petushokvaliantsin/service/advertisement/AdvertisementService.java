@@ -5,6 +5,7 @@ import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.Advertiseme
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumException;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumLogger;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement_;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User_;
@@ -65,7 +66,7 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Override
     @Transactional
     public boolean delete(String username, Long index) {
-        final Advertisement advertisement = advertisementDao.read(index);
+        final Advertisement advertisement = advertisementDao.read(index, GraphProperty.Advertisement.DEFAULT);
         checkPermission(advertisement, username);
         advertisement.setState(stateDao.readByDescription(EnumState.DISABLED.name()));
         advertisementDao.update(advertisement);
@@ -76,7 +77,7 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Override
     @Transactional
     public boolean updateByUser(String username, AdvertisementDto advertisementDto) {
-        checkPermission(advertisementDao.read(advertisementDto.getId()), username);
+        checkPermission(advertisementDao.read(advertisementDto.getId(), GraphProperty.Advertisement.DEFAULT), username);
         final Advertisement advertisement = dtoMapper.map(advertisementDto, Advertisement.class);
         advertisement.setDate(LocalDate.now());
         advertisement.setState(stateDao.readByDescription(EnumState.MODERATION.name()));
@@ -88,7 +89,7 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Override
     @Transactional
     public boolean updateStateByModerator(Long index, StateDto state) {
-        final Advertisement advertisement = advertisementDao.read(index);
+        final Advertisement advertisement = advertisementDao.read(index, GraphProperty.Advertisement.DEFAULT);
         advertisement.setState(stateDao.readByDescription(state.getDescription()));
         advertisementDao.update(advertisement);
         LOGGER.info(EnumLogger.SUCCESSFUL_UPDATE.getText());
@@ -98,7 +99,7 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Override
     @Transactional(readOnly = true)
     public AdvertisementDto readByUser(Long index) {
-        final Advertisement advertisement = advertisementDao.read(index);
+        final Advertisement advertisement = advertisementDao.read(index, GraphProperty.Advertisement.DEFAULT);
         if (!advertisement.getState().getId().equals(stateDao.readByDescription(EnumState.ACTIVE.name()).getId())) {
             throw new EntityNotAvailableException(EnumException.PERMISSION.getMessage());
         }
@@ -110,7 +111,7 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Override
     @Transactional(readOnly = true)
     public AdvertisementDto readByModerator(Long index) {
-        final AdvertisementDto result = dtoMapper.map(advertisementDao.read(index), AdvertisementDto.class);
+        final AdvertisementDto result = dtoMapper.map(advertisementDao.read(index, GraphProperty.Advertisement.DEFAULT), AdvertisementDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
     }
@@ -119,7 +120,7 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Transactional(readOnly = true)
     public List<AdvertisementDto> readAllWithUser(Long userIndex, int page, int numberElements, EnumState state) {
         final List<AdvertisementDto> result = dtoMapper.mapAll(advertisementDao.readAllWithUser(PageParameter.of(page, numberElements),
-                userDao.read(userIndex), stateDao.readByDescription(state.name())), AdvertisementDto.class);
+                userDao.read(userIndex, GraphProperty.User.DEFAULT), stateDao.readByDescription(state.name())), AdvertisementDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
     }
@@ -131,6 +132,7 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
                                           String category, double minPrice, double maxPrice, EnumState advertisementState) {
         /* Try templates */
         final List<Advertisement> jdbcTemplateList = advertisementDao.tryJdbcTemplate();
+        final List<Advertisement> nativeQueryList = advertisementDao.tryNativeQuery();
         /* Normal */
         final IPageParameter pageParameter = splitSortFiled(page, numberElements, direction, sortField);
         final IFilterParameter filterParameter = FilterParameter.of(search, category, minPrice, maxPrice);

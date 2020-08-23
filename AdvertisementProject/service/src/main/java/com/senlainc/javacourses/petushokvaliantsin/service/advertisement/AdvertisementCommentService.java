@@ -2,6 +2,7 @@ package com.senlainc.javacourses.petushokvaliantsin.service.advertisement;
 
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementCommentDto;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumLogger;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementComment;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementComment_;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementCommentDao;
@@ -56,10 +57,10 @@ public class AdvertisementCommentService extends AbstractService implements IAdv
     @Transactional(readOnly = true)
     @SingularModel(metamodels = AdvertisementComment_.class)
     public List<AdvertisementCommentDto> readAll(Long index, int page, int numberElements, String direction, String sortField) {
-        final Pageable pageParameter = PageRequest.of(page, numberElements,
-                Sort.by(Sort.Direction.valueOf(direction.toUpperCase()), singularMapper.getAttribute(SORT_FIELD + sortField.toLowerCase()).getName()));
-        final List<AdvertisementCommentDto> result = dtoMapper.mapAll(advertisementCommentDao.readAllByAdvertisement(pageParameter, advertisementDao.read(index)),
-                AdvertisementCommentDto.class);
+        final Pageable pageParameter = PageRequest.of(page, numberElements, Sort.by(Sort.Direction.valueOf(direction.toUpperCase()),
+                singularMapper.getAttribute(SORT_FIELD + sortField.toLowerCase()).getName()));
+        final List<AdvertisementCommentDto> result = dtoMapper.mapAll(advertisementCommentDao.readAllByAdvertisement(pageParameter,
+                advertisementDao.read(index, GraphProperty.Advertisement.DEFAULT)), AdvertisementCommentDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
     }
@@ -67,6 +68,6 @@ public class AdvertisementCommentService extends AbstractService implements IAdv
     @Override
     @Transactional(readOnly = true)
     public Long readSize(Long index) {
-        return advertisementCommentDao.countAdvertisementCommentByAdvertisement(advertisementDao.read(index));
+        return advertisementCommentDao.readSize(advertisementDao.read(index));
     }
 }
