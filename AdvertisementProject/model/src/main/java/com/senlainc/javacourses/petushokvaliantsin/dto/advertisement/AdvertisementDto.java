@@ -52,7 +52,4 @@ public class AdvertisementDto implements Serializable {
 
     }
 
-    public interface Read {
-
-    }
 }

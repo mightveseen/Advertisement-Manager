@@ -3,8 +3,8 @@ package com.senlainc.javacourses.petushokvaliantsin.starter;
 
 public class StarterBean {
 
-    private String firstProperty;
-    private String secondProperty;
+    private final String firstProperty;
+    private final String secondProperty;
 
     public StarterBean(String firstProperty, String secondProperty) {
         this.firstProperty = firstProperty;

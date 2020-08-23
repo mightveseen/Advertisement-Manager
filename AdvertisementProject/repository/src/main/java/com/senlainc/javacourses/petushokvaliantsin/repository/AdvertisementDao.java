@@ -37,7 +37,7 @@ import java.util.List;
 public class AdvertisementDao extends AbstractDao<Advertisement, Long> implements IAdvertisementDao {
 
     private static final String NONE_PARAMETER = "none";
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public AdvertisementDao(JdbcTemplate jdbcTemplate) {

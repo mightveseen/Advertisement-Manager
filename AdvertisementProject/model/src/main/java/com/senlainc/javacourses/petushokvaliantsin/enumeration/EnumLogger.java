@@ -7,7 +7,7 @@ public enum EnumLogger {
     SUCCESSFUL_UPDATE("Successful execution of update operation"),
     SUCCESSFUL_READ("Successful execution of read operation");
 
-    private String text;
+    private final String text;
 
     EnumLogger(String text) {
         this.text = text;

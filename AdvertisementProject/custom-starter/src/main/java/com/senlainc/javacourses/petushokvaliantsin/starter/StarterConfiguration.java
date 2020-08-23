@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(StarterProperties.class)
 public class StarterConfiguration {
 
-    private StarterProperties properties;
+    private final StarterProperties properties;
 
     @Autowired
     public StarterConfiguration(StarterProperties properties) {
