@@ -1,11 +1,14 @@
 package com.senlainc.javacourses.petushokvaliantsin.service.advertisement;
 
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementCategoryDto;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumException;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumLogger;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementCategory;
+import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementCategory_;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementCategoryDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementCategoryService;
+import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +29,7 @@ public class AdvertisementCategoryService extends AbstractService implements IAd
     @Override
     @Transactional
     public boolean create(AdvertisementCategoryDto object) {
-        final AdvertisementCategory advertisementCategory = dtoMapper.map(object, AdvertisementCategory.class);
-        advertisementCategoryDao.save(advertisementCategory);
+        advertisementCategoryDao.save(dtoMapper.map(object, AdvertisementCategory.class));
         LOGGER.info(EnumLogger.SUCCESSFUL_CREATE.getText());
         return true;
     }
@@ -35,6 +37,10 @@ public class AdvertisementCategoryService extends AbstractService implements IAd
     @Override
     @Transactional
     public boolean delete(Long index) {
+        if (!advertisementCategoryDao.existsById(index)) {
+            throw new EntityNotExistException(String.format(EnumException.CLASS_WITH_FIELD_NOT_EXIST.getMessage(),
+                    AdvertisementCategory.class.getSimpleName(), AdvertisementCategory_.ID, index));
+        }
         advertisementCategoryDao.deleteById(index);
         LOGGER.info(EnumLogger.SUCCESSFUL_DELETE.getText());
         return true;

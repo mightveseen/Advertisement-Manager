@@ -55,7 +55,7 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Transactional
     public boolean create(String username, AdvertisementDto advertisementDto) {
         final Advertisement advertisement = dtoMapper.map(advertisementDto, Advertisement.class);
-        advertisement.setUser(userDao.readByUserCred(username).orElseThrow());
+        advertisement.setUser(userDao.readByUserCred(username, GraphProperty.User.DEFAULT).orElseThrow());
         advertisement.setDate(LocalDate.now());
         advertisement.setState(stateDao.readByDescription(EnumState.MODERATION.name()));
         advertisementDao.create(advertisement);
@@ -169,7 +169,7 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     }
 
     private void checkPermission(Advertisement advertisement, String username) {
-        if (!advertisement.getUser().getId().equals(userDao.readByUserCred(username).orElseThrow().getId())) {
+        if (!advertisement.getUser().getId().equals(userDao.readByUserCred(username, GraphProperty.User.DEFAULT).orElseThrow().getId())) {
             throw new PermissionDeniedException(EnumException.PERMISSION.getMessage());
         }
     }

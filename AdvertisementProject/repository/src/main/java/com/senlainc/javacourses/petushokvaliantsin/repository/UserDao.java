@@ -9,29 +9,28 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.ReadQue
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class UserDao extends AbstractDao<User, Long> implements IUserDao {
 
-    //TODO : Fix Optional
     @Override
     public Optional<User> readByUserCred(String username) {
-        try {
-            final CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-            final Root<User> root = criteriaQuery.from(User.class);
-            final Predicate predicate = criteriaBuilder.equal(root.get(User_.userCred).get(UserCred_.username), username);
-            return Optional.ofNullable(entityManager.createQuery(criteriaQuery
-                    .select(root)
-                    .where(predicate))
-                    .setHint(GraphProperty.Type.FETCH, entityManager.getEntityGraph(GraphProperty.User.DEFAULT))
-                    .getSingleResult());
-        } catch (PersistenceException exc) {
-            throw new ReadQueryException(exc);
-        }
+        final List<User> result = queryReadByUserCred(username).getResultList();
+        return result == null ? Optional.empty() : Optional.of(result.get(0));
+    }
+
+    @Override
+    public Optional<User> readByUserCred(String username, String graphName) {
+        final List<User> result = queryReadByUserCred(username)
+                .setHint(GraphProperty.Type.FETCH, entityManager.getEntityGraph(GraphProperty.User.DEFAULT))
+                .getResultList();
+        return result == null ? Optional.empty() : Optional.of(result.get(0));
     }
 
     @Override
@@ -61,6 +60,19 @@ public class UserDao extends AbstractDao<User, Long> implements IUserDao {
                     .where(predicate))
                     .setHint(GraphProperty.Type.FETCH, entityManager.getEntityGraph(GraphProperty.User.DEFAULT))
                     .getSingleResult());
+        } catch (PersistenceException exc) {
+            throw new ReadQueryException(exc);
+        }
+    }
+
+    private TypedQuery<User> queryReadByUserCred(String username) {
+        try {
+            final CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+            final Root<User> root = criteriaQuery.from(User.class);
+            final Predicate predicate = criteriaBuilder.equal(root.get(User_.userCred).get(UserCred_.username), username);
+            return entityManager.createQuery(criteriaQuery
+                    .select(root)
+                    .where(predicate));
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);
         }

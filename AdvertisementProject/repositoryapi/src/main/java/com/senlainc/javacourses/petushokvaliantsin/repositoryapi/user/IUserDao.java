@@ -7,7 +7,11 @@ import java.util.Optional;
 
 public interface IUserDao extends IGenericDao<User, Long> {
 
+    //TODO : Fix Optional
     Optional<User> readByUserCred(String username);
+
+    //TODO : Fix Optional
+    Optional<User> readByUserCred(String username, String graphName);
 
     Optional<User> readByEmail(String email);
 
