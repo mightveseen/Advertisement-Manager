@@ -11,6 +11,7 @@ import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserRatin
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserRatingService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityAlreadyExistException;
+import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.WrongEnteredDataException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,10 +35,12 @@ public class UserRatingService extends AbstractService implements IUserRatingSer
     @Override
     @Transactional
     public boolean create(String username, Long ratedUserIndex, UserRatingDto object) {
-        final User activeUser = userDao.readByUserCred(username).orElseThrow();
+        final User activeUser = userDao.readByUserCred(username).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_NOT_EXIST.getMessage(), CLASSES[2], CLASS_FIELDS[2], username)));
         checkYourself(activeUser, ratedUserIndex);
         checkRateExist(activeUser, ratedUserIndex);
-        final User ratedUser = userDao.read(ratedUserIndex, GraphProperty.User.USER_CRED_AND_RATE).orElseThrow();
+        final User ratedUser = userDao.read(ratedUserIndex, GraphProperty.User.USER_CRED_AND_RATE).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_NOT_EXIST.getMessage(), CLASSES[2], CLASS_FIELDS[0], ratedUserIndex)));
         userRatingDao.save(createUserRating(object, activeUser, ratedUser));
         ratedUser.setRating(updateUserRatingValue(ratedUser, object.getValue()));
         userDao.update(ratedUser);

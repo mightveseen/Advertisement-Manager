@@ -17,6 +17,7 @@ import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.payment.IPaymen
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.payment.IPaymentService;
+import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.ExceededLimitException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.PermissionDeniedException;
 import org.apache.logging.log4j.LogManager;
@@ -76,7 +77,8 @@ public class PaymentService extends AbstractService implements IPaymentService {
     @Override
     @Transactional
     public List<PaymentDto> readAll(String username, int page, int max) {
-        final List<PaymentDto> result = dtoMapper.mapAll(paymentDao.readAllByUser(PageRequest.of(page, max), userDao.readByUserCred(username).orElseThrow()), PaymentDto.class);
+        final List<PaymentDto> result = dtoMapper.mapAll(paymentDao.readAllByUser(PageRequest.of(page, max), userDao.readByUserCred(username).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_NOT_EXIST.getMessage(), CLASSES[2], CLASS_FIELDS[2], username)))), PaymentDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
     }
@@ -84,7 +86,8 @@ public class PaymentService extends AbstractService implements IPaymentService {
     @Override
     @Transactional(readOnly = true)
     public Long readSize(String username) {
-        return paymentDao.countAllByUser(userDao.readByUserCred(username).orElseThrow());
+        return paymentDao.countAllByUser(userDao.readByUserCred(username).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_NOT_EXIST.getMessage(), CLASSES[2], CLASS_FIELDS[2], username))));
     }
 
     private LocalDate createLocalDate(List<Payment> advertisementActivePayment) {
@@ -93,7 +96,8 @@ public class PaymentService extends AbstractService implements IPaymentService {
     }
 
     private void checkPermission(Advertisement advertisement, String username) {
-        if (!advertisement.getUser().getId().equals(userDao.readByUserCred(username).orElseThrow().getId())) {
+        if (!advertisement.getUser().getId().equals(userDao.readByUserCred(username).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_NOT_EXIST.getMessage(), CLASSES[2], CLASS_FIELDS[2], username))).getId())) {
             throw new PermissionDeniedException(EnumException.PERMISSION.getMessage());
         }
     }

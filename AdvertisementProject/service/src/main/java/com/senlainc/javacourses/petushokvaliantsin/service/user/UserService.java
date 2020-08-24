@@ -22,7 +22,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 
 @Service
@@ -59,8 +58,8 @@ public class UserService extends AbstractService implements IUserService {
     @Override
     @Transactional
     public boolean update(String username, UserDto userDto) {
-        checkEmail(userDto.getEmail(), userDto);
-        final User user = userDao.readByUserCred(username).orElseThrow(EntityNotFoundException::new);
+        final User user = userDao.readByUserCred(username).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_NOT_EXIST.getMessage(), CLASSES[2], CLASS_FIELDS[2], username)));
         checkPermission(user, userDto);
         userDto.setRating(user.getRating());
         userDao.update(dtoMapper.map(userDto, User.class));
@@ -71,7 +70,8 @@ public class UserService extends AbstractService implements IUserService {
     @Override
     @Transactional(readOnly = true)
     public UserDto read(Long userIndex) {
-        final UserDto result = dtoMapper.map(userDao.read(userIndex, GraphProperty.User.DEFAULT).orElseThrow(() -> new EntityNotExistException("ff")), UserDto.class);
+        final UserDto result = dtoMapper.map(userDao.read(userIndex, GraphProperty.User.DEFAULT).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_NOT_EXIST.getMessage(), CLASSES[2], CLASS_FIELDS[0], userIndex))), UserDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
     }
@@ -79,7 +79,8 @@ public class UserService extends AbstractService implements IUserService {
     @Override
     @Transactional(readOnly = true)
     public UserDto readByUsername(String username) {
-        final UserDto result = dtoMapper.map(userDao.readByUserCred(username).orElseThrow(), UserDto.class);
+        final UserDto result = dtoMapper.map(userDao.readByUserCred(username).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_NOT_EXIST.getMessage(), CLASSES[2], CLASS_FIELDS[2], username))), UserDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
     }
@@ -111,15 +112,8 @@ public class UserService extends AbstractService implements IUserService {
     }
 
     private void checkPhone(Integer phone) {
-        if (userDao.readByPhone(phone).isEmpty()) {
+        if (userDao.readByPhone(phone).isPresent()) {
             throw new EntityAlreadyExistException(String.format(EnumException.USER_WITH_FIELD_EXIST.getMessage(), USER_FIELDS[2], phone));
-        }
-    }
-
-    private void checkEmail(String email, UserDto userDto) {
-        final User user = userDao.readByEmail(email).orElseThrow(EntityNotFoundException::new);
-        if (!user.getId().equals(userDto.getId())) {
-            throw new EntityAlreadyExistException(String.format(EnumException.USER_WITH_FIELD_EXIST.getMessage(), USER_FIELDS[1], email));
         }
     }
 

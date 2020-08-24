@@ -48,10 +48,10 @@ public class AdvertisementCommentService extends AbstractService implements IAdv
     public boolean create(String username, Long index, AdvertisementCommentDto object) {
         final AdvertisementComment advertisementComment = dtoMapper.map(object, AdvertisementComment.class);
         advertisementComment.setUser(userDao.readByUserCred(username, GraphProperty.User.DEFAULT).orElseThrow(() ->
-                new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), "User", "username", username))));
+                new EntityNotExistException(String.format(EnumException.ENTITY_NOT_EXIST.getMessage(), "User", "username", username))));
         advertisementComment.setDateTime(LocalDateTime.now());
         advertisementComment.setAdvertisement(advertisementDao.read(index).orElseThrow(() ->
-                new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), "Advertisement", "id", index))));
+                new EntityNotExistException(String.format(EnumException.ENTITY_NOT_EXIST.getMessage(), "Advertisement", "id", index))));
         advertisementCommentDao.save(advertisementComment);
         LOGGER.info(EnumLogger.SUCCESSFUL_CREATE.getText());
         return true;
@@ -66,7 +66,7 @@ public class AdvertisementCommentService extends AbstractService implements IAdv
         final Pageable pageParameter = PageRequest.of(page, numberElements, tmpDirection, tmpSortField);
         final List<AdvertisementCommentDto> result = dtoMapper.mapAll(advertisementCommentDao.readAllByAdvertisement(pageParameter,
                 advertisementDao.read(index, GraphProperty.Advertisement.DEFAULT).orElseThrow(() ->
-                        new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), "Advertisement", "id", index)))),
+                        new EntityNotExistException(String.format(EnumException.ENTITY_NOT_EXIST.getMessage(), "Advertisement", "id", index)))),
                 AdvertisementCommentDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;

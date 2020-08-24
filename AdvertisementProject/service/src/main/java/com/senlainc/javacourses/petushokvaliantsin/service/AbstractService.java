@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractService {
 
+    protected static final String[] CLASSES = {"Advertisement", "State", "User", "Chat"};
+    protected static final String[] CLASS_FIELDS = {"id", "description", "username"};
     protected ISingularMapper singularMapper;
     protected IDtoMapper dtoMapper;
 

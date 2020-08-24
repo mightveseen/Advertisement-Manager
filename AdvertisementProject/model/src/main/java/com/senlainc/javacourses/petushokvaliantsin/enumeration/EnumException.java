@@ -8,7 +8,7 @@ public enum EnumException {
     RATE_EXIST("You already rated this user"),
     USER_WITH_FIELD_EXIST("User with %s [%s] already exist"),
     USER_WITH_FIELD_NOT_EXIST("User with %s [%s] not exist"),
-    ENTITY_WITH_FIELD_NOT_EXIST("%s with %s [%s] not exits"),
+    ENTITY_NOT_EXIST("%s with %s [%s] not exits"),
     ACTIVE_PAYMENT("You have: [%d] active payment's");
 
     private final String message;

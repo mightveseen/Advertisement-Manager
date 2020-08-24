@@ -37,7 +37,7 @@ public class AdvertisementCategoryService extends AbstractService implements IAd
     @Transactional
     public boolean delete(Long index) {
         if (!advertisementCategoryDao.existsById(index)) {
-            throw new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(),
+            throw new EntityNotExistException(String.format(EnumException.ENTITY_NOT_EXIST.getMessage(),
                     "Category", "id", index));
         }
         advertisementCategoryDao.deleteById(index);

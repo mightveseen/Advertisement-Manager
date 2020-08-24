@@ -13,6 +13,7 @@ import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.chat.IChatService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityAlreadyExistException;
+import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
 import org.apache.logging.log4j.LogManager;
@@ -45,8 +46,10 @@ public class ChatService extends AbstractService implements IChatService {
     @Override
     @Transactional
     public boolean create(String username, Long advertisementIndex) {
-        final Advertisement advertisement = advertisementDao.read(advertisementIndex).orElseThrow();
-        final User activeUser = userDao.readByUserCred(username).orElseThrow();
+        final Advertisement advertisement = advertisementDao.read(advertisementIndex).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_NOT_EXIST.getMessage(), CLASSES[0], CLASS_FIELDS[0], advertisementIndex)));
+        final User activeUser = userDao.readByUserCred(username).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_NOT_EXIST.getMessage(), CLASSES[2], CLASS_FIELDS[2], username)));
         final User chosenUser = advertisement.getUser();
         checkChatExist(activeUser, chosenUser);
         chatDao.create(new Chat(advertisement.getHeader(), String.format("%s create chat", activeUser.getFirstName()),
@@ -58,8 +61,10 @@ public class ChatService extends AbstractService implements IChatService {
     @Override
     @Transactional
     public boolean delete(Long index, String username) {
-        final Chat chat = chatDao.read(index).orElseThrow();
-        chat.getUsers().remove(userDao.readByUserCred(username).orElseThrow());
+        final Chat chat = chatDao.read(index).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_NOT_EXIST.getMessage(), CLASSES[3], CLASS_FIELDS[0], index)));
+        chat.getUsers().remove(userDao.readByUserCred(username).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_NOT_EXIST.getMessage(), CLASSES[2], CLASS_FIELDS[2], username))));
         if (chat.getUsers().isEmpty()) {
             chatDao.delete(chat);
         } else {
@@ -73,7 +78,8 @@ public class ChatService extends AbstractService implements IChatService {
     @Transactional(readOnly = true)
     public List<ChatDto> readAll(String username, int page, int maxResult) {
         final IPageParameter pageParameter = PageParameter.of(page, maxResult, Sort.Direction.DESC.name(), Chat_.updateDateTime);
-        final List<ChatDto> result = dtoMapper.mapAll(chatDao.readAllUserChat(pageParameter, userDao.readByUserCred(username).orElseThrow()), ChatDto.class);
+        final List<ChatDto> result = dtoMapper.mapAll(chatDao.readAllUserChat(pageParameter, userDao.readByUserCred(username).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_NOT_EXIST.getMessage(), CLASSES[2], CLASS_FIELDS[2], username)))), ChatDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
     }
@@ -81,7 +87,8 @@ public class ChatService extends AbstractService implements IChatService {
     @Override
     @Transactional(readOnly = true)
     public Long readSize(String username) {
-        return chatDao.readCountWithUser(userDao.readByUserCred(username).orElseThrow());
+        return chatDao.readCountWithUser(userDao.readByUserCred(username).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_NOT_EXIST.getMessage(), CLASSES[2], CLASS_FIELDS[2], username))));
     }
 
     private Set<User> getSetUser(User activeUser, User chosenUser) {

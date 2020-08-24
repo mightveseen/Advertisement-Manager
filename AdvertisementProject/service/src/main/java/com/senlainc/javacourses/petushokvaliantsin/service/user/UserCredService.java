@@ -5,7 +5,6 @@ import com.senlainc.javacourses.petushokvaliantsin.model.user.UserCred;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserCredDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
-import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.ReadQueryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -14,13 +13,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
 
 @Service
 public class UserCredService extends AbstractService implements UserDetailsService {
 
-    private static final String USER_CRED_FIELD = "username";
     private final IUserCredDao userCredDao;
 
     @Autowired
@@ -31,11 +28,8 @@ public class UserCredService extends AbstractService implements UserDetailsServi
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) {
-        try {
-            final UserCred user = userCredDao.readByUsername(username).orElseThrow(EntityNotFoundException::new);
-            return new User(user.getUsername(), user.getPassword(), Collections.singleton(new SimpleGrantedAuthority(user.getRole().name())));
-        } catch (ReadQueryException exc) {
-            throw new EntityNotExistException(String.format(EnumException.USER_WITH_FIELD_NOT_EXIST.getMessage(), USER_CRED_FIELD, username));
-        }
+        final UserCred user = userCredDao.readByUsername(username).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_NOT_EXIST.getMessage(), CLASSES[2], CLASS_FIELDS[2], username)));
+        return new User(user.getUsername(), user.getPassword(), Collections.singleton(new SimpleGrantedAuthority(user.getRole().name())));
     }
 }

@@ -45,7 +45,7 @@ public class MessageService extends AbstractService implements IMessageService {
     public boolean create(String username, Long chatIndex, MessageDto object) {
         final Chat chat = chatDao.read(chatIndex).orElseThrow();
         final User activeUser = userDao.readByUserCred(username, GraphProperty.User.DEFAULT).orElseThrow(() ->
-                new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), User.class.getSimpleName(), UserCred_.USERNAME, username)));
+                new EntityNotExistException(String.format(EnumException.ENTITY_NOT_EXIST.getMessage(), User.class.getSimpleName(), UserCred_.USERNAME, username)));
         checkPermission(chat, activeUser);
         messageDao.save(createMessage(object, chat, activeUser));
         chatDao.create(createChat(chat, activeUser, object.getText()));
