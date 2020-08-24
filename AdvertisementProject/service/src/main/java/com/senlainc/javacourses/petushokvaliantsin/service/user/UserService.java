@@ -13,6 +13,7 @@ import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.user.IUserService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityAlreadyExistException;
+import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.PermissionDeniedException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -70,7 +71,7 @@ public class UserService extends AbstractService implements IUserService {
     @Override
     @Transactional(readOnly = true)
     public UserDto read(Long userIndex) {
-        final UserDto result = dtoMapper.map(userDao.read(userIndex, GraphProperty.User.DEFAULT), UserDto.class);
+        final UserDto result = dtoMapper.map(userDao.read(userIndex, GraphProperty.User.DEFAULT).orElseThrow(() -> new EntityNotExistException("ff")), UserDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
     }

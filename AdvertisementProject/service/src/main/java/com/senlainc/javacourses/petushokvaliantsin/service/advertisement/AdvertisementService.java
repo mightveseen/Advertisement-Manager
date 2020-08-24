@@ -15,6 +15,7 @@ import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotAvailableException;
+import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.PermissionDeniedException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularClass;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularModel;
@@ -39,6 +40,8 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
 
     private static final Logger LOGGER = LogManager.getLogger(AdvertisementService.class);
     private static final String SORT_FIELD = "advertisement-";
+    private static final String[] CLASSES = {"Advertisement", "State", "User"};
+    private static final String[] CLASS_FIELDS = {"id", "description", "username"};
     private static final String SORT_PARAMETER_SEPARATOR = "-";
     private final IAdvertisementDao advertisementDao;
     private final IStateDao stateDao;
@@ -55,9 +58,11 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Transactional
     public boolean create(String username, AdvertisementDto advertisementDto) {
         final Advertisement advertisement = dtoMapper.map(advertisementDto, Advertisement.class);
-        advertisement.setUser(userDao.readByUserCred(username, GraphProperty.User.DEFAULT).orElseThrow());
+        advertisement.setUser(userDao.readByUserCred(username, GraphProperty.User.DEFAULT).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), CLASSES[2], CLASS_FIELDS[2], username))));
         advertisement.setDate(LocalDate.now());
-        advertisement.setState(stateDao.readByDescription(EnumState.MODERATION.name()));
+        advertisement.setState(stateDao.readByDescription(EnumState.MODERATION.name()).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), CLASSES[1], CLASS_FIELDS[1], EnumState.MODERATION.name()))));
         advertisementDao.create(advertisement);
         LOGGER.info(EnumLogger.SUCCESSFUL_CREATE.getText());
         return true;
@@ -66,9 +71,11 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Override
     @Transactional
     public boolean delete(String username, Long index) {
-        final Advertisement advertisement = advertisementDao.read(index, GraphProperty.Advertisement.DEFAULT);
+        final Advertisement advertisement = advertisementDao.read(index, GraphProperty.Advertisement.DEFAULT).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), CLASSES[0], CLASS_FIELDS[0], index)));
         checkPermission(advertisement, username);
-        advertisement.setState(stateDao.readByDescription(EnumState.DISABLED.name()));
+        advertisement.setState(stateDao.readByDescription(EnumState.DISABLED.name()).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), CLASSES[1], CLASS_FIELDS[1], EnumState.DISABLED.name()))));
         advertisementDao.update(advertisement);
         LOGGER.info(EnumLogger.SUCCESSFUL_DELETE.getText());
         return true;
@@ -77,10 +84,12 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Override
     @Transactional
     public boolean updateByUser(String username, AdvertisementDto advertisementDto) {
-        checkPermission(advertisementDao.read(advertisementDto.getId(), GraphProperty.Advertisement.DEFAULT), username);
+        checkPermission(advertisementDao.read(advertisementDto.getId(), GraphProperty.Advertisement.DEFAULT).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), CLASSES[0], CLASS_FIELDS[0], advertisementDto.getId()))), username);
         final Advertisement advertisement = dtoMapper.map(advertisementDto, Advertisement.class);
         advertisement.setDate(LocalDate.now());
-        advertisement.setState(stateDao.readByDescription(EnumState.MODERATION.name()));
+        advertisement.setState(stateDao.readByDescription(EnumState.MODERATION.name()).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), CLASSES[1], CLASS_FIELDS[1], EnumState.MODERATION.name()))));
         advertisementDao.update(advertisement);
         LOGGER.info(EnumLogger.SUCCESSFUL_UPDATE.getText());
         return true;
@@ -89,8 +98,9 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Override
     @Transactional
     public boolean updateStateByModerator(Long index, StateDto state) {
-        final Advertisement advertisement = advertisementDao.read(index, GraphProperty.Advertisement.DEFAULT);
-        advertisement.setState(stateDao.readByDescription(state.getDescription()));
+        final Advertisement advertisement = advertisementDao.read(index, GraphProperty.Advertisement.DEFAULT).orElseThrow();
+        advertisement.setState(stateDao.readByDescription(state.getDescription()).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), CLASSES[1], CLASS_FIELDS[1], state.getDescription()))));
         advertisementDao.update(advertisement);
         LOGGER.info(EnumLogger.SUCCESSFUL_UPDATE.getText());
         return true;
@@ -99,8 +109,9 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Override
     @Transactional(readOnly = true)
     public AdvertisementDto readByUser(Long index) {
-        final Advertisement advertisement = advertisementDao.read(index, GraphProperty.Advertisement.DEFAULT);
-        if (!advertisement.getState().getId().equals(stateDao.readByDescription(EnumState.ACTIVE.name()).getId())) {
+        final Advertisement advertisement = advertisementDao.read(index, GraphProperty.Advertisement.DEFAULT).orElseThrow();
+        if (!advertisement.getState().getId().equals(stateDao.readByDescription(EnumState.ACTIVE.name()).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), CLASSES[1], CLASS_FIELDS[1], EnumState.ACTIVE.name()))).getId())) {
             throw new EntityNotAvailableException(EnumException.PERMISSION.getMessage());
         }
         final AdvertisementDto result = dtoMapper.map(advertisement, AdvertisementDto.class);
@@ -111,7 +122,8 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Override
     @Transactional(readOnly = true)
     public AdvertisementDto readByModerator(Long index) {
-        final AdvertisementDto result = dtoMapper.map(advertisementDao.read(index, GraphProperty.Advertisement.DEFAULT), AdvertisementDto.class);
+        final AdvertisementDto result = dtoMapper.map(advertisementDao.read(index, GraphProperty.Advertisement.DEFAULT).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), CLASSES[0], CLASS_FIELDS[0], index))), AdvertisementDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
     }
@@ -120,7 +132,10 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Transactional(readOnly = true)
     public List<AdvertisementDto> readAllWithUser(Long userIndex, int page, int numberElements, EnumState state) {
         final List<AdvertisementDto> result = dtoMapper.mapAll(advertisementDao.readAllWithUser(PageParameter.of(page, numberElements),
-                userDao.read(userIndex, GraphProperty.User.DEFAULT), stateDao.readByDescription(state.name())), AdvertisementDto.class);
+                userDao.read(userIndex, GraphProperty.User.DEFAULT).orElseThrow(() ->
+                        new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), CLASSES[2], CLASS_FIELDS[0], userIndex))),
+                stateDao.readByDescription(state.name()).orElseThrow(() ->
+                        new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), CLASSES[1], CLASS_FIELDS[1], EnumState.ACTIVE.name())))), AdvertisementDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
     }
@@ -130,14 +145,11 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @SingularModel(metamodels = {Advertisement_.class, User_.class})
     public List<AdvertisementDto> readAll(int page, int numberElements, String direction, String sortField, String search,
                                           String category, double minPrice, double maxPrice, EnumState advertisementState) {
-        /* Try templates */
-        final List<Advertisement> jdbcTemplateList = advertisementDao.tryJdbcTemplate();
-        final List<Advertisement> nativeQueryList = advertisementDao.tryNativeQuery();
-        /* Normal */
         final IPageParameter pageParameter = splitSortFiled(page, numberElements, direction, sortField);
         final IFilterParameter filterParameter = FilterParameter.of(search, category, minPrice, maxPrice);
-        final IStateParameter stateParameter = StateParameter.of(advertisementState.equals(EnumState.ALL) ? null : stateDao.readByDescription(advertisementState.name()),
-                stateDao.readByDescription(EnumState.APPROVED.name()));
+        final IStateParameter stateParameter = StateParameter.of(stateDao.readByDescription(advertisementState.name()).orElse(null),
+                stateDao.readByDescription(EnumState.APPROVED.name()).orElseThrow(() ->
+                        new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), CLASSES[1], CLASS_FIELDS[1], EnumState.APPROVED.name()))));
         final List<AdvertisementDto> result = dtoMapper.mapAll(advertisementDao.readAllWithFilter(pageParameter, filterParameter, stateParameter),
                 AdvertisementDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
@@ -154,8 +166,9 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     @Transactional(readOnly = true)
     public Long readSize(String search, String category, double minPrice, double maxPrice, EnumState advertisementState) {
         final IFilterParameter filterParameter = FilterParameter.of(search, category, minPrice, maxPrice);
-        final IStateParameter stateParameter = StateParameter.of(advertisementState.equals(EnumState.ALL) ? null : stateDao.readByDescription(advertisementState.name()),
-                stateDao.readByDescription(EnumState.APPROVED.name()));
+        final IStateParameter stateParameter = StateParameter.of(stateDao.readByDescription(advertisementState.name()).orElse(null),
+                stateDao.readByDescription(EnumState.APPROVED.name()).orElseThrow(() ->
+                        new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), CLASSES[1], CLASS_FIELDS[1], EnumState.APPROVED.name()))));
         return advertisementDao.readCountWitFilter(filterParameter, stateParameter);
     }
 
@@ -169,7 +182,8 @@ public class AdvertisementService extends AbstractService implements IAdvertisem
     }
 
     private void checkPermission(Advertisement advertisement, String username) {
-        if (!advertisement.getUser().getId().equals(userDao.readByUserCred(username, GraphProperty.User.DEFAULT).orElseThrow().getId())) {
+        if (!advertisement.getUser().getId().equals(userDao.readByUserCred(username, GraphProperty.User.DEFAULT).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), CLASSES[2], CLASS_FIELDS[2], username))).getId())) {
             throw new PermissionDeniedException(EnumException.PERMISSION.getMessage());
         }
     }

@@ -37,7 +37,7 @@ public class UserRatingService extends AbstractService implements IUserRatingSer
         final User activeUser = userDao.readByUserCred(username).orElseThrow();
         checkYourself(activeUser, ratedUserIndex);
         checkRateExist(activeUser, ratedUserIndex);
-        final User ratedUser = userDao.read(ratedUserIndex, GraphProperty.User.USER_CRED_AND_RATE);
+        final User ratedUser = userDao.read(ratedUserIndex, GraphProperty.User.USER_CRED_AND_RATE).orElseThrow();
         userRatingDao.save(createUserRating(object, activeUser, ratedUser));
         ratedUser.setRating(updateUserRatingValue(ratedUser, object.getValue()));
         userDao.update(ratedUser);

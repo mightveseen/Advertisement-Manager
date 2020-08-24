@@ -21,29 +21,43 @@ public class UserDao extends AbstractDao<User, Long> implements IUserDao {
 
     @Override
     public Optional<User> readByUserCred(String username) {
-        final List<User> result = queryReadByUserCred(username).getResultList();
-        return result == null ? Optional.empty() : Optional.of(result.get(0));
+        try {
+            final List<User> result = queryReadByUserCred(username).getResultList();
+            return result == null ? Optional.empty() : Optional.of(result.get(0));
+        } catch (PersistenceException exc) {
+            throw new ReadQueryException(exc);
+        }
     }
 
     @Override
     public Optional<User> readByUserCred(String username, String graphName) {
-        final List<User> result = queryReadByUserCred(username)
-                .setHint(GraphProperty.Type.FETCH, entityManager.getEntityGraph(GraphProperty.User.DEFAULT))
-                .getResultList();
-        return result == null ? Optional.empty() : Optional.of(result.get(0));
+        try {
+            final List<User> result = queryReadByUserCred(username)
+                    .setHint(GraphProperty.Type.FETCH, entityManager.getEntityGraph(graphName))
+                    .getResultList();
+            return result == null ? Optional.empty() : Optional.of(result.get(0));
+        } catch (PersistenceException exc) {
+            throw new ReadQueryException(exc);
+        }
     }
 
     @Override
     public Optional<User> readByEmail(String email) {
         try {
-            final CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-            final Root<User> root = criteriaQuery.from(User.class);
-            final Predicate predicate = criteriaBuilder.equal(root.get(User_.email), email);
-            return Optional.ofNullable(entityManager.createQuery(criteriaQuery
-                    .select(root)
-                    .where(predicate))
-                    .setHint(GraphProperty.Type.FETCH, entityManager.getEntityGraph(GraphProperty.User.DEFAULT))
-                    .getSingleResult());
+            final List<User> result = queryReadByEmail(email).getResultList();
+            return result == null ? Optional.empty() : Optional.of(result.get(0));
+        } catch (PersistenceException exc) {
+            throw new ReadQueryException(exc);
+        }
+    }
+
+    @Override
+    public Optional<User> readByEmail(String email, String graphName) {
+        try {
+            final List<User> result = queryReadByEmail(email)
+                    .setHint(GraphProperty.Type.FETCH, entityManager.getEntityGraph(graphName))
+                    .getResultList();
+            return result == null ? Optional.empty() : Optional.of(result.get(0));
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);
         }
@@ -52,29 +66,49 @@ public class UserDao extends AbstractDao<User, Long> implements IUserDao {
     @Override
     public Optional<User> readByPhone(Integer phone) {
         try {
-            final CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-            final Root<User> root = criteriaQuery.from(User.class);
-            final Predicate predicate = criteriaBuilder.equal(root.get(User_.phone), phone);
-            return Optional.ofNullable(entityManager.createQuery(criteriaQuery
-                    .select(root)
-                    .where(predicate))
+            final List<User> result = queryReadByPhone(phone).getResultList();
+            return result == null ? Optional.empty() : Optional.of(result.get(0));
+        } catch (PersistenceException exc) {
+            throw new ReadQueryException(exc);
+        }
+    }
+
+    @Override
+    public Optional<User> readByPhone(Integer phone, String graphName) {
+        try {
+            final List<User> result = queryReadByPhone(phone)
                     .setHint(GraphProperty.Type.FETCH, entityManager.getEntityGraph(GraphProperty.User.DEFAULT))
-                    .getSingleResult());
+                    .getResultList();
+            return result == null ? Optional.empty() : Optional.of(result.get(0));
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);
         }
     }
 
     private TypedQuery<User> queryReadByUserCred(String username) {
-        try {
-            final CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-            final Root<User> root = criteriaQuery.from(User.class);
-            final Predicate predicate = criteriaBuilder.equal(root.get(User_.userCred).get(UserCred_.username), username);
-            return entityManager.createQuery(criteriaQuery
-                    .select(root)
-                    .where(predicate));
-        } catch (PersistenceException exc) {
-            throw new ReadQueryException(exc);
-        }
+        final CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+        final Root<User> root = criteriaQuery.from(User.class);
+        final Predicate predicate = criteriaBuilder.equal(root.get(User_.userCred).get(UserCred_.username), username);
+        return entityManager.createQuery(criteriaQuery
+                .select(root)
+                .where(predicate));
+    }
+
+    private TypedQuery<User> queryReadByEmail(String email) {
+        final CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+        final Root<User> root = criteriaQuery.from(User.class);
+        final Predicate predicate = criteriaBuilder.equal(root.get(User_.email), email);
+        return entityManager.createQuery(criteriaQuery
+                .select(root)
+                .where(predicate));
+    }
+
+    private TypedQuery<User> queryReadByPhone(Integer phone) {
+        final CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+        final Root<User> root = criteriaQuery.from(User.class);
+        final Predicate predicate = criteriaBuilder.equal(root.get(User_.phone), phone);
+        return entityManager.createQuery(criteriaQuery
+                .select(root)
+                .where(predicate));
     }
 }

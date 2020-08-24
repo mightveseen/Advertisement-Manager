@@ -4,7 +4,6 @@ import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.Advertiseme
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumException;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumLogger;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementCategory;
-import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementCategory_;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementCategoryDao;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.serviceapi.advertisement.IAdvertisementCategoryService;
@@ -38,8 +37,8 @@ public class AdvertisementCategoryService extends AbstractService implements IAd
     @Transactional
     public boolean delete(Long index) {
         if (!advertisementCategoryDao.existsById(index)) {
-            throw new EntityNotExistException(String.format(EnumException.CLASS_WITH_FIELD_NOT_EXIST.getMessage(),
-                    AdvertisementCategory.class.getSimpleName(), AdvertisementCategory_.ID, index));
+            throw new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(),
+                    "Category", "id", index));
         }
         advertisementCategoryDao.deleteById(index);
         LOGGER.info(EnumLogger.SUCCESSFUL_DELETE.getText());

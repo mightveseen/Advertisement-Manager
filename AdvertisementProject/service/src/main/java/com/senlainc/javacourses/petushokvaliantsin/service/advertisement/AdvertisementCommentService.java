@@ -6,8 +6,6 @@ import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumLogger;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementComment;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementComment_;
-import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
-import com.senlainc.javacourses.petushokvaliantsin.model.user.UserCred_;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementCommentDao;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.advertisement.IAdvertisementDao;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.user.IUserDao;
@@ -50,9 +48,10 @@ public class AdvertisementCommentService extends AbstractService implements IAdv
     public boolean create(String username, Long index, AdvertisementCommentDto object) {
         final AdvertisementComment advertisementComment = dtoMapper.map(object, AdvertisementComment.class);
         advertisementComment.setUser(userDao.readByUserCred(username, GraphProperty.User.DEFAULT).orElseThrow(() ->
-                new EntityNotExistException(String.format(EnumException.CLASS_WITH_FIELD_NOT_EXIST.getMessage(), User.class.getSimpleName(), UserCred_.USERNAME, username))));
+                new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), "User", "username", username))));
         advertisementComment.setDateTime(LocalDateTime.now());
-        advertisementComment.setAdvertisement(advertisementDao.read(index));
+        advertisementComment.setAdvertisement(advertisementDao.read(index).orElseThrow(() ->
+                new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), "Advertisement", "id", index))));
         advertisementCommentDao.save(advertisementComment);
         LOGGER.info(EnumLogger.SUCCESSFUL_CREATE.getText());
         return true;
@@ -66,7 +65,9 @@ public class AdvertisementCommentService extends AbstractService implements IAdv
         final Sort.Direction tmpDirection = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
         final Pageable pageParameter = PageRequest.of(page, numberElements, tmpDirection, tmpSortField);
         final List<AdvertisementCommentDto> result = dtoMapper.mapAll(advertisementCommentDao.readAllByAdvertisement(pageParameter,
-                advertisementDao.read(index, GraphProperty.Advertisement.DEFAULT)), AdvertisementCommentDto.class);
+                advertisementDao.read(index, GraphProperty.Advertisement.DEFAULT).orElseThrow(() ->
+                        new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), "Advertisement", "id", index)))),
+                AdvertisementCommentDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
     }
@@ -74,6 +75,6 @@ public class AdvertisementCommentService extends AbstractService implements IAdv
     @Override
     @Transactional(readOnly = true)
     public Long readSize(Long index) {
-        return advertisementCommentDao.readSize(advertisementDao.read(index));
+        return advertisementCommentDao.readSize(advertisementDao.read(index).orElseThrow());
     }
 }

@@ -1,6 +1,7 @@
 package com.senlainc.javacourses.petushokvaliantsin.repositoryapi;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 public interface IGenericDao<E, K extends Serializable> {
 
@@ -10,9 +11,9 @@ public interface IGenericDao<E, K extends Serializable> {
 
     void update(E object);
 
-    E read(K index);
+    Optional<E> read(K index);
 
-    E read(K index, String graphName);
+    Optional<E> read(K index, String graphName);
 
     Long readCount();
 }

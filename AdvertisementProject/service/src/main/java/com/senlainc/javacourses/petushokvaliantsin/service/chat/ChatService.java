@@ -45,7 +45,7 @@ public class ChatService extends AbstractService implements IChatService {
     @Override
     @Transactional
     public boolean create(String username, Long advertisementIndex) {
-        final Advertisement advertisement = advertisementDao.read(advertisementIndex);
+        final Advertisement advertisement = advertisementDao.read(advertisementIndex).orElseThrow();
         final User activeUser = userDao.readByUserCred(username).orElseThrow();
         final User chosenUser = advertisement.getUser();
         checkChatExist(activeUser, chosenUser);
@@ -58,7 +58,7 @@ public class ChatService extends AbstractService implements IChatService {
     @Override
     @Transactional
     public boolean delete(Long index, String username) {
-        final Chat chat = chatDao.read(index);
+        final Chat chat = chatDao.read(index).orElseThrow();
         chat.getUsers().remove(userDao.readByUserCred(username).orElseThrow());
         if (chat.getUsers().isEmpty()) {
             chatDao.delete(chat);

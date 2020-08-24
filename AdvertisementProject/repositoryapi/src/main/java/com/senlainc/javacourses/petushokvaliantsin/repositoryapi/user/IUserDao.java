@@ -15,5 +15,9 @@ public interface IUserDao extends IGenericDao<User, Long> {
 
     Optional<User> readByEmail(String email);
 
+    Optional<User> readByEmail(String email, String graphName);
+
     Optional<User> readByPhone(Integer phone);
+
+    Optional<User> readByPhone(Integer phone, String graphName);
 }

@@ -38,8 +38,8 @@ public class AdvertisementPhotoService extends AbstractService implements IAdver
     @Transactional
     public boolean delete(Long index) {
         if (!advertisementPhotoDao.existsById(index)) {
-            throw new EntityNotExistException(String.format(EnumException.CLASS_WITH_FIELD_NOT_EXIST.getMessage(),
-                    AdvertisementPhoto.class.getSimpleName(), "index", index));
+            throw new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(),
+                    "Photo", "index", index));
         }
         advertisementPhotoDao.deleteById(index);
         LOGGER.info(EnumLogger.SUCCESSFUL_DELETE.getText());

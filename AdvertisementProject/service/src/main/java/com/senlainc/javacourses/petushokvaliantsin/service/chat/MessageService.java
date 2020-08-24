@@ -43,9 +43,9 @@ public class MessageService extends AbstractService implements IMessageService {
     @Override
     @Transactional
     public boolean create(String username, Long chatIndex, MessageDto object) {
-        final Chat chat = chatDao.read(chatIndex);
+        final Chat chat = chatDao.read(chatIndex).orElseThrow();
         final User activeUser = userDao.readByUserCred(username, GraphProperty.User.DEFAULT).orElseThrow(() ->
-                new EntityNotExistException(String.format(EnumException.CLASS_WITH_FIELD_NOT_EXIST.getMessage(), User.class.getSimpleName(), UserCred_.USERNAME, username)));
+                new EntityNotExistException(String.format(EnumException.ENTITY_WITH_FIELD_NOT_EXIST.getMessage(), User.class.getSimpleName(), UserCred_.USERNAME, username)));
         checkPermission(chat, activeUser);
         messageDao.save(createMessage(object, chat, activeUser));
         chatDao.create(createChat(chat, activeUser, object.getText()));
@@ -56,7 +56,7 @@ public class MessageService extends AbstractService implements IMessageService {
     @Override
     @Transactional(readOnly = true)
     public List<MessageDto> readAll(String username, Long chatIndex, int firstElement, int maxResult) {
-        final Chat chat = chatDao.read(chatIndex);
+        final Chat chat = chatDao.read(chatIndex).orElseThrow();
         checkPermission(chat, userDao.readByUserCred(username, GraphProperty.User.DEFAULT).orElseThrow());
         final List<MessageDto> result = dtoMapper.mapAll(messageDao.readAllByChat(PageRequest.of(firstElement, maxResult), chat),
                 MessageDto.class);

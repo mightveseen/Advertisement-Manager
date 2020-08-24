@@ -2,7 +2,6 @@ package com.senlainc.javacourses.petushokvaliantsin.repository;
 
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.repositoryapi.IGenericDao;
-import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.CreateQueryException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.DeleteQueryException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.ReadQueryException;
@@ -21,6 +20,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.Optional;
 
 public abstract class AbstractDao<E, K extends Serializable> implements IGenericDao<E, K> {
 
@@ -66,22 +66,19 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
     }
 
     @Override
-    public E read(K index) {
+    public Optional<E> read(K index) {
         try {
-            final E object = entityManager.find(entityClazz, index);
-            checkObjectOnNull(index, object);
-            return object;
+            return Optional.ofNullable(entityManager.find(entityClazz, index));
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);
         }
     }
 
     @Override
-    public E read(K index, String graphName) {
+    public Optional<E> read(K index, String graphName) {
         try {
-            final E object = entityManager.find(entityClazz, index, Collections.singletonMap(GraphProperty.Type.FETCH, entityManager.getEntityGraph(graphName)));
-            checkObjectOnNull(index, object);
-            return object;
+            return Optional.ofNullable(entityManager.find(entityClazz, index,
+                    Collections.singletonMap(GraphProperty.Type.FETCH, entityManager.getEntityGraph(graphName))));
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);
         }
@@ -115,12 +112,6 @@ public abstract class AbstractDao<E, K extends Serializable> implements IGeneric
                         criteriaBuilder.desc(root.get(pageParameter.getCriteriaField()[0]));
             default:
                 return criteriaBuilder.asc(root);
-        }
-    }
-
-    private void checkObjectOnNull(K index, E object) {
-        if (object == null) {
-            throw new EntityNotExistException("Entity [" + entityClazz.getSimpleName() + "] with index [" + index + "] not exist");
         }
     }
 }

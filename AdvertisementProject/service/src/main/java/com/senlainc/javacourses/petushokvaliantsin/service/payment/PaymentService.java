@@ -60,9 +60,9 @@ public class PaymentService extends AbstractService implements IPaymentService {
     @Override
     @Transactional
     public boolean create(String username, Long advertisementIndex, PaymentTypeDto object) {
-        final Advertisement advertisement = advertisementDao.read(advertisementIndex, GraphProperty.Advertisement.DEFAULT);
+        final Advertisement advertisement = advertisementDao.read(advertisementIndex, GraphProperty.Advertisement.DEFAULT).orElseThrow();
         checkPermission(advertisement, username);
-        final State state = stateDao.readByDescription(EnumState.APPROVED.name());
+        final State state = stateDao.readByDescription(EnumState.APPROVED.name()).orElseThrow();
         final List<Payment> advertisementActivePayment = advertisement.getPayments().stream().filter(i -> i.getState().equals(state)).collect(Collectors.toList());
         checkLimit(advertisementActivePayment.size());
         final LocalDate paymentStartDate = createLocalDate(advertisementActivePayment);
