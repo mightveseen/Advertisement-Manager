@@ -1,0 +1,15 @@
+version: "3"
+services:
+  db:
+    image: "postgres:12.0"
+    container_name: "main-db"
+    build:
+      context: .
+      dockerfile: db.Dockerfile
+    environment:
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "54320:5432"
+    volumes:
+      - /var/lib/pgsql/data/
