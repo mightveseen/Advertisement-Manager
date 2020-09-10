@@ -1,0 +1,9 @@
+rootProject.name = 'AdvertisementProjectG'
+include 'model'
+include 'dao'
+include 'dao-api'
+include 'utility'
+include 'service'
+include 'service-api'
+include 'controller'
+

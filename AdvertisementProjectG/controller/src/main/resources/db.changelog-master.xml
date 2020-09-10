@@ -1,0 +1,536 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="user_creds-creation" author="Valiantsin Petushok">
+        <preConditions>
+            <not>
+                <tableExists tableName="user_creds"/>
+            </not>
+        </preConditions>
+        <createTable tableName="user_creds">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="user_creds"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="users-creation" author="Valiantsin Petushok">
+        <preConditions>
+            <not>
+                <tableExists tableName="users"/>
+            </not>
+        </preConditions>
+        <createTable tableName="users">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" referencedTableName="user_creds"
+                             referencedColumnNames="id" foreignKeyName="users_fkey"/>
+            </column>
+            <column name="first_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="phone" type="INT">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="registration_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rating" type="FLOAT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="users"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="user_ratings-creation" author="Valiantsin Petushok">
+        <preConditions>
+            <not>
+                <tableExists tableName="user_ratings"/>
+            </not>
+        </preConditions>
+        <createTable tableName="user_ratings">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="owner_id" type="BIGINT">
+                <constraints nullable="false" referencedTableName="users" referencedColumnNames="id"
+                             foreignKeyName="users_owner_fkey"/>
+            </column>
+            <column name="rated_id" type="BIGINT">
+                <constraints nullable="false" referencedTableName="users" referencedColumnNames="id"
+                             foreignKeyName="users_rated_fkey"/>
+            </column>
+            <column name="value" type="SMALLINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="user_ratings"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="advertisement_categories-creation" author="Valiantsin Petushok">
+        <preConditions>
+            <not>
+                <tableExists tableName="advertisement_categories"/>
+            </not>
+        </preConditions>
+        <createTable tableName="advertisement_categories">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="advertisement_categories"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="states-creation" author="Valiantsin Petushok">
+        <preConditions>
+            <not>
+                <tableExists tableName="states"/>
+            </not>
+        </preConditions>
+        <createTable tableName="states">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="states"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="advertisements-creation" author="Valiantsin Petushok">
+        <preConditions>
+            <not>
+                <tableExists tableName="advertisements"/>
+            </not>
+        </preConditions>
+        <createTable tableName="advertisements">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="header" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="owner_id" type="BIGINT">
+                <constraints nullable="false" referencedTableName="users" referencedColumnNames="id"
+                             foreignKeyName="advertisements_owner_fkey"/>
+            </column>
+            <column name="description" type="VARCHAR(500)"/>
+            <column name="category_id" type="BIGINT">
+                <constraints nullable="false" referencedTableName="advertisement_categories" referencedColumnNames="id"
+                             foreignKeyName="advertisements_category_fkey"/>
+            </column>
+            <column name="date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="FLOAT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state_id" type="BIGINT">
+                <constraints referencedTableName="states" referencedColumnNames="id"
+                             foreignKeyName="advertisements_state_fkey"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="advertisements"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="advertisement_photos-creation" author="Valiantsin Petushok">
+        <preConditions>
+            <not>
+                <tableExists tableName="advertisement_photos"/>
+            </not>
+        </preConditions>
+        <createTable tableName="advertisement_photos">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="advertisement_id" type="BIGINT">
+                <constraints nullable="false" referencedTableName="advertisements" referencedColumnNames="id"
+                             foreignKeyName="photos_advertisement_fkey"/>
+            </column>
+            <column name="url" type="VARCHAR(260)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="advertisement_photos"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="advertisement_comments-creation" author="Valiantsin Petushok">
+        <preConditions>
+            <not>
+                <tableExists tableName="advertisement_comments"/>
+            </not>
+        </preConditions>
+        <createTable tableName="advertisement_comments">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="owner_id" type="BIGINT">
+                <constraints referencedTableName="users" referencedColumnNames="id"
+                             foreignKeyName="comments_owner_fkey"/>
+            </column>
+            <column name="advertisement_id" type="BIGINT">
+                <constraints nullable="false" referencedTableName="advertisements" referencedColumnNames="id"
+                             foreignKeyName="comments_advertisement_fkey"/>
+            </column>
+            <column name="message" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="advertisement_comments"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="payment_types-creation" author="Valiantsin Petushok">
+        <preConditions>
+            <not>
+                <tableExists tableName="payment_types"/>
+            </not>
+        </preConditions>
+        <createTable tableName="payment_types">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="description" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="duration" type="INT">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="price" type="FLOAT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="payment_types"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="payments-creation" author="Valiantsin Petushok">
+        <preConditions>
+            <not>
+                <tableExists tableName="payments"/>
+            </not>
+        </preConditions>
+        <createTable tableName="payments">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="owner_id" type="BIGINT">
+                <constraints nullable="false" referencedTableName="users" referencedColumnNames="id"
+                             foreignKeyName="payments_owner_fkey"/>
+            </column>
+            <column name="advertisement_id" type="BIGINT">
+                <constraints nullable="false" referencedTableName="advertisements" referencedColumnNames="id"
+                             foreignKeyName="payments_advertisement_fkey"/>
+            </column>
+            <column name="type_id" type="BIGINT">
+                <constraints referencedTableName="payment_types" referencedColumnNames="id"
+                             foreignKeyName="payments_type_fkey"/>
+            </column>
+            <column name="start_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="FLOAT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state_id" type="BIGINT">
+                <constraints referencedTableName="states" referencedColumnNames="id"
+                             foreignKeyName="payments_state_fkey"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="payments"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="chats-creation" author="Valiantsin Petushok">
+        <preConditions>
+            <not>
+                <tableExists tableName="chats"/>
+            </not>
+        </preConditions>
+        <createTable tableName="chats">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_message" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_date" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="chats"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="user_chats-creation" author="Valiantsin Petushok">
+        <preConditions>
+            <not>
+                <tableExists tableName="user_chats"/>
+            </not>
+        </preConditions>
+        <createTable tableName="user_chats">
+            <column name="chat_id" type="BIGINT">
+                <constraints referencedTableName="chats" referencedColumnNames="id"
+                             foreignKeyName="user_chats_chat_fkey"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints referencedTableName="users" referencedColumnNames="id"
+                             foreignKeyName="user_chats_user_fkey"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="user_chats"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="messages-creation" author="Valiantsin Petushok">
+        <preConditions>
+            <not>
+                <tableExists tableName="messages"/>
+            </not>
+        </preConditions>
+        <createTable tableName="messages">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="owner_id" type="BIGINT">
+                <constraints referencedTableName="users" referencedColumnNames="id"
+                             foreignKeyName="messages_user_fkey"/>
+            </column>
+            <column name="chat_id" type="BIGINT">
+                <constraints nullable="false" referencedTableName="chats" referencedColumnNames="id"
+                             foreignKeyName="messages_chat_fkey"/>
+            </column>
+            <column name="text" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="messages"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="user_creds-insert" author="Valiantsin Petushok">
+        <preConditions>
+            <tableExists tableName="user_creds"/>
+        </preConditions>
+        <sql>
+            INSERT INTO user_creds(username, password, role)
+            VALUES
+            ('admin', '$2a$12$krxeaT4hAui4ZJYZlK0D9e/rHb6fVehBghY63D1Q1iM//cwnYFOEe', 'ROLE_ADMIN'),
+            ('moderator', '$2a$12$krxeaT4hAui4ZJYZlK0D9e/rHb6fVehBghY63D1Q1iM//cwnYFOEe', 'ROLE_MODERATOR'),
+            ('common', '$2a$12$krxeaT4hAui4ZJYZlK0D9e/rHb6fVehBghY63D1Q1iM//cwnYFOEe', 'ROLE_COMMON'),
+            ('common2', '$2a$12$krxeaT4hAui4ZJYZlK0D9e/rHb6fVehBghY63D1Q1iM//cwnYFOEe', 'ROLE_COMMON');
+        </sql>
+        <rollback>
+            DELETE FROM user_creds;
+        </rollback>
+    </changeSet>
+    <changeSet id="users-insert" author="Valiantsin Petushok">
+        <preConditions>
+            <tableExists tableName="users"/>
+        </preConditions>
+        <sql>
+            INSERT INTO users(id, first_name, last_name, email, phone, registration_date, rating)
+            VALUES
+            (2, 'Caren', 'Johnson', 'caren18@gmail.com', 292350943, '2017-04-02', 5),
+            (1, 'Daniel', 'Dark', 'danieldark@gmail.com', 298674592, '2012-12-12', 5),
+            (3, 'Vasilij', 'Bochkov', 'bochok@gmail.com', 339922111, '2019-09-19', 7),
+            (4, 'Robert', 'Downey Jr', 'stark@gmail.com', 010000001, '2019-09-19', 5);
+        </sql>
+        <rollback>
+            DELETE FROM users;
+        </rollback>
+    </changeSet>
+    <changeSet id="advertisement_categories-insert" author="Valiantsin Petushok">
+        <preConditions>
+            <tableExists tableName="advertisement_categories"/>
+        </preConditions>
+        <sql>
+            INSERT INTO advertisement_categories(description)
+            VALUES
+            ('Household appliances'),
+            ('Motors'),
+            ('Computers'),
+            ('Women`s clothing'),
+            ('Men`s clothing'),
+            ('Home'),
+            ('Cell phones and tablets');
+        </sql>
+        <rollback>
+            DELETE FROM advertisement_categories;
+        </rollback>
+    </changeSet>
+    <changeSet id="states-insert" author="Valiantsin Petushok">
+        <preConditions>
+            <tableExists tableName="states"/>
+        </preConditions>
+        <sql>
+            INSERT INTO states(description)
+            VALUES
+            ('MODERATION'),
+            ('REJECTED'),
+            ('ACTIVE'),
+            ('DISABLED'),
+            ('APPROVED'),
+            ('FINISHED');
+        </sql>
+        <rollback>
+            DELETE FROM states;
+        </rollback>
+    </changeSet>
+    <changeSet id="advertisements-insert" author="Valiantsin Petushok">
+        <preConditions>
+            <tableExists tableName="advertisements"/>
+        </preConditions>
+        <sql>
+            INSERT INTO advertisements(header, owner_id, description, category_id, date, price,state_id)
+            VALUES
+            ('Audi R8 2010', 4, 'Cool car (starring in Iron Man), but i bought new', 2, '2020-06-02', 230.5, 3),
+            ('Lamp huawei', 3, 'Chinese lamp with 5 stage of light', 6, '2020-05-28', 50.0, 3),
+            ('Sony Z1 Ultra', 3, 'With this COVID-19 and 5G towers I decided buy Nokia 6300', 7, '2020-05-28', 470.0,
+            3),
+            ('Bershka jeans', 4, 'Bought but figured out that size is small', 5, '2020-07-02', 70.0, 3),
+            ('Bershka jeans', 3, 'Bought but figured out that size is small', 4, '2020-07-02', 90.0, 3);
+        </sql>
+        <rollback>
+            DELETE FROM advertisements;
+        </rollback>
+    </changeSet>
+    <changeSet id="advertisement_comments-insert" author="Valiantsin Petushok">
+        <preConditions>
+            <tableExists tableName="advertisement_comments"/>
+        </preConditions>
+        <sql>
+            INSERT INTO advertisement_comments(owner_id, advertisement_id, message, date)
+            VALUES
+            (4, 1, 'The best car ever made', '2020-06-04'),
+            (4, 2, 'What trash did you said', '2020-06-03');
+        </sql>
+        <rollback>
+            DELETE FROM advertisement_comments;
+        </rollback>
+    </changeSet>
+    <changeSet id="payment_types-insert" author="Valiantsin Petushok">
+        <preConditions>
+            <tableExists tableName="payment_types"/>
+        </preConditions>
+        <sql>
+            INSERT INTO payment_types(description, duration, price)
+            VALUES
+            ('15 days', 15, 3),
+            ('30 days', 30, 6),
+            ('90 days', 90, 12),
+            ('180 days', 180, 25);
+        </sql>
+        <rollback>
+            DELETE FROM payment_types;
+        </rollback>
+    </changeSet>
+    <changeSet id="payments-insert" author="Valiantsin Petushok">
+        <preConditions>
+            <tableExists tableName="payments"/>
+        </preConditions>
+        <sql>
+            INSERT INTO payments(owner_id, advertisement_id, type_id, start_date, end_date, price, state_id)
+            VALUES
+            (3, 2, 2, '2020-07-04', '2020-08-04', 6, 5),
+            (3, 3, 2, '2020-07-04', '2020-08-04', 6, 5),
+            (4, 1, 3, '2020-07-08', '2020-10-08', 12, 5),
+            (4, 1, 3, '2020-07-08', '2020-10-08', 12, 5);
+        </sql>
+        <rollback>
+            DELETE FROM payments;
+        </rollback>
+    </changeSet>
+    <changeSet id="chats-insert" author="Valiantsin Petushok">
+        <preConditions>
+            <tableExists tableName="chats"/>
+        </preConditions>
+        <sql>
+            INSERT INTO chats(name, last_message, update_date)
+            VALUES
+            ('Sony Z1 Ultra', 'Hi', '2020-02-12 16:02:33'),
+            ('Audi R8', 'Hi', '2020-04-12 09:12:33');
+        </sql>
+        <rollback>
+            DELETE FROM chats;
+        </rollback>
+    </changeSet>
+    <changeSet id="user_chats-insert" author="Valiantsin Petushok">
+        <preConditions>
+            <tableExists tableName="user_chats"/>
+        </preConditions>
+        <sql>
+            INSERT INTO user_chats(chat_id, user_id)
+            VALUES
+            (1, 3),
+            (1, 4),
+            (2, 3),
+            (2, 4);
+        </sql>
+        <rollback>
+            DELETE FROM user_chats;
+        </rollback>
+    </changeSet>
+    <changeSet id="messages-insert" author="Valiantsin Petushok">
+        <preConditions>
+            <tableExists tableName="messages"/>
+        </preConditions>
+        <sql>
+            INSERT INTO messages(owner_id, chat_id, text, date)
+            VALUES
+            (3, 1, 'trash loto', '2020-02-12 16:02:33'),
+            (4, 1, 'lol', '2020-02-12 16:02:33'),
+            (3, 1, 'not bad', '2020-02-12 16:02:33'),
+            (4, 1, 'see you', '2020-02-12 16:02:33');
+        </sql>
+        <rollback>
+            DELETE FROM messages;
+        </rollback>
+    </changeSet>
+    <changeSet id="change-not-null-field-user" author="Valiantsin Petushok">
+        <preConditions>
+            <tableExists tableName="users"/>
+        </preConditions>
+        <dropNotNullConstraint tableName="users" columnName="rating"/>
+    </changeSet>
+</databaseChangeLog>

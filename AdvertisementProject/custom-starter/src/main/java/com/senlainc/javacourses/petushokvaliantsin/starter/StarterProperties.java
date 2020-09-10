@@ -23,4 +23,14 @@ public class StarterProperties {
     public void setSecondProperty(String secondProperty) {
         this.secondProperty = secondProperty;
     }
+
+    @Override
+    public String toString() {
+        return "StarterProperties{" +
+                "firstProperty='" + firstProperty + '\'' +
+                ", secondProperty='" + secondProperty + '\'' +
+                '}';
+    }
+
+
 }
