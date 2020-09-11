@@ -8,14 +8,15 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(UserRating.class)
 public abstract class UserRating_ {
 
-	public static final String ID = "id";
-	public static final String RATE_OWNER_USER = "rateOwnerUser";
-	public static final String VALUE = "value";
-	public static final String RATED_USER = "ratedUser";
-	public static volatile SingularAttribute<UserRating, Long> id;
-	public static volatile SingularAttribute<UserRating, User> rateOwnerUser;
-	public static volatile SingularAttribute<UserRating, Short> value;
-	public static volatile SingularAttribute<UserRating, User> ratedUser;
+    public static volatile SingularAttribute<UserRating, Long> id;
+    public static volatile SingularAttribute<UserRating, User> rateOwnerUser;
+    public static volatile SingularAttribute<UserRating, Short> value;
+    public static volatile SingularAttribute<UserRating, User> ratedUser;
+
+    public static final String ID = "id";
+    public static final String RATE_OWNER_USER = "rateOwnerUser";
+    public static final String VALUE = "value";
+    public static final String RATED_USER = "ratedUser";
 
 }
 

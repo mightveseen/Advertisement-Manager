@@ -1,6 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.dao;
 
-import com.senlainc.javacourses.petushokvaliantsin.dao.api.customquery.UserDaoCustomQuery;
+import com.senlainc.javacourses.petushokvaliantsin.dao.api.customquery.UserDaoChild;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.UserCred_;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class UserDaoImpl extends AbstractDao<User> implements UserDaoCustomQuery {
+public class UserDaoImpl extends AbstractDao<User> implements UserDaoChild {
 
     @Override
     public Optional<User> readByUserCred(String username) {

@@ -1,6 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.dao;
 
-import com.senlainc.javacourses.petushokvaliantsin.dao.api.customquery.AdvertisementDaoCustomQuery;
+import com.senlainc.javacourses.petushokvaliantsin.dao.api.customquery.AdvertisementDaoChild;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.model.State;
@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class AdvertisementDaoImpl extends AbstractDao<Advertisement> implements AdvertisementDaoCustomQuery {
+public class AdvertisementDaoImpl extends AbstractDao<Advertisement> implements AdvertisementDaoChild {
 
     private static final String NONE_PARAMETER = "none";
 

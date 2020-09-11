@@ -4,7 +4,7 @@ import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 
 import java.util.Optional;
 
-public interface UserDaoCustomQuery {
+public interface UserDaoChild {
 
     Optional<User> readByUserCred(String username);
 

@@ -1,6 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.dao;
 
-import com.senlainc.javacourses.petushokvaliantsin.dao.api.customquery.ChatDaoCustomQuery;
+import com.senlainc.javacourses.petushokvaliantsin.dao.api.customquery.ChatDaoChild;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat_;
@@ -16,7 +16,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
-public class ChatDaoImpl extends AbstractDao<Chat> implements ChatDaoCustomQuery {
+public class ChatDaoImpl extends AbstractDao<Chat> implements ChatDaoChild {
 
     @Override
     public List<Chat> readAllUserChat(IPageParameter pageParameter, User user) {

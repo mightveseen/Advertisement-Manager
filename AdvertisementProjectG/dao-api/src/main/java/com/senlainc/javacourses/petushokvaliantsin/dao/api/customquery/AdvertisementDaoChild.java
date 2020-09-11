@@ -9,7 +9,7 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.page.IStateParameter;
 
 import java.util.List;
 
-public interface AdvertisementDaoCustomQuery {
+public interface AdvertisementDaoChild {
 
     List<Advertisement> readAllWithUser(IPageParameter pageParameter, User user, State state);
 

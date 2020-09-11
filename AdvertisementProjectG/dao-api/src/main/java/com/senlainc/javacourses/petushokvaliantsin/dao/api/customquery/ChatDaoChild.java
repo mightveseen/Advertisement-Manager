@@ -6,7 +6,7 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
 
 import java.util.List;
 
-public interface ChatDaoCustomQuery {
+public interface ChatDaoChild {
 
     List<Chat> readAllUserChat(IPageParameter pageParameter, User user);
 

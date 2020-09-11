@@ -60,8 +60,8 @@ public class MessageServiceImpl extends AbstractService implements MessageServic
                 new EntityNotExistException(entityNotExistMessage(3, 0, chatIndex)));
         checkPermission(chat, userDao.readByUserCred(username, GraphProperty.User.DEFAULT).orElseThrow(() ->
                 new EntityNotExistException(entityNotExistMessage(2, 2, username))));
-        final List<MessageDto> result = dtoMapper.mapAll(messageDao.readAllByChat(PageRequest.of(firstElement, maxResult), chat),
-                MessageDto.class);
+        final List<MessageDto> result = dtoMapper.mapAll(
+                messageDao.readAllByChat(PageRequest.of(firstElement, maxResult), chat), MessageDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
     }
