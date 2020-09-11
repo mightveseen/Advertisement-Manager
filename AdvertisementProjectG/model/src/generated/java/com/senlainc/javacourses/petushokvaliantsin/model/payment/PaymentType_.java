@@ -9,16 +9,16 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(PaymentType.class)
 public abstract class PaymentType_ {
 
-    public static final String DURATION = "duration";
-    public static final String PRICE = "price";
-    public static final String PAYMENTS = "payments";
-    public static final String DESCRIPTION = "description";
-    public static final String ID = "id";
-    public static volatile SingularAttribute<PaymentType, Integer> duration;
-    public static volatile SingularAttribute<PaymentType, Double> price;
-    public static volatile SetAttribute<PaymentType, Payment> payments;
-    public static volatile SingularAttribute<PaymentType, String> description;
-    public static volatile SingularAttribute<PaymentType, Long> id;
+	public static final String DURATION = "duration";
+	public static final String PRICE = "price";
+	public static final String PAYMENTS = "payments";
+	public static final String DESCRIPTION = "description";
+	public static final String ID = "id";
+	public static volatile SingularAttribute<PaymentType, Integer> duration;
+	public static volatile SingularAttribute<PaymentType, Double> price;
+	public static volatile SetAttribute<PaymentType, Payment> payments;
+	public static volatile SingularAttribute<PaymentType, String> description;
+	public static volatile SingularAttribute<PaymentType, Long> id;
 
 }
 

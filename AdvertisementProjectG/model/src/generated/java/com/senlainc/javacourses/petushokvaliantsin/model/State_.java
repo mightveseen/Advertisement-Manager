@@ -12,14 +12,14 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(State.class)
 public abstract class State_ {
 
-    public static final String ADVERTISEMENTS = "advertisements";
-    public static final String PAYMENTS = "payments";
-    public static final String DESCRIPTION = "description";
-    public static final String ID = "id";
-    public static volatile SetAttribute<State, Advertisement> advertisements;
-    public static volatile SetAttribute<State, Payment> payments;
-    public static volatile SingularAttribute<State, String> description;
-    public static volatile SingularAttribute<State, Long> id;
+	public static final String ADVERTISEMENTS = "advertisements";
+	public static final String PAYMENTS = "payments";
+	public static final String DESCRIPTION = "description";
+	public static final String ID = "id";
+	public static volatile SetAttribute<State, Advertisement> advertisements;
+	public static volatile SetAttribute<State, Payment> payments;
+	public static volatile SingularAttribute<State, String> description;
+	public static volatile SingularAttribute<State, Long> id;
 
 }
 

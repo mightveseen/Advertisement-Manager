@@ -16,21 +16,6 @@ import java.time.LocalDate;
 @StaticMetamodel(User.class)
 public abstract class User_ {
 
-	public static final String LAST_NAME = "lastName";
-	public static final String COMMENTS = "comments";
-	public static final String PAYMENTS = "payments";
-	public static final String RATING = "rating";
-	public static final String USER_CRED = "userCred";
-	public static final String FIRST_NAME = "firstName";
-	public static final String ADVERTISEMENTS = "advertisements";
-	public static final String PHONE = "phone";
-	public static final String REGISTRATION_DATE = "registrationDate";
-	public static final String CHATS = "chats";
-	public static final String MESSAGES = "messages";
-	public static final String ID = "id";
-	public static final String EMAIL = "email";
-	public static final String RATED_USER_RATINGS = "ratedUserRatings";
-	public static final String RATE_OWNER_USER_RATINGS = "rateOwnerUserRatings";
 	public static volatile SingularAttribute<User, String> lastName;
 	public static volatile SetAttribute<User, AdvertisementComment> comments;
 	public static volatile SetAttribute<User, Payment> payments;
@@ -46,6 +31,22 @@ public abstract class User_ {
 	public static volatile SingularAttribute<User, String> email;
 	public static volatile SetAttribute<User, UserRating> ratedUserRatings;
 	public static volatile SetAttribute<User, UserRating> rateOwnerUserRatings;
+
+	public static final String LAST_NAME = "lastName";
+	public static final String COMMENTS = "comments";
+	public static final String PAYMENTS = "payments";
+	public static final String RATING = "rating";
+	public static final String USER_CRED = "userCred";
+	public static final String FIRST_NAME = "firstName";
+	public static final String ADVERTISEMENTS = "advertisements";
+	public static final String PHONE = "phone";
+	public static final String REGISTRATION_DATE = "registrationDate";
+	public static final String CHATS = "chats";
+	public static final String MESSAGES = "messages";
+	public static final String ID = "id";
+	public static final String EMAIL = "email";
+	public static final String RATED_USER_RATINGS = "ratedUserRatings";
+	public static final String RATE_OWNER_USER_RATINGS = "rateOwnerUserRatings";
 
 }
 

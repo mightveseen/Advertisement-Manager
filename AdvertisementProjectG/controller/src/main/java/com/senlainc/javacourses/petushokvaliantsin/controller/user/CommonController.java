@@ -5,10 +5,10 @@ import com.senlainc.javacourses.petushokvaliantsin.dto.chat.MessageDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.combination.ResultListDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.payment.PaymentDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
-import com.senlainc.javacourses.petushokvaliantsin.service.api.chat.IChatService;
-import com.senlainc.javacourses.petushokvaliantsin.service.api.chat.IMessageService;
-import com.senlainc.javacourses.petushokvaliantsin.service.api.payment.IPaymentService;
-import com.senlainc.javacourses.petushokvaliantsin.service.api.user.IUserService;
+import com.senlainc.javacourses.petushokvaliantsin.service.api.chat.ChatService;
+import com.senlainc.javacourses.petushokvaliantsin.service.api.chat.MessageService;
+import com.senlainc.javacourses.petushokvaliantsin.service.api.payment.PaymentService;
+import com.senlainc.javacourses.petushokvaliantsin.service.api.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,13 +32,13 @@ import java.util.List;
 @RequestMapping(path = "account")
 public class CommonController {
 
-    private final IChatService chatService;
-    private final IMessageService messageService;
-    private final IUserService userService;
-    private final IPaymentService paymentService;
+    private final ChatService chatService;
+    private final MessageService messageService;
+    private final UserService userService;
+    private final PaymentService paymentService;
 
     @Autowired
-    public CommonController(IChatService chatService, IMessageService messageService, IUserService userService, IPaymentService paymentService) {
+    public CommonController(ChatService chatService, MessageService messageService, UserService userService, PaymentService paymentService) {
         this.chatService = chatService;
         this.messageService = messageService;
         this.userService = userService;

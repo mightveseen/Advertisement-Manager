@@ -13,14 +13,6 @@ import java.time.LocalDate;
 @StaticMetamodel(Payment.class)
 public abstract class Payment_ {
 
-	public static final String END_DATE = "endDate";
-	public static final String PRICE = "price";
-	public static final String ADVERTISEMENT = "advertisement";
-	public static final String ID = "id";
-	public static final String STATE = "state";
-	public static final String TYPE = "type";
-	public static final String USER = "user";
-	public static final String START_DATE = "startDate";
 	public static volatile SingularAttribute<Payment, LocalDate> endDate;
 	public static volatile SingularAttribute<Payment, Double> price;
 	public static volatile SingularAttribute<Payment, Advertisement> advertisement;
@@ -29,6 +21,15 @@ public abstract class Payment_ {
 	public static volatile SingularAttribute<Payment, PaymentType> type;
 	public static volatile SingularAttribute<Payment, User> user;
 	public static volatile SingularAttribute<Payment, LocalDate> startDate;
+
+	public static final String END_DATE = "endDate";
+	public static final String PRICE = "price";
+	public static final String ADVERTISEMENT = "advertisement";
+	public static final String ID = "id";
+	public static final String STATE = "state";
+	public static final String TYPE = "type";
+	public static final String USER = "user";
+	public static final String START_DATE = "startDate";
 
 }
 

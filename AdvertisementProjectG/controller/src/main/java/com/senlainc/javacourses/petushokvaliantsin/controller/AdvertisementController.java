@@ -6,11 +6,11 @@ import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.Advertiseme
 import com.senlainc.javacourses.petushokvaliantsin.dto.combination.ResultListDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.payment.PaymentTypeDto;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
-import com.senlainc.javacourses.petushokvaliantsin.service.api.advertisement.IAdvertisementCommentService;
-import com.senlainc.javacourses.petushokvaliantsin.service.api.advertisement.IAdvertisementService;
-import com.senlainc.javacourses.petushokvaliantsin.service.api.chat.IChatService;
-import com.senlainc.javacourses.petushokvaliantsin.service.api.payment.IPaymentService;
-import com.senlainc.javacourses.petushokvaliantsin.service.api.payment.IPaymentTypeService;
+import com.senlainc.javacourses.petushokvaliantsin.service.api.advertisement.AdvertisementCommentService;
+import com.senlainc.javacourses.petushokvaliantsin.service.api.advertisement.AdvertisementService;
+import com.senlainc.javacourses.petushokvaliantsin.service.api.chat.ChatService;
+import com.senlainc.javacourses.petushokvaliantsin.service.api.payment.PaymentService;
+import com.senlainc.javacourses.petushokvaliantsin.service.api.payment.PaymentTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,15 +34,15 @@ import java.util.List;
 @RequestMapping(path = "advertisements")
 public class AdvertisementController {
 
-    private final IChatService chatService;
-    private final IAdvertisementService advertisementService;
-    private final IAdvertisementCommentService advertisementCommentService;
-    private final IPaymentService paymentService;
-    private final IPaymentTypeService paymentTypeService;
+    private final ChatService chatService;
+    private final AdvertisementService advertisementService;
+    private final AdvertisementCommentService advertisementCommentService;
+    private final PaymentService paymentService;
+    private final PaymentTypeService paymentTypeService;
 
     @Autowired
-    public AdvertisementController(IAdvertisementService advertisementService, IChatService chatService, IPaymentTypeService paymentTypeService,
-                                   IAdvertisementCommentService advertisementCommentService, IPaymentService paymentService) {
+    public AdvertisementController(AdvertisementService advertisementService, ChatService chatService, PaymentTypeService paymentTypeService,
+                                   AdvertisementCommentService advertisementCommentService, PaymentService paymentService) {
         this.advertisementService = advertisementService;
         this.chatService = chatService;
         this.paymentService = paymentService;

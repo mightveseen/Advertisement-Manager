@@ -4,7 +4,7 @@ import com.senlainc.javacourses.petushokvaliantsin.dto.StateDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.combination.ResultListDto;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
-import com.senlainc.javacourses.petushokvaliantsin.service.api.advertisement.IAdvertisementService;
+import com.senlainc.javacourses.petushokvaliantsin.service.api.advertisement.AdvertisementService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,10 +28,10 @@ public class ModeratorController {
     private static final String ENUM_EXCEPTION = "State with name [%s] not exist";
     private static final String DEFAULT_STRING = "none";
     private static final Double DEFAULT_PRICE = 0.0;
-    private final IAdvertisementService advertisementService;
+    private final AdvertisementService advertisementService;
 
     @Autowired
-    public ModeratorController(IAdvertisementService advertisementService) {
+    public ModeratorController(AdvertisementService advertisementService) {
         this.advertisementService = advertisementService;
     }
 

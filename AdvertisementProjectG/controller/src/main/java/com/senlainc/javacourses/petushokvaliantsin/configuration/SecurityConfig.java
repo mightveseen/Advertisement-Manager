@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private String secretKey;
 
     @Autowired
-    public SecurityConfig(@Qualifier("userCredService") UserDetailsService userDetailsService) {
+    public SecurityConfig(@Qualifier("userCredServiceImpl") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 

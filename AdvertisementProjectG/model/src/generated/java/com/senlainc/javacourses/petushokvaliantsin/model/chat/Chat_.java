@@ -12,18 +12,19 @@ import java.time.LocalDateTime;
 @StaticMetamodel(Chat.class)
 public abstract class Chat_ {
 
-	public static final String NAME = "name";
-	public static final String LAST_MESSAGE = "lastMessage";
-	public static final String MESSAGES = "messages";
-	public static final String ID = "id";
-	public static final String UPDATE_DATE_TIME = "updateDateTime";
-	public static final String USERS = "users";
 	public static volatile SingularAttribute<Chat, String> name;
 	public static volatile SingularAttribute<Chat, String> lastMessage;
 	public static volatile SetAttribute<Chat, Message> messages;
 	public static volatile SingularAttribute<Chat, Long> id;
 	public static volatile SingularAttribute<Chat, LocalDateTime> updateDateTime;
 	public static volatile SetAttribute<Chat, User> users;
+
+	public static final String NAME = "name";
+	public static final String LAST_MESSAGE = "lastMessage";
+	public static final String MESSAGES = "messages";
+	public static final String ID = "id";
+	public static final String UPDATE_DATE_TIME = "updateDateTime";
+	public static final String USERS = "users";
 
 }
 

@@ -6,9 +6,9 @@ import com.senlainc.javacourses.petushokvaliantsin.dto.combination.ResultListDto
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserRatingDto;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
-import com.senlainc.javacourses.petushokvaliantsin.service.api.advertisement.IAdvertisementService;
-import com.senlainc.javacourses.petushokvaliantsin.service.api.user.IUserRatingService;
-import com.senlainc.javacourses.petushokvaliantsin.service.api.user.IUserService;
+import com.senlainc.javacourses.petushokvaliantsin.service.api.advertisement.AdvertisementService;
+import com.senlainc.javacourses.petushokvaliantsin.service.api.user.UserRatingService;
+import com.senlainc.javacourses.petushokvaliantsin.service.api.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -30,11 +30,11 @@ public class UserController {
 
     private static final String DEFAULT_STRING = "none";
     private static final Double DEFAULT_PRICE = 0.0;
-    private final IUserService userService;
-    private final IUserRatingService userRatingService;
-    private final IAdvertisementService advertisementService;
+    private final UserService userService;
+    private final UserRatingService userRatingService;
+    private final AdvertisementService advertisementService;
 
-    public UserController(IUserRatingService userRatingService, IUserService userService, IAdvertisementService advertisementService) {
+    public UserController(UserRatingService userRatingService, UserService userService, AdvertisementService advertisementService) {
         this.userService = userService;
         this.userRatingService = userRatingService;
         this.advertisementService = advertisementService;

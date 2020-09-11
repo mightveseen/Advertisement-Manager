@@ -4,7 +4,7 @@ import com.senlainc.javacourses.petushokvaliantsin.configuration.security.mapper
 import com.senlainc.javacourses.petushokvaliantsin.dto.combination.AccountDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserCredDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
-import com.senlainc.javacourses.petushokvaliantsin.service.api.user.IUserService;
+import com.senlainc.javacourses.petushokvaliantsin.service.api.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +23,12 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class AuthenticationController {
 
-    private final IUserService userService;
+    private final UserService userService;
     private final TokenMapper tokenMapper;
     private final AuthenticationManager authenticationManager;
 
     @Autowired
-    public AuthenticationController(IUserService userService, TokenMapper tokenMapper,
+    public AuthenticationController(UserService userService, TokenMapper tokenMapper,
                                     AuthenticationManager authenticationManager) {
         this.userService = userService;
         this.tokenMapper = tokenMapper;

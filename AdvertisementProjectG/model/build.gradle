@@ -5,8 +5,6 @@ plugins {
 group 'com.senlainc.javacourses.petushokvaliantsin'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
-
 repositories {
     mavenCentral()
 }
@@ -18,12 +16,10 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-validation:2.2.2.RELEASE'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa:2.2.2.RELEASE'
 
+    annotationProcessor('org.hibernate:hibernate-jpamodelgen:5.3.17.Final')
+
     compileOnly 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
-    testCompileOnly 'org.projectlombok:lombok:1.18.12'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
-
-    annotationProcessor('org.hibernate:hibernate-jpamodelgen:5.3.17.Final')
 }
 
 tasks.withType(JavaCompile) {
