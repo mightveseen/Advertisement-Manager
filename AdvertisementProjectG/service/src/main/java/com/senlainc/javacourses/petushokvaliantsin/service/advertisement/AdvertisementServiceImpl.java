@@ -5,12 +5,15 @@ import com.senlainc.javacourses.petushokvaliantsin.dao.api.advertisement.Adverti
 import com.senlainc.javacourses.petushokvaliantsin.dao.api.user.UserDao;
 import com.senlainc.javacourses.petushokvaliantsin.dto.StateDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.advertisement.AdvertisementDto;
+import com.senlainc.javacourses.petushokvaliantsin.dto.combination.ResultListDto;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumException;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumLogger;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
+import com.senlainc.javacourses.petushokvaliantsin.model.State;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement_;
+import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User_;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.advertisement.AdvertisementService;
@@ -28,6 +31,7 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.S
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -123,15 +127,16 @@ public class AdvertisementServiceImpl extends AbstractService implements Adverti
 
     @Override
     @Transactional(readOnly = true)
-    public List<AdvertisementDto> readAllWithUser(Long userIndex, int page, int numberElements, EnumState state) {
-        final List<AdvertisementDto> result = dtoMapper.mapAll(advertisementDao.readAllWithUser(PageParameter.of(page, numberElements),
-                userDao.readById(userIndex).orElseThrow(() ->
-                        new EntityNotExistException(entityNotExistMessage(2, 0, userIndex))),
-                stateDao.readByDescription(state.name()).orElseThrow(() ->
-                        new EntityNotExistException(entityNotExistMessage(1, 1, EnumState.ACTIVE.name())))),
-                AdvertisementDto.class);
+    public ResultListDto<AdvertisementDto> readAllWithUser(Long userIndex, int page, int numberElements, EnumState enumState) {
+        final User user = userDao.readById(userIndex).orElseThrow(() ->
+                new EntityNotExistException(entityNotExistMessage(2, 0, userIndex)));
+        final State state = stateDao.readByDescription(enumState.name()).orElseThrow(() ->
+                new EntityNotExistException(entityNotExistMessage(1, 1, EnumState.ACTIVE.name())));
+        final Long resultSize = advertisementDao.countAdvertisementByUserAndState(user, state);
+        final List<AdvertisementDto> result = dtoMapper.mapAll(advertisementDao.readAllByUserAndState(user, state,
+                PageRequest.of(page, numberElements)), AdvertisementDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
-        return result;
+        return ResultListDto.of(resultSize, result);
     }
 
     @Override

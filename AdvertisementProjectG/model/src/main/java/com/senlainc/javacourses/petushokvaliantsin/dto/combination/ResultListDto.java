@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import java.util.List;
 
-@AllArgsConstructor
+@AllArgsConstructor(staticName = "of")
 @Getter
 @Setter
 public class ResultListDto<E> {

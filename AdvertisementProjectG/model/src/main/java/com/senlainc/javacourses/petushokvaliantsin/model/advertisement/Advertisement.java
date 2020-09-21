@@ -20,7 +20,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedEntityGraphs;
-import javax.persistence.NamedQuery;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -43,10 +42,6 @@ import java.util.Set;
         @NamedEntityGraph(name = GraphProperty.Advertisement.USER,
                 attributeNodes = @NamedAttributeNode(Advertisement_.USER))
 })
-@NamedQuery(name = "Advertisement.readAllWithUser", query = "select a from Advertisement a\n" +
-        "left join a.user u \n" +
-        "left join a.state s \n" +
-        "where u = :user and s = :state")
 public class Advertisement {
 
     @Id

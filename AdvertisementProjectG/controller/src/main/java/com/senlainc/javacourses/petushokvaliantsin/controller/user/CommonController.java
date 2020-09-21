@@ -45,7 +45,7 @@ public class CommonController {
     public ResultListDto<PaymentDto> getUserPayments(@RequestParam(name = "page", defaultValue = "0") @Positive int page,
                                                      @RequestParam(name = "max", defaultValue = "15") @Positive int max,
                                                      @NotNull Principal principal) {
-        return new ResultListDto<>(paymentService.readSize(principal.getName()), paymentService.readAll(principal.getName(), page, max));
+        return ResultListDto.of(paymentService.readSize(principal.getName()), paymentService.readAll(principal.getName(), page, max));
     }
 
     /**
@@ -55,7 +55,7 @@ public class CommonController {
     public ResultListDto<ChatDto> getUserChats(@RequestParam(name = "page", defaultValue = "0") @Positive int page,
                                                @RequestParam(name = "max", defaultValue = "15") @Positive int max,
                                                @NotNull Principal principal) {
-        return new ResultListDto<>(chatService.readSize(principal.getName()), chatService.readAll(principal.getName(), page, max));
+        return chatService.readAll(principal.getName(), page, max);
     }
 
     @GetMapping(value = "/chats/{id}")

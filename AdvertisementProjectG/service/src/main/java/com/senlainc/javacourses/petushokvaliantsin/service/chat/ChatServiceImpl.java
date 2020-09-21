@@ -4,8 +4,10 @@ import com.senlainc.javacourses.petushokvaliantsin.dao.api.advertisement.Adverti
 import com.senlainc.javacourses.petushokvaliantsin.dao.api.chat.ChatDao;
 import com.senlainc.javacourses.petushokvaliantsin.dao.api.user.UserDao;
 import com.senlainc.javacourses.petushokvaliantsin.dto.chat.ChatDto;
+import com.senlainc.javacourses.petushokvaliantsin.dto.combination.ResultListDto;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumException;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumLogger;
+import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat_;
@@ -14,11 +16,11 @@ import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.chat.ChatService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityAlreadyExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
-import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
-import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,19 +72,14 @@ public class ChatServiceImpl extends AbstractService implements ChatService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ChatDto> readAll(String username, int page, int maxResult) {
-        final IPageParameter pageParameter = PageParameter.of(page, maxResult, Sort.Direction.DESC.name(), Chat_.updateDateTime);
-        final List<ChatDto> result = dtoMapper.mapAll(chatDao.readAllUserChat(pageParameter, userDao.readByUserCred(username).orElseThrow(() ->
-                new EntityNotExistException(entityNotExistMessage(2, 2, username)))), ChatDto.class);
+    public ResultListDto<ChatDto> readAll(String username, int page, int maxResult) {
+        final Pageable pageParameter = PageRequest.of(page, maxResult, Sort.Direction.DESC, Chat_.UPDATE_DATE_TIME);
+        final User user = userDao.readByUserCred(username, GraphProperty.User.DEFAULT).orElseThrow(() ->
+                new EntityNotExistException(entityNotExistMessage(2, 2, username)));
+        final Long resultSize = chatDao.countAllByUser(user);
+        final List<ChatDto> result = dtoMapper.mapAll(chatDao.readAllByUser(user, pageParameter), ChatDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
-        return result;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Long readSize(String username) {
-        return chatDao.readCountWithUser(userDao.readByUserCred(username).orElseThrow(() ->
-                new EntityNotExistException(entityNotExistMessage(2, 2, username))));
+        return ResultListDto.of(resultSize, result);
     }
 
     private Set<User> getSetUser(User activeUser, User chosenUser) {

@@ -50,9 +50,8 @@ public class UserController {
 
     @GetMapping(value = "/{id}/closed")
     public ResultListDto<AdvertisementDto> getUserClosedAdvertisements(@PathVariable(name = "id") @Positive Long index,
-                                                                       @RequestParam(name = "page", defaultValue = "1") @Positive int page,
+                                                                       @RequestParam(name = "page", defaultValue = "0") @Positive int page,
                                                                        @RequestParam(name = "number", defaultValue = "15") @Positive int numberElements) {
-        return new ResultListDto<>(advertisementService.readSize(DEFAULT_STRING, DEFAULT_STRING, DEFAULT_PRICE, DEFAULT_PRICE, EnumState.DISABLED),
-                advertisementService.readAllWithUser(index, page, numberElements, EnumState.DISABLED));
+        return advertisementService.readAllWithUser(index, page, numberElements, EnumState.DISABLED);
     }
 }

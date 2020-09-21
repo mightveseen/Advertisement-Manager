@@ -3,14 +3,12 @@ package com.senlainc.javacourses.petushokvaliantsin.dao;
 import com.senlainc.javacourses.petushokvaliantsin.dao.api.customquery.AdvertisementDaoChild;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
-import com.senlainc.javacourses.petushokvaliantsin.model.State;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementCategory;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.AdvertisementCategory_;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement_;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment_;
-import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User_;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.ReadQueryException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IFilterParameter;
@@ -32,20 +30,6 @@ import java.util.List;
 public class AdvertisementDaoImpl extends AbstractDao<Advertisement> implements AdvertisementDaoChild {
 
     private static final String NONE_PARAMETER = "none";
-
-    @Override
-    public List<Advertisement> readAllWithUser(IPageParameter pageParameter, User user, State state) {
-        try {
-            return entityManager.createNamedQuery("Advertisement.readAllWithUser", Advertisement.class)
-                    .setParameter("user", user)
-                    .setParameter("state", state)
-                    .setFirstResult(pageParameter.getFirstElement())
-                    .setMaxResults(pageParameter.getMaxResult())
-                    .getResultList();
-        } catch (PersistenceException exc) {
-            throw new ReadQueryException(exc);
-        }
-    }
 
     @Override
     public List<Advertisement> readAllWithFilter(IPageParameter pageParameter, IFilterParameter filterParameter, IStateParameter stateParameter) {
