@@ -1,11 +1,10 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.advertisement;
 
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
-
+import java.time.LocalDateTime;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
-import java.time.LocalDateTime;
 
 @Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
 @StaticMetamodel(AdvertisementComment.class)

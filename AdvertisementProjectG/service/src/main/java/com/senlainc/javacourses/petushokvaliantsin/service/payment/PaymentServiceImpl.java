@@ -19,9 +19,9 @@ import com.senlainc.javacourses.petushokvaliantsin.service.api.payment.PaymentSe
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.ExceededLimitException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.PermissionDeniedException;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 @PropertySource(value = "classpath:/properties/service.properties", ignoreResourceNotFound = true)
 public class PaymentServiceImpl extends AbstractService implements PaymentService {
 
@@ -45,16 +46,6 @@ public class PaymentServiceImpl extends AbstractService implements PaymentServic
     private final UserDao userDao;
     @Value("${PAYMENT.ACTIVE_LIMIT:3}")
     private Short activeLimit;
-
-    @Autowired
-    public PaymentServiceImpl(PaymentDao paymentDao, AdvertisementDao advertisementDao, StateDao stateDao,
-                              PaymentTypeDao paymentTypeDao, UserDao userDao) {
-        this.paymentDao = paymentDao;
-        this.advertisementDao = advertisementDao;
-        this.paymentTypeDao = paymentTypeDao;
-        this.stateDao = stateDao;
-        this.userDao = userDao;
-    }
 
     @Override
     @Transactional
@@ -95,7 +86,7 @@ public class PaymentServiceImpl extends AbstractService implements PaymentServic
 
     private LocalDate createLocalDate(List<Payment> advertisementActivePayment) {
         return (advertisementActivePayment == null || advertisementActivePayment.isEmpty()) ? LocalDate.now() :
-                advertisementActivePayment.stream().max(Comparator.comparing(Payment::getEndDate)).get().getEndDate();
+                advertisementActivePayment.stream().max(Comparator.comparing(Payment::getEndDate)).orElseThrow().getEndDate();
     }
 
     private void checkPermission(Advertisement advertisement, String username) {

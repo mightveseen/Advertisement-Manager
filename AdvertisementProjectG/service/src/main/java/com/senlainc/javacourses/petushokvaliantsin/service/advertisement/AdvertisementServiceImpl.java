@@ -25,9 +25,9 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.page.IStateParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.FilterParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.StateParameter;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +36,7 @@ import java.util.List;
 
 @Service
 @SingularClass
+@RequiredArgsConstructor
 public class AdvertisementServiceImpl extends AbstractService implements AdvertisementService {
 
     private static final Logger LOGGER = LogManager.getLogger(AdvertisementServiceImpl.class);
@@ -44,13 +45,6 @@ public class AdvertisementServiceImpl extends AbstractService implements Adverti
     private final AdvertisementDao advertisementDao;
     private final StateDao stateDao;
     private final UserDao userDao;
-
-    @Autowired
-    public AdvertisementServiceImpl(AdvertisementDao advertisementDao, StateDao stateDao, UserDao userDao) {
-        this.advertisementDao = advertisementDao;
-        this.stateDao = stateDao;
-        this.userDao = userDao;
-    }
 
     @Override
     @Transactional

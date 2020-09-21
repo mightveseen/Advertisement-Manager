@@ -3,11 +3,10 @@ package com.senlainc.javacourses.petushokvaliantsin.model.payment;
 import com.senlainc.javacourses.petushokvaliantsin.model.State;
 import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertisement;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
-
+import java.time.LocalDate;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
-import java.time.LocalDate;
 
 @Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
 @StaticMetamodel(Payment.class)

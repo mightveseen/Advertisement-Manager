@@ -7,19 +7,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
-import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.Objects;
 
 public abstract class AbstractDao<E> {
 
-    protected final Class<E> entityClazz;
     protected EntityManager entityManager;
     protected CriteriaBuilder criteriaBuilder;
-
-    public AbstractDao() {
-        this.entityClazz = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-    }
 
     @PersistenceContext(name = "mainPersistence")
     public void setEntityManager(EntityManager entityManager) {

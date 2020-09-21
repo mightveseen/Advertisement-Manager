@@ -9,13 +9,13 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(AdvertisementCategory.class)
 public abstract class AdvertisementCategory_ {
 
-    public static volatile SetAttribute<AdvertisementCategory, Advertisement> advertisements;
-    public static volatile SingularAttribute<AdvertisementCategory, String> description;
-    public static volatile SingularAttribute<AdvertisementCategory, Long> id;
+	public static volatile SetAttribute<AdvertisementCategory, Advertisement> advertisements;
+	public static volatile SingularAttribute<AdvertisementCategory, String> description;
+	public static volatile SingularAttribute<AdvertisementCategory, Long> id;
 
-    public static final String ADVERTISEMENTS = "advertisements";
-    public static final String DESCRIPTION = "description";
-    public static final String ID = "id";
+	public static final String ADVERTISEMENTS = "advertisements";
+	public static final String DESCRIPTION = "description";
+	public static final String ID = "id";
 
 }
 

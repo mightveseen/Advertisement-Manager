@@ -11,7 +11,7 @@ import com.senlainc.javacourses.petushokvaliantsin.service.api.advertisement.Adv
 import com.senlainc.javacourses.petushokvaliantsin.service.api.chat.ChatService;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.payment.PaymentService;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.payment.PaymentTypeService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -31,6 +31,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(path = "advertisements")
 public class AdvertisementController {
 
@@ -39,16 +40,6 @@ public class AdvertisementController {
     private final AdvertisementCommentService advertisementCommentService;
     private final PaymentService paymentService;
     private final PaymentTypeService paymentTypeService;
-
-    @Autowired
-    public AdvertisementController(AdvertisementService advertisementService, ChatService chatService, PaymentTypeService paymentTypeService,
-                                   AdvertisementCommentService advertisementCommentService, PaymentService paymentService) {
-        this.advertisementService = advertisementService;
-        this.chatService = chatService;
-        this.paymentService = paymentService;
-        this.advertisementCommentService = advertisementCommentService;
-        this.paymentTypeService = paymentTypeService;
-    }
 
     /**
      * Advertisement operation [Show all, show by id, delete/remove/update]
@@ -120,7 +111,7 @@ public class AdvertisementController {
      * Payment operation [Show all payment type, add payment]
      */
     @GetMapping(value = "{id}/payments")
-    public List<PaymentTypeDto> getPaymentTypes(@PathVariable(name = "id") Long index) {
+    public List<PaymentTypeDto> getPaymentTypes() {
         return paymentTypeService.readAll();
     }
 

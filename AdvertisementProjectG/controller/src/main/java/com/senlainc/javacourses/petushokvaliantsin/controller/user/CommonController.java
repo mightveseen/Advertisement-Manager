@@ -9,7 +9,7 @@ import com.senlainc.javacourses.petushokvaliantsin.service.api.chat.ChatService;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.chat.MessageService;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.payment.PaymentService;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -29,6 +29,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(path = "account")
 public class CommonController {
 
@@ -36,14 +37,6 @@ public class CommonController {
     private final MessageService messageService;
     private final UserService userService;
     private final PaymentService paymentService;
-
-    @Autowired
-    public CommonController(ChatService chatService, MessageService messageService, UserService userService, PaymentService paymentService) {
-        this.chatService = chatService;
-        this.messageService = messageService;
-        this.userService = userService;
-        this.paymentService = paymentService;
-    }
 
     /**
      * Payment operation [Get operation history]

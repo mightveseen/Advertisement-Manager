@@ -15,7 +15,7 @@ public final class GraphProperty {
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Advertisement {
-        public static final String DEFAULT = "advertisement-all-dependencies";
+        public static final String DEFAULT = "Advertisement.default";
         public static final String USER = "advertisement-user-dependency";
     }
 

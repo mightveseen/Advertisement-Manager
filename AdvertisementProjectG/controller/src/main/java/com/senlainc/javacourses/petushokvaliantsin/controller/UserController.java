@@ -9,6 +9,7 @@ import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.advertisement.AdvertisementService;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.user.UserRatingService;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.user.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -25,6 +26,7 @@ import javax.validation.constraints.Positive;
 import java.security.Principal;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(path = "users")
 public class UserController {
 
@@ -33,12 +35,6 @@ public class UserController {
     private final UserService userService;
     private final UserRatingService userRatingService;
     private final AdvertisementService advertisementService;
-
-    public UserController(UserRatingService userRatingService, UserService userService, AdvertisementService advertisementService) {
-        this.userService = userService;
-        this.userRatingService = userRatingService;
-        this.advertisementService = advertisementService;
-    }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable(name = "id") @Positive Long index) {

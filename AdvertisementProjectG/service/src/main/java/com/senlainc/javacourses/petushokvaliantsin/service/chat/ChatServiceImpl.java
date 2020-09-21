@@ -16,9 +16,9 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityAlrea
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,19 +29,13 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class ChatServiceImpl extends AbstractService implements ChatService {
 
     private static final Logger LOGGER = LogManager.getLogger(ChatServiceImpl.class);
     private final ChatDao chatDao;
     private final UserDao userDao;
     private final AdvertisementDao advertisementDao;
-
-    @Autowired
-    public ChatServiceImpl(ChatDao chatDao, UserDao userDao, AdvertisementDao advertisementDao) {
-        this.chatDao = chatDao;
-        this.userDao = userDao;
-        this.advertisementDao = advertisementDao;
-    }
 
     @Override
     @Transactional

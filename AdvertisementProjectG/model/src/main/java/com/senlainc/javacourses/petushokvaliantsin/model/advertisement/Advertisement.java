@@ -4,6 +4,7 @@ import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
 import com.senlainc.javacourses.petushokvaliantsin.model.State;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
+import com.senlainc.javacourses.petushokvaliantsin.model.user.User_;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedEntityGraphs;
+import javax.persistence.NamedQuery;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -33,14 +35,18 @@ import java.util.Set;
 @Table(name = "advertisements")
 @NamedEntityGraphs(value = {
         @NamedEntityGraph(name = GraphProperty.Advertisement.DEFAULT, attributeNodes = {
-                @NamedAttributeNode(value = "user", subgraph = "user-dependencies"),
-                @NamedAttributeNode(value = "category"),
-                @NamedAttributeNode(value = "state")},
-                subgraphs = @NamedSubgraph(name = "user-dependencies",
-                        attributeNodes = @NamedAttributeNode("userCred"))),
+                @NamedAttributeNode(value = Advertisement_.USER, subgraph = "Advertisement.user.userCred"),
+                @NamedAttributeNode(Advertisement_.CATEGORY),
+                @NamedAttributeNode(Advertisement_.STATE)},
+                subgraphs = @NamedSubgraph(name = "Advertisement.user.userCred",
+                        attributeNodes = @NamedAttributeNode(User_.USER_CRED))),
         @NamedEntityGraph(name = GraphProperty.Advertisement.USER,
-                attributeNodes = @NamedAttributeNode("user"))
+                attributeNodes = @NamedAttributeNode(Advertisement_.USER))
 })
+@NamedQuery(name = "Advertisement.readAllWithUser", query = "select a from Advertisement a\n" +
+        "left join a.user u \n" +
+        "left join a.state s \n" +
+        "where u = :user and s = :state")
 public class Advertisement {
 
     @Id

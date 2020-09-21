@@ -5,7 +5,7 @@ import com.senlainc.javacourses.petushokvaliantsin.dto.combination.AccountDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserCredDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,19 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
+@RequiredArgsConstructor
 public class AuthenticationController {
 
     private final UserService userService;
     private final TokenMapper tokenMapper;
     private final AuthenticationManager authenticationManager;
-
-    @Autowired
-    public AuthenticationController(UserService userService, TokenMapper tokenMapper,
-                                    AuthenticationManager authenticationManager) {
-        this.userService = userService;
-        this.tokenMapper = tokenMapper;
-        this.authenticationManager = authenticationManager;
-    }
 
     @PostMapping(value = "/sign-up")
     public ResponseEntity<Boolean> createUser(@RequestBody @Validated({AccountDto.Create.class, UserCredDto.Create.class, UserDto.Create.class}) AccountDto accountDto) {

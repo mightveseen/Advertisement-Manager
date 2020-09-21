@@ -14,9 +14,9 @@ import com.senlainc.javacourses.petushokvaliantsin.service.api.user.UserService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityAlreadyExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.PermissionDeniedException;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl extends AbstractService implements UserService {
 
     private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
@@ -31,13 +32,6 @@ public class UserServiceImpl extends AbstractService implements UserService {
     private final UserDao userDao;
     private final UserCredDao userCredDao;
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public UserServiceImpl(UserDao userDao, UserCredDao userCredDao, PasswordEncoder passwordEncoder) {
-        this.userDao = userDao;
-        this.userCredDao = userCredDao;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     @Transactional

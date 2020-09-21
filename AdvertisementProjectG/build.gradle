@@ -6,16 +6,28 @@ plugins {
 
 group 'com.senlainc.javacourses.petushokvaliantsin'
 version '1.0-SNAPSHOT'
-sourceCompatibility = 1.8
-mainClassName = 'com.senlainc.javacourses.petushokvaliantsin.Initializator.java'
 
-repositories {
-    mavenCentral()
+sourceCompatibility = JavaVersion.VERSION_HIGHER
+targetCompatibility = JavaVersion.VERSION_HIGHER
+mainClassName = 'com.senlainc.javacourses.petushokvaliantsin.Start'
+
+allprojects {
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+//        compile 'org.springframework.boot:spring-boot-starter-log4j2:2.3.4.RELEASE'
+
+        compileOnly 'org.projectlombok:lombok:1.18.12'
+        annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+        annotationProcessor('org.hibernate:hibernate-jpamodelgen:5.3.17.Final')
+    }
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-
-    compile 'org.apache.logging.log4j:log4j-api:2.13.3'
-    compile 'org.apache.logging.log4j:log4j-core:2.13.3'
+    compile project(":controller")
 }

@@ -13,9 +13,9 @@ import com.senlainc.javacourses.petushokvaliantsin.service.api.advertisement.Adv
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularClass;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularModel;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -27,6 +27,7 @@ import java.util.List;
 
 @Service
 @SingularClass
+@RequiredArgsConstructor
 public class AdvertisementCommentServiceImpl extends AbstractService implements AdvertisementCommentService {
 
     private static final String SORT_FIELD = "advertisementcomment-";
@@ -34,13 +35,6 @@ public class AdvertisementCommentServiceImpl extends AbstractService implements 
     private final AdvertisementCommentDao advertisementCommentDao;
     private final AdvertisementDao advertisementDao;
     private final UserDao userDao;
-
-    @Autowired
-    public AdvertisementCommentServiceImpl(AdvertisementCommentDao advertisementCommentDao, AdvertisementDao advertisementDao, UserDao userDao) {
-        this.advertisementCommentDao = advertisementCommentDao;
-        this.advertisementDao = advertisementDao;
-        this.userDao = userDao;
-    }
 
     @Override
     @Transactional

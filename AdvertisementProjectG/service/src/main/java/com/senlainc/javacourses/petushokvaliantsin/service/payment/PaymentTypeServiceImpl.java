@@ -7,9 +7,9 @@ import com.senlainc.javacourses.petushokvaliantsin.model.payment.PaymentType;
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.payment.PaymentTypeService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,15 +18,11 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
+@RequiredArgsConstructor
 public class PaymentTypeServiceImpl extends AbstractService implements PaymentTypeService {
 
     private static final Logger LOGGER = LogManager.getLogger(PaymentTypeServiceImpl.class);
     private final PaymentTypeDao paymentTypeDao;
-
-    @Autowired
-    public PaymentTypeServiceImpl(PaymentTypeDao paymentTypeDao) {
-        this.paymentTypeDao = paymentTypeDao;
-    }
 
     @Override
     @Transactional

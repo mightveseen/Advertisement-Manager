@@ -14,9 +14,9 @@ import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.chat.MessageService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.PermissionDeniedException;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,19 +25,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MessageServiceImpl extends AbstractService implements MessageService {
 
     private static final Logger LOGGER = LogManager.getLogger(MessageServiceImpl.class);
     private final MessageDao messageDao;
     private final ChatDao chatDao;
     private final UserDao userDao;
-
-    @Autowired
-    public MessageServiceImpl(MessageDao messageDao, ChatDao chatDao, UserDao userDao) {
-        this.messageDao = messageDao;
-        this.chatDao = chatDao;
-        this.userDao = userDao;
-    }
 
     @Override
     @Transactional

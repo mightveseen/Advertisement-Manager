@@ -12,24 +12,19 @@ import com.senlainc.javacourses.petushokvaliantsin.service.api.user.UserRatingSe
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityAlreadyExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.WrongEnteredDataException;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class UserRatingServiceImpl extends AbstractService implements UserRatingService {
 
     private static final Logger LOGGER = LogManager.getLogger(UserRatingServiceImpl.class);
     private final UserRatingDao userRatingDao;
     private final UserDao userDao;
-
-    @Autowired
-    public UserRatingServiceImpl(UserRatingDao userRatingDao, UserDao userDao) {
-        this.userRatingDao = userRatingDao;
-        this.userDao = userDao;
-    }
 
     @Override
     @Transactional

@@ -6,7 +6,7 @@ import com.senlainc.javacourses.petushokvaliantsin.dto.combination.ResultListDto
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.advertisement.AdvertisementService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +22,7 @@ import javax.validation.constraints.Positive;
 import java.util.Arrays;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(path = "moderator")
 public class ModeratorController {
 
@@ -29,11 +30,6 @@ public class ModeratorController {
     private static final String DEFAULT_STRING = "none";
     private static final Double DEFAULT_PRICE = 0.0;
     private final AdvertisementService advertisementService;
-
-    @Autowired
-    public ModeratorController(AdvertisementService advertisementService) {
-        this.advertisementService = advertisementService;
-    }
 
     /**
      * Moderator advertisement operation [Show all, show by id, change state]

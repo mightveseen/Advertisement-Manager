@@ -5,12 +5,11 @@ import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertise
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Message;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment;
-
+import java.time.LocalDate;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SetAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
-import java.time.LocalDate;
 
 @Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
 @StaticMetamodel(User.class)

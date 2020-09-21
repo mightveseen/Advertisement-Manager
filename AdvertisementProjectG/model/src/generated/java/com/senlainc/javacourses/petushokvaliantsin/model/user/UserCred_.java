@@ -1,7 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.user;
 
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumRole;
-
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;

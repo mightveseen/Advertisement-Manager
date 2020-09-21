@@ -7,22 +7,18 @@ import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertise
 import com.senlainc.javacourses.petushokvaliantsin.service.AbstractService;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.advertisement.AdvertisementCategoryService;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.EntityNotExistException;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class AdvertisementCategoryServiceImpl extends AbstractService implements AdvertisementCategoryService {
 
     private static final Logger LOGGER = LogManager.getLogger(AdvertisementCategoryServiceImpl.class);
     private final AdvertisementCategoryDao advertisementCategoryDao;
-
-    @Autowired
-    public AdvertisementCategoryServiceImpl(AdvertisementCategoryDao advertisementCategoryDao) {
-        this.advertisementCategoryDao = advertisementCategoryDao;
-    }
 
     @Override
     @Transactional

@@ -19,7 +19,6 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.page.IStateParameter;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.PersistenceException;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
@@ -37,32 +36,27 @@ public class AdvertisementDaoImpl extends AbstractDao<Advertisement> implements 
     @Override
     public List<Advertisement> readAllWithUser(IPageParameter pageParameter, User user, State state) {
         try {
-            final TypedQuery<Advertisement> query = entityManager.createQuery(
-                    "select a from Advertisement a\n" +
-                            "left join a.user u \n" +
-                            "left join a.state s \n" +
-                            "where u = :user and s = :state", Advertisement.class)
+            return entityManager.createNamedQuery("Advertisement.readAllWithUser", Advertisement.class)
                     .setParameter("user", user)
-                    .setParameter("state", state);
-            return query.setFirstResult(pageParameter.getFirstElement()).setMaxResults(pageParameter.getMaxResult())
+                    .setParameter("state", state)
+                    .setFirstResult(pageParameter.getFirstElement())
+                    .setMaxResults(pageParameter.getMaxResult())
                     .getResultList();
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);
         }
     }
 
-    //FIXME : Fix order by
     @Override
     public List<Advertisement> readAllWithFilter(IPageParameter pageParameter, IFilterParameter filterParameter, IStateParameter stateParameter) {
         try {
-            final CriteriaQuery<Advertisement> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
-            final Root<Advertisement> root = criteriaQuery.from(entityClazz);
+            final CriteriaQuery<Advertisement> criteriaQuery = criteriaBuilder.createQuery(Advertisement.class);
+            final Root<Advertisement> root = criteriaQuery.from(Advertisement.class);
             final List<Predicate> predicates = getPredicates(root, filterParameter, stateParameter);
             final List<Order> orders = getOrders(pageParameter, root, stateParameter);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
                     .orderBy(orders)
-//                    .groupBy(root, root.get(Advertisement_.id), root.join(Advertisement_.user).get(User_.id))
                     .where(criteriaBuilder.and(predicates.toArray(new Predicate[0]))))
                     .setFirstResult(pageParameter.getFirstElement())
                     .setHint(GraphProperty.Type.FETCH, entityManager.getEntityGraph(GraphProperty.Advertisement.DEFAULT))
@@ -77,7 +71,7 @@ public class AdvertisementDaoImpl extends AbstractDao<Advertisement> implements 
     public Long readCountWitFilter(IFilterParameter filterParameter, IStateParameter stateParameter) {
         try {
             final CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-            final Root<Advertisement> root = criteriaQuery.from(entityClazz);
+            final Root<Advertisement> root = criteriaQuery.from(Advertisement.class);
             final List<Predicate> predicates = getPredicates(root, filterParameter, stateParameter);
             return entityManager.createQuery(criteriaQuery
                     .select(criteriaBuilder.count(root))

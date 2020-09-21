@@ -21,8 +21,8 @@ public class ChatDaoImpl extends AbstractDao<Chat> implements ChatDaoChild {
     @Override
     public List<Chat> readAllUserChat(IPageParameter pageParameter, User user) {
         try {
-            final CriteriaQuery<Chat> criteriaQuery = criteriaBuilder.createQuery(entityClazz);
-            final Root<Chat> root = criteriaQuery.from(entityClazz);
+            final CriteriaQuery<Chat> criteriaQuery = criteriaBuilder.createQuery(Chat.class);
+            final Root<Chat> root = criteriaQuery.from(Chat.class);
             final Predicate predicate = criteriaBuilder.equal(root.join(Chat_.users), user);
             return entityManager.createQuery(criteriaQuery
                     .select(root)
@@ -41,7 +41,7 @@ public class ChatDaoImpl extends AbstractDao<Chat> implements ChatDaoChild {
     public Long readCountWithUser(User user) {
         try {
             final CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-            final Root<Chat> root = criteriaQuery.from(entityClazz);
+            final Root<Chat> root = criteriaQuery.from(Chat.class);
             final Predicate predicate = criteriaBuilder.equal(root.join(Chat_.users), user);
             return entityManager.createQuery(criteriaQuery
                     .select(criteriaBuilder.count(root))
