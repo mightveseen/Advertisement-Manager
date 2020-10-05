@@ -33,6 +33,7 @@ public class SingularMapper implements ISingularMapper {
         );
     }
 
+    @SuppressWarnings("uncheked")
     public <T, E> SingularAttribute<T, E> getAttribute(String parameter) {
         try {
             return (SingularAttribute) fields.get(parameter).get(null);

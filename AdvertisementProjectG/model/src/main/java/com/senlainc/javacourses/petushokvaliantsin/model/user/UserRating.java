@@ -1,9 +1,8 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.user;
 
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,10 +16,8 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.Table;
-import java.util.Objects;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Entity
 @Table(name = "user_ratings")
@@ -47,31 +44,5 @@ public class UserRating {
         this.rateOwnerUser = rateOwnerUser;
         this.ratedUser = ratedUser;
         this.value = value;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserRating that = (UserRating) o;
-        return getId().equals(that.getId()) &&
-                getRateOwnerUser().equals(that.getRateOwnerUser()) &&
-                getRatedUser().equals(that.getRatedUser()) &&
-                getValue().equals(that.getValue());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getRateOwnerUser(), getRatedUser(), getValue());
-    }
-
-    @Override
-    public String toString() {
-        return "UserRating{" +
-                "id=" + id +
-                ", rateOwnerUser=" + rateOwnerUser +
-                ", ratedUser=" + ratedUser +
-                ", value=" + value +
-                '}';
     }
 }

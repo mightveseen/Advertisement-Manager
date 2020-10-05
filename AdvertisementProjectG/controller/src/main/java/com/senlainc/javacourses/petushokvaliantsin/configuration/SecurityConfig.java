@@ -56,14 +56,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/login", "/sign-up").anonymous()
                 .antMatchers("/logout").authenticated()
-                .antMatchers("/admin/*").hasRole(EnumRole.ROLE_ADMIN.getRole())
-                .antMatchers("/moderator/*").hasAnyRole(EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
-                .antMatchers("/account/**").hasAnyRole(EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_ADMIN.getRole(), EnumRole.ROLE_MODERATOR.getRole())
-                .antMatchers(HttpMethod.PUT, ADVERTISEMENT_URL).hasAnyRole(EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
-                .antMatchers(HttpMethod.POST, ADVERTISEMENT_URL, "/users/{id}").hasAnyRole(EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
-                .antMatchers(HttpMethod.DELETE, ADVERTISEMENT_URL).hasAnyRole(EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
+                .antMatchers("/admin/*").hasRole(
+                EnumRole.ROLE_ADMIN.getRole())
+                .antMatchers("/moderator/*").hasAnyRole(
+                EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
+                .antMatchers("/account/**").hasAnyRole(
+                EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_ADMIN.getRole(), EnumRole.ROLE_MODERATOR.getRole())
+                .antMatchers(HttpMethod.PUT, ADVERTISEMENT_URL).hasAnyRole(
+                EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
+                .antMatchers(HttpMethod.POST, ADVERTISEMENT_URL, "/users/{id}").hasAnyRole(
+                EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
+                .antMatchers(HttpMethod.DELETE, ADVERTISEMENT_URL).hasAnyRole(
+                EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
                 .antMatchers(HttpMethod.GET, ADVERTISEMENT_URL).permitAll()
-                .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint()).accessDeniedHandler(accessDeniedHandler())
+                .and().exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint())
+                .accessDeniedHandler(accessDeniedHandler())
                 .and().logout().logoutSuccessHandler(logoutSuccessHandler())
                 .and().formLogin().loginPage("/login").successHandler(authenticationSuccessHandler())
                 .and().httpBasic()

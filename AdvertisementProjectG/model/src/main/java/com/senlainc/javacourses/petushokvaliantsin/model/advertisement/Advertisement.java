@@ -5,9 +5,10 @@ import com.senlainc.javacourses.petushokvaliantsin.model.State;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User_;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,11 +25,9 @@ import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Entity
 @Table(name = "advertisements")
@@ -66,10 +65,16 @@ public class Advertisement {
     @JoinColumn(name = "state_id")
     private State state;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "advertisement", fetch = FetchType.LAZY)
     private Set<AdvertisementComment> comments;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "advertisement", fetch = FetchType.LAZY)
     private Set<AdvertisementPhoto> photos;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "advertisement", fetch = FetchType.LAZY)
     private Set<Payment> payments;
 
@@ -80,39 +85,5 @@ public class Advertisement {
         this.category = category;
         this.date = date;
         this.state = state;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Advertisement that = (Advertisement) o;
-        return getId().equals(that.getId()) &&
-                getHeader().equals(that.getHeader()) &&
-                getUser().equals(that.getUser()) &&
-                Objects.equals(getDescription(), that.getDescription()) &&
-                getCategory().equals(that.getCategory()) &&
-                getDate().equals(that.getDate()) &&
-                getPrice().equals(that.getPrice()) &&
-                getState().equals(that.getState());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getHeader(), getUser(), getDescription(), getCategory(), getDate(), getPrice(), getState());
-    }
-
-    @Override
-    public String toString() {
-        return "Advertisement{" +
-                "id=" + id +
-                ", header='" + header + '\'' +
-                ", user=" + user +
-                ", description='" + description + '\'' +
-                ", category=" + category +
-                ", date=" + date +
-                ", price=" + price +
-                ", state=" + state +
-                '}';
     }
 }

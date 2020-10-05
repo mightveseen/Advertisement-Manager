@@ -6,9 +6,10 @@ import com.senlainc.javacourses.petushokvaliantsin.model.advertisement.Advertise
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Chat;
 import com.senlainc.javacourses.petushokvaliantsin.model.chat.Message;
 import com.senlainc.javacourses.petushokvaliantsin.model.payment.Payment;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,11 +24,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
@@ -61,18 +60,32 @@ public class User {
     @Column(name = "rating")
     private Float rating;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private Set<Chat> chats;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Message> messages;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<AdvertisementComment> comments;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Advertisement> advertisements;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Payment> payments;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "rateOwnerUser", fetch = FetchType.LAZY)
     private Set<UserRating> rateOwnerUserRatings;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "ratedUser", fetch = FetchType.LAZY)
     private Set<UserRating> ratedUserRatings;
 
@@ -83,39 +96,5 @@ public class User {
         this.phone = phone;
         this.registrationDate = registrationDate;
         this.rating = rating;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return getId().equals(user.getId()) &&
-                getUserCred().equals(user.getUserCred()) &&
-                getFirstName().equals(user.getFirstName()) &&
-                getLastName().equals(user.getLastName()) &&
-                getEmail().equals(user.getEmail()) &&
-                getPhone().equals(user.getPhone()) &&
-                getRegistrationDate().equals(user.getRegistrationDate()) &&
-                getRating().equals(user.getRating());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getUserCred(), getFirstName(), getLastName(), getEmail(), getPhone(), getRegistrationDate(), getRating());
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", userCred=" + userCred +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phone=" + phone +
-                ", registrationDate=" + registrationDate +
-                ", rating=" + rating +
-                '}';
     }
 }

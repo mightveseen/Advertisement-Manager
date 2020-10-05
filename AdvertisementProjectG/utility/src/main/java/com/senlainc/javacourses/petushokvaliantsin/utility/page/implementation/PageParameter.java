@@ -1,13 +1,15 @@
 package com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation;
 
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
+import lombok.Getter;
 import org.springframework.data.domain.Sort;
 
 import javax.persistence.metamodel.SingularAttribute;
 
+@Getter
 public final class PageParameter implements IPageParameter {
 
-    private final Sort.Direction sort;
+    private final Sort.Direction direction;
     private final int firstElement;
     private final int maxResult;
     private SingularAttribute[] criteriaField;
@@ -15,20 +17,20 @@ public final class PageParameter implements IPageParameter {
     private PageParameter(int page, int numberElements) {
         this.firstElement = setFirstElement(page, numberElements);
         this.maxResult = setMaxResult(page, numberElements);
-        this.sort = Sort.Direction.ASC;
+        this.direction = Sort.Direction.ASC;
     }
 
     private PageParameter(int page, int numberElements, String direction) {
         this.firstElement = setFirstElement(page, numberElements);
         this.maxResult = setMaxResult(page, numberElements);
-        this.sort = setDirection(direction);
+        this.direction = setDirection(direction);
     }
 
     @SafeVarargs
     private <E, F> PageParameter(int page, int numberElements, String direction, SingularAttribute<E, F>... criteriaField) {
         this.firstElement = setFirstElement(page, numberElements);
         this.maxResult = setMaxResult(page, numberElements);
-        this.sort = setDirection(direction);
+        this.direction = setDirection(direction);
         this.criteriaField = criteriaField;
     }
 
@@ -43,26 +45,6 @@ public final class PageParameter implements IPageParameter {
     @SafeVarargs
     public static <E, F> IPageParameter of(int page, int numberElements, String direction, SingularAttribute<E, F>... criteriaField) {
         return new PageParameter(page, numberElements, direction, criteriaField);
-    }
-
-    @Override
-    public int getFirstElement() {
-        return firstElement;
-    }
-
-    @Override
-    public int getMaxResult() {
-        return maxResult;
-    }
-
-    @Override
-    public <E, F> SingularAttribute<E, F>[] getCriteriaField() {
-        return criteriaField;
-    }
-
-    @Override
-    public Sort.Direction getDirection() {
-        return sort;
     }
 
     private Sort.Direction setDirection(String direction) {

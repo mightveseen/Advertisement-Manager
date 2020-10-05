@@ -1,9 +1,8 @@
 package com.senlainc.javacourses.petushokvaliantsin.model.advertisement;
 
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,10 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.Table;
-import java.util.Objects;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Entity
 @Table(name = "advertisement_photos")
@@ -40,29 +37,5 @@ public class AdvertisementPhoto {
     public AdvertisementPhoto(Advertisement advertisement, String url) {
         this.advertisement = advertisement;
         this.url = url;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AdvertisementPhoto that = (AdvertisementPhoto) o;
-        return getId().equals(that.getId()) &&
-                getAdvertisement().equals(that.getAdvertisement()) &&
-                getUrl().equals(that.getUrl());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getAdvertisement(), getUrl());
-    }
-
-    @Override
-    public String toString() {
-        return "AdvertisementPhoto{" +
-                "id=" + id +
-                ", advertisement=" + advertisement +
-                ", url='" + url + '\'' +
-                '}';
     }
 }

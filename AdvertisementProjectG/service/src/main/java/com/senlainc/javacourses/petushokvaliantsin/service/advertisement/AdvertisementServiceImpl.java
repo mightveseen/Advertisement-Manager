@@ -29,21 +29,21 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.F
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.StateParameter;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Log4j2
 @Service
 @SingularClass
 @RequiredArgsConstructor
 public class AdvertisementServiceImpl extends AbstractService implements AdvertisementService {
 
-    private static final Logger LOGGER = LogManager.getLogger(AdvertisementServiceImpl.class);
     private static final String SORT_FIELD = "advertisement-";
     private static final String SORT_PARAMETER_SEPARATOR = "-";
     private final AdvertisementDao advertisementDao;
@@ -60,12 +60,12 @@ public class AdvertisementServiceImpl extends AbstractService implements Adverti
         advertisement.setState(stateDao.readByDescription(EnumState.MODERATION.name()).orElseThrow(() ->
                 new EntityNotExistException(entityNotExistMessage(1, 1, EnumState.MODERATION.name()))));
         advertisementDao.save(advertisement);
-        LOGGER.info(EnumLogger.SUCCESSFUL_CREATE.getText());
+        log.info(EnumLogger.SUCCESSFUL_CREATE.getText());
         return true;
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.NEVER)
     public boolean delete(String username, Long index) {
         final Advertisement advertisement = advertisementDao.readById(index).orElseThrow(() ->
                 new EntityNotExistException(entityNotExistMessage(0, 0, index)));
@@ -73,7 +73,7 @@ public class AdvertisementServiceImpl extends AbstractService implements Adverti
         advertisement.setState(stateDao.readByDescription(EnumState.DISABLED.name()).orElseThrow(() ->
                 new EntityNotExistException(entityNotExistMessage(1, 1, EnumState.DISABLED.name()))));
         advertisementDao.save(advertisement);
-        LOGGER.info(EnumLogger.SUCCESSFUL_DELETE.getText());
+        log.info(EnumLogger.SUCCESSFUL_DELETE.getText());
         return true;
     }
 
@@ -87,7 +87,7 @@ public class AdvertisementServiceImpl extends AbstractService implements Adverti
         advertisement.setState(stateDao.readByDescription(EnumState.MODERATION.name()).orElseThrow(() ->
                 new EntityNotExistException(entityNotExistMessage(1, 1, EnumState.MODERATION.name()))));
         advertisementDao.save(advertisement);
-        LOGGER.info(EnumLogger.SUCCESSFUL_UPDATE.getText());
+        log.info(EnumLogger.SUCCESSFUL_UPDATE.getText());
         return true;
     }
 
@@ -98,7 +98,7 @@ public class AdvertisementServiceImpl extends AbstractService implements Adverti
         advertisement.setState(stateDao.readByDescription(state.getDescription()).orElseThrow(() ->
                 new EntityNotExistException(entityNotExistMessage(1, 1, state.getDescription()))));
         advertisementDao.save(advertisement);
-        LOGGER.info(EnumLogger.SUCCESSFUL_UPDATE.getText());
+        log.info(EnumLogger.SUCCESSFUL_UPDATE.getText());
         return true;
     }
 
@@ -111,7 +111,7 @@ public class AdvertisementServiceImpl extends AbstractService implements Adverti
             throw new EntityNotAvailableException(EnumException.PERMISSION.getMessage());
         }
         final AdvertisementDto result = dtoMapper.map(advertisement, AdvertisementDto.class);
-        LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
+        log.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
     }
 
@@ -121,7 +121,7 @@ public class AdvertisementServiceImpl extends AbstractService implements Adverti
         final AdvertisementDto result = dtoMapper.map(advertisementDao.readById(index).orElseThrow(() ->
                         new EntityNotExistException(entityNotExistMessage(0, 0, index))),
                 AdvertisementDto.class);
-        LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
+        log.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
     }
 
@@ -135,7 +135,7 @@ public class AdvertisementServiceImpl extends AbstractService implements Adverti
         final Long resultSize = advertisementDao.countAdvertisementByUserAndState(user, state);
         final List<AdvertisementDto> result = dtoMapper.mapAll(advertisementDao.readAllByUserAndState(user, state,
                 PageRequest.of(page, numberElements)), AdvertisementDto.class);
-        LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
+        log.info(EnumLogger.SUCCESSFUL_READ.getText());
         return ResultListDto.of(resultSize, result);
     }
 
@@ -151,7 +151,7 @@ public class AdvertisementServiceImpl extends AbstractService implements Adverti
                         new EntityNotExistException(entityNotExistMessage(1, 1, EnumState.APPROVED.name()))));
         final List<AdvertisementDto> result = dtoMapper.mapAll(advertisementDao.readAllWithFilter(pageParameter, filterParameter, stateParameter),
                 AdvertisementDto.class);
-        LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
+        log.info(EnumLogger.SUCCESSFUL_READ.getText());
         return result;
     }
 

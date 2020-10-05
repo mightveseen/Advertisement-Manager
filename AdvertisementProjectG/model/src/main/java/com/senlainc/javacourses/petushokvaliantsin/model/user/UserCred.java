@@ -2,9 +2,10 @@ package com.senlainc.javacourses.petushokvaliantsin.model.user;
 
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumRole;
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.GraphProperty;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,10 +20,8 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.util.Objects;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Entity
 @Table(name = "user_creds")
@@ -42,6 +41,8 @@ public class UserCred {
     @Enumerated(value = EnumType.STRING)
     private EnumRole role;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToOne(mappedBy = "userCred", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User user;
 
@@ -49,31 +50,5 @@ public class UserCred {
         this.username = username;
         this.password = password;
         this.role = role;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserCred userCred = (UserCred) o;
-        return getId().equals(userCred.getId()) &&
-                getUsername().equals(userCred.getUsername()) &&
-                getPassword().equals(userCred.getPassword()) &&
-                getRole() == userCred.getRole();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getUsername(), getPassword(), getRole());
-    }
-
-    @Override
-    public String toString() {
-        return "UserCred{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", enumRole=" + role +
-                '}';
     }
 }
