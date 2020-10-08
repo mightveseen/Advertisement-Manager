@@ -34,16 +34,16 @@ public final class PageParameter implements IPageParameter {
         this.criteriaField = criteriaField;
     }
 
-    public static IPageParameter of(int page, int numberElements) {
+    public static PageParameter of(int page, int numberElements) {
         return new PageParameter(page, numberElements);
     }
 
-    public static IPageParameter of(int page, int numberElements, String direction) {
+    public static PageParameter of(int page, int numberElements, String direction) {
         return new PageParameter(page, numberElements, direction);
     }
 
     @SafeVarargs
-    public static <E, F> IPageParameter of(int page, int numberElements, String direction, SingularAttribute<E, F>... criteriaField) {
+    public static <E, F> PageParameter of(int page, int numberElements, String direction, SingularAttribute<E, F>... criteriaField) {
         return new PageParameter(page, numberElements, direction, criteriaField);
     }
 

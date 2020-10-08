@@ -23,7 +23,6 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.exception.PermissionD
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularClass;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularModel;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IFilterParameter;
-import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IStateParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.FilterParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
@@ -144,7 +143,7 @@ public class AdvertisementServiceImpl extends AbstractService implements Adverti
     @SingularModel(metamodels = {Advertisement_.class, User_.class})
     public List<AdvertisementDto> readAll(int page, int numberElements, String direction, String sortField, String search,
                                           String category, double minPrice, double maxPrice, EnumState advertisementState) {
-        final IPageParameter pageParameter = splitSortFiled(page, numberElements, direction, sortField);
+        final PageParameter pageParameter = splitSortFiled(page, numberElements, direction, sortField);
         final IFilterParameter filterParameter = FilterParameter.of(search, category, minPrice, maxPrice);
         final IStateParameter stateParameter = StateParameter.of(stateDao.readByDescription(advertisementState.name()).orElse(null),
                 stateDao.readByDescription(EnumState.APPROVED.name()).orElseThrow(() ->
@@ -171,7 +170,7 @@ public class AdvertisementServiceImpl extends AbstractService implements Adverti
         return advertisementDao.readCountWitFilter(filterParameter, stateParameter);
     }
 
-    private IPageParameter splitSortFiled(int page, int numberElements, String direction, String sortField) {
+    private PageParameter splitSortFiled(int page, int numberElements, String direction, String sortField) {
         if (sortField.contains(SORT_PARAMETER_SEPARATOR)) {
             return PageParameter.of(page, numberElements, direction,
                     singularMapper.getAttribute(SORT_FIELD + sortField.split(SORT_PARAMETER_SEPARATOR)[0]),

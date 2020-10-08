@@ -14,6 +14,8 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.ReadQue
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IFilterParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IStateParameter;
+import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
+import org.hibernate.graph.GraphSemantic;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.PersistenceException;
@@ -32,18 +34,18 @@ public class AdvertisementDaoImpl extends AbstractDao<Advertisement> implements 
     private static final String NONE_PARAMETER = "none";
 
     @Override
-    public List<Advertisement> readAllWithFilter(IPageParameter pageParameter, IFilterParameter filterParameter, IStateParameter stateParameter) {
+    public List<Advertisement> readAllWithFilter(PageParameter pageParameter, IFilterParameter filterParameter, IStateParameter stateParameter) {
         try {
             final CriteriaQuery<Advertisement> criteriaQuery = criteriaBuilder.createQuery(Advertisement.class);
             final Root<Advertisement> root = criteriaQuery.from(Advertisement.class);
             final List<Predicate> predicates = getPredicates(root, filterParameter, stateParameter);
             final List<Order> orders = getOrders(pageParameter, root, stateParameter);
             return entityManager.createQuery(criteriaQuery
-                    .select(root)
+                    .select(root).distinct(true)
                     .orderBy(orders)
                     .where(criteriaBuilder.and(predicates.toArray(new Predicate[0]))))
                     .setFirstResult(pageParameter.getFirstElement())
-                    .setHint(GraphProperty.Type.FETCH, entityManager.getEntityGraph(GraphProperty.Advertisement.DEFAULT))
+                    .setHint(GraphSemantic.FETCH.getJpaHintName(), entityManager.getEntityGraph(GraphProperty.Advertisement.DEFAULT))
                     .setMaxResults(pageParameter.getMaxResult())
                     .getResultList();
         } catch (PersistenceException exc) {

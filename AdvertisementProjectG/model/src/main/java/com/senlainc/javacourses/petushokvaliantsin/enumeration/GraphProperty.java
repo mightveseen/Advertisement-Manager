@@ -29,9 +29,4 @@ public final class GraphProperty {
         public static final String DEFAULT = "user-all-dependencies";
         public static final String USER_CRED_AND_RATE = "user-user-cred-and-rate-dependencies";
     }
-
-    @UtilityClass
-    public static class Type {
-        public static final String FETCH = "javax.persistence.fetchgraph";
-    }
 }

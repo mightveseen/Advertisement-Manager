@@ -6,6 +6,7 @@ import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.UserCred_;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User_;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.ReadQueryException;
+import org.hibernate.graph.GraphSemantic;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.PersistenceException;
@@ -33,7 +34,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDaoChild {
     public Optional<User> readByUserCred(String username, String graphName) {
         try {
             final List<User> result = queryReadByUserCred(username)
-                    .setHint(GraphProperty.Type.FETCH, entityManager.getEntityGraph(graphName))
+                    .setHint(GraphSemantic.FETCH.getJpaHintName(), entityManager.getEntityGraph(graphName))
                     .getResultList();
             return result == null ? Optional.empty() : Optional.of(result.get(0));
         } catch (PersistenceException exc) {
@@ -55,7 +56,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDaoChild {
     public Optional<User> readByEmail(String email, String graphName) {
         try {
             final List<User> result = queryReadByEmail(email)
-                    .setHint(GraphProperty.Type.FETCH, entityManager.getEntityGraph(graphName))
+                    .setHint(GraphSemantic.FETCH.getJpaHintName(), entityManager.getEntityGraph(graphName))
                     .getResultList();
             return result == null ? Optional.empty() : Optional.of(result.get(0));
         } catch (PersistenceException exc) {
@@ -77,7 +78,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDaoChild {
     public Optional<User> readByPhone(Integer phone, String graphName) {
         try {
             final List<User> result = queryReadByPhone(phone)
-                    .setHint(GraphProperty.Type.FETCH, entityManager.getEntityGraph(GraphProperty.User.DEFAULT))
+                    .setHint(GraphSemantic.FETCH.getJpaHintName(), entityManager.getEntityGraph(GraphProperty.User.DEFAULT))
                     .getResultList();
             return result == null ? Optional.empty() : Optional.of(result.get(0));
         } catch (PersistenceException exc) {
