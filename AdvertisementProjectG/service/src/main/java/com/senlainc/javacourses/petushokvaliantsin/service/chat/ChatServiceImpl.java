@@ -49,7 +49,7 @@ public class ChatServiceImpl extends AbstractService implements ChatService {
         final User chosenUser = advertisement.getUser();
         checkChatExist(activeUser, chosenUser);
         chatDao.save(new Chat(advertisement.getHeader(), String.format("%s create chat", activeUser.getFirstName()),
-                LocalDateTime.now(), getSetUser(activeUser, chosenUser)));
+                LocalDateTime.now(), new HashSet<>(Set.of(activeUser, chosenUser))));
         LOGGER.info(EnumLogger.SUCCESSFUL_CREATE.getText());
         return true;
     }
@@ -80,13 +80,6 @@ public class ChatServiceImpl extends AbstractService implements ChatService {
         final List<ChatDto> result = dtoMapper.mapAll(chatDao.readAllByUser(user, pageParameter), ChatDto.class);
         LOGGER.info(EnumLogger.SUCCESSFUL_READ.getText());
         return ResultListDto.of(resultSize, result);
-    }
-
-    private Set<User> getSetUser(User activeUser, User chosenUser) {
-        final Set<User> users = new HashSet<>();
-        users.add(chosenUser);
-        users.add(activeUser);
-        return users;
     }
 
     private void checkChatExist(User activeUser, User chosenUser) {
