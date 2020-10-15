@@ -41,7 +41,7 @@ public class AdvertisementDaoImpl extends AbstractDao<Advertisement> implements 
             final List<Predicate> predicates = getPredicates(root, filterParameter, stateParameter);
             final List<Order> orders = getOrders(pageParameter, root, stateParameter);
             return entityManager.createQuery(criteriaQuery
-                    .select(root).distinct(true)
+                    .select(root)
                     .orderBy(orders)
                     .where(criteriaBuilder.and(predicates.toArray(new Predicate[0]))))
                     .setFirstResult(pageParameter.getFirstElement())
