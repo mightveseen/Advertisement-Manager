@@ -11,6 +11,6 @@ public class CustomListener implements ApplicationListener<ContextRefreshedEvent
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        log.info("TRY THIS");
+        log.error("TRY THIS");
     }
 }
