@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,9 +34,10 @@ public class AuthenticationController {
 
     @GetMapping(value = "/login")
     public ResponseEntity<Boolean> login(@RequestBody @Validated(UserCredDto.Create.class) UserCredDto userCredDto, HttpServletResponse response) {
-        final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userCredDto.getUsername(), userCredDto.getPassword());
+        final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                userCredDto.getUsername(),
+                userCredDto.getPassword());
         final Authentication authentication = authenticationManager.authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
         response.setHeader(tokenMapper.getTokenHeader(), tokenMapper.generateToken(authentication));
         return new ResponseEntity<>(Boolean.TRUE, HttpStatus.ACCEPTED);
     }
