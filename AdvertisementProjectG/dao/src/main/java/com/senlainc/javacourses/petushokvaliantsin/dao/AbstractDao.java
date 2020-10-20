@@ -10,6 +10,7 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public abstract class AbstractDao<E> {
@@ -24,13 +25,15 @@ public abstract class AbstractDao<E> {
     }
 
     protected Order getOrder(IPageParameter pageParameter, CriteriaBuilder criteriaBuilder, Root<E> root) {
-        final Function<Expression<?>, Order> function = expression ->
-                pageParameter.getDirection().isDescending() ? criteriaBuilder.desc(expression) : criteriaBuilder.asc(expression);
+        final Function<Expression<?>, Order> function = expression -> pageParameter.getDirection().isDescending() ?
+                criteriaBuilder.desc(expression) :
+                criteriaBuilder.asc(expression);
+        final BiFunction<Integer, Function<Expression<?>, Order>, Order> lengthFunction = (length, func) -> length > 1 ?
+                func.apply(root.get(pageParameter.getCriteriaField()[0]).get(pageParameter.getCriteriaField()[1])) :
+                func.apply(root.get(pageParameter.getCriteriaField()[0]));
         if (pageParameter.getCriteriaField() == null || Arrays.stream(pageParameter.getCriteriaField()).anyMatch(Objects::isNull)) {
             return function.apply(root);
         }
-        return pageParameter.getCriteriaField().length > 1 ?
-                function.apply(root.get(pageParameter.getCriteriaField()[0]).get(pageParameter.getCriteriaField()[1])) :
-                function.apply(root.get(pageParameter.getCriteriaField()[0]));
+        return lengthFunction.apply(pageParameter.getCriteriaField().length, function);
     }
 }
