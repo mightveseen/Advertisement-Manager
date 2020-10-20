@@ -5,10 +5,12 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.function.Function;
 
 public abstract class AbstractDao<E> {
 
@@ -22,20 +24,13 @@ public abstract class AbstractDao<E> {
     }
 
     protected Order getOrder(IPageParameter pageParameter, CriteriaBuilder criteriaBuilder, Root<E> root) {
+        final Function<Expression<?>, Order> function = expression ->
+                pageParameter.getDirection().isDescending() ? criteriaBuilder.desc(expression) : criteriaBuilder.asc(expression);
         if (pageParameter.getCriteriaField() == null || Arrays.stream(pageParameter.getCriteriaField()).anyMatch(Objects::isNull)) {
-            return pageParameter.getDirection().isDescending() ? criteriaBuilder.desc(root) : criteriaBuilder.asc(root);
+            return function.apply(root);
         }
-        switch (pageParameter.getDirection()) {
-            case ASC:
-                return pageParameter.getCriteriaField().length > 1 ?
-                        criteriaBuilder.asc(root.get(pageParameter.getCriteriaField()[0]).get(pageParameter.getCriteriaField()[1])) :
-                        criteriaBuilder.asc(root.get(pageParameter.getCriteriaField()[0]));
-            case DESC:
-                return pageParameter.getCriteriaField().length > 1 ?
-                        criteriaBuilder.desc(root.get(pageParameter.getCriteriaField()[0]).get(pageParameter.getCriteriaField()[1])) :
-                        criteriaBuilder.desc(root.get(pageParameter.getCriteriaField()[0]));
-            default:
-                return criteriaBuilder.asc(root);
-        }
+        return pageParameter.getCriteriaField().length > 1 ?
+                function.apply(root.get(pageParameter.getCriteriaField()[0]).get(pageParameter.getCriteriaField()[1])) :
+                function.apply(root.get(pageParameter.getCriteriaField()[0]));
     }
 }
