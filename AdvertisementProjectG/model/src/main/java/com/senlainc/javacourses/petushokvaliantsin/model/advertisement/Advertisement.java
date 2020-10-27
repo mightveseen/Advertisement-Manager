@@ -49,11 +49,13 @@ public class Advertisement {
     private Long id;
     @Column(name = "header")
     private String header;
+    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", updatable = false)
     private User user;
     @Column(name = "description")
     private String description;
+    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private AdvertisementCategory category;
@@ -61,6 +63,7 @@ public class Advertisement {
     private LocalDate date;
     @Column(name = "price")
     private Double price;
+    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "state_id")
     private State state;
