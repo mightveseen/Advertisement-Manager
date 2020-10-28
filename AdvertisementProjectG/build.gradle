@@ -22,7 +22,7 @@ allprojects {
         compileOnly 'org.projectlombok:lombok:1.18.12'
         annotationProcessor 'org.projectlombok:lombok:1.18.12'
 
-        annotationProcessor('org.hibernate:hibernate-jpamodelgen:5.3.17.Final')
+        annotationProcessor 'org.hibernate:hibernate-jpamodelgen:5.3.17.Final'
     }
 }
 
