@@ -33,7 +33,6 @@ public class UserRatingServiceImpl extends AbstractService implements UserRating
                 new EntityNotExistException(entityNotExistMessage(2, 2, username)));
         checkYourself(activeUser, ratedUserIndex);
         checkRateExist(activeUser, ratedUserIndex);
-        //TODO : To UserCred and Rate Graph
         final User ratedUser = userDao.readById(ratedUserIndex).orElseThrow(() ->
                 new EntityNotExistException(entityNotExistMessage(2, 0, ratedUserIndex)));
         userRatingDao.save(createUserRating(object, activeUser, ratedUser));
