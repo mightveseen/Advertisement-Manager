@@ -12,8 +12,4 @@ public interface UserDao extends UserDaoChild, GenericDao<User, Long> {
 
     @EntityGraph(value = GraphProperty.User.DEFAULT)
     Optional<User> readById(Long id);
-
-    //TODO: Find solution
-//    @EntityGraph(value = GraphProperty.User.USER_CRED_AND_RATE)
-//    Optional<User> readByIdWithSecondGraph(Long id);
 }
