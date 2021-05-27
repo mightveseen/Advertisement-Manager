@@ -53,9 +53,11 @@ public class AdvertisementCommentServiceImpl extends AbstractService implements 
     @Override
     @Transactional(readOnly = true)
     @SingularModel(metamodels = AdvertisementComment_.class)
-    public List<AdvertisementCommentDto> readAll(Long index, int page, int numberElements, String direction, String sortField) {
+    public List<AdvertisementCommentDto> readAll(Long index, int page, int numberElements, String direction,
+                                                 String sortField) {
         final String tmpSortField = singularMapper.getAttribute(SORT_FIELD + sortField.toLowerCase()).getName();
-        final Sort.Direction tmpDirection = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        final Sort.Direction tmpDirection = direction.equalsIgnoreCase("desc") ?
+                Sort.Direction.DESC : Sort.Direction.ASC;
         final Pageable pageParameter = PageRequest.of(page, numberElements, tmpDirection, tmpSortField);
         final List<AdvertisementCommentDto> result = dtoMapper.mapAll(
                 advertisementCommentDao.readAllByAdvertisement(pageParameter,

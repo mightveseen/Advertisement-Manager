@@ -34,7 +34,8 @@ public class AdvertisementDaoImpl extends AbstractDao<Advertisement> implements 
     private static final String NONE_PARAMETER = "none";
 
     @Override
-    public List<Advertisement> readAllWithFilter(PageParameter pageParameter, IFilterParameter filterParameter, IStateParameter stateParameter) {
+    public List<Advertisement> readAllWithFilter(PageParameter pageParameter, IFilterParameter filterParameter,
+                                                 IStateParameter stateParameter) {
         try {
             final CriteriaQuery<Advertisement> criteriaQuery = criteriaBuilder.createQuery(Advertisement.class);
             final Root<Advertisement> root = criteriaQuery.from(Advertisement.class);
@@ -45,7 +46,8 @@ public class AdvertisementDaoImpl extends AbstractDao<Advertisement> implements 
                     .orderBy(orders)
                     .where(criteriaBuilder.and(predicates.toArray(new Predicate[0]))))
                     .setFirstResult(pageParameter.getFirstElement())
-                    .setHint(GraphSemantic.FETCH.getJpaHintName(), entityManager.getEntityGraph(GraphProperty.Advertisement.DEFAULT))
+                    .setHint(GraphSemantic.FETCH.getJpaHintName(),
+                            entityManager.getEntityGraph(GraphProperty.Advertisement.DEFAULT))
                     .setMaxResults(pageParameter.getMaxResult())
                     .getResultList();
         } catch (PersistenceException exc) {
@@ -68,14 +70,17 @@ public class AdvertisementDaoImpl extends AbstractDao<Advertisement> implements 
         }
     }
 
-    private List<Predicate> getPredicates(Root<Advertisement> root, IFilterParameter filterParameter, IStateParameter stateParameter) {
+    private List<Predicate> getPredicates(Root<Advertisement> root, IFilterParameter filterParameter,
+                                          IStateParameter stateParameter) {
         final List<Predicate> predicates = new ArrayList<>(6);
         if (!filterParameter.getSearch().equals(NONE_PARAMETER)) {
-            predicates.add(criteriaBuilder.like(root.get(Advertisement_.header), "%" + filterParameter.getSearch() + "%"));
+            predicates.add(criteriaBuilder.like(
+                    root.get(Advertisement_.header), "%" + filterParameter.getSearch() + "%"));
         }
         if (!filterParameter.getCategory().equals(NONE_PARAMETER)) {
             final Join<Advertisement, AdvertisementCategory> join = root.join(Advertisement_.category);
-            predicates.add(criteriaBuilder.equal(join.get(AdvertisementCategory_.description), filterParameter.getCategory()));
+            predicates.add(criteriaBuilder.equal(
+                    join.get(AdvertisementCategory_.description), filterParameter.getCategory()));
         }
         if (filterParameter.getMinPrice() > 0) {
             predicates.add(criteriaBuilder.ge(root.get(Advertisement_.price), filterParameter.getMinPrice()));
@@ -83,15 +88,19 @@ public class AdvertisementDaoImpl extends AbstractDao<Advertisement> implements 
         if (filterParameter.getMaxPrice() > 0) {
             predicates.add(criteriaBuilder.le(root.get(Advertisement_.price), filterParameter.getMaxPrice()));
         }
-        if (stateParameter.getAdvertisementState() != null && !stateParameter.getAdvertisementState().equals(EnumState.ALL)) {
-            predicates.add(criteriaBuilder.equal(root.get(Advertisement_.state), stateParameter.getAdvertisementState()));
+        if (stateParameter.getAdvertisementState() != null &&
+                !stateParameter.getAdvertisementState().equals(EnumState.ALL)) {
+            predicates.add(criteriaBuilder.equal(
+                    root.get(Advertisement_.state), stateParameter.getAdvertisementState()));
         }
         return predicates;
     }
 
-    private List<Order> getOrders(IPageParameter pageParameter, Root<Advertisement> root, IStateParameter stateParameter) {
+    private List<Order> getOrders(IPageParameter pageParameter, Root<Advertisement> root,
+                                  IStateParameter stateParameter) {
         final List<Order> orders = new ArrayList<>();
-        if (pageParameter.getCriteriaField().length > 1 && pageParameter.getCriteriaField()[1].getName().equals("rating")) {
+        if (pageParameter.getCriteriaField().length > 1 &&
+                pageParameter.getCriteriaField()[1].getName().equals("rating")) {
             final Join<Advertisement, Payment> join = root.join(Advertisement_.payments, JoinType.LEFT);
             join.on(criteriaBuilder.equal(join.get(Payment_.state), stateParameter.getPaymentState()));
             orders.add(criteriaBuilder.asc(join.join(Advertisement_.USER, JoinType.LEFT).get(User_.RATING)));

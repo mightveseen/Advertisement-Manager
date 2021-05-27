@@ -1,14 +1,14 @@
 plugins {
     id 'java'
     id 'application'
-    id 'org.springframework.boot' version '2.2.2.RELEASE'
+    id 'org.springframework.boot' version '2.4.5'
 }
 
 group 'com.senlainc.javacourses.petushokvaliantsin'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = JavaVersion.VERSION_HIGHER
-targetCompatibility = JavaVersion.VERSION_HIGHER
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
 mainClassName = 'com.senlainc.javacourses.petushokvaliantsin.Start'
 
 allprojects {
@@ -19,9 +19,8 @@ allprojects {
     }
 
     dependencies {
-        compileOnly 'org.projectlombok:lombok:1.18.12'
+        compile 'org.projectlombok:lombok:1.18.12'
         annotationProcessor 'org.projectlombok:lombok:1.18.12'
-
         annotationProcessor 'org.hibernate:hibernate-jpamodelgen:5.3.17.Final'
     }
 }

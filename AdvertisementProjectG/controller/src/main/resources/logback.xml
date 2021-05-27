@@ -1,0 +1,32 @@
+<configuration>
+    <property name="LOG_HOME" value="./log"/>
+
+    <property name="replacedEventData"
+              value="%replace(%replace(%msg){'&quot;','\&quot;'}){'\n','&#x00A0;'}%replace(%replace(%ex){'&quot;','\&quot;'}){'\n','&#x00A0;'}"/>
+    <appender name="ELASTIC" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/elastic.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/archive/elastic/elastic-%d{yyyy-MM-dd}.%i.zip</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>{"timestamp": "%d{dd/MM/yyyy'T'HH:mm:ss.SSSZZ}", "version": "%X{version}", "nodeId": "%X{nodeId}", "className": "%logger{36}", "thread": "[%thread]", "loggingLevel": "%level", "eventData": "${replacedEventData}"}%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{dd/MM/yyyy'T'HH:mm:ss.SSSZZ} [%yellow(%thread)] %highlight(%-5level) %cyan(%logger{36}) - %msg%n%ex
+            </pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ELASTIC"/>
+    </root>
+</configuration>

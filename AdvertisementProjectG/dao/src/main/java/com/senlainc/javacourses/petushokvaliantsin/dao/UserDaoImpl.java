@@ -78,7 +78,8 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDaoChild {
     public Optional<User> readByPhone(Integer phone, String graphName) {
         try {
             final List<User> result = queryReadByPhone(phone)
-                    .setHint(GraphSemantic.FETCH.getJpaHintName(), entityManager.getEntityGraph(GraphProperty.User.DEFAULT))
+                    .setHint(GraphSemantic.FETCH.getJpaHintName(),
+                            entityManager.getEntityGraph(GraphProperty.User.DEFAULT))
                     .getResultList();
             return result == null ? Optional.empty() : Optional.of(result.get(0));
         } catch (PersistenceException exc) {
