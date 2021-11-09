@@ -1,5 +1,3 @@
-import java.util.concurrent.Callable
-
 plugins {
     id 'java'
 }
@@ -11,6 +9,8 @@ repositories {
     mavenCentral()
 }
 
+project.buildDir("src/generated/java")
+
 dependencies {
 
     implementation apiElements('org.springframework.boot:spring-boot-starter-json:2.5.6')
@@ -18,8 +18,4 @@ dependencies {
     implementation apiElements('org.springframework.boot:spring-boot-starter-data-jpa:2.5.6')
     implementation apiElements('io.swagger.core.v3:swagger-annotations:2.1.11')
     implementation apiElements('org.springdoc:springdoc-openapi-ui:1.5.12')
-}
-
-tasks.withType(JavaCompile) {
-    options.annotationProcessorGeneratedSourcesDirectory = provider(file("src/generated/java") as Callable<File>)
 }
