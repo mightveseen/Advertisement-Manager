@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'application'
-    id 'org.springframework.boot' version '2.4.5'
+    id 'org.springframework.boot' version '2.5.6'
 }
 
 group 'com.senlainc.javacourses.petushokvaliantsin'
@@ -19,8 +19,8 @@ allprojects {
     }
 
     dependencies {
-        implementation 'org.projectlombok:lombok:1.18.12'
-        annotationProcessor 'org.projectlombok:lombok:1.18.12'
-        annotationProcessor 'org.hibernate:hibernate-jpamodelgen:5.3.17.Final'
+        implementation('org.projectlombok:lombok:1.18.22')
+        annotationProcessor ('org.projectlombok:lombok:1.18.22')
+        annotationProcessor ('org.hibernate:hibernate-jpamodelgen:5.6.1.Final')
     }
 }

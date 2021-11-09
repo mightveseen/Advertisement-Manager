@@ -10,7 +10,6 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'junit:junit:4.12'
 
-    implementation project(':model')
+    implementation apiElements(project(':model'))
 }

@@ -11,11 +11,9 @@ repositories {
 
 dependencies {
 
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
-
-    implementation 'org.modelmapper:modelmapper:2.3.7'
-    implementation 'org.reflections:reflections:0.9.12'
-    implementation 'javax.persistence:javax.persistence-api:2.2'
-    implementation 'org.springframework:spring-context:5.2.2.RELEASE'
-    implementation 'org.springframework.data:spring-data-commons:2.2.7.RELEASE'
+    implementation apiElements ('org.modelmapper:modelmapper:2.4.4')
+    implementation apiElements ('org.reflections:reflections:0.10.2')
+    implementation apiElements ('javax.persistence:javax.persistence-api:2.2')
+    implementation apiElements ('org.springframework:spring-context:5.3.12')
+    implementation apiElements ('org.springframework.data:spring-data-commons:2.5.4')
 }

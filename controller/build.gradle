@@ -10,19 +10,12 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'junit:junit:4.13'
-
     implementation project(':dao')
     implementation project(':service')
 
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.4.5'
-    implementation 'org.springframework.boot:spring-boot-starter-test:2.4.5'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator:2.4.5'
-    implementation 'com.auth0:java-jwt:3.10.3'
-    implementation 'org.liquibase:liquibase-core:4.0.0'
+    implementation apiElements ('org.springframework.boot:spring-boot-starter-web:2.5.6')
+    implementation apiElements ('org.springframework.boot:spring-boot-starter-test:2.5.6')
+    implementation apiElements ('org.springframework.boot:spring-boot-starter-actuator:2.5.6')
+    implementation apiElements ('com.auth0:java-jwt:3.18.2')
+    implementation apiElements ('org.liquibase:liquibase-core:4.4.3')
 }
-
-subprojects {
-    apply plugin: 'java'
-}
-
