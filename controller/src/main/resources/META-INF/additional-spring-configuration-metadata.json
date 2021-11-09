@@ -1,0 +1,39 @@
+{
+  "properties": [
+    {
+      "name": "securityConfig.tokenHeader",
+      "type": "java.lang.String",
+      "description": "*for future*."
+    },
+    {
+      "name": "securityConfig.tokenPrefix",
+      "type": "java.lang.String",
+      "description": "*for future*."
+    },
+    {
+      "name": "securityConfig.key",
+      "type": "java.lang.String",
+      "description": "*for future*."
+    },
+    {
+      "name": "swagger.custom.contacts",
+      "type": "java.lang.String",
+      "description": "*for future*."
+    },
+    {
+      "name": "project.version",
+      "type": "java.lang.String",
+      "description": "*for future*."
+    },
+    {
+      "name": "service.nodeId",
+      "type": "java.lang.String",
+      "description": "*for future*."
+    },
+    {
+      "name": "service.name",
+      "type": "java.lang.String",
+      "description": "*for future*."
+    }
+  ]
+}

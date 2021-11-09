@@ -1,8 +1,11 @@
 <configuration>
     <property name="LOG_HOME" value="./log"/>
-
+    <!-- ELASTIC FILE CONFIGURATION -->
+    <conversionRule conversionWord="expSplit" converterClass="com.senlainc.javacourses.petushokvaliantsin.utility.logback.ExceptionConverter" />
     <property name="replacedEventData"
-              value="%replace(%replace(%msg){'&quot;','\&quot;'}){'\n','&#x00A0;'}%replace(%replace(%ex){'&quot;','\&quot;'}){'\n','&#x00A0;'}"/>
+              value="%replace(%replace(%msg){'&quot;','\&#x0060;'}){'[\r\n]+','&#x00A0;'}%replace(%replace(%expSplit){'&quot;','\&#x0060;'}){'[\r\n]+','&#x00A0;'}%nopex"/>
+    <property name="DEFAULT_ELASTIC_PATTERN"
+              value="{&quot;timestamp&quot;: &quot;%d{dd/MM/yyyy'T'HH:mm:ss.SSSZZ}&quot;, &quot;version&quot;: &quot;%X{version}&quot;, &quot;nodeId&quot;: &quot;%X{nodeId}&quot;, &quot;correlationId&quot;: &quot;%X{correlationId}&quot;, &quot;jmsMessageId&quot;: &quot;%X{jmsMessageId}&quot;, &quot;requestId&quot;: &quot;%X{requestId}&quot;, &quot;typeOfMethod&quot;: &quot;%X{typeOfMethod}&quot;, &quot;className&quot;: &quot;%logger{36}&quot;, &quot;thread&quot;: &quot;[%thread]&quot;, &quot;loggingLevel&quot;: &quot;%level&quot;, &quot;eventName&quot;: &quot;%X{eventName}&quot;, &quot;eventData&quot;: &quot;${replacedEventData}&quot;, &quot;status&quot;: &quot;%X{status}&quot;, ${replacedErrorData}, ${replacedRequestData}, ${replacedResponseData}}%n"/>
     <appender name="ELASTIC" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}/elastic.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -13,18 +16,17 @@
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder>
-            <pattern>{"timestamp": "%d{dd/MM/yyyy'T'HH:mm:ss.SSSZZ}", "version": "%X{version}", "nodeId": "%X{nodeId}", "className": "%logger{36}", "thread": "[%thread]", "loggingLevel": "%level", "eventData": "${replacedEventData}"}%n
-            </pattern>
+            <pattern>${DEFAULT_ELASTIC_PATTERN}</pattern>
         </encoder>
     </appender>
-
+    <!-- CONSOLE CONFIGURATION -->
+    <property name="DEFAULT_STDOUT_PATTERN" value="%d{dd/MM/yyyy'T'HH:mm:ss.SSSZZ} [%thread] %highlight(%-5level) %green(status:%X{status}) %yellow(eventName:%X{eventName}) %cyan(%logger{36}) - %msg%n%ex" />
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{dd/MM/yyyy'T'HH:mm:ss.SSSZZ} [%yellow(%thread)] %highlight(%-5level) %cyan(%logger{36}) - %msg%n%ex
-            </pattern>
+            <pattern>${DEFAULT_STDOUT_PATTERN}</pattern>
         </encoder>
     </appender>
-
+    <!-- PERMISSIONS -->
     <root level="info">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="ELASTIC"/>

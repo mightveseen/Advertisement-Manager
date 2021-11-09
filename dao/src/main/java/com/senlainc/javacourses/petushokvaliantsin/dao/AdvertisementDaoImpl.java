@@ -42,9 +42,9 @@ public class AdvertisementDaoImpl extends AbstractDao<Advertisement> implements 
             final List<Predicate> predicates = getPredicates(root, filterParameter, stateParameter);
             final List<Order> orders = getOrders(pageParameter, root, stateParameter);
             return entityManager.createQuery(criteriaQuery
-                    .select(root)
-                    .orderBy(orders)
-                    .where(criteriaBuilder.and(predicates.toArray(new Predicate[0]))))
+                            .select(root)
+                            .orderBy(orders)
+                            .where(criteriaBuilder.and(predicates.toArray(new Predicate[0]))))
                     .setFirstResult(pageParameter.getFirstElement())
                     .setHint(GraphSemantic.FETCH.getJpaHintName(),
                             entityManager.getEntityGraph(GraphProperty.Advertisement.DEFAULT))
@@ -62,8 +62,8 @@ public class AdvertisementDaoImpl extends AbstractDao<Advertisement> implements 
             final Root<Advertisement> root = criteriaQuery.from(Advertisement.class);
             final List<Predicate> predicates = getPredicates(root, filterParameter, stateParameter);
             return entityManager.createQuery(criteriaQuery
-                    .select(criteriaBuilder.count(root))
-                    .where(predicates.toArray(new Predicate[0])))
+                            .select(criteriaBuilder.count(root))
+                            .where(predicates.toArray(new Predicate[0])))
                     .getSingleResult();
         } catch (PersistenceException exc) {
             throw new ReadQueryException(exc);

@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
@@ -34,16 +33,15 @@ import java.util.Collections;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
-@PropertySource(value = "classpath:/security.properties", ignoreResourceNotFound = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String ADVERTISEMENT_URL = "/advertisements/**";
     private final UserDetailsService userDetailsService;
-    @Value("${SECURITY_CONFIG.TOKEN_HEADER:Authorization}")
+    @Value("${securityConfig.tokenHeader:Bearer}")
     private String tokenHeader;
-    @Value("${SECURITY_CONFIG.TOKEN_PREFIX:Bearer}")
+    @Value("${securityConfig.tokenPrefix:key}")
     private String tokenPrefix;
-    @Value("${SECURITY_CONFIG.KEY:key}")
+    @Value("${securityConfig.key:Authorization}")
     private String secretKey;
 
     @Autowired
@@ -57,17 +55,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login", "/sign-up").anonymous()
                 .antMatchers("/logout").authenticated()
                 .antMatchers("/admin/*").hasRole(
-                EnumRole.ROLE_ADMIN.getRole())
+                        EnumRole.ROLE_ADMIN.getRole())
                 .antMatchers("/moderator/*").hasAnyRole(
-                EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
+                        EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
                 .antMatchers("/account/**").hasAnyRole(
-                EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_ADMIN.getRole(), EnumRole.ROLE_MODERATOR.getRole())
+                        EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_ADMIN.getRole(), EnumRole.ROLE_MODERATOR.getRole())
                 .antMatchers(HttpMethod.PUT, ADVERTISEMENT_URL).hasAnyRole(
-                EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
+                        EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
                 .antMatchers(HttpMethod.POST, ADVERTISEMENT_URL, "/users/{id}").hasAnyRole(
-                EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
+                        EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
                 .antMatchers(HttpMethod.DELETE, ADVERTISEMENT_URL).hasAnyRole(
-                EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
+                        EnumRole.ROLE_COMMON.getRole(), EnumRole.ROLE_MODERATOR.getRole(), EnumRole.ROLE_ADMIN.getRole())
                 .antMatchers(HttpMethod.GET, ADVERTISEMENT_URL).permitAll()
                 .and().exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint())

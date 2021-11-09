@@ -2,12 +2,11 @@ version: "3"
 services:
   db:
     image: "postgres:12.0"
-    container_name: "main-db"
-    build:
-      context: ../../../../../../AdvertisementDatabase
+    container_name: "AdvertisementDB"
     environment:
       POSTGRES_USERNAME: postgres
       POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: advertisement
     ports:
       - "54320:5432"
     volumes:

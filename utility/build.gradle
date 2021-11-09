@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'com.senlainc.javacourses.petushokvaliantsin'
-version '1.0-SNAPSHOT'
+version '1.0.0'
 
 repositories {
     mavenCentral()
@@ -16,4 +16,5 @@ dependencies {
     implementation apiElements ('javax.persistence:javax.persistence-api:2.2')
     implementation apiElements ('org.springframework:spring-context:5.3.12')
     implementation apiElements ('org.springframework.data:spring-data-commons:2.5.4')
+    implementation apiElements ('ch.qos.logback:logback-classic:1.2.6')
 }
