@@ -31,7 +31,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Entity
 @Table(name = "advertisements")
@@ -50,38 +50,36 @@ public class Advertisement {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
     @Column(name = "header")
     private String header;
-    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", updatable = false)
+    @ToString.Exclude
     private User user;
     @Column(name = "description")
     private String description;
-    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
+    @ToString.Exclude
     private AdvertisementCategory category;
     @Column(name = "date")
     private LocalDate date;
     @Column(name = "price")
     private Double price;
-    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "state_id")
+    @ToString.Exclude
     private State state;
 
     @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "advertisement", fetch = FetchType.LAZY)
     private Set<AdvertisementComment> comments;
     @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "advertisement", fetch = FetchType.LAZY)
     private Set<AdvertisementPhoto> photos;
     @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "advertisement", fetch = FetchType.LAZY)
     private Set<Payment> payments;
 

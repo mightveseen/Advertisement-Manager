@@ -4,8 +4,7 @@ services:
     image: "postgres:12.0"
     container_name: "main-db"
     build:
-      context: .
-      dockerfile: db.Dockerfile
+      context: ../../../../../../AdvertisementDatabase
     environment:
       POSTGRES_USERNAME: postgres
       POSTGRES_PASSWORD: 1234

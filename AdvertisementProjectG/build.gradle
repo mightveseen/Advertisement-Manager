@@ -7,8 +7,8 @@ plugins {
 group 'com.senlainc.javacourses.petushokvaliantsin'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
+sourceCompatibility = JavaVersion.VERSION_13
+targetCompatibility = JavaVersion.VERSION_13
 mainClassName = 'com.senlainc.javacourses.petushokvaliantsin.Start'
 
 allprojects {
@@ -19,12 +19,8 @@ allprojects {
     }
 
     dependencies {
-        compile 'org.projectlombok:lombok:1.18.12'
+        implementation 'org.projectlombok:lombok:1.18.12'
         annotationProcessor 'org.projectlombok:lombok:1.18.12'
         annotationProcessor 'org.hibernate:hibernate-jpamodelgen:5.3.17.Final'
     }
-}
-
-dependencies {
-    compile project(":controller")
 }

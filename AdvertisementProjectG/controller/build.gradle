@@ -12,14 +12,14 @@ repositories {
 dependencies {
     testImplementation 'junit:junit:4.13'
 
-    compile project(':dao')
-    compile project(':service')
+    implementation project(':dao')
+    implementation project(':service')
 
-    compile 'org.springframework.boot:spring-boot-starter-web:2.4.5'
-    compile 'org.springframework.boot:spring-boot-starter-test:2.4.5'
-    compile 'org.springframework.boot:spring-boot-starter-actuator:2.4.5'
-    compile 'com.auth0:java-jwt:3.10.3'
-    compile 'org.liquibase:liquibase-core:4.0.0'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.4.5'
+    implementation 'org.springframework.boot:spring-boot-starter-test:2.4.5'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:2.4.5'
+    implementation 'com.auth0:java-jwt:3.10.3'
+    implementation 'org.liquibase:liquibase-core:4.0.0'
 }
 
 subprojects {

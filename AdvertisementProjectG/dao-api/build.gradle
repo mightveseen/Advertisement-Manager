@@ -6,8 +6,8 @@ group 'com.senlainc.javacourses.petushokvaliantsin'
 version '1.0-SNAPSHOT'
 
 dependencies {
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
 
-    compile project(':model')
-    compile project(':utility')
+    implementation project(':model')
+    implementation project(':utility')
 }
