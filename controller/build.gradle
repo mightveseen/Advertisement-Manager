@@ -12,10 +12,9 @@ repositories {
 dependencies {
     implementation project(':dao')
     implementation project(':service')
-
-    implementation apiElements ('org.springframework.boot:spring-boot-starter-web:2.5.6')
-    implementation apiElements ('org.springframework.boot:spring-boot-starter-test:2.5.6')
-    implementation apiElements ('org.springframework.boot:spring-boot-starter-actuator:2.5.6')
-    implementation apiElements ('com.auth0:java-jwt:3.18.2')
-    implementation apiElements ('org.liquibase:liquibase-core:4.4.3')
+    implementation('org.springframework.boot:spring-boot-starter-web:2.7.1')
+    implementation('org.springframework.boot:spring-boot-starter-test:2.7.1')
+    implementation('org.springframework.boot:spring-boot-starter-actuator:2.7.1')
+    implementation('com.auth0:java-jwt:3.19.2')
+    implementation('org.liquibase:liquibase-core:4.11.0')
 }

@@ -6,7 +6,6 @@ group 'com.senlainc.javacourses.petushokvaliantsin'
 version '1.0.0'
 
 dependencies {
-
     implementation apiElements(project(':model'))
     implementation apiElements(project(':utility'))
 }
