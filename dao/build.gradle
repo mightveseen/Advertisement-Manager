@@ -10,7 +10,6 @@ repositories {
 }
 
 dependencies {
-
     implementation apiElements(project(':dao-api'))
     implementation apiElements('org.postgresql:postgresql:42.3.1')
 }
