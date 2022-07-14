@@ -13,8 +13,6 @@ import com.senlainc.javacourses.petushokvaliantsin.service.api.payment.PaymentSe
 import com.senlainc.javacourses.petushokvaliantsin.service.api.payment.PaymentTypeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,12 +22,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.security.Principal;
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
 @RestController
@@ -46,6 +47,7 @@ public class AdvertisementController {
     /**
      * Advertisement operation [Show all, show by id, delete/remove/update]
      */
+    @ResponseStatus(OK)
     @GetMapping
     public ResultListDto<AdvertisementDto> getAdvertisements(@RequestParam(name = "page", defaultValue = "0") @Positive int page,
                                                              @RequestParam(name = "number", defaultValue = "15") @Positive int numberElements,
@@ -59,40 +61,46 @@ public class AdvertisementController {
                 advertisementService.readAll(page, numberElements, direction, sort, search, category, minPrice, maxPrice, EnumState.ACTIVE));
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<AdvertisementDto> getAdvertisement(@PathVariable(name = "id") @Positive Long index) {
-        return new ResponseEntity<>(advertisementService.readByUser(index), HttpStatus.OK);
+    @ResponseStatus(OK)
+    @GetMapping("/{id}")
+    public AdvertisementDto getAdvertisement(@PathVariable(name = "id") @Positive Long index) {
+        return advertisementService.readByUser(index);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Boolean> deleteAdvertisement(@PathVariable(name = "id") @Positive Long index, @NotNull Principal principal) {
-        return new ResponseEntity<>(advertisementService.delete(principal.getName(), index), HttpStatus.OK);
+    @ResponseStatus(OK)
+    @DeleteMapping("/{id}")
+    public Boolean deleteAdvertisement(@PathVariable(name = "id") @Positive Long index, @NotNull Principal principal) {
+        return advertisementService.delete(principal.getName(), index);
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<Boolean> updateAdvertisement(@RequestBody @Validated({AdvertisementDto.Update.class, AdvertisementCategoryDto.Read.class})
-                                                               AdvertisementDto object, @NotNull Principal principal) {
-        return new ResponseEntity<>(advertisementService.updateByUser(principal.getName(), object), HttpStatus.OK);
+    @ResponseStatus(OK)
+    @PutMapping("/{id}")
+    public Boolean updateAdvertisement(@RequestBody @Validated({AdvertisementDto.Update.class, AdvertisementCategoryDto.Read.class})
+                                       AdvertisementDto object, @NotNull Principal principal) {
+        return advertisementService.updateByUser(principal.getName(), object);
     }
 
-    @PostMapping(value = "/create")
-    public ResponseEntity<Boolean> createAdvertisement(@RequestBody @Validated({AdvertisementDto.Create.class, AdvertisementCategoryDto.Read.class})
-                                                               AdvertisementDto object, @NotNull Principal principal) {
-        return new ResponseEntity<>(advertisementService.create(principal.getName(), object), HttpStatus.OK);
+    @ResponseStatus(OK)
+    @PostMapping("/create")
+    public Boolean createAdvertisement(@RequestBody @Validated({AdvertisementDto.Create.class, AdvertisementCategoryDto.Read.class})
+                                       AdvertisementDto object, @NotNull Principal principal) {
+        return advertisementService.create(principal.getName(), object);
     }
 
     /**
      * Chat operation [Create chat]
      */
-    @PostMapping(value = "/{id}")
-    public ResponseEntity<Boolean> createChat(@PathVariable(name = "id") @Positive Long index, @NotNull Principal principal) {
-        return new ResponseEntity<>(chatService.create(principal.getName(), index), HttpStatus.OK);
+    @ResponseStatus(OK)
+    @PostMapping("/{id}")
+    public Boolean createChat(@PathVariable(name = "id") @Positive Long index, @NotNull Principal principal) {
+        return chatService.create(principal.getName(), index);
     }
 
     /**
      * Comment operation [Show all advertisement comment's, add comment]
      */
-    @GetMapping(value = "/{id}/comments")
+    @ResponseStatus(OK)
+    @GetMapping("/{id}/comments")
     public ResultListDto<AdvertisementCommentDto> getAdvertisementComments(@PathVariable(name = "id") @Positive Long index,
                                                                            @RequestParam(name = "first", defaultValue = "0") int firstElement,
                                                                            @RequestParam(name = "max", defaultValue = "15") int maxResult,
@@ -102,25 +110,28 @@ public class AdvertisementController {
                 advertisementCommentService.readAll(index, firstElement, maxResult, direction, sort));
     }
 
-    @PostMapping(value = "/{id}/comments")
-    public ResponseEntity<Boolean> createAdvertisementComment(@PathVariable(name = "id") @Positive Long index,
-                                                              @RequestBody @Validated(AdvertisementCommentDto.Create.class) AdvertisementCommentDto object,
-                                                              @NotNull Principal principal) {
-        return new ResponseEntity<>(advertisementCommentService.create(principal.getName(), index, object), HttpStatus.OK);
+    @ResponseStatus(OK)
+    @PostMapping("/{id}/comments")
+    public Boolean createAdvertisementComment(@PathVariable(name = "id") @Positive Long index,
+                                              @RequestBody @Validated(AdvertisementCommentDto.Create.class) AdvertisementCommentDto object,
+                                              @NotNull Principal principal) {
+        return advertisementCommentService.create(principal.getName(), index, object);
     }
 
     /**
      * Payment operation [Show all payment type, add payment]
      */
-    @GetMapping(value = "{id}/payments")
+    @ResponseStatus(OK)
+    @GetMapping("{id}/payments")
     public List<PaymentTypeDto> getPaymentTypes() {
         return paymentTypeService.readAll();
     }
 
-    @PostMapping(value = "{id}/payments")
-    public ResponseEntity<Boolean> addPayment(@PathVariable(name = "id") Long index,
-                                              @RequestBody @Validated(PaymentTypeDto.Read.class) PaymentTypeDto object,
-                                              @NotNull Principal principal) {
-        return new ResponseEntity<>(paymentService.create(principal.getName(), index, object), HttpStatus.OK);
+    @ResponseStatus(OK)
+    @PostMapping("{id}/payments")
+    public Boolean addPayment(@PathVariable(name = "id") Long index,
+                              @RequestBody @Validated(PaymentTypeDto.Read.class) PaymentTypeDto object,
+                              @NotNull Principal principal) {
+        return paymentService.create(principal.getName(), index, object);
     }
 }
