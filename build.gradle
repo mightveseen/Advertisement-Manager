@@ -1,27 +1,38 @@
 plugins {
-    id 'java'
-    id 'application'
-    id 'org.springframework.boot' version '2.7.1'
+    alias(libs.plugins.springBoot) apply false
+    alias(libs.plugins.dependencyManagement) apply false
 }
 
-group 'com.senlainc.javacourses.petushokvaliantsin'
-version '1.0.0'
-
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-mainClassName = 'com.senlainc.javacourses.petushokvaliantsin.Start'
+group = 'com.senlainc.javacourses.petushokvaliantsin'
+version = '1.0.0'
 
 subprojects {
-    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'io.spring.dependency-management'
+
+    group = rootProject.group
+    version = rootProject.version
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
 
     repositories {
         mavenCentral()
     }
 
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${libs.versions.springBoot.get()}"
+        }
+    }
+
     dependencies {
-        implementation('org.projectlombok:lombok:1.18.22')
-        annotationProcessor('org.projectlombok:lombok:1.18.22')
-        annotationProcessor('org.hibernate:hibernate-jpamodelgen:5.6.1.Final')
-        annotationProcessor('org.springframework.boot:spring-boot-configuration-processor:2.7.1')
+        compileOnly libs.lombok
+        annotationProcessor libs.lombok
+        annotationProcessor 'org.hibernate.orm:hibernate-jpamodelgen'
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     }
 }

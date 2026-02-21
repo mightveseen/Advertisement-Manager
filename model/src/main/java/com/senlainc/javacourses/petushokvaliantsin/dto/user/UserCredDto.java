@@ -1,27 +1,18 @@
 package com.senlainc.javacourses.petushokvaliantsin.dto.user;
 
 import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumRole;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.io.Serializable;
 
-@Getter
-@Setter
-public class UserCredDto implements Serializable {
-
-    @Null(groups = Create.class)
-    private Long id;
-    @NotNull(groups = Create.class)
-    private String username;
-    @NotNull(groups = Create.class)
-    private String password;
-    @Null(groups = Create.class)
-    private EnumRole enumRole;
+public record UserCredDto(
+        @Null(groups = Create.class) Long id,
+        @NotNull(groups = Create.class) String username,
+        @NotNull(groups = Create.class) String password,
+        @Null(groups = Create.class) EnumRole enumRole
+) implements Serializable {
 
     public interface Create {
-
     }
 }

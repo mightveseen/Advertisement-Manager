@@ -1,6 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.utility.exception;
 
-public class EntityAlreadyExistException extends RuntimeException {
+public final class EntityAlreadyExistException extends AppException {
 
     public EntityAlreadyExistException(String message) {
         super(message);

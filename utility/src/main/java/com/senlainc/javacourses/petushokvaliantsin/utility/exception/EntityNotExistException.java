@@ -1,6 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.utility.exception;
 
-public class EntityNotExistException extends RuntimeException {
+public final class EntityNotExistException extends AppException {
 
     public EntityNotExistException(String message) {
         super(message);

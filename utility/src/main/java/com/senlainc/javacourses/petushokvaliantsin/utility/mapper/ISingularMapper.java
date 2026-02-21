@@ -1,6 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.utility.mapper;
 
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.metamodel.SingularAttribute;
 
 public interface ISingularMapper {
 

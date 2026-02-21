@@ -1,6 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.utility.exception;
 
-public class MappingException extends RuntimeException {
+public final class MappingException extends AppException {
 
     public MappingException(String message) {
         super(message);

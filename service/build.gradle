@@ -1,16 +1,5 @@
-plugins {
-    id 'java'
-}
-
-group 'com.senlainc.javacourses.petushokvaliantsin'
-version '1.0.0'
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    implementation apiElements(project(':dao-api'))
-    implementation apiElements(project(':service-api'))
-    implementation apiElements('org.springframework.boot:spring-boot-starter-security:2.7.1')
+    api project(':service-api')
+    api project(':dao-api')
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 }

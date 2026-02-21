@@ -11,6 +11,8 @@ import com.senlainc.javacourses.petushokvaliantsin.service.api.advertisement.Adv
 import com.senlainc.javacourses.petushokvaliantsin.service.api.chat.ChatService;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.payment.PaymentService;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.payment.PaymentTypeService;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -25,8 +27,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import java.security.Principal;
 import java.util.List;
 

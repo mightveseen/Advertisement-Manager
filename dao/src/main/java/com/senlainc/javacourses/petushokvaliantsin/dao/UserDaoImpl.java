@@ -6,14 +6,14 @@ import com.senlainc.javacourses.petushokvaliantsin.model.user.User;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.UserCred_;
 import com.senlainc.javacourses.petushokvaliantsin.model.user.User_;
 import com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao.ReadQueryException;
+import jakarta.persistence.PersistenceException;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.hibernate.graph.GraphSemantic;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.PersistenceException;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 

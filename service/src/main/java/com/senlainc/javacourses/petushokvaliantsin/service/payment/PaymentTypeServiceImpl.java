@@ -47,8 +47,8 @@ public class PaymentTypeServiceImpl extends AbstractService implements PaymentTy
     @Override
     @Transactional
     public boolean update(PaymentTypeDto object) {
-        if (!paymentTypeDao.existsById(object.getId())) {
-            throw new EntityNotExistException(entityNotExistMessage(7, 0, object.getId()));
+        if (!paymentTypeDao.existsById(object.id())) {
+            throw new EntityNotExistException(entityNotExistMessage(7, 0, object.id()));
         }
         final PaymentType paymentType = dtoMapper.map(object, PaymentType.class);
         paymentTypeDao.save(paymentType);

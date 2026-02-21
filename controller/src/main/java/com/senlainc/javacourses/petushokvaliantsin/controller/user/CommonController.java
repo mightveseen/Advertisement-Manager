@@ -9,6 +9,8 @@ import com.senlainc.javacourses.petushokvaliantsin.service.api.chat.ChatService;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.chat.MessageService;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.payment.PaymentService;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.user.UserService;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,8 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import java.security.Principal;
 import java.util.List;
 

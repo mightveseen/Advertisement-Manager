@@ -5,6 +5,7 @@ import com.senlainc.javacourses.petushokvaliantsin.dto.combination.AccountDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserCredDto;
 import com.senlainc.javacourses.petushokvaliantsin.dto.user.UserDto;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.user.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,8 +34,8 @@ public class AuthenticationController {
     @GetMapping(value = "/login")
     public ResponseEntity<Boolean> login(@RequestBody @Validated(UserCredDto.Create.class) UserCredDto userCredDto, HttpServletResponse response) {
         final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                userCredDto.getUsername(),
-                userCredDto.getPassword());
+                userCredDto.username(),
+                userCredDto.password());
         final Authentication authentication = authenticationManager.authenticate(authenticationToken);
         response.setHeader(tokenMapper.getTokenHeader(), tokenMapper.generateToken(authentication));
         return new ResponseEntity<>(Boolean.TRUE, HttpStatus.ACCEPTED);

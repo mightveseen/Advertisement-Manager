@@ -42,7 +42,7 @@ public class MessageServiceImpl extends AbstractService implements MessageServic
                 new EntityNotExistException(entityNotExistMessage(2, 2, username)));
         checkPermission(chat, activeUser);
         messageDao.save(createMessage(object, chat, activeUser));
-        chatDao.save(createChat(chat, activeUser, object.getText()));
+        chatDao.save(createChat(chat, activeUser, object.text()));
         LOGGER.info(EnumLogger.SUCCESSFUL_CREATE.getText());
         return true;
     }

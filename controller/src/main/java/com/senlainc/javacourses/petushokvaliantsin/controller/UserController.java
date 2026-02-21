@@ -9,6 +9,8 @@ import com.senlainc.javacourses.petushokvaliantsin.enumeration.EnumState;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.advertisement.AdvertisementService;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.user.UserRatingService;
 import com.senlainc.javacourses.petushokvaliantsin.service.api.user.UserService;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import java.security.Principal;
 
 import static org.springframework.http.HttpStatus.OK;

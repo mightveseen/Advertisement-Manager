@@ -1,8 +1,8 @@
 package com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao;
 
-public class CreateQueryException extends RuntimeException {
+public final class CreateQueryException extends DaoException {
 
     public CreateQueryException(Throwable cause) {
-        super(cause);
+        super(cause.getMessage(), cause);
     }
 }

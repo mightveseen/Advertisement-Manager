@@ -4,9 +4,9 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.exception.IncorrectCa
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.ISingularMapper;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularClass;
 import com.senlainc.javacourses.petushokvaliantsin.utility.mapper.annotation.SingularModel;
+import jakarta.persistence.metamodel.SingularAttribute;
 import org.reflections.Reflections;
 
-import javax.persistence.metamodel.SingularAttribute;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;

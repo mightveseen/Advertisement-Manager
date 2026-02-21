@@ -36,9 +36,9 @@ public class UserServiceImpl extends AbstractService implements UserService {
     @Override
     @Transactional
     public boolean create(AccountDto accountDto) {
-        checkUsername(accountDto.getUserCred().getUsername());
-        checkEmail(accountDto.getUser().getEmail());
-        checkPhone(accountDto.getUser().getPhone());
+        checkUsername(accountDto.userCred().username());
+        checkEmail(accountDto.user().email());
+        checkPhone(accountDto.user().phone());
         final UserCred userCred = createUserCred(accountDto);
         userCred.setPassword(passwordEncoder.encode(userCred.getPassword()));
         userCredDao.save(userCred);
@@ -54,8 +54,9 @@ public class UserServiceImpl extends AbstractService implements UserService {
         final User user = userDao.readByUserCred(username).orElseThrow(() ->
                 new EntityNotExistException(entityNotExistMessage(2, 2, username)));
         checkPermission(user, userDto);
-        userDto.setRating(user.getRating());
-        userDao.save(dtoMapper.map(userDto, User.class));
+        final UserDto updatedDto = new UserDto(userDto.id(), userDto.firstName(), userDto.lastName(),
+                userDto.email(), userDto.phone(), userDto.registrationDate(), user.getRating());
+        userDao.save(dtoMapper.map(updatedDto, User.class));
         LOGGER.info(EnumLogger.SUCCESSFUL_UPDATE.getText());
         return true;
     }
@@ -79,13 +80,13 @@ public class UserServiceImpl extends AbstractService implements UserService {
     }
 
     private UserCred createUserCred(AccountDto accountDto) {
-        final UserCred userCred = dtoMapper.map(accountDto.getUserCred(), UserCred.class);
+        final UserCred userCred = dtoMapper.map(accountDto.userCred(), UserCred.class);
         userCred.setRole(EnumRole.ROLE_COMMON);
         return userCred;
     }
 
     private User createUser(AccountDto accountDto, UserCred userCred) {
-        final User user = dtoMapper.map(accountDto.getUser(), User.class);
+        final User user = dtoMapper.map(accountDto.user(), User.class);
         user.setRegistrationDate(LocalDate.now());
         user.setId(userCred.getId());
         user.setUserCred(userCred);
@@ -93,7 +94,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
     }
 
     private void checkPermission(User user, UserDto userDto) {
-        if (!user.getId().equals(userDto.getId())) {
+        if (!user.getId().equals(userDto.id())) {
             throw new PermissionDeniedException(EnumException.PERMISSION.getMessage());
         }
     }

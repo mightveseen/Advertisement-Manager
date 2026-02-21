@@ -1,8 +1,8 @@
 package com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao;
 
-public class ReadQueryException extends RuntimeException {
+public final class ReadQueryException extends DaoException {
 
     public ReadQueryException(Throwable cause) {
-        super(cause);
+        super(cause.getMessage(), cause);
     }
 }

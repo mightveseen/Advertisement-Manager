@@ -1,26 +1,17 @@
 package com.senlainc.javacourses.petushokvaliantsin.dto.user;
 
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.io.Serializable;
 
-@Getter
-@Setter
-public class UserRatingDto implements Serializable {
-
-    @Null(groups = Create.class)
-    private Long id;
-    @Null(groups = Create.class)
-    private UserDto rateOwnerUser;
-    @Null(groups = Create.class)
-    private UserDto ratedUser;
-    @NotNull(groups = Create.class)
-    private Short value;
+public record UserRatingDto(
+        @Null(groups = Create.class) Long id,
+        @Null(groups = Create.class) UserDto rateOwnerUser,
+        @Null(groups = Create.class) UserDto ratedUser,
+        @NotNull(groups = Create.class) Short value
+) implements Serializable {
 
     public interface Create {
-
     }
 }

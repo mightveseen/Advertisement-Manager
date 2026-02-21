@@ -36,7 +36,7 @@ public class UserRatingServiceImpl extends AbstractService implements UserRating
         final User ratedUser = userDao.readById(ratedUserIndex).orElseThrow(() ->
                 new EntityNotExistException(entityNotExistMessage(2, 0, ratedUserIndex)));
         userRatingDao.save(createUserRating(object, activeUser, ratedUser));
-        ratedUser.setRating(updateUserRatingValue(ratedUser, object.getValue()));
+        ratedUser.setRating(updateUserRatingValue(ratedUser, object.value()));
         userDao.save(ratedUser);
         LOGGER.info(EnumLogger.SUCCESSFUL_CREATE.getText());
         return true;

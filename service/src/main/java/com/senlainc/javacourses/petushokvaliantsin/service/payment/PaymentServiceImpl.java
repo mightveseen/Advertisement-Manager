@@ -59,8 +59,8 @@ public class PaymentServiceImpl extends AbstractService implements PaymentServic
                 .collect(Collectors.toList());
         checkLimit(advertisementActivePayment.size());
         final LocalDate paymentStartDate = createLocalDate(advertisementActivePayment);
-        final PaymentType paymentType = paymentTypeDao.findById(object.getId()).orElseThrow(() ->
-                new EntityNotExistException(entityNotExistMessage(6, 0, object.getId())));
+        final PaymentType paymentType = paymentTypeDao.findById(object.id()).orElseThrow(() ->
+                new EntityNotExistException(entityNotExistMessage(6, 0, object.id())));
         paymentDao.save(new Payment(advertisement.getUser(), advertisement, paymentType, paymentStartDate,
                 paymentStartDate.plusDays(paymentType.getDuration()), paymentType.getPrice(), state));
         LOGGER.info(EnumLogger.SUCCESSFUL_CREATE.getText());

@@ -1,20 +1,7 @@
-plugins {
-    id 'java'
-}
-
-group 'com.senlainc.javacourses.petushokvaliantsin'
-version '1.0.0'
-
-repositories {
-    mavenCentral()
-}
-
-project.buildDir("src/generated/java")
-
 dependencies {
-    implementation apiElements('org.springframework.boot:spring-boot-starter-json:2.7.1')
-    implementation apiElements('org.springframework.boot:spring-boot-starter-validation:2.7.1')
-    implementation apiElements('org.springframework.boot:spring-boot-starter-data-jpa:2.7.1')
-    implementation apiElements('io.swagger.core.v3:swagger-annotations:2.1.11')
-    implementation apiElements('org.springdoc:springdoc-openapi-ui:1.5.12')
+    api 'org.springframework.boot:spring-boot-starter-json'
+    api 'org.springframework.boot:spring-boot-starter-validation'
+    api 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation libs.springdocWebmvc
+    implementation libs.swaggerAnnotations
 }

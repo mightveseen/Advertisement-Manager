@@ -1,8 +1,8 @@
 package com.senlainc.javacourses.petushokvaliantsin.utility.exception.dao;
 
-public class DeleteQueryException extends RuntimeException {
+public final class DeleteQueryException extends DaoException {
 
     public DeleteQueryException(Throwable cause) {
-        super(cause);
+        super(cause.getMessage(), cause);
     }
 }

@@ -1,6 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.utility.exception;
 
-public class IncorrectCastException extends RuntimeException {
+public final class IncorrectCastException extends AppException {
 
     public IncorrectCastException(String message) {
         super(message);

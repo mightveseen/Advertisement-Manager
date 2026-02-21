@@ -15,16 +15,16 @@ import com.senlainc.javacourses.petushokvaliantsin.utility.page.IFilterParameter
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IStateParameter;
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation.PageParameter;
+import jakarta.persistence.PersistenceException;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Order;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.hibernate.graph.GraphSemantic;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.PersistenceException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 

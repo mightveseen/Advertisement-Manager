@@ -1,0 +1,22 @@
+[versions]
+springBoot = "3.4.2"
+dependencyManagement = "1.1.7"
+lombok = "1.18.36"
+javaJwt = "4.4.0"
+modelmapper = "3.2.1"
+reflections = "0.10.2"
+postgresql = "42.7.4"
+springdoc = "2.7.0"
+
+[libraries]
+lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
+javaJwt = { group = "com.auth0", name = "java-jwt", version.ref = "javaJwt" }
+modelmapper = { group = "org.modelmapper", name = "modelmapper", version.ref = "modelmapper" }
+reflections = { group = "org.reflections", name = "reflections", version.ref = "reflections" }
+postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
+springdocWebmvc = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
+swaggerAnnotations = { group = "io.swagger.core.v3", name = "swagger-annotations", version = "2.2.22" }
+
+[plugins]
+springBoot = { id = "org.springframework.boot", version.ref = "springBoot" }
+dependencyManagement = { id = "io.spring.dependency-management", version.ref = "dependencyManagement" }

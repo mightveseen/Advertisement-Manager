@@ -79,8 +79,8 @@ public class AdvertisementServiceImpl extends AbstractService implements Adverti
     @Override
     @Transactional
     public boolean updateByUser(String username, AdvertisementDto advertisementDto) {
-        checkPermission(advertisementDao.readById(advertisementDto.getId()).orElseThrow(() ->
-                new EntityNotExistException(entityNotExistMessage(0, 0, advertisementDto.getId()))), username);
+        checkPermission(advertisementDao.readById(advertisementDto.id()).orElseThrow(() ->
+                new EntityNotExistException(entityNotExistMessage(0, 0, advertisementDto.id()))), username);
         final Advertisement advertisement = dtoMapper.map(advertisementDto, Advertisement.class);
         advertisement.setDate(LocalDate.now());
         advertisement.setState(stateDao.readByDescription(EnumState.MODERATION.name()).orElseThrow(() ->
@@ -94,8 +94,8 @@ public class AdvertisementServiceImpl extends AbstractService implements Adverti
     @Transactional
     public boolean updateStateByModerator(Long index, StateDto state) {
         final Advertisement advertisement = advertisementDao.readById(index).orElseThrow();
-        advertisement.setState(stateDao.readByDescription(state.getDescription()).orElseThrow(() ->
-                new EntityNotExistException(entityNotExistMessage(1, 1, state.getDescription()))));
+        advertisement.setState(stateDao.readByDescription(state.description()).orElseThrow(() ->
+                new EntityNotExistException(entityNotExistMessage(1, 1, state.description()))));
         advertisementDao.save(advertisement);
         log.info(EnumLogger.SUCCESSFUL_UPDATE.getText());
         return true;

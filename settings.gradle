@@ -1,4 +1,4 @@
-rootProject.name = 'AdvertisementProjectG'
+rootProject.name = 'Advertisement-Manager'
 include 'model'
 include 'dao'
 include 'dao-api'

@@ -1,14 +1,14 @@
 package com.senlainc.javacourses.petushokvaliantsin.dao;
 
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Order;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.metamodel.SingularAttribute;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.SingularAttribute;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -19,7 +19,7 @@ public abstract class AbstractDao<E> {
     protected EntityManager entityManager;
     protected CriteriaBuilder criteriaBuilder;
 
-    @PersistenceContext(name = "mainPersistence")
+    @PersistenceContext
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
         this.criteriaBuilder = entityManager.getCriteriaBuilder();

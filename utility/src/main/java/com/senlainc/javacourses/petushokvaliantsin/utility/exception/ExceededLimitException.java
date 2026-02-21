@@ -1,6 +1,6 @@
 package com.senlainc.javacourses.petushokvaliantsin.utility.exception;
 
-public class ExceededLimitException extends RuntimeException {
+public final class ExceededLimitException extends AppException {
 
     public ExceededLimitException(String message) {
         super(message);

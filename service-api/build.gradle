@@ -1,14 +1,3 @@
-plugins {
-    id 'java'
-}
-
-group 'com.senlainc.javacourses.petushokvaliantsin'
-version '1.0.0'
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    implementation apiElements(project(':model'))
+    api project(':dao-api')
 }

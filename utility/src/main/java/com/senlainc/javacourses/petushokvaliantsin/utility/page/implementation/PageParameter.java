@@ -1,10 +1,9 @@
 package com.senlainc.javacourses.petushokvaliantsin.utility.page.implementation;
 
 import com.senlainc.javacourses.petushokvaliantsin.utility.page.IPageParameter;
+import jakarta.persistence.metamodel.SingularAttribute;
 import lombok.Getter;
 import org.springframework.data.domain.Sort;
-
-import javax.persistence.metamodel.SingularAttribute;
 
 @Getter
 public final class PageParameter implements IPageParameter {
